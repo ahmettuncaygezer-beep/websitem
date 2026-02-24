@@ -1,0 +1,81 @@
+[
+    {
+        "name": "Luna Köşe Koltuk",
+        "slug": "luna-kose-koltuk",
+        "description": "Bouclé kumaşıyla kaplı, yumuşak hatlarıyla salonunuza zarafet katan modüler köşe koltuk. Doğal meşe ayakları ve yüksek yoğunluklu sünger dolgusu ile üstün konfor sunar.",
+        "price": 89990,
+        "salePrice": 74990,
+        "categoryId": "1",
+        "categorySlug": "oturma-odasi",
+        "images": [
+            "/images/products/luna-sofa-1.jpg",
+            "/images/products/luna-sofa-2.jpg",
+            "/images/products/luna-sofa-3.jpg"
+        ],
+        "lifestyleImage": "/images/products/luna-sofa-lifestyle.jpg",
+        "colors": [
+            {
+                "name": "Kum Beji",
+                "hex": "#D4C5B2"
+            },
+            {
+                "name": "Antrasit",
+                "hex": "#3C3C3C"
+            },
+            {
+                "name": "Adaçayı",
+                "hex": "#8B9E82"
+            }
+        ],
+        "materials": [
+            "Bouclé",
+            "Meşe"
+        ],
+        "dimensions": {
+            "width": 320,
+            "height": 85,
+            "depth": 180,
+            "unit": "cm"
+        },
+        "stock": 12,
+        "featured": true,
+        "isNew": true,
+        "brand": "MAISON Atelier"
+    },
+    {
+        "name": "Aria Berjer",
+        "slug": "aria-berjer",
+        "description": "İtalyan tasarımından ilham alan, keten kumaşlı berjer koltuk. Ceviz ağacı iskelet üzerine el işçiliğiyle üretilmiştir.",
+        "price": 34990,
+        "categoryId": "1",
+        "categorySlug": "oturma-odasi",
+        "images": [
+            "/images/products/aria-chair-1.jpg",
+            "/images/products/aria-chair-2.jpg"
+        ],
+        "lifestyleImage": "/images/products/aria-chair-lifestyle.jpg",
+        "colors": [
+            {
+                "name": "Keten Beyaz",
+                "hex": "#F5F0EB"
+            },
+            {
+                "name": "Terakota",
+                "hex": "#C67D5B"
+            }
+        ],
+        "materials": [
+            "Keten",
+            "Ceviz"
+        ],
+        "dimensions": {
+            "width": 78,
+            "height": 95,
+            "depth": 82,
+            "unit": "cm"
+        },
+        "stock": 8,
+        "featured": true,
+        "brand": "MAISON Atelier"
+    }
+]

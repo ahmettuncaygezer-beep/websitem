@@ -1,0 +1,32 @@
+[
+    {
+        "id": "minimalist",
+        "name": "Minimalist",
+        "description": "Temiz çizgiler, ferah alanlar.",
+        "image": "/images/styles/minimalist.jpg"
+    },
+    {
+        "id": "scandinavian",
+        "name": "İskandinav",
+        "description": "Sıcak ahşap, doğal dokular.",
+        "image": "/images/styles/scandinavian.jpg"
+    },
+    {
+        "id": "maximalist",
+        "name": "Maksimalist",
+        "description": "Cesur renkler, sanatsal detaylar.",
+        "image": "/images/styles/maximalist.jpg"
+    },
+    {
+        "id": "modern-luxury",
+        "name": "Modern Lüks",
+        "description": "Zarif mermer, metalik dokunuşlar.",
+        "image": "/images/styles/modern-luxury.jpg"
+    },
+    {
+        "id": "industrial",
+        "name": "Endüstriyel",
+        "description": "Ham tuğla, metal ve deri.",
+        "image": "/images/styles/industrial.jpg"
+    }
+]
