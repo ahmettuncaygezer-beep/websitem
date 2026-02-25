@@ -10,8 +10,7 @@ export function AIChatbot() {
     const [showNotification, setShowNotification] = useState(true);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    const [userInput, setUserInput] = useState('');
-    const { messages, status, error, sendMessage, stop } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, status, error, stop, append } = useChat({
         api: '/api/chat',
         initialMessages: [
             {
@@ -19,8 +18,8 @@ export function AIChatbot() {
                 role: 'assistant',
                 content: 'Merhaba. Ben MAISON Dijital Concierge. Size lüks koleksiyonlarımızdan ürün önermek, iç mimari tavsiyeleri vermek veya teslimat sürecinizde yardımcı olmak için buradayım. Size bugün nasıl yardımcı olabilirim?'
             }
-        ] as any,
-    }) as any;
+        ],
+    } as any) as any;
 
     const isLoading = status === 'submitted' || status === 'streaming';
 
@@ -42,22 +41,12 @@ export function AIChatbot() {
         return () => clearTimeout(timer);
     }, []);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserInput(e.target.value);
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!userInput.trim() || isLoading) return;
-
-        const text = userInput;
-        setUserInput('');
-        await sendMessage({ text });
-    };
-
     const handleQuickAction = async (text: string) => {
         if (isLoading) return;
-        await sendMessage({ text });
+        await append({
+            role: 'user',
+            content: text,
+        });
     };
 
     return (
@@ -210,14 +199,14 @@ export function AIChatbot() {
 
                             <form onSubmit={handleSubmit} className="relative group">
                                 <input
-                                    value={userInput}
+                                    value={input}
                                     onChange={handleInputChange}
                                     placeholder="Bir soru sorun..."
                                     className="w-full pl-6 pr-14 py-4 bg-sand/10 border border-sand/30 rounded-[20px] focus:bg-white focus:border-gold/30 focus:ring-4 focus:ring-gold/5 outline-none text-sm transition-all placeholder:text-warm-gray/60"
                                 />
                                 <button
                                     type="submit"
-                                    disabled={!userInput || isLoading}
+                                    disabled={!input || isLoading}
                                     className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-charcoal text-white rounded-16 flex items-center justify-center hover:bg-black transition-all disabled:opacity-20 disabled:grayscale"
                                 >
                                     {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
