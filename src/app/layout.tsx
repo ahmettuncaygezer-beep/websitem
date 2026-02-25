@@ -1,23 +1,33 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { Cormorant_Garamond, Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
+
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { CartDrawer } from '@/components/cart/CartDrawer';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-serif',
-  display: 'swap',
+  display: 'optional',   // no layout shift
 });
 
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
   variable: '--font-sans',
-  display: 'swap',
+  display: 'optional',
 });
+
+// Playfair Display — italic for typewriter gold line
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+  display: 'optional',
+});
+
 
 export const metadata: Metadata = {
   title: 'MAISON — Premium Mobilya & Ev Dekorasyonu',
@@ -31,8 +41,8 @@ export const metadata: Metadata = {
     locale: 'tr_TR',
   },
 };
-
 import { GlobalProvider } from '@/context/GlobalContext';
+import { CartProvider } from '@/context/CartContext';
 import { LayoutWrapper } from '@/components/layout/LayoutWrapper';
 
 export default function RootLayout({
@@ -41,10 +51,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="tr" className={`${cormorant.variable} ${inter.variable} ${playfair.variable}`}>
+
       <body className="min-h-screen flex flex-col">
         <GlobalProvider>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <CartProvider>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </CartProvider>
         </GlobalProvider>
       </body>
     </html>

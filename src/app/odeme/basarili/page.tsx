@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useCart } from '@/hooks/useCart';
 
 export default function OrderSuccessPage() {
-    const clearCart = useCart((state) => state.clearCart);
+    const { clearCart } = useCart();
     const [orderId, setOrderId] = useState('');
 
     useEffect(() => {

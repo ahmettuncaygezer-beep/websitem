@@ -20,7 +20,7 @@ export function ShopTheRoom() {
     const [activeSpot, setActiveSpot] = useState<number | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
-    const addItem = useCart((s) => s.addItem);
+    const { addItem } = useCart();
 
     useEffect(() => {
         const fetchDisplayProducts = async () => {
@@ -136,7 +136,15 @@ export function ShopTheRoom() {
                                                             <button
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
-                                                                    addItem(product);
+                                                                    addItem({
+                                                                        id: product.id,
+                                                                        name: product.name,
+                                                                        brand: product.brand ?? 'MAISON',
+                                                                        price: product.salePrice || product.price,
+                                                                        originalPrice: product.price,
+                                                                        image: product.images[0],
+                                                                        href: `/urun/${product.slug}`
+                                                                    });
                                                                 }}
                                                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-gold text-white text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full hover:bg-gold-dark transition-colors"
                                                             >

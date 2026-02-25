@@ -1,5 +1,5 @@
 import { HeroSection } from '@/components/home/HeroSection';
-import { BentoCategories } from '@/components/home/BentoCategories';
+import { CategorySection } from '@/components/CategorySection';
 import { ShopTheRoom } from '@/components/home/ShopTheRoom';
 import { NewArrivals } from '@/components/home/NewArrivals';
 import { TrustBand } from '@/components/home/TrustBand';
@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <BentoCategories />
+      <CategorySection />
       <NewArrivals />
       <PersonalizedShowcase />
       <RoomScanner />

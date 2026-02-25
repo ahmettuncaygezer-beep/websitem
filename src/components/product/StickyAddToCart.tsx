@@ -13,7 +13,7 @@ interface StickyAddToCartProps {
 
 export function StickyAddToCart({ product }: StickyAddToCartProps) {
     const [isVisible, setIsVisible] = useState(false);
-    const addItem = useCart((s) => s.addItem);
+    const { addItem } = useCart();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -56,7 +56,15 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
                                     {formatPrice(product.salePrice || product.price)}
                                 </span>
                                 <button
-                                    onClick={() => addItem(product, product.colors[0])}
+                                    onClick={() => addItem({
+                                        id: product.id,
+                                        name: product.name,
+                                        brand: product.brand ?? 'MAISON',
+                                        price: product.salePrice || product.price,
+                                        originalPrice: product.price,
+                                        image: product.images[0],
+                                        href: `/urun/${product.slug}`
+                                    }, { selectedColor: product.colors[0]?.name })}
                                     className="flex items-center gap-2 px-6 py-2.5 bg-gold text-white text-xs font-sans font-semibold uppercase tracking-widest rounded-full hover:bg-gold-dark transition-colors"
                                 >
                                     <ShoppingBag size={14} />

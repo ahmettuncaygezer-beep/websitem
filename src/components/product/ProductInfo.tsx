@@ -16,7 +16,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
     const [selectedColor, setSelectedColor] = useState<ProductColor>(product.colors[0]);
     const [quantity, setQuantity] = useState(1);
     const [isLiked, setIsLiked] = useState(false);
-    const addItem = useCart((s) => s.addItem);
+    const { addItem } = useCart();
 
     const hasDiscount = product.salePrice && product.salePrice < product.price;
     const discountPercent = hasDiscount
@@ -24,9 +24,21 @@ export function ProductInfo({ product }: ProductInfoProps) {
         : 0;
 
     const handleAddToCart = () => {
-        for (let i = 0; i < quantity; i++) {
-            addItem(product, selectedColor);
-        }
+        addItem(
+            {
+                id: product.id,
+                name: product.name,
+                brand: product.brand ?? 'MAISON',
+                price: product.salePrice || product.price,
+                originalPrice: product.price,
+                image: product.images[0],
+                href: `/urun/${product.slug}`
+            },
+            {
+                quantity,
+                selectedColor: selectedColor.name
+            }
+        );
     };
 
     return (
@@ -85,8 +97,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
                             key={color.hex}
                             onClick={() => setSelectedColor(color)}
                             className={`w-10 h-10 rounded-full transition-all duration-300 ${selectedColor.hex === color.hex
-                                    ? 'ring-2 ring-gold ring-offset-3 scale-110'
-                                    : 'hover:scale-105'
+                                ? 'ring-2 ring-gold ring-offset-3 scale-110'
+                                : 'hover:scale-105'
                                 }`}
                             style={{ backgroundColor: color.hex }}
                             title={color.name}
@@ -131,8 +143,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 <button
                     onClick={() => setIsLiked(!isLiked)}
                     className={`w-14 h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isLiked
-                            ? 'bg-terracotta border-terracotta text-white'
-                            : 'border-border text-warm-gray hover:border-terracotta hover:text-terracotta'
+                        ? 'bg-terracotta border-terracotta text-white'
+                        : 'border-border text-warm-gray hover:border-terracotta hover:text-terracotta'
                         }`}
                 >
                     <Heart size={20} fill={isLiked ? 'currentColor' : 'none'} />

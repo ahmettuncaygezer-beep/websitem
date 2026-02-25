@@ -1,165 +1,85 @@
-'use client';
+import type { Metadata } from 'next';
+import { ProductDetail } from '@/components/ProductDetail';
+import type { Product } from '@/components/ProductCard/product.types';
 
-import { useEffect, useState, use } from 'react';
-import { motion } from 'framer-motion';
-import { getProductBySlug, getProducts } from '@/lib/api';
-import { ProductGallery } from '@/components/product/ProductGallery';
-import { ProductInfo } from '@/components/product/ProductInfo';
-import { StickyAddToCart } from '@/components/product/StickyAddToCart';
-import { ProductCard } from '@/components/product/ProductCard';
-import { Product } from '@/types';
-import { Loader2, Palette, Box } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { ProductConfigurator } from '@/components/product/ProductConfigurator';
-import { AnimatePresence } from 'framer-motion';
+// ── Mock product for demo ──
+const MOCK_PRODUCT: Product = {
+    id: 'luna-kose-koltuk',
+    name: 'Luna Köşe Koltuk',
+    brand: 'MAISON Atelier',
+    slug: 'luna-kose-koltuk',
+    price: 74990,
+    originalPrice: 89990,
+    currency: 'TRY',
+    category: 'Oturma Odası',
+    isNew: true,
+    isFeatured: true,
+    deliveryDays: 5,
+    hasQuickShip: true,
+    description:
+        'Luna Köşe Koltuk, yaşam alanınıza premium bir dokunuş katmak için el yapımı masif meşe iskelet üzerine inşa edilmiştir. Yüksek yoğunluklu sünger dolgusu, uzun yıllar boyunca konforunu korurken, OEKO-TEX® sertifikalı kadife kumaşı zarif ve güvenli bir kullanım sunar.\n\nModüler tasarımı sayesinde odanızın boyutuna göre özelleştirilebilir. Çıkarılabilir ve yıkanabilir kılıfları bakımı son derece pratik hale getirir.',
+    rating: { average: 4.8, count: 127 },
+    badges: [
+        { type: 'new', label: 'Yeni' },
+        { type: 'bestseller', label: 'Çok Satan' },
+    ],
+    colors: [
+        { id: 'c1', name: 'Açık Gri', hex: '#B0B0B0', image: '/images/gallery-1.jpg', lifestyleImage: '/images/gallery-2.jpg', inStock: true },
+        { id: 'c2', name: 'Vizon', hex: '#8B7355', image: '/images/gallery-3.jpg', lifestyleImage: '/images/gallery-4.jpg', inStock: true },
+        { id: 'c3', name: 'Krem', hex: '#F5F0EB', image: '/images/gallery-5.jpg', lifestyleImage: '/images/gallery-6.jpg', inStock: true },
+        { id: 'c4', name: 'Lacivert', hex: '#1B2838', image: '/images/gallery-1.jpg', lifestyleImage: '/images/gallery-2.jpg', inStock: false },
+    ],
+};
 
-export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = use(params);
-    const router = useRouter();
-    const [product, setProduct] = useState<Product | null>(null);
-    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [isConfiguratorOpen, setIsConfiguratorOpen] = useState(false);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    // In production: fetch product by slug
+    const product = MOCK_PRODUCT;
+    return {
+        title: `${product.name} | MAISON Premium Mobilya`,
+        description: `El yapımı ${product.name} — ${product.brand} koleksiyonu. ${product.description?.slice(0, 120)}...`,
+        openGraph: {
+            title: `${product.name} | MAISON`,
+            description: product.description?.slice(0, 160),
+            images: [product.colors[0]?.image],
+        },
+    };
+}
 
-    useEffect(() => {
-        const fetchProductData = async () => {
-            setLoading(true);
-            const data = await getProductBySlug(slug);
-
-            if (!data) {
-                router.push('/');
-                return;
-            }
-
-            setProduct(data);
-
-            // Fetch related products
-            const related = await getProducts({ categorySlug: data.categorySlug });
-            setRelatedProducts(related.filter(p => p.id !== data.id).slice(0, 4));
-
-            setLoading(false);
-        };
-
-        fetchProductData();
-    }, [slug, router]);
-
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="text-center">
-                    <Loader2 className="animate-spin text-gold mx-auto mb-4" size={48} />
-                    <p className="font-sans text-warm-gray">Ürün detayları yükleniyor...</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (!product) {
-        return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
-                <div className="text-center max-w-md">
-                    <h1 className="text-headline mb-4 font-serif">Ürün Bulunamadı</h1>
-                    <p className="font-sans text-warm-gray mb-8">
-                        Aradığınız ürün mağazamızda bulunmuyor veya koleksiyondan kaldırılmış olabilir.
-                    </p>
-                    <button
-                        onClick={() => router.push('/')}
-                        className="px-8 py-4 bg-charcoal text-white text-sm font-sans font-semibold uppercase tracking-widest rounded-full hover:bg-gold transition-colors"
-                    >
-                        Ana Sayfaya Dön
-                    </button>
-                </div>
-            </div>
-        );
-    }
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    // In production: fetch product by slug from API/DB
+    const product = MOCK_PRODUCT;
 
     return (
-        <div className="bg-white min-h-screen">
-            <StickyAddToCart product={product} />
-
-            {/* Breadcrumb */}
-            <div className="container-premium pt-6 pb-2">
-                <nav className="text-xs font-sans text-warm-gray-light">
-                    <span>Ana Sayfa</span>
-                    <span className="mx-2">/</span>
-                    <span className="capitalize">{product.categorySlug.replace('-', ' ')}</span>
-                    <span className="mx-2">/</span>
-                    <span className="text-charcoal">{product.name}</span>
-                </nav>
-            </div>
-
-            {/* Main product section */}
-            <div className="container-premium py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16">
-                    {/* Gallery - 60% */}
-                    <div className="lg:col-span-3">
-                        <ProductGallery images={product.images} name={product.name} slug={product.slug} />
-                    </div>
-
-                    {/* Info - 40% */}
-                    <div className="lg:col-span-2">
-                        <ProductInfo product={product} />
-
-                        {/* Workshop Button */}
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => setIsConfiguratorOpen(true)}
-                            className="w-full mt-8 p-6 bg-sand rounded-3xl border-2 border-gold/10 hover:border-gold/30 transition-all flex items-center justify-between group"
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
-                                    <Palette className="text-gold" size={24} />
-                                </div>
-                                <div className="text-left">
-                                    <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-gold mb-1">Butik Atölye</p>
-                                    <p className="font-serif text-lg text-charcoal">Kendi Parçanı Tasarla</p>
-                                </div>
-                            </div>
-                            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:bg-gold group-hover:text-white transition-all">
-                                <Box size={20} />
-                            </div>
-                        </motion.button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Related products */}
-            {relatedProducts.length > 0 && (
-                <section className="bg-sand py-20">
-                    <div className="container-premium">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                            className="text-center mb-14"
-                        >
-                            <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
-                                Bunları da Beğenebilirsiniz
-                            </p>
-                            <h2 className="text-headline text-charcoal">Benzer Ürünler</h2>
-                        </motion.div>
-
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                            {relatedProducts.map((p) => (
-                                <ProductCard key={p.id} product={p} />
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            <AnimatePresence>
-                {isConfiguratorOpen && (
-                    <ProductConfigurator
-                        isOpen={isConfiguratorOpen}
-                        onClose={() => setIsConfiguratorOpen(false)}
-                        basePrice={product.price}
-                        productName={product.name}
-                    />
-                )}
-            </AnimatePresence>
-        </div>
+        <>
+            {/* JSON-LD Product structured data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'Product',
+                        name: product.name,
+                        brand: { '@type': 'Brand', name: 'MAISON' },
+                        image: product.colors.map((c) => c.image),
+                        description: product.description,
+                        sku: `MSN-${product.slug.toUpperCase().slice(0, 8)}`,
+                        offers: {
+                            '@type': 'Offer',
+                            price: product.price.toString(),
+                            priceCurrency: 'TRY',
+                            availability: 'https://schema.org/InStock',
+                        },
+                        aggregateRating: {
+                            '@type': 'AggregateRating',
+                            ratingValue: product.rating.average.toString(),
+                            reviewCount: product.rating.count.toString(),
+                        },
+                    }),
+                }}
+            />
+            <ProductDetail product={product} />
+        </>
     );
 }
