@@ -7,14 +7,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CartBadge } from './CartBadge';
 import { useCart } from '@/hooks/useCart';
 import { useFavorites } from '@/hooks/useFavorites';
-import { AuthModal, useAuthStore } from '@/components/auth/AuthModal';
+import { useAuthStore } from '@/store/authStore';
 
 interface NavIconsProps {
     isScrolled: boolean;
 }
 
 export function NavIcons({ isScrolled }: NavIconsProps) {
-    const openAuth = useAuthStore((state) => state.open);
+    const openAuth = useAuthStore((state) => state.openAuthModal);
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const { totalItems, openCart } = useCart();
     const favCount = useFavorites((state) => state.favorites.length);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
