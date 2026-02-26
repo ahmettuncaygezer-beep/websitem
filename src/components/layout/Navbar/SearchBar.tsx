@@ -32,6 +32,14 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
     const [focusedIndex, setFocusedIndex] = useState(-1);
     const debouncedQuery = useSearchDebounce(query, 300);
 
+    // Global access for Browser Control
+    useEffect(() => {
+        (window as any).MaisonSearch = {
+            open: onOpen,
+            close: onClose
+        };
+    }, [onOpen, onClose]);
+
     // Load history on open
     useEffect(() => {
         if (isOpen) {

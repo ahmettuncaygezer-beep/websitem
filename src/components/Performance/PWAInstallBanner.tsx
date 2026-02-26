@@ -34,6 +34,11 @@ export default function PWAInstallBanner() {
 
         const handleInstalled = () => setInstalled(true);
 
+        window.MaisonPWA = {
+            trigger: () => setShow(true),
+            install: handleInstall
+        };
+
         window.addEventListener('beforeinstallprompt', handleBeforeInstall);
         window.addEventListener('appinstalled', handleInstalled);
         return () => {
