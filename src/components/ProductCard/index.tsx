@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Truck, Zap } from 'lucide-react';
@@ -22,7 +22,7 @@ interface ProductCardProps {
     priority?: boolean;
 }
 
-export function ProductCard({
+export const ProductCard = memo(function ProductCard({
     product,
     index = 0,
     viewMode = 'grid',
@@ -44,8 +44,13 @@ export function ProductCard({
     const [quickViewOpen, setQuickViewOpen] = useState(false);
 
     const isPriority = priority || index < 4;
-    const discount = product.originalPrice
-        ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+
+    // Price logic: salePrice is the current price if it exists and is > 0
+    const displayPrice = product.salePrice && product.salePrice > 0 ? product.salePrice : product.price;
+    const originalPrice = product.originalPrice || (product.salePrice && product.salePrice < product.price ? product.price : undefined);
+
+    const discount = originalPrice
+        ? Math.round(((originalPrice - displayPrice) / originalPrice) * 100)
         : 0;
 
     // ━━━ LIST VIEW ━━━
@@ -74,7 +79,8 @@ export function ProductCard({
                         style={{ width: 160, height: 160, background: '#F5F0EB' }}
                     >
                         <ProductCardImage
-                            color={selectedColor}
+                            mainImage={selectedColor?.image || product.images[0]}
+                            hoverImage={selectedColor?.lifestyleImage || product.lifestyleImage || product.images[1]}
                             name={product.name}
                             isHovered={isHovered}
                             priority={isPriority}
@@ -111,11 +117,11 @@ export function ProductCard({
                             {/* Price */}
                             <div>
                                 <span className="text-base font-bold" style={{ color: '#1C1C1E' }}>
-                                    ₺{product.price.toLocaleString('tr-TR')}
+                                    ₺{displayPrice.toLocaleString('tr-TR')}
                                 </span>
-                                {product.originalPrice && (
+                                {originalPrice && (
                                     <span className="text-[12px] line-through ml-2" style={{ color: '#999' }}>
-                                        ₺{product.originalPrice.toLocaleString('tr-TR')}
+                                        ₺{originalPrice.toLocaleString('tr-TR')}
                                     </span>
                                 )}
                             </div>
@@ -166,7 +172,8 @@ export function ProductCard({
                     style={{ outline: 'none' }}
                 >
                     <ProductCardImage
-                        color={selectedColor}
+                        mainImage={selectedColor?.image || product.images[0]}
+                        hoverImage={selectedColor?.lifestyleImage || product.lifestyleImage || product.images[1]}
                         name={product.name}
                         isHovered={isHovered}
                         priority={isPriority}
@@ -235,11 +242,11 @@ export function ProductCard({
                     <div className="flex items-center justify-between mt-3">
                         <div className="flex items-baseline gap-2">
                             <span className="text-base font-bold" style={{ color: '#1C1C1E' }}>
-                                ₺{product.price.toLocaleString('tr-TR')}
+                                ₺{displayPrice.toLocaleString('tr-TR')}
                             </span>
-                            {product.originalPrice && (
+                            {originalPrice && (
                                 <span className="text-[12px] line-through" style={{ color: '#999' }}>
-                                    ₺{product.originalPrice.toLocaleString('tr-TR')}
+                                    ₺{originalPrice.toLocaleString('tr-TR')}
                                 </span>
                             )}
                         </div>
@@ -247,7 +254,7 @@ export function ProductCard({
                         <div className="flex items-center gap-1" style={{ color: product.hasQuickShip ? '#4CAF50' : '#999' }}>
                             {product.hasQuickShip ? <Zap size={12} /> : <Truck size={12} />}
                             <span style={{ fontSize: '10px' }}>
-                                {product.hasQuickShip ? '⚡ 2 gün' : `${product.deliveryDays} gün`}
+                                {product.hasQuickShip ? '⚡ 2 gün' : `${product.deliveryDays || 7} gün`}
                             </span>
                         </div>
                     </div>
@@ -293,4 +300,4 @@ export function ProductCard({
       `}</style>
         </>
     );
-}
+});

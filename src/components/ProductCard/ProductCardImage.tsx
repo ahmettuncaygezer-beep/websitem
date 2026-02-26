@@ -5,14 +5,16 @@ import Image from 'next/image';
 import type { ProductColor } from './product.types';
 
 interface ProductCardImageProps {
-    color: ProductColor;
+    mainImage?: string;
+    hoverImage?: string;
     name: string;
     isHovered: boolean;
     priority: boolean;
 }
 
 export function ProductCardImage({
-    color,
+    mainImage,
+    hoverImage,
     name,
     isHovered,
     priority,
@@ -39,10 +41,10 @@ export function ProductCardImage({
             )}
 
             {/* Main product image */}
-            {color.image && (
+            {mainImage && (
                 <Image
-                    src={color.image}
-                    alt={`${name} — ${color.name}`}
+                    src={mainImage}
+                    alt={name}
                     fill
                     priority={priority}
                     loading={priority ? 'eager' : 'lazy'}
@@ -61,10 +63,10 @@ export function ProductCardImage({
             )}
 
             {/* Lifestyle crossfade image — loads on hover */}
-            {color.lifestyleImage && (
+            {hoverImage && (
                 <Image
-                    src={color.lifestyleImage}
-                    alt={`${name} — ${color.name} yaşam alanı`}
+                    src={hoverImage}
+                    alt={`${name} yaşam alanı`}
                     fill
                     loading="lazy"
                     className="object-cover"
