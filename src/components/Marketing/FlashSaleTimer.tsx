@@ -100,26 +100,42 @@ function CompactTimer({ timeLeft, isExpired }: { timeLeft: TimeLeft; isExpired: 
 
 /* ─── Main export ──────────────────────────────────────── */
 export default function FlashSaleTimer({ endDate, compact = false, onExpire }: FlashSaleTimerProps) {
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>(() => calculateTimeLeft(endDate));
+    // Start with null to prevent hydration mismatch
+    const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
     const [blink, setBlink] = useState(false);
     const shouldReduceMotion = useReducedMotion();
+
+    useEffect(() => {
+        // Only run on client
+        const initial = calculateTimeLeft(endDate);
+        setTimeLeft(initial);
+
+        if (initial.total <= 0) {
+            onExpire?.();
+            return;
+        }
+
+        const interval = setInterval(() => {
+            const next = calculateTimeLeft(endDate);
+            setTimeLeft(next);
+            if (next.total <= 0) {
+                onExpire?.();
+                clearInterval(interval);
+            }
+            setBlink(b => !b);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [endDate, onExpire]);
+
+    // Show nothing until mounted and time is calculated
+    if (!timeLeft) {
+        return <div className="flex items-center gap-1 opacity-0 h-[76px]" aria-hidden="true" />;
+    }
 
     const isExpired = timeLeft.total <= 0;
     const isUrgent = timeLeft.total <= 10 * 60 * 1000; // son 10 dakika
     const isPulse = timeLeft.total <= 60 * 1000; // son 60 saniye
-
-    useEffect(() => {
-        if (isExpired) {
-            onExpire?.();
-            return;
-        }
-        const interval = setInterval(() => {
-            setTimeLeft(calculateTimeLeft(endDate));
-            setBlink(b => !b);
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [endDate, isExpired, onExpire]);
-
     const pad = (n: number) => String(n).padStart(2, '0');
 
     if (compact) {

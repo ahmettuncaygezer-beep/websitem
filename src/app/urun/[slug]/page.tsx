@@ -1,39 +1,41 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { ProductDetail } from '@/components/ProductDetail';
 import type { Product } from '@/components/ProductCard/product.types';
 import BundleOffer, { type BundleProduct } from '@/components/Marketing/BundleOffer';
 import StockNotifyForm from '@/components/Marketing/StockNotifyForm';
 import LowStockBadge from '@/components/Marketing/LowStockBadge';
 import FlashSaleTimer from '@/components/Marketing/FlashSaleTimer';
+import { mockProducts } from '@/data/mock-products';
 
-// ── Mock product for demo ——
-const MOCK_PRODUCT: Product = {
-    id: 'luna-kose-koltuk',
-    name: 'Luna Köşe Koltuk',
-    brand: 'MAISON Atelier',
-    slug: 'luna-kose-koltuk',
-    price: 74990,
-    originalPrice: 89990,
-    currency: 'TRY',
-    category: 'Oturma Odası',
-    isNew: true,
-    isFeatured: true,
-    deliveryDays: 5,
-    hasQuickShip: true,
-    description:
-        'Luna Köşe Koltuk, yaşam alanınıza premium bir dokunuş katmak için el yapımı masif meşe iskelet üzerine inşa edilmiştir. Yüksek yoğunluklu sünger dolgusu, uzun yıllar boyunca konforunu korurken, OEKO-TEX® sertifikalı kadife kumaşı zarif ve güvenli bir kullanım sunar.\n\nModüler tasarımı sayesinde odanızın boyutuna göre özelleştirilebilir. Çıkarılabilir ve yıkanabilir kılıfları bakımı son derece pratik hale getirir.',
-    rating: { average: 4.8, count: 127 },
-    badges: [
-        { type: 'new', label: 'Yeni' },
-        { type: 'bestseller', label: 'Çok Satan' },
-    ],
-    colors: [
-        { id: 'c1', name: 'Açık Gri', hex: '#B0B0B0', image: '/images/gallery-1.jpg', lifestyleImage: '/images/gallery-2.jpg', inStock: true },
-        { id: 'c2', name: 'Vizon', hex: '#8B7355', image: '/images/gallery-3.jpg', lifestyleImage: '/images/gallery-4.jpg', inStock: true },
-        { id: 'c3', name: 'Krem', hex: '#F5F0EB', image: '/images/gallery-5.jpg', lifestyleImage: '/images/gallery-6.jpg', inStock: true },
-        { id: 'c4', name: 'Lacivert', hex: '#1B2838', image: '/images/gallery-1.jpg', lifestyleImage: '/images/gallery-2.jpg', inStock: false },
-    ],
-};
+// Adapter to transform storefront product to the PDP's strict component interface
+function mapToPDPProduct(p: any): Product {
+    return {
+        id: p.id,
+        name: p.name,
+        brand: p.brand || 'MAISON',
+        slug: p.slug,
+        price: p.salePrice || p.price,
+        originalPrice: p.salePrice ? p.price : undefined,
+        currency: 'TRY',
+        category: p.categorySlug || p.categoryId,
+        isNew: p.isNew || false,
+        isFeatured: p.featured || false,
+        deliveryDays: 5,
+        hasQuickShip: (p.stock || 0) > 0,
+        description: p.description,
+        rating: { average: 4.8, count: 127 },
+        badges: p.isNew ? [{ type: 'new', label: 'Yeni' }] : [],
+        colors: p.colors?.map((c: any, index: number) => ({
+            id: `c${index}`,
+            name: c.name,
+            hex: c.hex,
+            image: p.images?.[0] || '/images/products/luna-sofa.jpg',
+            lifestyleImage: p.lifestyleImage || p.images?.[0] || '/images/products/luna-lifestyle.jpg',
+            inStock: true
+        })) || []
+    };
+}
 
 // Demo: Flash sale bitiş tarihi
 const FLASH_SALE_END = new Date(process.env.NEXT_PUBLIC_FLASH_SALE_END ?? '2026-03-15T23:59:59+03:00');
@@ -43,14 +45,20 @@ const DEMO_STOCK = 3;
 
 // Bundle tamamlayıcı ürünler
 const BUNDLE_PRODUCTS: BundleProduct[] = [
-    { id: 'orbit-sehpa', name: 'Orbit Orta Sehpa', price: 12990, image: '/images/gallery-2.jpg', href: '/urun/orbit-sehpa' },
-    { id: 'arc-lambader', name: 'Arc Lambader', price: 8490, image: '/images/gallery-3.jpg', href: '/urun/arc-lambader' },
+    { id: 'orbit-sehpa', name: 'Orbit Orta Sehpa', price: 12990, image: '/images/products/pera-sehpa.jpg', href: '/urun/orbit-sehpa' },
+    { id: 'arc-lambader', name: 'Arc Lambader', price: 8490, image: '/images/products/neva-abajur.jpg', href: '/urun/arc-lambader' },
 ];
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
-    // In production: fetch product by slug
-    const product = MOCK_PRODUCT;
+
+    // Find product in mock data
+    const rawProduct = mockProducts.find(p => p.slug === slug);
+    if (!rawProduct) {
+        return { title: 'Ürün Bulunamadı | MAISON' };
+    }
+    const product = mapToPDPProduct(rawProduct);
+
     return {
         title: `${product.name} | MAISON Premium Mobilya`,
         description: `El yapımı ${product.name} — ${product.brand} koleksiyonu. ${product.description?.slice(0, 120)}...`,
@@ -64,13 +72,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    // In production: fetch product by slug from API/DB
-    const product = MOCK_PRODUCT;
+
+    // Fetch product by slug from mock data
+    const rawProduct = mockProducts.find(p => p.slug === slug);
+
+    if (!rawProduct) {
+        notFound();
+    }
+    const product = mapToPDPProduct(rawProduct);
+
     const mainBundleProduct: BundleProduct = {
         id: product.id,
         name: product.name,
         price: product.price,
-        image: product.colors[0]?.image ?? '/images/gallery-1.jpg',
+        image: product.colors[0]?.image ?? '/images/products/luna-sofa.jpg',
         href: `/urun/${product.slug}`,
         isMain: true,
     };

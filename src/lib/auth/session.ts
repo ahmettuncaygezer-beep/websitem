@@ -48,7 +48,7 @@ export function mockLogin(credentials: LoginCredentials): LoginResponse {
 
     return {
         success: true,
-        sessionToken: btoa(JSON.stringify(sessionData)),
+        sessionToken: btoa(encodeURIComponent(JSON.stringify(sessionData))),
         user: {
             userId: user.id,
             email: user.email,
@@ -74,7 +74,7 @@ export function mockVerifyOtp(email: string, code: string): LoginResponse | null
 
     return {
         success: true,
-        sessionToken: btoa(JSON.stringify(sessionData)),
+        sessionToken: btoa(encodeURIComponent(JSON.stringify(sessionData))),
         user: {
             userId: user.id,
             email: user.email,

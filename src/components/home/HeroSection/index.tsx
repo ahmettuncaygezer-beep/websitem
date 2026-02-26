@@ -1,6 +1,6 @@
 'use client';
 
-import { VideoBackground } from './VideoBackground';
+import { ImageSlider } from './ImageSlider';
 import { GlassCard } from './GlassCard';
 import { ScrollIndicator } from './ScrollIndicator';
 import { VideoModal } from './VideoModal';
@@ -18,8 +18,8 @@ export function HeroSection() {
                  xl:min-h-[700px]"
             aria-label="MAISON Hero"
         >
-            {/* Background: fades in at 0.0s (800ms) */}
-            <VideoBackground parallaxOffset={parallaxOffset} />
+            {/* Background Image Slider: fades between images with Ken Burns zoom */}
+            <ImageSlider parallaxOffset={parallaxOffset} />
 
             {/* Centered glass card — owns all copy and staggered animations */}
             <GlassCard />

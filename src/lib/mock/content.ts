@@ -80,10 +80,22 @@ export interface BlogPost {
 
 export interface LookbookPhoto {
     id: string;
+    title: string;
+    description: string;
+    category: string;
     url: string;
     order: number;
     isFeatured: boolean;
-    productTags: { x: number; y: number; productId: string; productName: string }[];
+    productTags: {
+        id: string;
+        x: number;
+        y: number;
+        productId: string;
+        productName: string;
+        productPrice: number;
+        productHref: string;
+        productImage: string;
+    }[];
 }
 
 export interface LookbookCollection {
@@ -209,26 +221,49 @@ export const mockLookbooks: LookbookCollection[] = [
         id: 'look_1',
         name: "Bahar 2026",
         season: "Bahar 2026",
-        coverImage: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=800",
+        coverImage: "/images/rooms/lookbook-1.jpg",
         isActive: true,
         publishedAt: "2026-03-01",
         photos: [
             {
-                id: 'p1',
-                url: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=1200",
+                id: '1',
+                title: 'Modern Oturma Odası',
+                description: 'Luna ailesinin saf zarafeti ile tanışın. Doğal meşe ve premium kumaşın buluştuğu bu konsept, modernitenin özünü yansıtır.',
+                category: 'Oturma Odası',
+                url: '/images/rooms/lookbook-1.jpg',
                 order: 0,
                 isFeatured: true,
                 productTags: [
-                    { x: 30, y: 45, productId: 'prod_1', productName: 'Luna Köşe Koltuk' },
-                    { x: 65, y: 70, productId: 'prod_2', productName: 'Mermer Orta Sehpa' }
+                    { id: 'h1', x: 30, y: 55, productId: 'prod_1', productName: 'Luna Köşe Koltuk', productPrice: 74990, productImage: '/images/products/luna-sofa-1.jpg', productHref: '/urun/luna-kose-koltuk' },
+                    { id: 'h2', x: 60, y: 70, productId: 'prod_2', productName: 'Orbit Sehpa', productPrice: 18990, productImage: '/images/products/orbit-table-1.jpg', productHref: '/urun/orbit-sehpa' },
+                    { id: 'h3', x: 75, y: 30, productId: 'prod_3', productName: 'Aura Lambader', productPrice: 12990, productImage: '/images/products/aura-lamp-1.jpg', productHref: '/urun/aura-lambader' },
                 ]
             },
             {
-                id: 'p2',
-                url: "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&q=80&w=1200",
+                id: '2',
+                title: 'Minimalist Yemek Odası',
+                description: 'Nova\'nın temiz çizgileri ve Aria sandalyelerinin yumuşak düzlüğü — yemek saatlerini bir ritüele dönüştürür.',
+                category: 'Yemek Odası',
+                url: '/images/categories/dining.jpg',
                 order: 1,
                 isFeatured: false,
-                productTags: []
+                productTags: [
+                    { id: 'h4', x: 40, y: 50, productId: 'prod_4', productName: 'Nova Yemek Masası', productPrice: 45990, productImage: '/images/products/nova-table-1.jpg', productHref: '/urun/nova-yemek-masasi' },
+                    { id: 'h5', x: 25, y: 65, productId: 'prod_5', productName: 'Como Sandalye', productPrice: 8990, productImage: '/images/products/como-chair-1.jpg', productHref: '/urun/como-sandalye' },
+                ]
+            },
+            {
+                id: '3',
+                title: 'Huzurlu Yatak Odası',
+                description: 'Gün sona erdiğinde ihtiyacınız olan yer. Serene Platform Yatak ve Mist komodinleri ile mükemmel uyku ortamı.',
+                category: 'Yatak Odası',
+                url: '/images/products/aurora-lifestyle.jpg',
+                order: 2,
+                isFeatured: false,
+                productTags: [
+                    { id: 'h6', x: 45, y: 40, productId: 'prod_6', productName: 'Zen Yatak Başlığı', productPrice: 28990, productImage: '/images/products/zen-bed-1.jpg', productHref: '/urun/zen-yatak-basligi' },
+                    { id: 'h7', x: 20, y: 60, productId: 'prod_7', productName: 'Terra Halı', productPrice: 15990, productImage: '/images/products/terra-rug-1.jpg', productHref: '/urun/terra-hali' },
+                ]
             }
         ]
     }

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { MoreVertical, Pencil, Eye, Copy, ToggleLeft, Trash2 } from 'lucide-react';
 import type { Product, ProductStatus } from '@/lib/mock/products';
+import { useToast } from '@/components/ui/Toast/ToastProvider';
 
 // ── Status badge styles ──────────────────────────────────────────────────────
 const statusStyle: Record<ProductStatus, { bg: string; color: string }> = {
@@ -55,11 +56,26 @@ interface ActionMenuProps {
 }
 function ActionMenu({ product, onClose }: ActionMenuProps) {
     const router = useRouter();
+    const { toast } = useToast();
     const items = [
         { icon: Pencil, label: 'Düzenle', action: () => { router.push(`/admin/urunler/${product.id}/duzenle`); onClose(); } },
-        { icon: Eye, label: 'Önizle', action: () => { window.open(`/urunler/${product.slug}`, '_blank'); onClose(); } },
-        { icon: Copy, label: 'Çoğalt', action: onClose },
-        { icon: ToggleLeft, label: 'Pasife Al', action: onClose },
+        { icon: Eye, label: 'Önizle', action: () => { window.open(`/urun/${product.slug}`, '_blank'); onClose(); } },
+        {
+            icon: Copy,
+            label: 'Çoğalt',
+            action: () => {
+                toast.success('Ürün Kopyalandı', `${product.name} başarıyla çoğaltıldı.`);
+                onClose();
+            }
+        },
+        {
+            icon: ToggleLeft,
+            label: product.status === 'Pasif' ? 'Aktife Al' : 'Pasife Al',
+            action: () => {
+                toast.info('Durum Güncellendi', `${product.name} ${product.status === 'Pasif' ? 'aktif' : 'pasif'} duruma getirildi.`);
+                onClose();
+            }
+        },
     ];
     return (
         <>
@@ -94,7 +110,10 @@ function ActionMenu({ product, onClose }: ActionMenuProps) {
                 <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '3px 0' }} />
                 <button
                     role="menuitem"
-                    onClick={onClose}
+                    onClick={() => {
+                        toast.warning('Ürün Silindi', `${product.name} başarıyla silindi.`);
+                        onClose();
+                    }}
                     style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', textAlign: 'left', padding: '9px 16px', fontSize: '13px', color: '#FF453A', background: 'transparent', border: 'none', cursor: 'pointer', transition: 'background 100ms', fontFamily: 'Inter, system-ui, sans-serif' }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,69,58,0.06)'; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}

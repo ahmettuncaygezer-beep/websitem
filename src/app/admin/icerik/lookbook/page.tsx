@@ -7,8 +7,10 @@ import {
     Settings, ChevronRight, Eye, Send
 } from 'lucide-react';
 import { LookbookGrid } from '@/components/Admin/Content/LookbookGrid';
+import { useToast } from '@/components/ui/Toast/ToastProvider';
 
 export default function LookbookPage() {
+    const { toast } = useToast();
     const [activeTab, setActiveTab] = useState('Bahar 2026');
 
     const tabs = ['Bahar 2026', 'Kış 2025', 'Sonbahar 2025'];
@@ -31,11 +33,13 @@ export default function LookbookPage() {
                     </div>
                 </div>
 
-                <button style={{
-                    background: '#C9A96E', color: '#0F0F10', border: 'none', borderRadius: '6px',
-                    padding: '12px 24px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', gap: '8px'
-                }}>
+                <button
+                    onClick={() => toast.info('Yeni Koleksiyon', 'Koleksiyon oluşturma arayüzü başlatılıyor...')}
+                    style={{
+                        background: '#C9A96E', color: '#0F0F10', border: 'none', borderRadius: '6px',
+                        padding: '12px 24px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', gap: '8px'
+                    }}>
                     <Plus size={18} /> Yeni Koleksiyon
                 </button>
             </div>
@@ -47,7 +51,10 @@ export default function LookbookPage() {
                     return (
                         <button
                             key={name}
-                            onClick={() => setActiveTab(name)}
+                            onClick={() => {
+                                setActiveTab(name);
+                                toast.success('Koleksiyon Değiştirildi', `${name} görüntüleniyor.`);
+                            }}
                             style={{
                                 padding: '16px 0', background: 'none', border: 'none', fontSize: '14px',
                                 fontWeight: active ? 600 : 400, color: active ? '#C9A96E' : '#636366',
@@ -60,9 +67,11 @@ export default function LookbookPage() {
                         </button>
                     );
                 })}
-                <button style={{
-                    padding: '16px 0', background: 'none', border: 'none', fontSize: '14px', color: '#3A3A3C', cursor: 'pointer'
-                }}>
+                <button
+                    onClick={() => toast.info('Yeni Sezon', 'Yeni sezon sekmesi ekleniyor...')}
+                    style={{
+                        padding: '16px 0', background: 'none', border: 'none', fontSize: '14px', color: '#3A3A3C', cursor: 'pointer'
+                    }}>
                     + Yeni
                 </button>
             </div>

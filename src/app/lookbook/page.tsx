@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import LookbookPageClient from './LookbookPageClient';
 import type { LookbookCardData } from '@/components/Marketing/LookbookCard';
 
+import { mockLookbooks } from '@/lib/mock/content';
+
 export const metadata: Metadata = {
     title: 'Lookbook 2026 | MAISON Premium Mobilya',
     description: 'MAISON 2026 Koleksiyon Lookbook\'u — Hayalinizdeki evin ilhamı burada.',
@@ -12,44 +14,25 @@ export const metadata: Metadata = {
     },
 };
 
-export const LOOKBOOK_DATA: LookbookCardData[] = [
-    {
-        id: '1',
-        title: 'Modern Oturma Odası',
-        description: 'Luna ailesinin saf zarafeti ile tanışın. Doğal meşe ve premium kumaşın buluştuğu bu konsept, modernitenin özünü yansıtır.',
-        imageUrl: '/images/gallery-1.jpg',
-        category: 'Oturma Odası',
-        hotspots: [
-            { id: 'h1', x: 30, y: 55, productName: 'Luna Köşe Koltuk', productPrice: 74990, productImage: '/images/gallery-1.jpg', productHref: '/urun/luna-kose-koltuk' },
-            { id: 'h2', x: 60, y: 70, productName: 'Orbit Sehpa', productPrice: 12990, productImage: '/images/gallery-2.jpg', productHref: '/urun/orbit-sehpa' },
-            { id: 'h3', x: 75, y: 30, productName: 'Arc Lambader', productPrice: 8490, productImage: '/images/gallery-3.jpg', productHref: '/urun/arc-lambader' },
-        ],
-    },
-    {
-        id: '2',
-        title: 'Minimalist Yemek Odası',
-        description: 'Nova\'nın temiz çizgileri ve Aria sandalyelerinin yumuşak düzlüğü — yemek saatlerini bir ritüele dönüştürür.',
-        imageUrl: '/images/gallery-2.jpg',
-        category: 'Yemek Odası',
-        hotspots: [
-            { id: 'h4', x: 40, y: 50, productName: 'Nova Yemek Masası', productPrice: 34990, productImage: '/images/gallery-4.jpg', productHref: '/urun/nova-yemek-masasi' },
-            { id: 'h5', x: 25, y: 65, productName: 'Aria Sandalye', productPrice: 9990, productImage: '/images/gallery-5.jpg', productHref: '/urun/aria-sandalye' },
-        ],
-    },
-    {
-        id: '3',
-        title: 'Huzurlu Yatak Odası',
-        description: 'Gün sona erdiğinde ihtiyacınız olan yer. Serene Platform Yatak ve Mist komodinleri ile mükemmel uyku ortamı.',
-        imageUrl: '/images/gallery-3.jpg',
-        category: 'Yatak Odası',
-        hotspots: [
-            { id: 'h6', x: 45, y: 40, productName: 'Serene Platform Yatak', productPrice: 54990, productImage: '/images/gallery-6.jpg', productHref: '/urun/serene-platform-yatak' },
-            { id: 'h7', x: 20, y: 60, productName: 'Mist Komodin', productPrice: 7990, productImage: '/images/gallery-1.jpg', productHref: '/urun/mist-komodin' },
-        ],
-    },
-];
+// Derive lookbook cards from mock data
+const LOOKBOOK_DATA: LookbookCardData[] = mockLookbooks[0].photos.map(photo => ({
+    id: photo.id,
+    title: photo.title,
+    description: photo.description,
+    imageUrl: photo.url,
+    category: photo.category,
+    hotspots: photo.productTags.map(tag => ({
+        id: tag.id,
+        x: tag.x,
+        y: tag.y,
+        productName: tag.productName,
+        productPrice: tag.productPrice,
+        productImage: tag.productImage,
+        productHref: tag.productHref
+    }))
+}));
 
-export const FILTER_TABS = ['Tümü', 'Oturma Odası', 'Yatak Odası', 'Yemek Odası', 'Minimalist', 'Modern'];
+const FILTER_TABS = ['Tümü', ...new Set(LOOKBOOK_DATA.map(item => item.category))];
 
 export default function LookbookPage() {
     return (

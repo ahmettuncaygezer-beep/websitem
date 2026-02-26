@@ -1,0 +1,86 @@
+'use client';
+
+import React from 'react';
+import { usePlannerStore } from './plannerStore';
+import { Undo2, Redo2, MousePointer2, Hand, Ruler, Square, DoorOpen, Expand, Share2, Save, PanelLeftClose, PanelRightClose, PanelLeftOpen, PanelRightOpen, Grid3X3 } from 'lucide-react';
+
+interface Props {
+    leftOpen: boolean;
+    setLeftOpen: (v: boolean) => void;
+    rightOpen: boolean;
+    setRightOpen: (v: boolean) => void;
+}
+
+export default function PlannerToolbar({ leftOpen, setLeftOpen, rightOpen, setRightOpen }: Props) {
+    const undo = usePlannerStore(s => s.undo);
+    const redo = usePlannerStore(s => s.redo);
+    const past = usePlannerStore(s => s.past);
+    const future = usePlannerStore(s => s.future);
+    const showGrid = usePlannerStore(s => s.showGrid);
+    const toggleGrid = usePlannerStore(s => s.toggleGrid);
+
+    return (
+        <header className="h-[52px] bg-white border-b border-[#E8E3DC] px-4 flex items-center justify-between flex-shrink-0 z-30">
+            {/* LEFT ACTIONS */}
+            <div className="flex items-center gap-2">
+                <button onClick={() => setLeftOpen(!leftOpen)} className="p-1.5 hover:bg-[#F5F0EB] rounded-sm text-[#666] transition-colors" title="Kütüphaneyi Aç/Kapat">
+                    {leftOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
+                </button>
+
+                <div className="w-px h-4 bg-[#E8E3DC] mx-1" />
+
+                <button onClick={undo} disabled={past.length === 0} className={`p-1.5 rounded-sm transition-colors ${past.length > 0 ? 'text-[#1C1C1E] hover:bg-[#F5F0EB]' : 'text-[#CCC] cursor-not-allowed'}`} title="Geri Al (Ctrl+Z)">
+                    <Undo2 size={18} />
+                </button>
+                <button onClick={redo} disabled={future.length === 0} className={`p-1.5 rounded-sm transition-colors ${future.length > 0 ? 'text-[#1C1C1E] hover:bg-[#F5F0EB]' : 'text-[#CCC] cursor-not-allowed'}`} title="İleri Al (Ctrl+Y)">
+                    <Redo2 size={18} />
+                </button>
+
+                <div className="w-px h-4 bg-[#E8E3DC] mx-1" />
+
+                {/* Tools (visual only right now, functionality later) */}
+                <button className="p-1.5 bg-[#F5F0EB] text-[#C9A96E] rounded-sm transition-colors" title="Seçim Aracı">
+                    <MousePointer2 size={18} />
+                </button>
+                <button className="p-1.5 hover:bg-[#F5F0EB] text-[#666] rounded-sm transition-colors" title="Kaydırma Aracı">
+                    <Hand size={18} />
+                </button>
+                <button className="p-1.5 hover:bg-[#F5F0EB] text-[#666] rounded-sm transition-colors" title="Ölçü Göster">
+                    <Ruler size={18} />
+                </button>
+
+                <div className="w-px h-4 bg-[#E8E3DC] mx-1" />
+
+                <button className="p-1.5 hover:bg-[#F5F0EB] text-[#666] rounded-sm transition-colors" title="Izgarayı Aç/Kapat" onClick={toggleGrid}>
+                    <Grid3X3 size={18} className={showGrid ? "text-[#C9A96E]" : ""} />
+                </button>
+            </div>
+
+            {/* CENTER TITLE */}
+            <div className="hidden md:flex items-center gap-4">
+                <span className="text-[12px] font-medium tracking-wide text-[#999] uppercase">
+                    MAISON Oda Planlayıcı
+                </span>
+            </div>
+
+            {/* RIGHT ACTIONS */}
+            <div className="flex items-center gap-3">
+                <button className="flex items-center gap-2 px-3 py-1.5 text-[12px] font-medium text-[#1C1C1E] hover:bg-[#F5F0EB] rounded-sm transition-colors border border-transparent">
+                    <Share2 size={14} /> Paylaş
+                </button>
+                <button className="flex items-center gap-2 px-3 py-1.5 text-[12px] font-medium text-[#1C1C1E] border border-[#E8E3DC] hover:border-[#C9A96E] rounded-sm transition-colors">
+                    <Save size={14} /> Kaydet
+                </button>
+                <button className="flex items-center gap-2 px-4 py-1.5 text-[12px] font-medium bg-[#1C1C1E] text-white hover:bg-[#C9A96E] rounded-sm transition-colors">
+                    Planı Bitir &rarr;
+                </button>
+
+                <div className="w-px h-4 bg-[#E8E3DC] mx-1" />
+
+                <button onClick={() => setRightOpen(!rightOpen)} className="p-1.5 hover:bg-[#F5F0EB] rounded-sm text-[#666] transition-colors" title="Ayarları Aç/Kapat">
+                    {rightOpen ? <PanelRightClose size={18} /> : <PanelRightOpen size={18} />}
+                </button>
+            </div>
+        </header>
+    );
+}

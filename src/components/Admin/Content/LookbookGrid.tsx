@@ -8,8 +8,10 @@ import {
     X, CheckCircle2, MoreVertical, MapPin, Trash2
 } from 'lucide-react';
 import { mockLookbooks, LookbookCollection, LookbookPhoto } from '@/lib/mock/content';
+import { useToast } from '@/components/ui/Toast/ToastProvider';
 
 export function LookbookGrid() {
+    const { toast } = useToast();
     const [collections, setCollections] = useState<LookbookCollection[]>(mockLookbooks);
     const [selectedCol, setSelectedCol] = useState<LookbookCollection>(collections[0]);
     const [selectedPhotoId, setSelectedPhotoId] = useState<string | null>(selectedCol.photos[0]?.id || null);
@@ -57,11 +59,13 @@ export function LookbookGrid() {
                     ))}
                 </AnimatePresence>
 
-                <button style={{
-                    background: 'rgba(255,255,255,0.02)', border: '2px dashed rgba(255,255,255,0.06)', borderRadius: '8px',
-                    aspectRatio: '1', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                    color: '#636366', cursor: 'pointer', transition: 'all 200ms'
-                }}>
+                <button
+                    onClick={() => toast.info('Yeni Fotoğraf Ekle', 'Fotoğraf yükleme arayüzü açılıyor...')}
+                    style={{
+                        background: 'rgba(255,255,255,0.02)', border: '2px dashed rgba(255,255,255,0.06)', borderRadius: '8px',
+                        aspectRatio: '1', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                        color: '#636366', cursor: 'pointer', transition: 'all 200ms'
+                    }}>
                     <Plus size={32} />
                     <span style={{ fontSize: '13px', marginTop: '12px' }}>Fotoğraf Ekle</span>
                 </button>
@@ -84,8 +88,14 @@ export function LookbookGrid() {
                                     <img src={selectedPhoto.url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 </div>
                                 <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-                                    <button style={btnActionStyle}><TagIcon size={14} /> Ürün Etiketle</button>
-                                    <button style={btnActionStyle}><Settings size={14} /> Ayarlar</button>
+                                    <button
+                                        onClick={() => toast.info('Ürün Etiketleme', 'Etiketleme aracı başlatılıyor...')}
+                                        style={btnActionStyle}
+                                    ><TagIcon size={14} /> Ürün Etiketle</button>
+                                    <button
+                                        onClick={() => toast.info('Ayarlar', 'Fotoğraf ayarları açılıyor...')}
+                                        style={btnActionStyle}
+                                    ><Settings size={14} /> Ayarlar</button>
                                 </div>
                             </div>
 
@@ -101,7 +111,10 @@ export function LookbookGrid() {
                                                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#C9A96E' }} />
                                                 <span style={{ fontSize: '13px', color: '#F5F0EB' }}>{tag.productName}</span>
                                             </div>
-                                            <button style={{ background: 'none', border: 'none', color: '#636366', cursor: 'pointer' }}><X size={14} /></button>
+                                            <button
+                                                onClick={() => toast.warning('Etiket Silindi', `${tag.productName} etiketi kaldırıldı.`)}
+                                                style={{ background: 'none', border: 'none', color: '#636366', cursor: 'pointer' }}
+                                            ><X size={14} /></button>
                                         </div>
                                     )) : (
                                         <div style={{ fontSize: '12px', color: '#636366', fontStyle: 'italic', textAlign: 'center', padding: '20px 0' }}>
@@ -109,18 +122,25 @@ export function LookbookGrid() {
                                         </div>
                                     )}
                                 </div>
-                                <button style={{
-                                    width: '100%', marginTop: '16px', background: 'rgba(201,169,110,0.1)', border: '1px dashed #C9A96E',
-                                    borderRadius: '4px', padding: '10px', color: '#C9A96E', fontSize: '12px', fontWeight: 600, cursor: 'pointer'
-                                }}>
+                                <button
+                                    onClick={() => toast.success('Yeni Etiket', 'Yeni ürün etiketi alanı oluşturuldu.')}
+                                    style={{
+                                        width: '100%', marginTop: '16px', background: 'rgba(201,169,110,0.1)', border: '1px dashed #C9A96E',
+                                        borderRadius: '4px', padding: '10px', color: '#C9A96E', fontSize: '12px', fontWeight: 600, cursor: 'pointer'
+                                    }}>
                                     + Yeni Tag Ekle
                                 </button>
                             </div>
 
-                            <button style={{
-                                width: '100%', background: 'rgba(255,69,58,0.1)', border: '1px solid rgba(255,69,58,0.2)',
-                                color: '#FF453A', padding: '12px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer'
-                            }}>
+                            <button
+                                onClick={() => {
+                                    toast.error('Fotoğraf Silindi', 'Lookbook görseli başarıyla kaldırıldı.');
+                                    setSelectedPhotoId(null);
+                                }}
+                                style={{
+                                    width: '100%', background: 'rgba(255,69,58,0.1)', border: '1px solid rgba(255,69,58,0.2)',
+                                    color: '#FF453A', padding: '12px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer'
+                                }}>
                                 <Trash2 size={16} style={{ verticalAlign: 'middle', marginRight: '8px' }} /> Fotoğrafı Sil
                             </button>
                         </motion.div>

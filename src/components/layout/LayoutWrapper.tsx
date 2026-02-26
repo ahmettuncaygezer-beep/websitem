@@ -16,6 +16,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const isAdmin = pathname?.startsWith('/admin');
     const isAccount = pathname?.startsWith('/hesabim');
+    const isPlanner = pathname?.startsWith('/oda-planlayici');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     if (isAdmin) {
@@ -26,14 +27,14 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         <>
             <Header />
             <main id="main-content" className="flex-1">{children}</main>
-            {!isAccount && <Footer />}
+            {(!isAccount && !isPlanner) && <Footer />}
             <CartDrawer />
             <AuthModal />
             <AIAssistant />
             {/* Mobile-only bottom navigation */}
-            <BottomNav onSearchOpen={() => setIsSearchOpen(true)} />
+            {!isPlanner && <BottomNav onSearchOpen={() => setIsSearchOpen(true)} />}
             {/* Floating WhatsApp support button */}
-            <WhatsAppButton />
+            {!isPlanner && <WhatsAppButton />}
         </>
     );
 }
