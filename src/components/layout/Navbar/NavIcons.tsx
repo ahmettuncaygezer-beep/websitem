@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { ShoppingBag, Heart, User } from 'lucide-react';
+import { ShoppingBag, Heart, User, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CartBadge } from './CartBadge';
 import { useCart } from '@/hooks/useCart';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useAuthStore } from '@/store/authStore';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 interface NavIconsProps {
     isScrolled: boolean;
@@ -23,6 +24,7 @@ export function NavIcons({ isScrolled }: NavIconsProps) {
 
     const iconColor = isScrolled ? '#1C1C1E' : 'white';
     const iconBtnHover = isScrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)';
+    const { isDark, toggle, mounted } = useDarkMode();
 
     const iconBtn = (label: string, onClick?: () => void, children?: React.ReactNode) => (
         <button
@@ -39,6 +41,27 @@ export function NavIcons({ isScrolled }: NavIconsProps) {
 
     return (
         <div className="flex items-center gap-0 md:gap-1">
+            {/* Dark Mode Toggle */}
+            {mounted && (
+                <button
+                    onClick={toggle}
+                    aria-label={isDark ? 'Aydınlık moda geç' : 'Karanlık moda geç'}
+                    title={isDark ? 'Aydınlık mod' : 'Karanlık mod'}
+                    className="relative hidden md:flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
+                    style={{ color: iconColor }}
+                    onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = iconBtnHover; }}
+                    onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                >
+                    <motion.div
+                        key={isDark ? 'moon' : 'sun'}
+                        initial={{ rotate: -30, opacity: 0 }}
+                        animate={{ rotate: 0, opacity: 1 }}
+                        transition={{ duration: 0.25 }}
+                    >
+                        {isDark ? <Sun size={18} /> : <Moon size={18} />}
+                    </motion.div>
+                </button>
+            )}
             {/* ① Favorites */}
             <Link
                 href="/favoriler"

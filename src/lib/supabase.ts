@@ -13,22 +13,18 @@ const isUrlValid = (url: string) => {
 
 const mockHandler: ProxyHandler<any> = {
     get: (target, prop) => {
-        // Return a proxy that can be called or accessed further
+        if (prop === 'then') {
+            return (resolve: any) => resolve({ data: null, error: { message: 'Supabase URL eksik.' } });
+        }
+        if (prop === 'catch') {
+            return (reject: any) => reject({ message: 'Supabase URL eksik.' });
+        }
         const noop = () => { };
         return new Proxy(noop, mockHandler);
     },
     apply: (target, thisArg, args) => {
-        // If it's a function call, return another proxy to allow chaining
-        // or a Promise if it looks like an execution call
-        const result = { data: null, error: { message: 'Supabase URL eksik veya geçersiz.' } };
-
-        // This is a bit of a hack to make it "awaitable"
-        // Most supabase calls like .from().select() eventually get awaited
-        const targetObj = new Proxy(() => { }, mockHandler);
-        (targetObj as any).then = (resolve: any) => resolve(result);
-        (targetObj as any).catch = (reject: any) => reject(result.error);
-
-        return targetObj;
+        const noop = () => { };
+        return new Proxy(noop, mockHandler);
     }
 };
 

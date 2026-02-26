@@ -180,4 +180,46 @@ export const NAV_CATEGORIES: NavCategory[] = [
         },
         promotionText: '🔥 Dekorasyonda 3 Al 2 Öde',
     },
+    {
+        id: 'ilham-rehberler',
+        label: 'İlham ve Rehberler',
+        href: '/blog',
+        subCategories: [
+            {
+                title: 'Dekorasyon Rehberleri',
+                items: [
+                    { label: 'Küçük Salon Çözümleri', href: '/blog/kucuk-salona-mobilya-secimi-rehberi' },
+                    { label: 'Renk Trendleri 2026', href: '/blog/2026-ev-dekorasyonu-renk-trendleri' },
+                    { label: 'Yemek Masası Seçimi', href: '/blog/yemek-masasi-boyutu-nasil-secilir' },
+                    { label: 'Minimalist Yatak Odası', href: '/blog/minimalist-yatak-odasi-dekorasyonu' },
+                ],
+            },
+            {
+                title: 'Alım Rehberleri',
+                items: [
+                    { label: 'Ahşap mı, Metal mi?', href: '/blog/ahsap-mi-metal-mi-malzeme-karsilastirmasi' },
+                    { label: 'Çocuk Odası Rehberi', href: '/blog/cocuk-odasi-mobilya-alirken-dikkat-edilecekler' },
+                    { label: 'Tüm Yazılar', href: '/blog' },
+                ],
+            },
+            {
+                title: 'Keşfet',
+                items: [
+                    { label: 'Lookbook', href: '/lookbook' },
+                    { label: 'Oda Planlayıcı', href: '/oda-planlayici' },
+                    { label: 'Kampanyalar', href: '/kampanyalar' },
+                ],
+            },
+        ],
+        featuredProduct: {
+            name: 'Küçük Salon için 5 Koltuk',
+            brand: 'Dekorasyon Rehberi',
+            price: 0,
+            image: '/images/gallery-1.jpg',
+            href: '/blog/kucuk-salona-mobilya-secimi-rehberi',
+            badge: 'YENİ',
+        },
+        editorialText: 'Uzman tavsiyeleri, ilham veren mekanlar.',
+        promotionText: '✨ Haftanın yazısı: 2026 Renk Trendleri',
+    },
 ];

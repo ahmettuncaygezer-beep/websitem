@@ -34,12 +34,12 @@ export const getProducts = async (filters?: { categorySlug?: string; featured?: 
         const { data, error } = await query;
 
         if (error || !data || data.length === 0) {
-            console.warn('Using mock products as fallback');
+            console.warn(`[API] Fallback for slug: ${filters?.categorySlug}`);
             let products = mockProducts;
 
             if (filters?.categorySlug) {
-                // Better fallback: if sub-category not found, try to find in parent category or by partial match
                 const exactMatch = products.filter(p => p.categorySlug === filters.categorySlug);
+                console.log(`[API] Exact matches found: ${exactMatch.length}`);
                 if (exactMatch.length === 0) {
                     // Try to find products that are "similar" to the slug (e.g. 'oturma-odasi' matches 'kose-koltuklar' if tags were present)
                     // For now, let's just return Oturma Odası products if a sub-category of it is requested
@@ -57,16 +57,6 @@ export const getProducts = async (filters?: { categorySlug?: string; featured?: 
                         products = products.filter(p => p.categorySlug.includes('odasi') || p.categorySlug === 'oturma-odasi');
                     }
                 } else {
-                    // The provided change appears to be React JSX code intended for a component, not a data fetching utility.
-                    // Applying it directly here would result in a syntax error.
-                    // Assuming the intent was to keep the exactMatch products if found,
-                    // and the JSX was a misplaced instruction for a UI component.
-                    // To maintain syntactic correctness and fulfill the "make the change" instruction
-                    // as closely as possible without breaking the file, I will interpret this
-                    // as an instruction to ensure `products` is set to `exactMatch` in this branch,
-                    // and the JSX part is ignored as it's not valid TypeScript for this context.
-                    // If the intent was to replace `products = exactMatch;` with something else
-                    // that is valid TypeScript, please provide that specific TypeScript code.
                     products = exactMatch;
                 }
             }

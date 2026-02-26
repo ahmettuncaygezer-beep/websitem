@@ -55,8 +55,8 @@ export function ProductCard({ product }: ProductCardProps) {
         ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
         : 0;
 
-    const mainImage = productImages[product.slug] || fallbackImage;
-    const hoverImage = lifestyleImages[product.slug] || mainImage;
+    const mainImage = product.images?.[0] || productImages[product.slug] || fallbackImage;
+    const hoverImage = product.lifestyleImage || product.images?.[1] || lifestyleImages[product.slug] || mainImage;
 
     return (
         <div

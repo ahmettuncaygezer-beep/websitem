@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useCart } from '@/hooks/useCart';
-import { ProductGallery } from './ProductGallery';
+import ProductImageGallery from '@/components/Mobile/ProductImageGallery';
+import StickyAddToCart from '@/components/Mobile/StickyAddToCart';
 import { ProductInfo } from './ProductInfo';
 import { ProductTabs } from './ProductTabs';
 import { DescriptionTab } from './ProductTabs/DescriptionTab';
@@ -12,9 +13,7 @@ import { ReviewsTab } from './ProductTabs/ReviewsTab';
 import { CompleteTheLook } from './CompleteTheLook';
 import { RelatedProducts } from './RelatedProducts';
 import { RecentlyViewed } from './RecentlyViewed';
-import { StickyBuyBar } from './ProductInfo/StickyBuyBar';
 import type { Product } from '@/components/ProductCard/product.types';
-import type { GalleryItem } from './hooks/useProductGallery';
 
 interface ProductDetailProps { product: Product; }
 
@@ -22,25 +21,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
     const [selectedColorId, setSelectedColorId] = useState(product.colors[0]?.id ?? '');
     const selectedColor = product.colors.find((c) => c.id === selectedColorId);
     const { addItem } = useCart();
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
-    // Build gallery items from product data
-    const galleryItems: GalleryItem[] = product.colors.map((c, i) => ({
-        id: c.id,
-        type: 'image' as const,
-        src: c.image,
-        thumbnail: c.image,
-        alt: `${product.name} — ${c.name}`,
-    }));
-
-    // If we have a lifestyle image, add it
+    // Build plain string array of images for the new gallery
+    const images = product.colors.map(c => c.image);
     if (product.colors[0]?.lifestyleImage) {
-        galleryItems.push({
-            id: 'lifestyle',
-            type: 'image' as const,
-            src: product.colors[0].lifestyleImage,
-            thumbnail: product.colors[0].lifestyleImage,
-            alt: `${product.name} — yaşam alanı`,
-        });
+        images.push(product.colors[0].lifestyleImage);
     }
 
     const tabs = [
@@ -50,7 +36,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
         { id: 'reviews', label: 'Yorumlar', count: product.rating.count, content: <ReviewsTab /> },
     ];
 
-    const handleStickyAddToCart = () => {
+    const handleAddToCart = () => {
         addItem(
             {
                 id: product.id,
@@ -69,41 +55,68 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
     return (
         <>
-            <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-4 md:pt-8 pb-20">
+            <div className="max-w-[1400px] mx-auto px-0 md:px-8 pt-0 md:pt-8 pb-20">
                 {/* Main Hero – image + info side by side */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                     <div className="lg:col-span-7">
-                        <ProductGallery items={galleryItems} />
+                        <ProductImageGallery images={images} productName={product.name} />
                     </div>
-                    <div className="lg:col-span-5">
-                        <ProductInfo product={product} selectedColorId={selectedColorId} onColorChange={setSelectedColorId} />
+                    <div className="lg:col-span-5 px-4 md:px-0">
+                        <ProductInfo
+                            product={product}
+                            selectedColorId={selectedColorId}
+                            onColorChange={setSelectedColorId}
+                            buttonRef={buttonRef}
+                        />
                     </div>
                 </div>
 
                 {/* Product Tabs */}
-                <ProductTabs tabs={tabs} />
+                <div className="px-4 md:px-0">
+                    <ProductTabs tabs={tabs} />
+                </div>
 
                 {/* Complementary sections */}
-                <CompleteTheLook />
-                <RelatedProducts />
-                <RecentlyViewed
-                    currentProduct={{
-                        id: product.id,
-                        slug: product.slug,
-                        name: product.name,
-                        image: selectedColor?.image ?? product.colors[0]?.image ?? '',
-                        price: product.price,
-                        brand: product.brand,
-                    }}
-                />
+                <div className="px-4 md:px-0">
+                    <CompleteTheLook />
+                    <RelatedProducts />
+                    <RecentlyViewed
+                        currentProduct={{
+                            id: product.id,
+                            slug: product.slug,
+                            name: product.name,
+                            image: selectedColor?.image ?? product.colors[0]?.image ?? '',
+                            price: product.price,
+                            brand: product.brand,
+                        }}
+                    />
+                </div>
             </div>
 
-            {/* Sticky buy bar */}
-            <StickyBuyBar
-                name={product.name}
-                image={selectedColor?.image ?? product.colors[0]?.image ?? ''}
+            {/* Enhanced Sticky Add to Cart */}
+            <StickyAddToCart
+                productName={product.name}
+                productImage={selectedColor?.image ?? product.colors[0]?.image ?? ''}
                 price={product.price}
-                onAddToCart={handleStickyAddToCart}
+                originalPrice={product.originalPrice}
+                originalButtonRef={buttonRef}
+                onAddToCart={(quantity) => {
+                    addItem(
+                        {
+                            id: product.id,
+                            name: product.name,
+                            brand: product.brand,
+                            price: product.price,
+                            originalPrice: product.originalPrice ?? product.price,
+                            image: selectedColor?.image ?? product.colors[0]?.image ?? '',
+                            href: `/urun/${product.slug}`
+                        },
+                        {
+                            quantity,
+                            selectedColor: selectedColor?.name ?? product.colors[0]?.name
+                        }
+                    );
+                }}
             />
         </>
     );

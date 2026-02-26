@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
 import { ProductDetail } from '@/components/ProductDetail';
 import type { Product } from '@/components/ProductCard/product.types';
+import BundleOffer, { type BundleProduct } from '@/components/Marketing/BundleOffer';
+import StockNotifyForm from '@/components/Marketing/StockNotifyForm';
+import LowStockBadge from '@/components/Marketing/LowStockBadge';
+import FlashSaleTimer from '@/components/Marketing/FlashSaleTimer';
 
-// ── Mock product for demo ──
+// ── Mock product for demo ——
 const MOCK_PRODUCT: Product = {
     id: 'luna-kose-koltuk',
     name: 'Luna Köşe Koltuk',
@@ -31,6 +35,18 @@ const MOCK_PRODUCT: Product = {
     ],
 };
 
+// Demo: Flash sale bitiş tarihi
+const FLASH_SALE_END = new Date(process.env.NEXT_PUBLIC_FLASH_SALE_END ?? '2026-03-15T23:59:59+03:00');
+
+// Demo stok miktarı (0 = stokta yok, 1-5 = az)
+const DEMO_STOCK = 3;
+
+// Bundle tamamlayıcı ürünler
+const BUNDLE_PRODUCTS: BundleProduct[] = [
+    { id: 'orbit-sehpa', name: 'Orbit Orta Sehpa', price: 12990, image: '/images/gallery-2.jpg', href: '/urun/orbit-sehpa' },
+    { id: 'arc-lambader', name: 'Arc Lambader', price: 8490, image: '/images/gallery-3.jpg', href: '/urun/arc-lambader' },
+];
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     // In production: fetch product by slug
@@ -50,6 +66,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     const { slug } = await params;
     // In production: fetch product by slug from API/DB
     const product = MOCK_PRODUCT;
+    const mainBundleProduct: BundleProduct = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.colors[0]?.image ?? '/images/gallery-1.jpg',
+        href: `/urun/${product.slug}`,
+        isMain: true,
+    };
 
     return (
         <>
@@ -80,6 +104,30 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 }}
             />
             <ProductDetail product={product} />
+
+            {/* Pazarlama özellikleri */}
+            <div className="max-w-5xl mx-auto px-4 pb-16 flex flex-col gap-8">
+                {/* Fiyat üstü: Flash sale + düşük stok */}
+                <div className="flex flex-wrap items-center gap-3">
+                    <LowStockBadge stock={DEMO_STOCK} />
+                    <FlashSaleTimer endDate={FLASH_SALE_END} compact />
+                </div>
+
+                {/* Stok bildirim formu (stok=0 ise görünür) */}
+                {DEMO_STOCK <= 0 && (
+                    <StockNotifyForm
+                        productId={product.id}
+                        productName={product.name}
+                    />
+                )}
+
+                {/* Bu koleksiyonu tamamla */}
+                <BundleOffer
+                    mainProduct={mainBundleProduct}
+                    relatedProducts={BUNDLE_PRODUCTS}
+                    bundleDiscount={14000}
+                />
+            </div>
         </>
     );
 }

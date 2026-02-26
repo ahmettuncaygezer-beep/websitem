@@ -16,7 +16,7 @@ import { TrustBadges } from './TrustBadges';
 import type { Product } from '@/components/ProductCard/product.types';
 import { useWishlist } from '@/components/ProductCard/useWishlist';
 
-interface Props { product: Product; selectedColorId: string; onColorChange: (id: string) => void; }
+interface Props { product: Product; selectedColorId: string; onColorChange: (id: string) => void; buttonRef?: React.Ref<HTMLButtonElement>; }
 
 const SIZES_SAMPLE = [
     { id: 's1', label: '240×160 cm', inStock: true },
@@ -24,7 +24,7 @@ const SIZES_SAMPLE = [
     { id: 's3', label: '320×220 cm', inStock: false },
 ];
 
-export function ProductInfo({ product, selectedColorId, onColorChange }: Props) {
+export function ProductInfo({ product, selectedColorId, onColorChange, buttonRef }: Props) {
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState('s1');
     const [isCompared, setIsCompared] = useState(false);
@@ -73,6 +73,7 @@ export function ProductInfo({ product, selectedColorId, onColorChange }: Props) 
             <QuantitySelector value={quantity} onChange={setQuantity} max={stock > 0 ? stock : 0} />
 
             <ActionButtons
+                ref={buttonRef}
                 productName={product.name}
                 isWishlisted={isWishlisted}
                 isCompared={isCompared}

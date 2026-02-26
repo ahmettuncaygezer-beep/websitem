@@ -1,0 +1,219 @@
+/*
+ * MAISON Animation Keyframes
+ * ─────────────────────────────────────────────
+ * Imported by globals.css.
+ * Contains all keyframe definitions used across the design system.
+ */
+
+/* ── Fade & Slide ───────────────────────────────────────────────────── */
+@keyframes maison-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes maison-fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes maison-fade-in-down {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes maison-slide-in-right {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes maison-slide-in-bottom {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* ── Scale ──────────────────────────────────────────────────────────── */
+@keyframes maison-scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes maison-pop-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    60% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ── Special effects ────────────────────────────────────────────────── */
+@keyframes maison-flip-in {
+    from {
+        opacity: 0;
+        transform: rotateX(-90deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotateX(0deg);
+    }
+}
+
+@keyframes maison-wa-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes maison-ping {
+
+    75%,
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes maison-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes maison-bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+
+    50% {
+        transform: translateY(-8px);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+}
+
+/* Progress bar for Toast auto-dismiss */
+@keyframes maison-progress {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+/* ── Utility classes for CSS animation (non-Framer Motion paths) ────── */
+.animate-maison-fade-in {
+    animation: maison-fade-in 0.3s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+.animate-maison-fade-in-up {
+    animation: maison-fade-in-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.animate-maison-scale-in {
+    animation: maison-scale-in 0.2s cubic-bezier(0, 0, 0.2, 1) both;
+}
+
+.animate-maison-pop-in {
+    animation: maison-pop-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-maison-spin {
+    animation: maison-spin 0.8s linear infinite;
+}
+
+.animate-maison-wa-pulse {
+    animation: maison-wa-pulse 2s ease-out infinite;
+}
+
+/* Stagger delay helpers */
+.stagger-1 {
+    animation-delay: 50ms;
+}
+
+.stagger-2 {
+    animation-delay: 100ms;
+}
+
+.stagger-3 {
+    animation-delay: 150ms;
+}
+
+.stagger-4 {
+    animation-delay: 200ms;
+}
+
+.stagger-5 {
+    animation-delay: 250ms;
+}
+
+.stagger-6 {
+    animation-delay: 300ms;
+}
+
+/* Respect user's motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+    .animate-maison-fade-in,
+    .animate-maison-fade-in-up,
+    .animate-maison-scale-in,
+    .animate-maison-pop-in,
+    .animate-maison-wa-pulse {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}

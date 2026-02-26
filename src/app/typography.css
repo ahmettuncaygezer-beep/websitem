@@ -1,0 +1,207 @@
+/*
+ * MAISON Typography CSS
+ * ─────────────────────────────────────────────
+ * Global typography styles, prose system, fluid headings.
+ * Imported by globals.css.
+ */
+
+/* ── Section label utility ──────────────────────────────────────────── */
+/* Usage: <span className="section-label">2026 KOLEKSİYONU</span>       */
+.section-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+}
+
+/* ── Fluid heading classes ──────────────────────────────────────────── */
+.heading-display {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    color: var(--color-primary);
+}
+
+.heading-hero {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+}
+
+.heading-section {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+}
+
+.heading-card {
+    font-family: var(--font-heading);
+    font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+/* ── Prose (blog/long-form content) ─────────────────────────────────── */
+.prose {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    color: #4A4A4A;
+    max-width: 68ch;
+}
+
+.dark .prose {
+    color: #AEAEB2;
+}
+
+.prose p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+}
+
+.prose h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1C1C1E;
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+    padding-left: 16px;
+    border-left: 3px solid #C9A96E;
+}
+
+.dark .prose h2 {
+    color: #F5F0EB;
+}
+
+.prose h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1C1C1E;
+    margin-top: 1.75em;
+    margin-bottom: 0.5em;
+}
+
+.dark .prose h3 {
+    color: #F5F0EB;
+}
+
+.prose blockquote {
+    padding: 1rem 1.25rem;
+    border-left: 3px solid #C9A96E;
+    background: #FDF9F0;
+    font-style: italic;
+    color: #666;
+    margin: 1.5em 0;
+}
+
+.dark .prose blockquote {
+    background: rgba(201, 169, 110, 0.08);
+    color: #AEAEB2;
+}
+
+.prose ul,
+.prose ol {
+    padding-left: 1.5em;
+    margin: 1em 0;
+}
+
+.prose li {
+    margin: 0.5em 0;
+}
+
+.prose li::marker {
+    color: #C9A96E;
+}
+
+.prose a {
+    color: #C9A96E;
+    text-decoration: underline;
+    text-decoration-color: rgba(201, 169, 110, 0.4);
+    text-underline-offset: 3px;
+    transition: color 0.15s;
+}
+
+.prose a:hover {
+    color: #B8915A;
+}
+
+.prose strong {
+    font-weight: 600;
+    color: #1C1C1E;
+}
+
+.dark .prose strong {
+    color: #F5F0EB;
+}
+
+.prose code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.875em;
+    background: #F5F0EB;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+}
+
+.dark .prose code {
+    background: #2C2C2E;
+    color: #D4AA6E;
+}
+
+.prose hr {
+    border: none;
+    border-top: 1px solid #E8E3DC;
+    margin: 2em 0;
+}
+
+/* ── Price typography ───────────────────────────────────────────────── */
+.price-main {
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-primary);
+}
+
+.price-original {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 400;
+    text-decoration: line-through;
+    color: #999;
+}
+
+.price-discount {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #E53935;
+}
+
+/* ── Product labels ─────────────────────────────────────────────────── */
+.product-brand {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #666;
+}
+
+/* ── Gradient text utility ──────────────────────────────────────────── */
+.text-gradient-gold {
+    background: linear-gradient(135deg, #C9A96E 0%, #E8C97A 50%, #C9A96E 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

@@ -104,7 +104,6 @@ export function AuthModal() {
                                             className="flex-1 py-3 text-center text-[13px] font-medium transition-colors duration-200"
                                             style={{
                                                 color: view === tab.key ? 'white' : 'rgba(255,255,255,0.6)',
-                                                borderBottom: view === tab.key ? '2px solid #C9A96E' : '2px solid transparent',
                                                 background: 'none',
                                                 border: 'none',
                                                 borderBottomWidth: '2px',
