@@ -26,10 +26,19 @@ export default function InstagramCard({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-30px' }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className={`relative ${height} rounded-sm overflow-hidden cursor-pointer group`}
+            className={`relative ${height} rounded-sm overflow-hidden group`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
+            {/* STRETCHED LINK TO INSTAGRAM (covers entire card) */}
+            <a
+                href="https://instagram.com/maisonmobilya"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute inset-0 z-10"
+                aria-label="Instagram'da gör"
+            />
+
             {/* GÖRSEL */}
             <Image
                 src={post.imageUrl}
@@ -37,11 +46,6 @@ export default function InstagramCard({
                 fill
                 sizes="(max-width:768px) 50vw, 33vw"
                 className={`object-cover transition-transform duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`}
-                onError={(e) => {
-                    // Fallback to a gradient placeholder if image not found
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                }}
             />
 
             {/* FALLBACK BG */}
@@ -55,7 +59,7 @@ export default function InstagramCard({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col justify-between p-4"
+                        className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col justify-between p-4 z-20 pointer-events-none"
                     >
                         {/* ÜSTTE KULLANICI */}
                         <div className="flex items-center gap-2">
@@ -84,7 +88,7 @@ export default function InstagramCard({
                             )}
 
                             {/* BUTONLAR */}
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 pointer-events-auto">
                                 {/* BEĞENİ */}
                                 <div className="flex items-center gap-1.5 bg-white/15 rounded-full px-3 py-1">
                                     <Heart className="w-3 h-3 text-[#C9A96E] fill-[#C9A96E]" />
@@ -97,8 +101,7 @@ export default function InstagramCard({
                                 {post.productHref && (
                                     <Link
                                         href={post.productHref}
-                                        className="flex items-center gap-1.5 bg-[#C9A96E] rounded-full px-3 py-1 hover:bg-[#B8915A] transition-colors"
-                                        onClick={(e) => e.stopPropagation()}
+                                        className="flex items-center gap-1.5 bg-[#C9A96E] rounded-full px-3 py-1 hover:bg-[#B8915A] transition-colors relative z-30"
                                     >
                                         <ExternalLink className="w-3 h-3 text-white" />
                                         <span className="text-white text-[11px] font-semibold">
@@ -114,7 +117,7 @@ export default function InstagramCard({
 
             {/* SABİT INSTAGRAM İKONU (hover değilken) */}
             {!isHovered && (
-                <div className="absolute top-3 right-3">
+                <div className="absolute top-3 right-3 z-20">
                     <div className="w-7 h-7 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
                         <Instagram className="w-3.5 h-3.5 text-white" />
                     </div>

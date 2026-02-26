@@ -11,7 +11,7 @@ interface VideoModalProps {
 }
 
 export function VideoModal({
-    videoSrc = '/videos/hero.mp4',
+    videoSrc = 'dQw4w9WgXcQ', // Placeholder YouTube video
     duration = '2:34',
 }: VideoModalProps) {
     const [isOpen, setIsOpen] = useState(false);

@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { CATEGORIES } from '@/lib/constants';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -14,31 +15,47 @@ const containerVariants = {
 };
 
 const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' as const } },
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' as const } },
+    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } },
 };
 
-// Bento grid layout configs
-const gridConfigs = [
-    'col-span-2 row-span-2', // Large
-    'col-span-1 row-span-1', // Small
-    'col-span-1 row-span-1', // Small
-    'col-span-1 row-span-2', // Tall
-    'col-span-1 row-span-1', // Small
-    'col-span-1 row-span-1', // Small
+const FILTERS = [
+    { label: 'Tümü', id: 'all' },
+    { label: 'Oturma', id: 'oturma-odasi' },
+    { label: 'Yatak', id: 'yatak-odasi' },
+    { label: 'Yemek', id: 'yemek-odasi' },
+    { label: 'Çalışma', id: 'calisma-odasi' },
+    { label: 'Aydınlatma', id: 'aydinlatma' },
 ];
+
+// Bento grid layout configs
+const gridConfigs: Record<string, string> = {
+    'oturma-odasi': 'col-span-2 row-span-2',
+    'yatak-odasi': 'col-span-1 row-span-1',
+    'yemek-odasi': 'col-span-1 row-span-1',
+    'calisma-odasi': 'col-span-1 row-span-2',
+    'aydinlatma': 'col-span-1 row-span-1',
+    'dekorasyon': 'col-span-1 row-span-1',
+};
 
 // Unique AI-generated category images
-const categoryImages = [
-    '/images/categories/living-room.jpg',
-    '/images/categories/bedroom.jpg',
-    '/images/categories/dining.jpg',
-    '/images/categories/office.jpg',
-    '/images/categories/lighting.jpg',
-    '/images/categories/decor.jpg',
-];
+const categoryImages: Record<string, string> = {
+    'oturma-odasi': '/images/categories/living-room.jpg',
+    'yatak-odasi': '/images/categories/bedroom.jpg',
+    'yemek-odasi': '/images/categories/dining.jpg',
+    'calisma-odasi': '/images/categories/office.jpg',
+    'aydinlatma': '/images/categories/lighting.jpg',
+    'dekorasyon': '/images/categories/decor.jpg',
+};
 
 export function BentoCategories() {
+    const [activeFilter, setActiveFilter] = useState('all');
+
+    const filteredCategories = activeFilter === 'all'
+        ? CATEGORIES.filter(cat => gridConfigs[cat.slug]) // Sadece grid config'i olanları göster (6 tane)
+        : CATEGORIES.filter(cat => cat.slug === activeFilter);
+
     return (
         <section className="bg-white py-20 md:py-28">
             <div className="container-premium">
@@ -47,65 +64,88 @@ export function BentoCategories() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.8 }}
-                    className="text-center mb-14"
+                    className="text-center mb-10"
                 >
                     <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
                         Kategoriler
                     </p>
-                    <h2 className="text-headline text-charcoal">
+                    <h2 className="text-headline text-charcoal mb-8">
                         Yaşam Alanınızı Keşfedin
                     </h2>
+
+                    {/* Filter Buttons */}
+                    <div className="flex flex-wrap justify-center gap-3 md:gap-8 mb-12">
+                        {FILTERS.map((filter) => (
+                            <button
+                                key={filter.id}
+                                onClick={() => setActiveFilter(filter.id)}
+                                className={`relative pb-2 text-sm font-sans font-bold uppercase tracking-widest transition-colors duration-300 ${activeFilter === filter.id ? 'text-charcoal' : 'text-charcoal/40 hover:text-charcoal/60'
+                                    }`}
+                            >
+                                {filter.label}
+                                {activeFilter === filter.id && (
+                                    <motion.div
+                                        layoutId="categoryFilterUnderline"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold"
+                                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                                    />
+                                )}
+                            </button>
+                        ))}
+                    </div>
                 </motion.div>
 
                 <motion.div
+                    layout
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: '-50px' }}
                     className="grid grid-cols-2 md:grid-cols-4 auto-rows-[180px] md:auto-rows-[200px] gap-4"
                 >
-                    {CATEGORIES.map((category, index) => (
-                        <motion.div
-                            key={category.id}
-                            variants={itemVariants}
-                            className={`${gridConfigs[index]} group relative rounded-2xl overflow-hidden cursor-pointer`}
-                        >
-                            <Link href={`/kategori/${category.slug}`} className="block h-full">
-                                <Image
-                                    src={categoryImages[index]}
-                                    alt={category.name}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                    sizes="(max-width: 768px) 50vw, 25vw"
-                                />
+                    <AnimatePresence mode="popLayout">
+                        {filteredCategories.map((category) => (
+                            <motion.div
+                                layout
+                                key={category.id}
+                                variants={itemVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                className={`${gridConfigs[category.slug]} group relative rounded-2xl overflow-hidden cursor-pointer bg-[#F5F5F7]`}
+                            >
+                                <Link href={`/kategori/${category.slug}`} className="block h-full">
+                                    <Image
+                                        src={categoryImages[category.slug] || '/images/categories/placeholder.jpg'}
+                                        alt={category.name}
+                                        fill
+                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                        sizes="(max-width: 768px) 50vw, 25vw"
+                                    />
 
-                                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-charcoal/10 to-transparent group-hover:from-charcoal/70 transition-colors duration-500" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-charcoal/10 to-transparent group-hover:from-charcoal/70 transition-colors duration-500" />
 
-                                <div className="relative h-full flex flex-col justify-between p-5 md:p-6">
-                                    <div className="flex justify-between items-start">
-                                        <div />
-                                        <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 translate-x-2">
-                                            <ArrowUpRight size={14} className="text-white" />
+                                    <div className="relative h-full flex flex-col justify-between p-5 md:p-6">
+                                        <div className="flex justify-between items-start">
+                                            <div />
+                                            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 translate-x-2">
+                                                <ArrowUpRight size={14} className="text-white" />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <h3 className="font-serif text-lg md:text-xl text-white">
+                                                {category.name}
+                                            </h3>
+                                            <p className="text-xs font-sans text-white/70 mt-1">
+                                                {category.productCount} ürün
+                                            </p>
                                         </div>
                                     </div>
-
-                                    <div>
-                                        <h3 className="font-serif text-lg md:text-xl text-white">
-                                            {category.name}
-                                        </h3>
-                                        <p className="text-xs font-sans text-white/70 mt-1">
-                                            {category.productCount} ürün
-                                        </p>
-                                        {index === 0 && (
-                                            <p className="text-sm font-sans text-white/60 mt-2 max-w-[200px] hidden md:block">
-                                                {category.description}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            </Link>
-                        </motion.div>
-                    ))}
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
                 </motion.div>
             </div>
         </section>

@@ -26,10 +26,10 @@ export function ProductCardColors({
             role="radiogroup"
             aria-label="Renk seçin"
         >
-            {visible.map((c) => {
+            {visible.map((c, i) => {
                 const selected = c.id === selectedId;
                 return (
-                    <div key={c.id} className="relative">
+                    <div key={c.id || i} className="relative">
                         <button
                             role="radio"
                             aria-checked={selected}

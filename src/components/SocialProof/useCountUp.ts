@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useInView, animate } from 'framer-motion';
 
 interface CountUpOptions {
     end: number;
@@ -16,59 +17,22 @@ export function useCountUp({
     startOnView = true,
 }: CountUpOptions) {
     const [count, setCount] = useState(0);
-    const [hasStarted, setHasStarted] = useState(false);
     const ref = useRef<HTMLElement | null>(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
 
     useEffect(() => {
-        if (!startOnView) {
-            setHasStarted(true);
-            return;
-        }
+        if (startOnView && !isInView) return;
 
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting && !hasStarted) {
-                    setHasStarted(true);
-                }
+        const controls = animate(0, end, {
+            duration: duration / 1000,
+            ease: "easeOut",
+            onUpdate(value) {
+                setCount(Number(value.toFixed(decimals)));
             },
-            { threshold: 0.3 }
-        );
+        });
 
-        const el = ref.current;
-        if (el) observer.observe(el);
-        return () => {
-            if (el) observer.unobserve(el);
-        };
-    }, [hasStarted, startOnView]);
-
-    useEffect(() => {
-        if (!hasStarted) return;
-
-        let startTime: number | null = null;
-        const startValue = 0;
-
-        // easeOutExpo: hızlı başla, yavaş bitir
-        const easeOutExpo = (t: number) =>
-            t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-
-        const animate = (timestamp: number) => {
-            if (!startTime) startTime = timestamp;
-            const elapsed = timestamp - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easedProgress = easeOutExpo(progress);
-            const current = startValue + (end - startValue) * easedProgress;
-
-            setCount(parseFloat(current.toFixed(decimals)));
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                setCount(end);
-            }
-        };
-
-        requestAnimationFrame(animate);
-    }, [hasStarted, end, duration, decimals]);
+        return () => controls.stop();
+    }, [end, duration, decimals, startOnView, isInView]);
 
     return { count, ref };
 }

@@ -39,42 +39,46 @@ export function ProductCardImage({
             )}
 
             {/* Main product image */}
-            <Image
-                src={color.image}
-                alt={`${name} — ${color.name}`}
-                fill
-                priority={priority}
-                loading={priority ? 'eager' : 'lazy'}
-                className="object-cover"
-                sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
-                style={{
-                    opacity: isHovered ? 0 : 1,
-                    transform: isHovered ? 'scale(1.08)' : 'scale(1)',
-                    transition: 'opacity 500ms ease, transform 700ms cubic-bezier(0.25,0.46,0.45,0.94)',
-                }}
-                onLoad={() => setMainLoaded(true)}
-                onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = 'none';
-                }}
-            />
+            {color.image && (
+                <Image
+                    src={color.image}
+                    alt={`${name} — ${color.name}`}
+                    fill
+                    priority={priority}
+                    loading={priority ? 'eager' : 'lazy'}
+                    className="object-cover"
+                    sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
+                    style={{
+                        opacity: isHovered ? 0 : 1,
+                        transform: isHovered ? 'scale(1.08)' : 'scale(1)',
+                        transition: 'opacity 500ms ease, transform 700ms cubic-bezier(0.25,0.46,0.45,0.94)',
+                    }}
+                    onLoad={() => setMainLoaded(true)}
+                    onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = 'none';
+                    }}
+                />
+            )}
 
             {/* Lifestyle crossfade image — loads on hover */}
-            <Image
-                src={color.lifestyleImage}
-                alt={`${name} — ${color.name} yaşam alanı`}
-                fill
-                loading="lazy"
-                className="object-cover"
-                sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
-                style={{
-                    opacity: isHovered ? 1 : 0,
-                    transform: isHovered ? 'scale(1.08)' : 'scale(1)',
-                    transition: 'opacity 500ms ease, transform 700ms cubic-bezier(0.25,0.46,0.45,0.94)',
-                }}
-                onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = 'none';
-                }}
-            />
+            {color.lifestyleImage && (
+                <Image
+                    src={color.lifestyleImage}
+                    alt={`${name} — ${color.name} yaşam alanı`}
+                    fill
+                    loading="lazy"
+                    className="object-cover"
+                    sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
+                    style={{
+                        opacity: isHovered ? 1 : 0,
+                        transform: isHovered ? 'scale(1.08)' : 'scale(1)',
+                        transition: 'opacity 500ms ease, transform 700ms cubic-bezier(0.25,0.46,0.45,0.94)',
+                    }}
+                    onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = 'none';
+                    }}
+                />
+            )}
         </div>
     );
 }

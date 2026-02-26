@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGlobal } from '@/context/GlobalContext';
@@ -18,6 +18,17 @@ interface CurrencySwitcherProps {
 export function CurrencySwitcher({ isScrolled }: CurrencySwitcherProps) {
     const { currency, setCurrency } = useGlobal();
     const [isOpen, setIsOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const textColor = isScrolled ? 'text-[#1C1C1E]/70' : 'text-white/70';
     const hoverColor = isScrolled ? 'hover:text-[#1C1C1E]' : 'hover:text-white';
@@ -26,11 +37,11 @@ export function CurrencySwitcher({ isScrolled }: CurrencySwitcherProps) {
 
     return (
         <div
+            ref={containerRef}
             className="relative"
-            onMouseEnter={() => setIsOpen(true)}
-            onMouseLeave={() => setIsOpen(false)}
         >
             <button
+                onClick={() => setIsOpen(!isOpen)}
                 className={`flex items-center gap-1 text-[12px] font-medium tracking-wider
                    ${textColor} ${hoverColor} transition-colors duration-200`}
                 aria-label={`Para birimi: ${currency}`}

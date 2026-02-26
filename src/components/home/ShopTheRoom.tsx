@@ -6,36 +6,48 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, ShoppingBag, X, Loader2 } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
-import { getProducts } from '@/lib/api';
+import { getProducts, getProductBySlug } from '@/lib/api';
 import { formatPrice } from '@/lib/constants';
 import { Product } from '@/types';
 
-const hotspots = [
-    { x: 25, y: 45, productIndex: 0 },
-    { x: 55, y: 35, productIndex: 1 },
-    { x: 75, y: 65, productIndex: 2 },
+const ROOMS = [
+    {
+        id: 'living-room-1',
+        title: 'Modern Oturma Odası',
+        image: '/images/rooms/lookbook-1.jpg',
+        hotspots: [
+            { x: 25, y: 45, productSlug: 'luna-kose-koltuk' },
+            { x: 55, y: 35, productSlug: 'nova-yemek-masasi' },
+            { x: 75, y: 65, productSlug: 'orbit-sehpa' },
+        ]
+    }
 ];
 
 export function ShopTheRoom() {
+    const [activeRoomIndex] = useState(0);
     const [activeSpot, setActiveSpot] = useState<number | null>(null);
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<Record<string, Product>>({});
     const [loading, setLoading] = useState(true);
     const { addItem } = useCart();
 
+    const currentRoom = ROOMS[activeRoomIndex];
+
     useEffect(() => {
-        const fetchDisplayProducts = async () => {
+        const fetchData = async () => {
             setLoading(true);
-            try {
-                const data = await getProducts({ featured: true });
-                setProducts(data.slice(0, 3));
-            } catch (err) {
-                console.error('Error fetching room products:', err);
-            } finally {
-                setLoading(false);
+            const slugs = currentRoom.hotspots.map(h => h.productSlug);
+            const loadedProducts: Record<string, Product> = {};
+
+            for (const slug of slugs) {
+                const p = await getProductBySlug(slug);
+                if (p) loadedProducts[slug] = p;
             }
+
+            setProducts(loadedProducts);
+            setLoading(false);
         };
-        fetchDisplayProducts();
-    }, []);
+        fetchData();
+    }, [activeRoomIndex, currentRoom.hotspots]);
 
     return (
         <section className="bg-sand py-20 md:py-28">
@@ -81,8 +93,8 @@ export function ShopTheRoom() {
                             />
 
                             {/* Hotspots */}
-                            {hotspots.map((spot, index) => {
-                                const product = products[index];
+                            {currentRoom.hotspots.map((spot, index) => {
+                                const product = products[spot.productSlug];
                                 if (!product) return null;
 
                                 return (

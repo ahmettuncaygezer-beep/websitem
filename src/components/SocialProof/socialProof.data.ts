@@ -15,7 +15,7 @@ export const STATS = [
     },
     {
         id: 'rating',
-        value: 4.8,
+        value: 4.9,
         suffix: '/5',
         label: 'Ortalama Puan',
         icon: '⭐',
@@ -24,7 +24,7 @@ export const STATS = [
     },
     {
         id: 'years',
-        value: 8,
+        value: 12,
         suffix: ' Yıl',
         label: 'Sektör Deneyimi',
         icon: '🏆',
@@ -33,7 +33,7 @@ export const STATS = [
     },
     {
         id: 'products',
-        value: 2800,
+        value: 500,
         suffix: '+',
         label: 'Farklı Ürün',
         icon: '🛋️',
@@ -169,9 +169,9 @@ export const MEDIA_LOGOS: MediaLogo[] = [
         id: 'interior-tr',
         name: 'Interior Turkey',
         logoUrl: '/images/media/interior.svg',
-        articleUrl: '#',
+        articleUrl: 'https://interiorsturkey.com',
         articleTitle: 'Premium mobilyada yeni nesil',
-        year: 2026,
+        year: 2024,
     },
     {
         id: 'sabah',
@@ -305,6 +305,7 @@ export const TRUST_BADGES: TrustBadge[] = [
         name: 'TOBB',
         logoUrl: '/images/trust/tobb.svg',
         description: 'Türkiye Odalar Borsalar',
+        verifyUrl: 'https://tobb.org.tr',
         category: 'association',
     },
     {
@@ -312,6 +313,7 @@ export const TRUST_BADGES: TrustBadge[] = [
         name: 'Mastercard',
         logoUrl: '/images/trust/mastercard.svg',
         description: 'Mastercard güvencesi',
+        verifyUrl: 'https://mastercard.com.tr',
         category: 'payment',
     },
     {
@@ -319,6 +321,7 @@ export const TRUST_BADGES: TrustBadge[] = [
         name: 'Visa',
         logoUrl: '/images/trust/visa.svg',
         description: 'Visa güvencesi',
+        verifyUrl: 'https://visa.com.tr',
         category: 'payment',
     },
 ];

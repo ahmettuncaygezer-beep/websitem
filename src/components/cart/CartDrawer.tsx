@@ -104,7 +104,7 @@ export default function CartDrawer() {
                                divide-[#E8E3DC]">
                                     <AnimatePresence initial={false}>
                                         {items.map(item => (
-                                            <CartItem key={item.product.id} item={item} />
+                                            <CartItem key={item.id} item={item} />
                                         ))}
                                     </AnimatePresence>
                                 </div>

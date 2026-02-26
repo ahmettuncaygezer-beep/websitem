@@ -55,6 +55,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@maisonmobilya',
   },
+  alternates: {
+    canonical: '/',
+  },
   robots: {
     index: true,
     follow: true,

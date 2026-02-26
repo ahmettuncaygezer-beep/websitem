@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Maximize, Loader2, CheckCircle2, Scan, Sparkles, SlidersHorizontal, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function RoomScanner() {
     const [status, setStatus] = useState<'idle' | 'scanning' | 'analyzing' | 'completed'>('idle');
@@ -199,12 +200,12 @@ export function RoomScanner() {
                             ))}
                         </div>
 
-                        <button className="group flex items-center gap-3 text-sm font-sans font-bold uppercase tracking-[0.2em] text-white hover:text-gold transition-colors">
+                        <Link href="/oda-planlayici" className="group flex w-fit items-center gap-3 text-sm font-sans font-bold uppercase tracking-[0.2em] text-white hover:text-gold transition-colors">
                             HEMEN TEST ET
                             <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-gold group-hover:bg-gold transition-all">
                                 <ArrowRight size={18} className="group-hover:text-white" />
                             </div>
-                        </button>
+                        </Link>
                     </motion.div>
                 </div>
             </div>

@@ -16,7 +16,7 @@ interface ProductCardBadgeProps {
 }
 
 export function ProductCardBadge({ badges }: ProductCardBadgeProps) {
-    if (!badges.length) return null;
+    if (!badges || !badges.length) return null;
 
     return (
         <div className="absolute top-3 left-3 flex flex-col gap-1.5" style={{ zIndex: 10 }}>

@@ -105,6 +105,8 @@ export default function MediaLogos() {
                         {[...MEDIA_LOGOS, ...MEDIA_LOGOS].map((media, i) => (
                             <span
                                 key={i}
+                                aria-hidden={i >= MEDIA_LOGOS.length}
+                                tabIndex={i >= MEDIA_LOGOS.length ? -1 : undefined}
                                 className="text-white/30 font-bold text-base tracking-tight flex-shrink-0"
                             >
                                 {media.name}

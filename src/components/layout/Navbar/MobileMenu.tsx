@@ -27,7 +27,7 @@ const STAGGER_ITEMS = [
 ];
 
 export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
-    const { totalItems: itemCount } = useCart();
+    const { totalItems: itemCount, openCart } = useCart();
     const favCount = useFavorites((state) => state.favorites.length);
     const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -210,10 +210,9 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
                                         </span>
                                     )}
                                 </Link>
-                                <Link
-                                    href="#"
-                                    onClick={(e) => { e.preventDefault(); onClose(); }}
-                                    className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors"
+                                <button
+                                    onClick={() => { onClose(); openCart(); }}
+                                    className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors text-left"
                                 >
                                     <ShoppingBag size={18} />
                                     Sepetim
@@ -222,14 +221,26 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
                                             {itemCount}
                                         </span>
                                     )}
-                                </Link>
+                                </button>
                                 <Link
-                                    href="#hesabim"
-                                    onClick={(e) => { e.preventDefault(); onClose(); }}
+                                    href="/hesabim"
+                                    onClick={onClose}
                                     className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors"
                                 >
                                     👤 Giriş Yap / Hesabım
                                 </Link>
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2 pt-4 border-t border-white/5">
+                                    {[
+                                        { label: 'SSS', href: '/sss' },
+                                        { label: 'Kargo', href: '/kargo' },
+                                        { label: 'İade', href: '/iade' },
+                                        { label: 'Garanti', href: '/garanti' }
+                                    ].map(link => (
+                                        <Link key={link.href} href={link.href} onClick={onClose} className="text-[12px] text-white/40 hover:text-white transition-colors">
+                                            {link.label}
+                                        </Link>
+                                    ))}
+                                </div>
                             </motion.div>
                         </motion.div>
                     </motion.div>

@@ -4,16 +4,16 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Trash2, Minus, Plus } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
-import type { CartItem as CartItemType } from '@/context/CartContext'
+import type { CartItem as CartItemType } from '@/store/cartStore'
 
 export default function CartItem({ item }: { item: CartItemType }) {
     const { removeItem, updateQuantity } = useCart()
-    const { product, quantity, selectedColor } = item
+    const { id, name, price, image, quantity } = item
 
     const formattedPrice = new Intl.NumberFormat('tr-TR').format(
-        product.price * quantity
+        price * quantity
     )
-    const formattedUnit = new Intl.NumberFormat('tr-TR').format(product.price)
+    const formattedUnit = new Intl.NumberFormat('tr-TR').format(price)
 
     return (
         <motion.div
@@ -28,8 +28,8 @@ export default function CartItem({ item }: { item: CartItemType }) {
             <div className="relative w-20 h-20 flex-shrink-0 rounded-sm
                      overflow-hidden bg-[#F5F0EB]">
                 <Image
-                    src={product.image}
-                    alt={product.name}
+                    src={image}
+                    alt={name}
                     fill
                     sizes="80px"
                     className="object-cover"
@@ -42,27 +42,22 @@ export default function CartItem({ item }: { item: CartItemType }) {
                     <div>
                         <p className="text-[11px] text-[#999] uppercase tracking-wider
                          mb-0.5">
-                            {product.brand}
+                            MAISON
                         </p>
                         <p className="text-[13px] font-medium text-[#1C1C1E]
                          leading-snug truncate max-w-[160px]">
-                            {product.name}
+                            {name}
                         </p>
-                        {selectedColor && (
-                            <p className="text-[11px] text-[#666] mt-0.5">
-                                Renk: {selectedColor}
-                            </p>
-                        )}
                     </div>
 
                     {/* SİL BUTONU */}
                     <button
-                        onClick={() => removeItem(product.id)}
+                        onClick={() => removeItem(id)}
                         className="flex-shrink-0 w-7 h-7 flex items-center
-                      justify-center rounded-full
-                      hover:bg-red-50 hover:text-red-500
-                      text-[#999] transition-colors duration-200"
-                        aria-label={`${product.name} ürününü sepetten kaldır`}
+                       justify-center rounded-full
+                       hover:bg-red-50 hover:text-red-500
+                       text-[#999] transition-colors duration-200"
+                        aria-label={`${name} ürününü sepetten kaldır`}
                     >
                         <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -74,7 +69,7 @@ export default function CartItem({ item }: { item: CartItemType }) {
                     <div className="flex items-center gap-0 border border-[#E8E3DC]
                          rounded-sm overflow-hidden">
                         <button
-                            onClick={() => updateQuantity(product.id, quantity - 1)}
+                            onClick={() => updateQuantity(id, quantity - 1)}
                             className="w-7 h-7 flex items-center justify-center
                         hover:bg-[#F5F0EB] transition-colors
                         text-[#666] hover:text-[#1C1C1E]"
@@ -88,7 +83,7 @@ export default function CartItem({ item }: { item: CartItemType }) {
                             {quantity}
                         </span>
                         <button
-                            onClick={() => updateQuantity(product.id, quantity + 1)}
+                            onClick={() => updateQuantity(id, quantity + 1)}
                             className="w-7 h-7 flex items-center justify-center
                         hover:bg-[#F5F0EB] transition-colors
                         text-[#666] hover:text-[#1C1C1E]"

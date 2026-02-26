@@ -74,8 +74,7 @@ export default function FlashSaleStrip() {
                         href="/kampanyalar"
                         className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-[#C9A96E] text-[#1C1C1E] text-[12px] font-bold rounded-sm hover:bg-[#B8915A] transition-colors duration-200 group"
                     >
-                        <span className="hidden sm:inline">Kampanyayı Gör</span>
-                        <span className="sm:hidden">Gör</span>
+                        <span>Kampanyayı Gör</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
                 </div>

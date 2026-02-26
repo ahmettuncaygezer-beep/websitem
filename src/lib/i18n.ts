@@ -84,6 +84,6 @@ export const translations = {
 
 export const currencies = {
     TRY: { symbol: "₺", rate: 1, label: "TL" },
-    USD: { symbol: "$", rate: 0.032, label: "USD" },
-    EUR: { symbol: "€", rate: 0.030, label: "EUR" }
+    USD: { symbol: "$", rate: 1 / 35, label: "USD" },
+    EUR: { symbol: "€", rate: 1 / 38, label: "EUR" }
 };

@@ -1,7 +1,40 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { SITE_NAME, NAVIGATION } from '@/lib/constants';
 
 export function Footer() {
+    const [email, setEmail] = useState('');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [message, setMessage] = useState('');
+
+    const handleSubscribe = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setStatus('error');
+            setMessage('Lütfen geçerli bir e-posta adresi giriniz.');
+            return;
+        }
+
+        setStatus('loading');
+
+        // Mock API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Save to localStorage
+        const subscribers = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
+        if (!subscribers.includes(email)) {
+            subscribers.push(email);
+            localStorage.setItem('newsletter_subscribers', JSON.stringify(subscribers));
+        }
+
+        setStatus('success');
+        setMessage('Teşekkürler! Bültenimize başarıyla kaydoldunuz.');
+        setEmail('');
+    };
+
     return (
         <footer className="bg-charcoal text-white">
             {/* Newsletter */}
@@ -14,15 +47,34 @@ export function Footer() {
                                 Yeni koleksiyonlar, trendler ve özel tekliflerden ilk siz haberdar olun.
                             </p>
                         </div>
-                        <div className="flex w-full md:w-auto gap-0">
-                            <input
-                                type="email"
-                                placeholder="E-posta adresiniz"
-                                className="flex-1 md:w-80 px-6 py-3.5 bg-white/10 border border-white/20 rounded-l-full text-sm font-sans text-white placeholder:text-white/40 focus:outline-none focus:border-gold transition-colors"
-                            />
-                            <button className="px-8 py-3.5 bg-gold text-white text-sm font-sans font-semibold uppercase tracking-wider rounded-r-full hover:bg-gold-dark transition-colors whitespace-nowrap">
-                                Katıl
-                            </button>
+                        <div className="w-full md:w-auto relative">
+                            <form onSubmit={handleSubscribe} className="flex w-full md:w-auto gap-0">
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="E-posta adresiniz"
+                                    required
+                                    disabled={status === 'loading' || status === 'success'}
+                                    className="flex-1 w-full min-w-[200px] md:w-80 px-6 py-3.5 bg-white/10 border border-white/20 rounded-l-full text-sm font-sans text-white placeholder:text-white/40 focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={status === 'loading' || status === 'success'}
+                                    className="px-8 py-3.5 bg-gold text-white text-sm font-sans font-semibold uppercase tracking-wider rounded-r-full hover:bg-gold-dark transition-colors whitespace-nowrap disabled:opacity-50 flex items-center gap-2"
+                                >
+                                    {status === 'loading' ? (
+                                        <>
+                                            <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
+                                        </>
+                                    ) : 'Katıl'}
+                                </button>
+                            </form>
+                            {message && (
+                                <p className={`absolute -bottom-6 left-0 text-xs font-medium ${status === 'error' ? 'text-red-400' : 'text-green-400'}`}>
+                                    {message}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

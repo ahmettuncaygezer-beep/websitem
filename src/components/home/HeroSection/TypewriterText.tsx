@@ -134,8 +134,6 @@ export function TypewriterText({
         <span className={className}>
             {/* Line 1 — always static */}
             <span className="block text-white not-italic">Evinizin</span>
-
-            {/* Line 2 — animated gold italic */}
             <span
                 className="block italic"
                 style={{
