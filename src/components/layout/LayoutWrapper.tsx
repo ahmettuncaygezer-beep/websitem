@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 const AIAssistant = dynamic(() => import('@/components/AIAssistant'), { ssr: false });
 const BottomNav = dynamic(() => import('@/components/Mobile/BottomNav'), { ssr: false });
 const WhatsAppButton = dynamic(() => import('@/components/Mobile/WhatsAppButton'), { ssr: false });
+const AntigravityBrowserControl = dynamic(() => import('@/components/ui/AntigravityBrowserControl'), { ssr: false });
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -35,6 +36,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
             {!isPlanner && <BottomNav onSearchOpen={() => setIsSearchOpen(true)} />}
             {/* Floating WhatsApp support button */}
             {!isPlanner && <WhatsAppButton />}
+            <AntigravityBrowserControl />
         </>
     );
 }
