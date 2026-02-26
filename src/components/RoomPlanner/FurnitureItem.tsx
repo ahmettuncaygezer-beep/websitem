@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { motion, useDragControls } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { PlacedFurniture } from './planner.types';
 import { usePlannerStore } from './plannerStore';
 import { getFallbackSVG } from './FurnitureSVGs';
@@ -29,7 +29,6 @@ export default function FurnitureItem({
     const [imageFailed, setImageFailed] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const saveToHistory = usePlannerStore(s => s.saveToHistory);
-    const dragControls = useDragControls();
 
     // Resize Logic
     const handleResizeStart = (edge: string, e: React.PointerEvent) => {
@@ -83,20 +82,22 @@ export default function FurnitureItem({
         <motion.div
             ref={containerRef}
             drag={!item.isLocked}
-            dragControls={dragControls}
             dragMomentum={false}
+            dragElastic={0}
             onDragStart={() => {
                 onSelect();
                 saveToHistory();
             }}
             onDrag={(e, info) => {
-                onUpdate({ x: item.x + info.delta.x, y: item.y + info.delta.y });
+                // Sürükleme mesafesini tuval ölçeğine (scale) bölerek gerçek koordinatları hesaplıyoruz
+                const dx = info.delta.x / scale;
+                const dy = info.delta.y / scale;
+                onUpdate({ x: item.x + dx, y: item.y + dy });
             }}
             onPointerDown={(e) => {
                 e.stopPropagation();
                 onSelect();
             }}
-            // We use Framer Motion exactly to just position it absolute
             style={{
                 position: 'absolute',
                 left: item.x * scale,
@@ -105,10 +106,9 @@ export default function FurnitureItem({
                 height: item.depth * scale,
                 rotate: item.rotation,
                 zIndex: isSelected ? 50 : item.zIndex,
-                touchAction: 'none' // prevent scroll while drag
+                touchAction: 'none'
             }}
             className="group"
-        // For dropping to center if the user drops via library while dragging
         >
             {/* The Item Visual */}
             <div className="w-full h-full relative cursor-grab active:cursor-grabbing">
