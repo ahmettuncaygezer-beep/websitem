@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,7 +11,7 @@ interface MobileMenuCategoryProps {
     onClose: () => void;
 }
 
-export function MobileMenuCategory({ category, onClose }: MobileMenuCategoryProps) {
+export const MobileMenuCategory = memo(function MobileMenuCategory({ category, onClose }: MobileMenuCategoryProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -77,4 +77,4 @@ export function MobileMenuCategory({ category, onClose }: MobileMenuCategoryProp
             </AnimatePresence>
         </div>
     );
-}
+});

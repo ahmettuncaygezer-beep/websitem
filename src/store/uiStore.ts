@@ -36,7 +36,7 @@ export function formatPrice(amountInTry: number, currency: Currency): string {
     const rate = EXCHANGE_RATES[currency];
     const convertedAmount = amountInTry / rate;
 
-    return new Intl.NumberFormat(currency === 'TR' ? 'tr-TR' : 'en-US', {
+    return new Intl.NumberFormat(currency === 'TRY' ? 'tr-TR' : 'en-US', {
         style: 'currency',
         currency: currency,
         minimumFractionDigits: 0,

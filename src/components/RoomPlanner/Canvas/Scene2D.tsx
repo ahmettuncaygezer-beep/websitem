@@ -1,11 +1,60 @@
-'use client';
-
-import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo, memo } from 'react';
 import { usePlannerStore } from '../store/plannerStore';
 import { getCollisions, clampToRoom } from '../hooks/useCollision';
 import { calcSnap } from '../hooks/useSnapping';
+import { throttle } from 'lodash';
 
 const SCALE = 80; // px per metre
+
+const FurnitureItem = memo(({ f, isSelected, isColliding, showMeasurements, onMouseDown }: { f: any, isSelected: boolean, isColliding: boolean, showMeasurements: boolean, onMouseDown: (id: string, e: React.MouseEvent) => void }) => {
+    const effW = (f.rotation % 180 === 0 ? f.dimensions.width : f.dimensions.depth) * f.scale;
+    const effD = (f.rotation % 180 === 0 ? f.dimensions.depth : f.dimensions.width) * f.scale;
+    const px = f.position.x * SCALE;
+    const pz = f.position.z * SCALE;
+
+    return (
+        <g
+            transform={`translate(${px},${pz}) rotate(${f.rotation})`}
+            onMouseDown={(e) => onMouseDown(f.id, e)}
+            style={{ cursor: f.isLocked ? 'not-allowed' : 'grab' }}
+        >
+            <rect x={-effW / 2 * SCALE} y={-effD / 2 * SCALE} width={effW * SCALE} height={effD * SCALE} rx={3}
+                fill={isColliding ? 'rgba(229,57,53,0.15)' : f.color} fillOpacity={0.3}
+                stroke={isSelected ? '#2196F3' : isColliding ? '#E53935' : 'rgba(0,0,0,0.15)'}
+                strokeWidth={isSelected ? 2 : 1}
+                strokeDasharray={isSelected ? '6 3' : 'none'} />
+
+            <text x={0} y={4} textAnchor="middle" fill="#1C1C1E" fontSize={9} fontWeight={500} pointerEvents="none">
+                {f.name.length > 12 ? f.name.slice(0, 12) + '…' : f.name}
+            </text>
+
+            {showMeasurements && isSelected && (
+                <>
+                    <text x={0} y={effD / 2 * SCALE + 14} textAnchor="middle" fill="#C9A96E" fontSize={9}>
+                        {(f.dimensions.width * 100).toFixed(0)} cm
+                    </text>
+                    <text x={effW / 2 * SCALE + 8} y={4} textAnchor="start" fill="#C9A96E" fontSize={9} transform={`rotate(90, ${effW / 2 * SCALE + 8}, 4)`}>
+                        {(f.dimensions.depth * 100).toFixed(0)} cm
+                    </text>
+                </>
+            )}
+
+            {isSelected && !f.isLocked && (
+                <circle cx={0} cy={-effD / 2 * SCALE - 16} r={5} fill="#C9A96E" stroke="white" strokeWidth={1.5} style={{ cursor: 'pointer' }}
+                    onMouseDown={(e) => {
+                        e.stopPropagation();
+                        usePlannerStore.getState().rotateFurniture(f.id, 90);
+                    }} />
+            )}
+
+            {f.isLocked && (
+                <text x={effW / 2 * SCALE - 2} y={-effD / 2 * SCALE + 12} fontSize={10}>🔒</text>
+            )}
+        </g>
+    );
+});
+
+FurnitureItem.displayName = 'FurnitureItem';
 
 export function Scene2D() {
     const { room, furniture, selectedId, showGrid, showMeasurements, snapEnabled } = usePlannerStore();
@@ -16,14 +65,19 @@ export function Scene2D() {
     const [zoom, setZoom] = useState(1);
     const [pan, setPan] = useState({ x: 40, y: 40 });
     const [isPanning, setIsPanning] = useState(false);
-    const [panStart, setPanStart] = useState({ x: 0, y: 0 });
     const [guides, setGuides] = useState<{ axis: 'x' | 'z'; pos: number; type: string }[]>([]);
 
     const collisions = useMemo(() => getCollisions(furniture), [furniture]);
     const W = room.width * SCALE;
     const D = room.depth * SCALE;
 
-    const toSvg = useCallback((mx: number, mz: number) => ({ x: mx * SCALE, y: mz * SCALE }), []);
+    const throttledUpdate = useMemo(() =>
+        throttle((id: string, pos: { x: number, z: number }) => {
+            updateFurniture(id, { position: { x: pos.x, y: 0, z: pos.z } });
+        }, 16), [updateFurniture]);
+
+    // Cleanup throttle on unmount
+    useEffect(() => () => throttledUpdate.cancel(), [throttledUpdate]);
 
     // Mouse → metre coords
     const toMetres = useCallback((clientX: number, clientY: number) => {
@@ -66,8 +120,8 @@ export function Scene2D() {
         setGuides(snap.guides);
 
         const clamped = clampToRoom({ x: nx, z: nz }, f.dimensions, f.rotation, room, f.scale);
-        updateFurniture(dragging, { position: { x: clamped.x, y: 0, z: clamped.z } });
-    }, [dragging, isPanning, dragOffset, furniture, room, snapEnabled, toMetres, updateFurniture]);
+        throttledUpdate(dragging, clamped);
+    }, [dragging, isPanning, dragOffset, furniture, room, snapEnabled, toMetres, throttledUpdate]);
 
     const handleMouseUp = useCallback(() => {
         setDragging(null);
@@ -96,7 +150,6 @@ export function Scene2D() {
         return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); };
     }, []);
 
-    // Drop from sidebar
     const handleDrop = useCallback((e: React.DragEvent) => {
         e.preventDefault();
         try {
@@ -119,19 +172,22 @@ export function Scene2D() {
             onDrop={handleDrop}
             onClick={() => { if (!dragging) selectFurniture(null); }}
         >
+            <defs>
+                <pattern id="grid-pattern" width={0.5 * SCALE} height={0.5 * SCALE} patternUnits="userSpaceOnUse">
+                    <rect width={0.5 * SCALE} height={0.5 * SCALE} fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="0.3" />
+                    <line x1="0" y1="0" x2={0.5 * SCALE} y2="0" stroke="rgba(0,0,0,0.1)" strokeWidth="0.5" />
+                    <line x1="0" y1="0" x2="0" y2={0.5 * SCALE} stroke="rgba(0,0,0,0.1)" strokeWidth="0.5" />
+                </pattern>
+            </defs>
+
             <g transform={`translate(${pan.x},${pan.y}) scale(${zoom})`}>
-                {/* Grid */}
-                {showGrid && Array.from({ length: Math.ceil(room.width / 0.5) + 1 }).map((_, i) => (
-                    <line key={`gx${i}`} x1={i * 0.5 * SCALE} y1={0} x2={i * 0.5 * SCALE} y2={D}
-                        stroke={i % 2 === 0 ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.04)'} strokeWidth={i % 2 === 0 ? 0.5 : 0.3} />
-                ))}
-                {showGrid && Array.from({ length: Math.ceil(room.depth / 0.5) + 1 }).map((_, i) => (
-                    <line key={`gz${i}`} x1={0} y1={i * 0.5 * SCALE} x2={W} y2={i * 0.5 * SCALE}
-                        stroke={i % 2 === 0 ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.04)'} strokeWidth={i % 2 === 0 ? 0.5 : 0.3} />
-                ))}
+                {/* Grid using pattern */}
+                {showGrid && (
+                    <rect x={0} y={0} width={W} height={D} fill="url(#grid-pattern)" />
+                )}
 
                 {/* Room outline */}
-                <rect x={0} y={0} width={W} height={D} fill="white" stroke="#1C1C1E" strokeWidth={3} />
+                <rect x={0} y={0} width={W} height={D} fill="transparent" stroke="#1C1C1E" strokeWidth={3} pointerEvents="none" />
 
                 {/* Room dimensions */}
                 {showMeasurements && (
@@ -150,60 +206,16 @@ export function Scene2D() {
                 ))}
 
                 {/* Furniture */}
-                {furniture.filter((f) => f.isVisible).map((f) => {
-                    const effW = (f.rotation % 180 === 0 ? f.dimensions.width : f.dimensions.depth) * f.scale;
-                    const effD = (f.rotation % 180 === 0 ? f.dimensions.depth : f.dimensions.width) * f.scale;
-                    const px = f.position.x * SCALE;
-                    const pz = f.position.z * SCALE;
-                    const isColliding = collisions.has(f.id);
-                    const isSelected = f.id === selectedId;
-
-                    return (
-                        <g key={f.id}
-                            transform={`translate(${px},${pz}) rotate(${f.rotation})`}
-                            onMouseDown={(e) => handleMouseDown(f.id, e)}
-                            style={{ cursor: f.isLocked ? 'not-allowed' : 'grab' }}
-                        >
-                            {/* Shadow */}
-                            <rect x={-effW / 2 * SCALE} y={-effD / 2 * SCALE} width={effW * SCALE} height={effD * SCALE} rx={3}
-                                fill={isColliding ? 'rgba(229,57,53,0.15)' : f.color} fillOpacity={0.3}
-                                stroke={isSelected ? '#2196F3' : isColliding ? '#E53935' : 'rgba(0,0,0,0.15)'}
-                                strokeWidth={isSelected ? 2 : 1}
-                                strokeDasharray={isSelected ? '6 3' : 'none'} />
-
-                            {/* Label */}
-                            <text x={0} y={4} textAnchor="middle" fill="#1C1C1E" fontSize={9} fontWeight={500} pointerEvents="none">
-                                {f.name.length > 12 ? f.name.slice(0, 12) + '…' : f.name}
-                            </text>
-
-                            {/* Measurements */}
-                            {showMeasurements && isSelected && (
-                                <>
-                                    <text x={0} y={effD / 2 * SCALE + 14} textAnchor="middle" fill="#C9A96E" fontSize={9}>
-                                        {(f.dimensions.width * 100).toFixed(0)} cm
-                                    </text>
-                                    <text x={effW / 2 * SCALE + 8} y={4} textAnchor="start" fill="#C9A96E" fontSize={9} transform={`rotate(90, ${effW / 2 * SCALE + 8}, 4)`}>
-                                        {(f.dimensions.depth * 100).toFixed(0)} cm
-                                    </text>
-                                </>
-                            )}
-
-                            {/* Rotation handle */}
-                            {isSelected && !f.isLocked && (
-                                <circle cx={0} cy={-effD / 2 * SCALE - 16} r={5} fill="#C9A96E" stroke="white" strokeWidth={1.5} style={{ cursor: 'pointer' }}
-                                    onMouseDown={(e) => {
-                                        e.stopPropagation();
-                                        usePlannerStore.getState().rotateFurniture(f.id, 90);
-                                    }} />
-                            )}
-
-                            {/* Lock icon */}
-                            {f.isLocked && (
-                                <text x={effW / 2 * SCALE - 2} y={-effD / 2 * SCALE + 12} fontSize={10}>🔒</text>
-                            )}
-                        </g>
-                    );
-                })}
+                {furniture.filter((f) => f.isVisible).map((f) => (
+                    <FurnitureItem
+                        key={f.id}
+                        f={f}
+                        isSelected={f.id === selectedId}
+                        isColliding={collisions.has(f.id)}
+                        showMeasurements={showMeasurements}
+                        onMouseDown={handleMouseDown}
+                    />
+                ))}
             </g>
 
             {/* Zoom indicator */}

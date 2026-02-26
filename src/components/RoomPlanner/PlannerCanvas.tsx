@@ -1,10 +1,8 @@
-'use client';
-
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import { usePlannerStore } from './plannerStore';
-import GridOverlay from './GridOverlay';
 import FurnitureItem from './FurnitureItem';
 import { PlacedFurniture, PlannerProduct } from './planner.types';
+import { Plus, Minus, Hand, MousePointer2 } from 'lucide-react';
 
 export default function PlannerCanvas() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -17,6 +15,8 @@ export default function PlannerCanvas() {
     const setSelectedItem = usePlannerStore((s) => s.setSelectedItem);
     const selectedItemId = usePlannerStore((s) => s.selectedItemId);
     const removeItem = usePlannerStore((s) => s.removeItem);
+    const updateItem = usePlannerStore((s) => s.updateItem);
+    const showGrid = usePlannerStore((s) => s.showGrid);
     const duplicateItem = usePlannerStore((s) => s.duplicateItem);
     const undo = usePlannerStore((s) => s.undo);
     const redo = usePlannerStore((s) => s.redo);
@@ -205,58 +205,135 @@ export default function PlannerCanvas() {
     const floorBg = floorTextures[room.floorType] || floorTextures['wood'];
     const floorColor = room.floorType === 'carpet' ? '#B5A090' : room.floorType === 'ceramic' ? '#E5E0DB' : 'transparent';
 
+    // 50cm grid pattern
+    const renderGrid = () => {
+        if (!showGrid) return null;
+        return (
+            <defs>
+                <pattern
+                    id="grid-pattern"
+                    width={50 * scale}
+                    height={50 * scale}
+                    patternUnits="userSpaceOnUse"
+                    x={pan.x % (50 * scale)}
+                    y={pan.y % (50 * scale)}
+                >
+                    <path
+                        d={`M ${50 * scale} 0 L 0 0 0 ${50 * scale}`}
+                        fill="none"
+                        stroke="rgba(0,0,0,0.05)"
+                        strokeWidth="1"
+                    />
+                </pattern>
+            </defs>
+        );
+    };
+
+    const MemoizedFurnitureItems = memo(function MemoizedFurnitureItems({
+        items,
+        scale,
+        selectedItemId,
+        setSelectedItem,
+        updateItem,
+        removeItem,
+        duplicateItem
+    }: {
+        items: PlacedFurniture[];
+        scale: number;
+        selectedItemId: string | null;
+        setSelectedItem: (id: string | null) => void;
+        updateItem: (id: string, updates: Partial<PlacedFurniture>) => void;
+        removeItem: (id: string) => void;
+        duplicateItem: (id: string) => void;
+    }) {
+        return (
+            <>
+                {items.map((item) => (
+                    <FurnitureItem
+                        key={item.id}
+                        item={item}
+                        scale={scale}
+                        isSelected={selectedItemId === item.id}
+                        onSelect={() => setSelectedItem(item.id)}
+                        onUpdate={(updates: Partial<PlacedFurniture>) => updateItem(item.id, updates)}
+                        onRemove={() => removeItem(item.id)}
+                        onDuplicate={() => duplicateItem(item.id)}
+                    />
+                ))}
+            </>
+        );
+    });
+
     return (
         <div
             ref={containerRef}
-            className={`w-full h-full relative overflow-hidden outline-none ${isPanning ? 'cursor-grabbing' : 'cursor-default'}`}
-            onWheel={handleWheel}
+            className="flex-1 relative bg-[#F8F6F3] overflow-hidden cursor-grab active:cursor-grabbing h-full"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
-            onDragOver={handleDragOver}
+            onWheel={handleWheel}
+            onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
-            tabIndex={0} // Makes it focusable to catch keyboard events easily
         >
-            <GridOverlay />
-
-            {/* Display Top Left Control Indicator */}
-            <div className="absolute top-4 left-4 z-40 flex items-center gap-3 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-[#E8E3DC] pointer-events-none">
-                <span className="text-[11px] font-bold text-[#C9A96E]">{Math.round(scale * 100)}%</span>
-            </div>
-
-            {/* The Transformable Workspace Plane */}
             <div
-                className="absolute top-0 left-0 origin-top-left will-change-transform"
+                ref={workspaceRef}
+                className="absolute inset-0 transition-transform duration-75 ease-out"
                 style={{
-                    transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`,
-                    transition: isPanning ? 'none' : 'transform 0.05s linear'
+                    transform: `translate(${pan.x}px, ${pan.y}px)`,
                 }}
             >
-                {/* The Actual Configured Room boundary */}
+                {/* ROOM AREA */}
                 <div
-                    ref={workspaceRef}
-                    className="relative shadow-xl border-4 transition-colors duration-500"
+                    className="relative bg-white shadow-2xl transition-all duration-300"
                     style={{
-                        width: room.width,
-                        height: room.depth,
-                        backgroundColor: floorColor, // Base layer
-                        backgroundImage: floorBg, // Texture top
-                        backgroundSize: room.floorType === 'carpet' ? '4px 4px' : '100% 100%',
-                        borderColor: room.wallColor
+                        width: room.width * scale,
+                        height: room.depth * scale,
+                        backgroundColor: room.wallColor,
+                        // Visual floor style
+                        backgroundImage: room.floorType === 'wood' ? 'url(/images/planner/wood-floor.jpg)' : 'none',
+                        backgroundSize: '200px',
                     }}
                 >
-                    {/* Dimension Markers */}
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-medium text-[#666] whitespace-nowrap">
-                        &larr; {room.width / 100} m &rarr;
-                    </div>
-                    <div className="absolute top-1/2 -left-8 -translate-y-1/2 -rotate-90 text-[10px] font-medium text-[#666] whitespace-nowrap">
-                        &larr; {room.depth / 100} m &rarr;
-                    </div>
+                    {/* SVG LAYER FOR GRID AND SELECTION */}
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                        {renderGrid()}
+                        {showGrid && <rect width="100%" height="100%" fill="url(#grid-pattern)" />}
+                    </svg>
 
-                    {/* All Items */}
-                    {items.map((item) => (
-                        <FurnitureItem key={item.id} item={item} />
-                    ))}
+                    {/* FURNITURE ITEMS */}
+                    <MemoizedFurnitureItems
+                        items={items}
+                        scale={scale}
+                        selectedItemId={selectedItemId}
+                        setSelectedItem={setSelectedItem}
+                        updateItem={updateItem}
+                        removeItem={removeItem}
+                        duplicateItem={duplicateItem}
+                    />
+                </div>
+            </div>
+
+            {/* ZOOM CONTROLS */}
+            <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-40">
+                <button onClick={() => setScale(s => Math.min(s + 0.1, 3))} className="w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-[#1C1C1E] hover:bg-[#F5F0EB] transition-colors border border-[#E8E3DC]">
+                    <Plus size={20} />
+                </button>
+                <button onClick={() => setScale(s => Math.max(s - 0.1, 0.2))} className="w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-[#1C1C1E] hover:bg-[#F5F0EB] transition-colors border border-[#E8E3DC]">
+                    <Minus size={20} />
+                </button>
+                <div className="bg-white px-2 py-1 rounded-sm shadow text-[10px] font-bold text-center border border-[#E8E3DC]">
+                    %{Math.round(scale * 100)}
+                </div>
+            </div>
+
+            {/* GUIDES / HINTS */}
+            <div className="absolute bottom-6 left-6 pointer-events-none z-40">
+                <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-sm border border-[#E8E3DC] shadow-sm">
+                    <p className="text-[10px] text-[#999] uppercase font-bold tracking-widest mb-1">Kontroller</p>
+                    <div className="flex gap-4">
+                        <span className="text-[11px] text-[#1C1C1E] flex items-center gap-1.5"><Hand size={12} className="text-[#C9A96E]" /> Pan: Orta Tuş / Shift</span>
+                        <span className="text-[11px] text-[#1C1C1E] flex items-center gap-1.5"><MousePointer2 size={12} className="text-[#C9A96E]" /> Zoom: Mouse Tekerleği</span>
+                    </div>
                 </div>
             </div>
         </div>

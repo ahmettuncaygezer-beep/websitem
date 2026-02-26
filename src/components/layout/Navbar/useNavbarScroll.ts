@@ -11,17 +11,24 @@ export function useNavbarScroll(isMegaMenuOpen: boolean): NavbarScrollState & { 
     });
 
     useEffect(() => {
+        let rafId: number;
         const onScroll = () => {
-            const scrollY = window.scrollY;
-            setState((prev) => ({
-                isScrolled: scrollY > 20,
-                isScrollingUp: scrollY < prev.lastScrollY,
-                lastScrollY: scrollY,
-            }));
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                const scrollY = window.scrollY;
+                setState((prev) => ({
+                    isScrolled: scrollY > 20,
+                    isScrollingUp: scrollY < prev.lastScrollY,
+                    lastScrollY: scrollY,
+                }));
+            });
         };
 
         window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
     }, []);
 
     // Hide when scrolling down past 400px — but NEVER while mega menu is open

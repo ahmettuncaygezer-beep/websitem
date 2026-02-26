@@ -21,17 +21,17 @@ export function CheckoutSummary() {
 
             <div className="max-h-[300px] overflow-y-auto px-5 divide-y divide-[#F5F0EB]">
                 {items.map((item) => (
-                    <div key={item.product.id} className="py-4 flex gap-4">
+                    <div key={item.id} className="py-4 flex gap-4">
                         <div className="relative w-16 h-16 bg-[#F5F0EB] rounded border border-black/5 flex-shrink-0 overflow-hidden">
-                            <Image src={item.product.image} alt={item.product.name} fill className="object-cover" />
+                            <Image src={item.image} alt={item.name} fill className="object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h4 className="text-[13px] font-medium text-[#1C1C1E] leading-tight line-clamp-2">{item.product.name}</h4>
+                            <h4 className="text-[13px] font-medium text-[#1C1C1E] leading-tight line-clamp-2">{item.name}</h4>
                             <p className="text-[11px] text-[#999] mt-1">
                                 {item.selectedColor && `${item.selectedColor} | `}Adet: {item.quantity}
                             </p>
                             <p className="text-[13px] font-bold text-[#1C1C1E] mt-1">
-                                ₺{(item.product.price * item.quantity).toLocaleString('tr-TR')}
+                                ₺{(item.price * item.quantity).toLocaleString('tr-TR')}
                             </p>
                         </div>
                     </div>

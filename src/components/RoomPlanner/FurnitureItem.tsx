@@ -7,18 +7,28 @@ import { usePlannerStore } from './plannerStore';
 import { getFallbackSVG } from './FurnitureSVGs';
 import PlacedItemControls from './PlacedItemControls';
 
-export default function FurnitureItem({ item }: { item: PlacedFurniture }) {
+interface FurnitureItemProps {
+    item: PlacedFurniture;
+    scale: number;
+    isSelected: boolean;
+    onSelect: () => void;
+    onUpdate: (updates: Partial<PlacedFurniture>) => void;
+    onRemove: () => void;
+    onDuplicate: () => void;
+}
+
+export default function FurnitureItem({
+    item,
+    scale,
+    isSelected,
+    onSelect,
+    onUpdate,
+    onRemove,
+    onDuplicate
+}: FurnitureItemProps) {
     const [imageFailed, setImageFailed] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-
-    const updateItem = usePlannerStore(s => s.updateItem);
-    const setSelectedItem = usePlannerStore(s => s.setSelectedItem);
-    const selectedItemId = usePlannerStore(s => s.selectedItemId);
-    const duplicateItem = usePlannerStore(s => s.duplicateItem);
-    const removeItem = usePlannerStore(s => s.removeItem);
     const saveToHistory = usePlannerStore(s => s.saveToHistory);
-
-    const isSelected = selectedItemId === item.id;
     const dragControls = useDragControls();
 
     // Resize Logic
@@ -57,7 +67,7 @@ export default function FurnitureItem({ item }: { item: PlacedFurniture }) {
                 newY = startTop + (startH - newH);
             }
 
-            updateItem(item.id, { width: newW, depth: newH, x: newX, y: newY });
+            onUpdate({ width: newW, depth: newH, x: newX, y: newY });
         };
 
         const handlePointerUp = () => {
@@ -76,23 +86,23 @@ export default function FurnitureItem({ item }: { item: PlacedFurniture }) {
             dragControls={dragControls}
             dragMomentum={false}
             onDragStart={() => {
-                setSelectedItem(item.id);
+                onSelect();
                 saveToHistory();
             }}
             onDrag={(e, info) => {
-                updateItem(item.id, { x: item.x + info.delta.x, y: item.y + info.delta.y });
+                onUpdate({ x: item.x + info.delta.x, y: item.y + info.delta.y });
             }}
             onPointerDown={(e) => {
                 e.stopPropagation();
-                setSelectedItem(item.id);
+                onSelect();
             }}
             // We use Framer Motion exactly to just position it absolute
             style={{
                 position: 'absolute',
-                left: item.x,
-                top: item.y,
-                width: item.width,
-                height: item.depth,
+                left: item.x * scale,
+                top: item.y * scale,
+                width: item.width * scale,
+                height: item.depth * scale,
                 rotate: item.rotation,
                 zIndex: isSelected ? 50 : item.zIndex,
                 touchAction: 'none' // prevent scroll while drag
@@ -121,9 +131,9 @@ export default function FurnitureItem({ item }: { item: PlacedFurniture }) {
             {isSelected && (
                 <PlacedItemControls
                     item={item}
-                    onRotate={(deg) => updateItem(item.id, { rotation: deg })}
-                    onDuplicate={() => duplicateItem(item.id)}
-                    onRemove={() => removeItem(item.id)}
+                    onRotate={(deg) => onUpdate({ rotation: deg })}
+                    onDuplicate={() => onDuplicate()}
+                    onRemove={() => onRemove()}
                     onResizeStart={handleResizeStart}
                 />
             )}

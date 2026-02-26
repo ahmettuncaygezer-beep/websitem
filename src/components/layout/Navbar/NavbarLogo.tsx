@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import Link from 'next/link';
 
 interface NavbarLogoProps {
@@ -7,7 +8,7 @@ interface NavbarLogoProps {
     isMobileMenuOpen?: boolean;
 }
 
-export function NavbarLogo({ isScrolled, isMobileMenuOpen = false }: NavbarLogoProps) {
+export const NavbarLogo = memo(function NavbarLogo({ isScrolled, isMobileMenuOpen = false }: NavbarLogoProps) {
     // Mobile menu always white; desktop follows scroll state
     const textColor = isMobileMenuOpen
         ? 'text-white'
@@ -46,4 +47,4 @@ export function NavbarLogo({ isScrolled, isMobileMenuOpen = false }: NavbarLogoP
             </span>
         </Link>
     );
-}
+});

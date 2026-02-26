@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback, KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, useCallback, KeyboardEvent, memo } from 'react';
 import { Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -22,7 +22,7 @@ interface SearchBarProps {
     isOpen: boolean;
 }
 
-export function SearchBar({ isScrolled, onOpen, onClose, isOpen }: SearchBarProps) {
+export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, isOpen }: SearchBarProps) {
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -174,4 +174,4 @@ export function SearchBar({ isScrolled, onOpen, onClose, isOpen }: SearchBarProp
             </AnimatePresence>
         </>
     );
-}
+});

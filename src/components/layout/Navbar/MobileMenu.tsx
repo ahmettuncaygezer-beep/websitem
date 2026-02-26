@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import Link from 'next/link';
 import { X, Search, Heart, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,15 +18,7 @@ interface MobileMenuProps {
     categories: NavCategory[];
 }
 
-const STAGGER_ITEMS = [
-    'search',
-    ...['oturma-odasi', 'yatak-odasi', 'yemek-odasi', 'calisma-odasi', 'aydinlatma', 'dekorasyon'],
-    'secondary',
-    'switchers',
-    'footer',
-];
-
-export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
+export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
     const { totalItems: itemCount, openCart } = useCart();
     const favCount = useFavorites((state) => state.favorites.length);
     const overlayRef = useRef<HTMLDivElement>(null);
@@ -75,12 +67,12 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
     const containerVariants = {
         hidden: {},
         show: {
-            transition: { staggerChildren: 0.05, delayChildren: 0.1 },
+            transition: { staggerChildren: 0.03, delayChildren: 0.1 },
         },
     };
     const itemVariants = {
-        hidden: { opacity: 0, x: -20 },
-        show: { opacity: 1, x: 0, transition: { duration: 0.25 } },
+        hidden: { opacity: 0, x: -15 },
+        show: { opacity: 1, x: 0, transition: { duration: 0.2 } },
     };
 
     return (
@@ -92,7 +84,7 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
+                        transition={{ duration: 0.15 }}
                         className="fixed inset-0 z-[58] bg-black/50 lg:hidden"
                         onClick={onClose}
                     />
@@ -103,7 +95,7 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
                         initial={{ x: '-100%' }}
                         animate={{ x: 0 }}
                         exit={{ x: '-100%' }}
-                        transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+                        transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
                         className="fixed inset-y-0 left-0 z-[59] w-full max-w-sm overflow-y-auto lg:hidden"
                         style={{ background: '#1C1C1E' }}
                         aria-label="Mobil navigasyon"
@@ -248,4 +240,4 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
             )}
         </AnimatePresence>
     );
-}
+});

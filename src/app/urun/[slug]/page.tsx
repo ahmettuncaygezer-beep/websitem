@@ -16,24 +16,31 @@ function mapToPDPProduct(p: any): Product {
         brand: p.brand || 'MAISON',
         slug: p.slug,
         price: p.salePrice || p.price,
-        originalPrice: p.salePrice ? p.price : undefined,
-        currency: 'TRY',
-        category: p.categorySlug || p.categoryId,
+        originalPrice: p.originalPrice || (p.salePrice ? p.price : undefined),
+        currency: p.currency || 'TRY',
+        categoryId: p.categoryId,
+        categorySlug: p.categorySlug,
+        category: p.category || p.categorySlug || p.categoryId,
+        images: p.images || [],
+        materials: p.materials || [],
+        dimensions: p.dimensions || { width: 0, height: 0, depth: 0, unit: 'cm' },
+        stock: p.stock || 0,
+        featured: p.featured || false,
         isNew: p.isNew || false,
-        isFeatured: p.featured || false,
-        deliveryDays: 5,
-        hasQuickShip: (p.stock || 0) > 0,
-        description: p.description,
-        rating: { average: 4.8, count: 127 },
-        badges: p.isNew ? [{ type: 'new', label: 'Yeni' }] : [],
-        colors: p.colors?.map((c: any, index: number) => ({
-            id: `c${index}`,
+        isFeatured: p.isFeatured || p.featured || false,
+        deliveryDays: p.deliveryDays || 5,
+        hasQuickShip: p.hasQuickShip ?? (p.stock || 0) > 0,
+        description: p.description || '',
+        rating: p.rating || { average: 4.8, count: 127 },
+        badges: p.badges || (p.isNew ? [{ type: 'new', label: 'Yeni' }] : []),
+        colors: (p.colors || []).map((c: any, index: number) => ({
+            id: c.id || `c${index}`,
             name: c.name,
             hex: c.hex,
-            image: p.images?.[0] || '/images/products/luna-sofa.jpg',
-            lifestyleImage: p.lifestyleImage || p.images?.[0] || '/images/products/luna-lifestyle.jpg',
-            inStock: true
-        })) || []
+            image: c.image || p.images?.[0] || '/images/products/luna-sofa.jpg',
+            lifestyleImage: c.lifestyleImage || p.lifestyleImage || p.images?.[0] || '/images/products/luna-lifestyle.jpg',
+            inStock: c.inStock ?? true
+        }))
     };
 }
 
@@ -65,7 +72,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         openGraph: {
             title: `${product.name} | MAISON`,
             description: product.description?.slice(0, 160),
-            images: [product.colors[0]?.image],
+            images: [product.colors[0]?.image || '/images/products/luna-sofa.jpg'],
         },
     };
 }
@@ -112,8 +119,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                         },
                         aggregateRating: {
                             '@type': 'AggregateRating',
-                            ratingValue: product.rating.average.toString(),
-                            reviewCount: product.rating.count.toString(),
+                            ratingValue: (product.rating?.average || 4.8).toString(),
+                            reviewCount: (product.rating?.count || 127).toString(),
                         },
                     }),
                 }}

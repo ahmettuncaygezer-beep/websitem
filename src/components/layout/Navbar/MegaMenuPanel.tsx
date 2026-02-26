@@ -1,6 +1,4 @@
-'use client';
-
-import { useState } from 'react';
+import { useState, memo, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -13,7 +11,7 @@ interface MegaMenuPanelProps {
     onClose: () => void;
 }
 
-function ColorSwatch({ name, hex }: { name: string; hex: string }) {
+const ColorSwatch = memo(function ColorSwatch({ name, hex }: { name: string; hex: string }) {
     const [showTip, setShowTip] = useState(false);
     return (
         <div className="relative" onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)}>
@@ -29,11 +27,17 @@ function ColorSwatch({ name, hex }: { name: string; hex: string }) {
             )}
         </div>
     );
-}
+});
 
-export function MegaMenuPanel({ category, onClose }: MegaMenuPanelProps) {
+export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: MegaMenuPanelProps) {
     useGlobal();
     const product = category.featuredProduct;
+
+    // Memoize variants to avoid recreation on every render
+    const itemVariants = useMemo(() => ({
+        hidden: { opacity: 0, x: -5 },
+        show: { opacity: 1, x: 0 }
+    }), []);
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-5">
@@ -52,12 +56,13 @@ export function MegaMenuPanel({ category, onClose }: MegaMenuPanelProps) {
                             <motion.ul
                                 initial="hidden"
                                 animate="show"
-                                variants={{ hidden: {}, show: { transition: { staggerChildren: 0.03 } } }}
+                                transition={{ staggerChildren: 0.02 }}
                             >
                                 {section.items.map((item) => (
                                     <motion.li
                                         key={item.href}
-                                        variants={{ hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0 } }}
+                                        variants={itemVariants}
+                                        transition={{ duration: 0.2 }}
                                     >
                                         <Link
                                             href={item.href}
@@ -171,4 +176,4 @@ export function MegaMenuPanel({ category, onClose }: MegaMenuPanelProps) {
             )}
         </div>
     );
-}
+});

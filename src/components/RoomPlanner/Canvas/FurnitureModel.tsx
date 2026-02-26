@@ -1,8 +1,5 @@
-'use client';
-
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { usePlannerStore } from '../store/plannerStore';
-import { getCollisions } from '../hooks/useCollision';
 import * as THREE from 'three';
 
 interface Props {
@@ -12,7 +9,7 @@ interface Props {
     onMove: (id: string, pos: { x: number; z: number }) => void;
 }
 
-export function FurnitureModel({ item, isSelected, onSelect, onMove }: Props) {
+export const FurnitureModel = memo(({ item, isSelected, onSelect, onMove }: Props) => {
     const [hovered, setHovered] = useState(false);
     const w = item.dimensions.width * item.scale;
     const h = item.dimensions.height * item.scale;
@@ -59,4 +56,6 @@ export function FurnitureModel({ item, isSelected, onSelect, onMove }: Props) {
             </mesh>
         </group>
     );
-}
+});
+
+FurnitureModel.displayName = 'FurnitureModel';

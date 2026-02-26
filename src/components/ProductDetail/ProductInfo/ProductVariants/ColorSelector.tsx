@@ -26,8 +26,8 @@ export function ColorSelector({ colors, selectedId, onSelect }: Props) {
                             <button
                                 role="radio" aria-checked={isActive} aria-label={`${c.name} rengini seç${!c.inStock ? ' (stokta yok)' : ''}`}
                                 disabled={!c.inStock}
-                                onClick={() => c.inStock && onSelect(c.id)}
-                                onMouseEnter={() => setTooltip(c.id)}
+                                onClick={() => c.inStock && c.id && onSelect(c.id)}
+                                onMouseEnter={() => c.id && setTooltip(c.id)}
                                 onMouseLeave={() => setTooltip(null)}
                                 className="relative overflow-hidden flex items-center justify-center transition-transform duration-150"
                                 style={{

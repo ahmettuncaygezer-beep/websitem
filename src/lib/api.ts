@@ -7,20 +7,38 @@ const mapProduct = (p: any): Product => ({
     id: p.id,
     name: p.name,
     slug: p.slug,
-    description: p.description,
+    description: p.description || '',
     price: Number(p.price),
     salePrice: p.sale_price ? Number(p.sale_price) : undefined,
+    originalPrice: p.original_price ? Number(p.original_price) : (p.price * 1.2), // Default original price if missing
+    currency: p.currency || 'TRY',
     categoryId: p.category_id,
     categorySlug: p.category_slug,
+    category: p.category_name || 'Mobilya',
     images: p.images || [],
     lifestyleImage: p.lifestyle_image,
-    colors: p.colors || [],
+    colors: (p.colors || []).map((c: any, i: number) => ({
+        id: c.id || `color-${i}`,
+        name: c.name || 'Standart',
+        hex: c.hex || '#D4C5B2',
+        image: c.image || (p.images ? p.images[0] : ''),
+        lifestyleImage: c.lifestyle_image || p.lifestyle_image || '',
+        inStock: c.in_stock !== false
+    })),
     materials: p.materials || [],
-    dimensions: p.dimensions,
+    dimensions: p.dimensions || { width: 0, height: 0, depth: 0, unit: 'cm' },
+    rating: {
+        average: p.rating_average || 4.8,
+        count: p.rating_count || 12
+    },
+    badges: p.badges || (p.is_new ? [{ type: 'new', label: 'Yeni' }] : []),
     stock: p.stock || 0,
     featured: p.featured || false,
-    isNew: p.is_new,
-    brand: p.brand
+    isFeatured: p.featured || false,
+    isNew: !!p.is_new,
+    brand: p.brand || 'MAISON',
+    deliveryDays: p.delivery_days || 14,
+    hasQuickShip: !!p.has_quick_ship
 });
 
 export const getProducts = async (filters?: { categorySlug?: string; featured?: boolean; isNew?: boolean }): Promise<Product[]> => {

@@ -36,7 +36,7 @@ export function ProductInfo({ product, selectedColorId, onColorChange, buttonRef
 
     const breadcrumbs = [
         { label: 'Ana Sayfa', href: '/' },
-        { label: product.category || 'Oturma Odası', href: `/kategori/${product.category}` },
+        { label: product.category || 'Oturma Odası', href: `/kategori/${product.categorySlug || 'oturma-odasi'}` },
         { label: product.name },
     ];
 

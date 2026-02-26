@@ -2,9 +2,8 @@
 
 import Link from 'next/link';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useMemo } from 'react';
 import { Menu } from 'lucide-react';
-import { AuthModal } from '@/components/auth/AuthModal';
 import { useNavbarScroll } from './useNavbarScroll';
 import { NavbarLogo } from './NavbarLogo';
 import { NavbarDesktop } from './NavbarDesktop';
@@ -24,7 +23,10 @@ export function Navbar() {
 
     const { isScrolled, shouldHide } = useNavbarScroll(activeCategoryId !== null);
 
-    const activeCategory = NAV_CATEGORIES.find((c) => c.id === activeCategoryId) ?? null;
+    const activeCategory = useMemo(() =>
+        NAV_CATEGORIES.find((c) => c.id === activeCategoryId) ?? null,
+        [activeCategoryId]
+    );
 
     // 150ms debounce on category hover to prevent accidental activations
     const handleCategoryEnter = useCallback((id: string) => {
@@ -46,8 +48,16 @@ export function Navbar() {
         setActiveCategoryId(null);
     }, []);
 
+    const handleMobileOpen = useCallback(() => setIsMobileOpen(true), []);
+    const handleMobileClose = useCallback(() => setIsMobileOpen(false), []);
+    const handleSearchOpen = useCallback(() => {
+        setActiveCategoryId(null);
+        setIsSearchOpen(true);
+    }, []);
+    const handleSearchClose = useCallback(() => setIsSearchOpen(false), []);
+
     // Navbar background styling based on scroll state
-    const headerStyle: React.CSSProperties = {
+    const headerStyle = useMemo<React.CSSProperties>(() => ({
         position: 'fixed',
         top: 0,
         left: 0,
@@ -64,16 +74,16 @@ export function Navbar() {
         backdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(4px)',
         WebkitBackdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(4px)',
         boxShadow: isScrolled ? '0 1px 20px rgba(0,0,0,0.08)' : 'none',
-    };
+    }), [isScrolled, shouldHide]);
 
-
-
-    const menuBtnColor = isMobileOpen ? 'white' : isScrolled ? '#1C1C1E' : 'white';
-    const menuBtnHover = isMobileOpen
-        ? 'rgba(255,255,255,0.1)'
-        : isScrolled
-            ? 'rgba(0,0,0,0.05)'
-            : 'rgba(255,255,255,0.1)';
+    const uiColors = useMemo(() => ({
+        btnColor: isMobileOpen ? 'white' : isScrolled ? '#1C1C1E' : 'white',
+        btnHover: isMobileOpen
+            ? 'rgba(255,255,255,0.1)'
+            : isScrolled
+                ? 'rgba(0,0,0,0.05)'
+                : 'rgba(255,255,255,0.1)'
+    }), [isMobileOpen, isScrolled]);
 
     return (
         <>
@@ -93,11 +103,11 @@ export function Navbar() {
                     {/* Hamburger (mobile) */}
                     <button
                         className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
-                        style={{ color: menuBtnColor }}
-                        onClick={() => setIsMobileOpen(true)}
+                        style={{ color: uiColors.btnColor }}
+                        onClick={handleMobileOpen}
                         aria-label="Menüyü aç"
                         aria-expanded={isMobileOpen}
-                        onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = menuBtnHover; }}
+                        onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = uiColors.btnHover; }}
                         onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
                     >
                         <Menu size={22} />
@@ -112,8 +122,8 @@ export function Navbar() {
                             <SearchBar
                                 isScrolled={isScrolled}
                                 isOpen={isSearchOpen}
-                                onOpen={() => setIsSearchOpen(true)}
-                                onClose={() => setIsSearchOpen(false)}
+                                onOpen={handleSearchOpen}
+                                onClose={handleSearchClose}
                             />
                         </div>
                     ) : (
@@ -167,8 +177,8 @@ export function Navbar() {
                             <SearchBar
                                 isScrolled={isScrolled}
                                 isOpen={false}
-                                onOpen={() => { setActiveCategoryId(null); setIsSearchOpen(true); }}
-                                onClose={() => setIsSearchOpen(false)}
+                                onOpen={handleSearchOpen}
+                                onClose={handleSearchClose}
                             />
 
                             {/* Nav icons (favorites, profile, cart) */}
@@ -189,12 +199,10 @@ export function Navbar() {
             {/* Mobile drawer */}
             <MobileMenu
                 isOpen={isMobileOpen}
-                onClose={() => setIsMobileOpen(false)}
+                onClose={handleMobileClose}
                 categories={NAV_CATEGORIES}
             />
 
-            {/* Auth modal */}
-            <AuthModal />
 
             {/* Spacer so page content isn't hidden behind fixed navbar */}
             <div style={{ height: '72px' }} aria-hidden="true" />

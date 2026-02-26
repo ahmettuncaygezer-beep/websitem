@@ -1,6 +1,4 @@
-'use client';
-
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { NavCategory } from './navbar.types';
@@ -13,7 +11,7 @@ interface NavbarDesktopProps {
     onCategoryLeave: () => void;
 }
 
-export function NavbarDesktop({
+export const NavbarDesktop = memo(function NavbarDesktop({
     categories,
     isScrolled,
     activeCategoryId,
@@ -73,4 +71,4 @@ export function NavbarDesktop({
             })}
         </nav>
     );
-}
+});

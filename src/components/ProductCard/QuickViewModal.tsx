@@ -115,7 +115,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                             >
                                 {selectedColor && (
                                     <Image
-                                        src={selectedColor.image}
+                                        src={selectedColor.image || product.images?.[0] || '/images/products/luna-sofa.jpg'}
                                         alt={product.name}
                                         fill
                                         className="object-cover"

@@ -38,9 +38,9 @@ export function ProductCardColors({
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                if (c.inStock) onSelect(c.id);
+                                if (c.inStock && c.id) onSelect(c.id);
                             }}
-                            onMouseEnter={() => setTooltipId(c.id)}
+                            onMouseEnter={() => c.id && setTooltipId(c.id)}
                             onMouseLeave={() => setTooltipId(null)}
                             className="relative w-4 h-4 rounded-full transition-transform duration-150"
                             style={{

@@ -24,7 +24,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     // Build plain string array of images for the new gallery
-    const images = product.colors.map(c => c.image);
+    const images = product.colors.map(c => c.image).filter((img): img is string => !!img);
     if (product.colors[0]?.lifestyleImage) {
         images.push(product.colors[0].lifestyleImage);
     }
@@ -33,7 +33,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
         { id: 'desc', label: 'Açıklama', content: <DescriptionTab description={product.description} /> },
         { id: 'specs', label: 'Özellikler', content: <SpecsTab /> },
         { id: 'delivery', label: 'Teslimat & Montaj', content: <DeliveryTab /> },
-        { id: 'reviews', label: 'Yorumlar', count: product.rating.count, content: <ReviewsTab /> },
+        { id: 'reviews', label: 'Yorumlar', count: product.rating?.count || 0, content: <ReviewsTab /> },
     ];
 
     const handleAddToCart = () => {
@@ -87,7 +87,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                             name: product.name,
                             image: selectedColor?.image ?? product.colors[0]?.image ?? '',
                             price: product.price,
-                            brand: product.brand,
+                            brand: product.brand || 'MAISON',
                         }}
                     />
                 </div>

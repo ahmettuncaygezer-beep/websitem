@@ -5,24 +5,47 @@ export interface Product {
   description: string;
   price: number;
   salePrice?: number;
+  originalPrice?: number;
+  currency?: string;
   categoryId: string;
   categorySlug: string;
+  category?: string;
   images: string[];
   lifestyleImage?: string;
   model3dUrl?: string;
   colors: ProductColor[];
   materials: string[];
   dimensions: ProductDimensions;
+  rating?: ProductRating;
+  badges?: ProductBadge[];
   stock: number;
   featured: boolean;
-  isNew?: boolean;
+  isFeatured?: boolean;
+  isNew?: boolean | string;
   brand?: string;
+  deliveryDays?: number;
+  hasQuickShip?: boolean;
 }
 
 export interface ProductColor {
+  id?: string;
   name: string;
   hex: string;
+  image?: string;
+  lifestyleImage?: string;
+  inStock?: boolean;
 }
+
+export interface ProductRating {
+  average: number;
+  count: number;
+}
+
+export interface ProductBadge {
+  type: 'new' | 'sale' | 'low-stock' | 'bestseller' | 'exclusive';
+  label: string;
+}
+
 
 export interface ProductDimensions {
   width: number;

@@ -13,6 +13,7 @@ export function useCart() {
             price: product.price,
             image: product.image,
             slug: product.slug || product.href?.split('/').pop() || '',
+            selectedColor: options?.selectedColor,
         });
 
         toast.success(

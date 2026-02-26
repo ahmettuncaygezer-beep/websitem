@@ -1,40 +1,14 @@
-export interface ProductColor {
-    id: string;
-    name: string;
-    hex: string;
-    image: string;
-    lifestyleImage: string;
-    inStock: boolean;
-}
+import {
+    Product as GlobalProduct,
+    ProductColor as GlobalProductColor,
+    ProductRating as GlobalProductRating,
+    ProductBadge as GlobalProductBadge
+} from '@/types';
 
-export interface ProductRating {
-    average: number;
-    count: number;
-}
-
-export interface ProductBadge {
-    type: 'new' | 'sale' | 'low-stock' | 'bestseller' | 'exclusive';
-    label: string;
-}
-
-export interface Product {
-    id: string;
-    name: string;
-    brand: string;
-    slug: string;
-    price: number;
-    originalPrice?: number;
-    currency: string;
-    colors: ProductColor[];
-    rating: ProductRating;
-    badges: ProductBadge[];
-    category: string;
-    isNew: boolean;
-    isFeatured: boolean;
-    deliveryDays: number;
-    hasQuickShip: boolean;
-    description?: string;
-}
+export type Product = GlobalProduct;
+export type ProductColor = GlobalProductColor;
+export type ProductRating = GlobalProductRating;
+export type ProductBadge = GlobalProductBadge;
 
 export type ViewMode = 'grid' | 'list';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heart } from 'lucide-react';
@@ -45,7 +45,7 @@ const lifestyleImages: Record<string, string> = {
 
 const fallbackImage = '/images/products/luna-sofa.jpg';
 
-export function ProductCard({ product }: ProductCardProps) {
+export const ProductCard = memo(function ProductCard({ product }: ProductCardProps) {
     const [isHovered, setIsHovered] = useState(false);
     const { toggleFavorite, isFavorite } = useFavorites();
     const isLiked = isFavorite(product.id);
@@ -162,4 +162,4 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
         </div>
     );
-}
+});

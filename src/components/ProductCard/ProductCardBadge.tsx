@@ -12,7 +12,7 @@ const BADGE_STYLES: Record<ProductBadge['type'], { bg: string; color: string; bo
 };
 
 interface ProductCardBadgeProps {
-    badges: ProductBadge[];
+    badges?: ProductBadge[];
 }
 
 export function ProductCardBadge({ badges }: ProductCardBadgeProps) {

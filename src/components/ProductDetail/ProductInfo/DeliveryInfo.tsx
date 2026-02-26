@@ -2,9 +2,9 @@
 
 import { Truck, Calendar, Zap, Wrench } from 'lucide-react';
 
-interface Props { deliveryDays: number; hasQuickShip: boolean; price: number; }
+interface Props { deliveryDays?: number; hasQuickShip?: boolean; price: number; }
 
-export function DeliveryInfo({ deliveryDays, hasQuickShip, price }: Props) {
+export function DeliveryInfo({ deliveryDays = 14, hasQuickShip = false, price }: Props) {
     const now = new Date();
     const start = new Date(now); start.setDate(start.getDate() + deliveryDays);
     const end = new Date(now); end.setDate(end.getDate() + deliveryDays + 2);

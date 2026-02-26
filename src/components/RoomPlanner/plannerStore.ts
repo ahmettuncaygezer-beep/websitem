@@ -63,8 +63,8 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
         const { items, room, past } = get();
         // Save current state to past, discarding future
         const currentState: PlannerHistoryState = {
-            items: JSON.parse(JSON.stringify(items)),
-            room: JSON.parse(JSON.stringify(room))
+            items: [...items],
+            room: { ...room }
         };
         const newPast = [...past, currentState];
         if (newPast.length > MAX_HISTORY) {

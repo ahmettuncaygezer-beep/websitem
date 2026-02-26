@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { ShoppingBag, Heart, User, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,7 +14,34 @@ interface NavIconsProps {
     isScrolled: boolean;
 }
 
-export function NavIcons({ isScrolled }: NavIconsProps) {
+const NavIconBtn = memo(function NavIconBtn({
+    label,
+    onClick,
+    children,
+    color,
+    hoverBg
+}: {
+    label: string,
+    onClick?: () => void,
+    children: React.ReactNode,
+    color: string,
+    hoverBg: string
+}) {
+    return (
+        <button
+            onClick={onClick}
+            aria-label={label}
+            className="relative flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
+            style={{ color }}
+            onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = hoverBg; }}
+            onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+        >
+            {children}
+        </button>
+    );
+});
+
+export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
     const openAuth = useAuthStore((state) => state.openAuthModal);
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const { totalItems, openCart } = useCart();
@@ -22,22 +49,14 @@ export function NavIcons({ isScrolled }: NavIconsProps) {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [heartHovered, setHeartHovered] = useState(false);
 
-    const iconColor = isScrolled ? '#1C1C1E' : 'white';
-    const iconBtnHover = isScrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)';
+    const ui = useMemo(() => ({
+        iconColor: isScrolled ? '#1C1C1E' : 'white',
+        iconBtnHover: isScrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)'
+    }), [isScrolled]);
+
     const { isDark, toggle, mounted } = useDarkMode();
 
-    const iconBtn = (label: string, onClick?: () => void, children?: React.ReactNode) => (
-        <button
-            onClick={onClick}
-            aria-label={label}
-            className="relative flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
-            style={{ color: iconColor }}
-            onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = iconBtnHover; }}
-            onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-        >
-            {children}
-        </button>
-    );
+    const handleLoginClick = useCallback(() => openAuth('login'), [openAuth]);
 
     return (
         <div className="flex items-center gap-0 md:gap-1">
@@ -48,8 +67,8 @@ export function NavIcons({ isScrolled }: NavIconsProps) {
                     aria-label={isDark ? 'Aydınlık moda geç' : 'Karanlık moda geç'}
                     title={isDark ? 'Aydınlık mod' : 'Karanlık mod'}
                     className="relative hidden md:flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
-                    style={{ color: iconColor }}
-                    onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = iconBtnHover; }}
+                    style={{ color: ui.iconColor }}
+                    onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = ui.iconBtnHover; }}
                     onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
                 >
                     <motion.div
@@ -67,17 +86,17 @@ export function NavIcons({ isScrolled }: NavIconsProps) {
                 href="/favoriler"
                 aria-label={`Favorilerim${favCount > 0 ? `, ${favCount} ürün` : ''}`}
                 className="relative hidden md:flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
-                style={{ color: iconColor }}
+                style={{ color: ui.iconColor }}
                 onMouseEnter={() => setHeartHovered(true)}
                 onMouseLeave={() => setHeartHovered(false)}
-                onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = iconBtnHover; }}
+                onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = ui.iconBtnHover; }}
                 onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
             >
                 <Heart
                     size={20}
                     style={{
                         fill: heartHovered ? '#ef4444' : 'none',
-                        color: heartHovered ? '#ef4444' : iconColor,
+                        color: heartHovered ? '#ef4444' : ui.iconColor,
                         transition: 'fill 200ms ease, color 200ms ease',
                     }}
                 />
@@ -90,9 +109,14 @@ export function NavIcons({ isScrolled }: NavIconsProps) {
                 onMouseEnter={() => setIsUserMenuOpen(true)}
                 onMouseLeave={() => setIsUserMenuOpen(false)}
             >
-                {iconBtn('Hesabım', () => openAuth('login'),
+                <NavIconBtn
+                    label="Hesabım"
+                    onClick={handleLoginClick}
+                    color={ui.iconColor}
+                    hoverBg={ui.iconBtnHover}
+                >
                     <User size={20} />
-                )}
+                </NavIconBtn>
 
                 <AnimatePresence>
                     {isUserMenuOpen && (
@@ -147,12 +171,17 @@ export function NavIcons({ isScrolled }: NavIconsProps) {
             </div>
 
             {/* ③ Cart */}
-            {iconBtn(`Sepet, ${totalItems} ürün`, openCart,
+            <NavIconBtn
+                label={`Sepet, ${totalItems} ürün`}
+                onClick={openCart}
+                color={ui.iconColor}
+                hoverBg={ui.iconBtnHover}
+            >
                 <>
                     <ShoppingBag size={20} />
                     {totalItems > 0 && <CartBadge count={totalItems} />}
                 </>
-            )}
+            </NavIconBtn>
         </div>
     );
-}
+});

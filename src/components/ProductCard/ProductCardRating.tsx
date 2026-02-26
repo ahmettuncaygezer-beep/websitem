@@ -4,12 +4,12 @@ import { Star } from 'lucide-react';
 import type { ProductRating } from './product.types';
 
 interface ProductCardRatingProps {
-    rating: ProductRating;
+    rating?: ProductRating;
     slug: string;
 }
 
 export function ProductCardRating({ rating, slug }: ProductCardRatingProps) {
-    if (rating.count === 0) {
+    if (!rating || rating.count === 0) {
         return (
             <div className="mt-2">
                 <a
