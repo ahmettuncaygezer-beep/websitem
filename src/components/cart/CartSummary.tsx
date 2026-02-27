@@ -25,7 +25,7 @@ export default function CartSummary() {
                 <div className="flex items-center gap-2 mb-2">
                     <Truck className="w-3.5 h-3.5 text-[#C9A96E]" />
                     {hasShipping ? (
-                        <p className="text-[12px] text-[#4CAF50] font-medium">
+                        <p className="text-[12px] text-[#4CAF50] font-medium" data-lang-key="cart_free_shipping_won">
                             Ücretsiz kargo kazandınız! 🎉
                         </p>
                     ) : (
@@ -33,7 +33,7 @@ export default function CartSummary() {
                             <span className="font-semibold text-[#1C1C1E]">
                                 ₺{formatted(remaining)}
                             </span>
-                            {' '}daha ekleyin, kargo ücretsiz!
+                            {' '}<span data-lang-key="cart_add_more_for_free">daha ekleyin, kargo ücretsiz!</span>
                         </p>
                     )}
                 </div>
@@ -50,22 +50,22 @@ export default function CartSummary() {
             {/* TOPLAM */}
             <div className="px-6 py-3 space-y-2">
                 <div className="flex justify-between text-[13px]">
-                    <span className="text-[#666]">Ara Toplam</span>
+                    <span className="text-[#666]" data-lang-key="cart_subtotal">Ara Toplam</span>
                     <span className="font-medium text-[#1C1C1E]">
                         ₺{formatted(totalPrice)}
                     </span>
                 </div>
                 <div className="flex justify-between text-[13px]">
-                    <span className="text-[#666]">Kargo</span>
+                    <span className="text-[#666]" data-lang-key="cart_shipping">Kargo</span>
                     <span className={hasShipping
                         ? 'text-[#4CAF50] font-medium'
                         : 'font-medium text-[#1C1C1E]'}>
-                        {hasShipping ? 'Ücretsiz' : `₺${formatted(199)}`}
+                        {hasShipping ? <span data-lang-key="cart_free">Ücretsiz</span> : `₺${formatted(199)}`}
                     </span>
                 </div>
                 <div className="flex justify-between text-[15px] pt-2
                        border-t border-[#E8E3DC]">
-                    <span className="font-semibold text-[#1C1C1E]">Toplam</span>
+                    <span className="font-semibold text-[#1C1C1E]" data-lang-key="cart_total">Toplam</span>
                     <span className="font-bold text-[#1C1C1E]">
                         ₺{formatted(hasShipping ? totalPrice : totalPrice + 199)}
                     </span>
@@ -84,7 +84,7 @@ export default function CartSummary() {
                     rounded-sm"
                 >
                     <ShoppingBag className="w-4 h-4" />
-                    ÖDEMEYİ TAMAMLA
+                    <span data-lang-key="cart_checkout">ÖDEMEYİ TAMAMLA</span>
                 </Link>
                 <button
                     onClick={closeCart}
@@ -92,6 +92,7 @@ export default function CartSummary() {
                     text-[13px] text-[#666] hover:text-[#1C1C1E]
                     hover:border-[#1C1C1E] transition-colors duration-200
                     rounded-sm"
+                    data-lang-key="continue_shopping"
                 >
                     Alışverişe Devam Et
                 </button>

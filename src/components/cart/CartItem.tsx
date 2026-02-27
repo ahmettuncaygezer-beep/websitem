@@ -3,15 +3,18 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Trash2, Minus, Plus } from 'lucide-react'
-import { useCart } from '@/hooks/useCart'
-import type { CartItem as CartItemType } from '@/store/cartStore'
+import { useCart } from '@/context/CartContext'
 
-export default function CartItem({ item }: { item: CartItemType }) {
+export default function CartItem({ item }: { item: any }) {
     const { removeItem, updateQuantity } = useCart()
-    const { id, name, price, image, quantity } = item
+
+    // Support both {product, quantity} (Context) and flat properties (Store)
+    const productData = item.product || item;
+    const { id, name, price, image } = productData;
+    const quantity = item.quantity || 1;
 
     const formattedPrice = new Intl.NumberFormat('tr-TR').format(
-        price * quantity
+        (price || 0) * quantity
     )
     const formattedUnit = new Intl.NumberFormat('tr-TR').format(price)
 
@@ -100,7 +103,7 @@ export default function CartItem({ item }: { item: CartItemType }) {
                         </p>
                         {quantity > 1 && (
                             <p className="text-[11px] text-[#999]">
-                                ₺{formattedUnit} / adet
+                                ₺{formattedUnit} / <span data-lang-key="cart_per_item">adet</span>
                             </p>
                         )}
                     </div>

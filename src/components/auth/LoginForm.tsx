@@ -43,7 +43,7 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
         <form onSubmit={handleSubmit} className="px-8 pb-6">
             {/* Email */}
             <div className="mb-4">
-                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>
+                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }} data-lang-key="auth_email_label">
                     E-posta adresi
                 </label>
                 <div className="relative">
@@ -60,6 +60,7 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
                         onBlur={() => setEmailFocused(false)}
                         autoComplete="email"
                         placeholder="ornek@email.com"
+                        data-lang-key="auth_email_placeholder"
                         className="w-full pl-10 pr-4 py-3 text-[14px] outline-none transition-colors duration-200"
                         style={{
                             border: error ? '1px solid #E53935' : emailFocused ? '1px solid #C9A96E' : '1px solid #E0E0E0',
@@ -72,7 +73,7 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
 
             {/* Password */}
             <div className="mb-3">
-                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>
+                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }} data-lang-key="auth_password_label">
                     Şifre
                 </label>
                 <div className="relative">
@@ -128,7 +129,7 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
                             </svg>
                         )}
                     </div>
-                    <span className="text-[12px]" style={{ color: '#666' }}>Beni Hatırla</span>
+                    <span className="text-[12px]" style={{ color: '#666' }} data-lang-key="auth_remember_me">Beni Hatırla</span>
                 </label>
                 <button
                     type="button"
@@ -136,7 +137,7 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
                     className="text-[12px] hover:underline"
                     style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
-                    Şifremi Unuttum →
+                    <span data-lang-key="auth_forgot_link">Şifremi Unuttum →</span>
                 </button>
             </div>
 
@@ -161,10 +162,10 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
                             className="animate-spin"
                             style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid #C9A96E', borderRadius: '50%' }}
                         />
-                        Giriş yapılıyor...
+                        <span data-lang-key="auth_logging_in">Giriş yapılıyor...</span>
                     </>
                 ) : (
-                    'Giriş Yap'
+                    <span data-lang-key="auth_login_btn">Giriş Yap</span>
                 )}
             </motion.button>
 
@@ -188,14 +189,14 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
 
             {/* Switch to register */}
             <p className="text-center mt-4 text-[12px]" style={{ color: '#999' }}>
-                Hesabınız yok mu?{' '}
+                <span data-lang-key="auth_no_account">Hesabınız yok mu?</span>{' '}
                 <button
                     type="button"
                     onClick={onSwitchToRegister}
                     className="font-medium hover:underline"
                     style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
-                    Kayıt Olun →
+                    <span data-lang-key="auth_register_link">Kayıt Olun →</span>
                 </button>
             </p>
         </form>

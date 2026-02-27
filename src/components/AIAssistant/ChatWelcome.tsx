@@ -6,11 +6,11 @@ import { useChat } from './hooks/useChat';
 import Link from 'next/link';
 
 const QUICK_STARTS = [
-    { icon: '🛋️', text: 'Oturma odası için mobilya' },
-    { icon: '🛏️', text: 'Yatak odası dekorasyonu' },
-    { icon: '💰', text: 'Bütçeme uygun öneriler' },
-    { icon: '🎨', text: 'Stil testini yapmak istiyorum' },
-    { icon: '📐', text: 'Oda planlayıcıya git' },
+    { icon: '🛋️', text: 'Oturma odası için mobilya', langKey: 'chat_qs_living_room' },
+    { icon: '🛏️', text: 'Yatak odası dekorasyonu', langKey: 'chat_qs_bedroom' },
+    { icon: '💰', text: 'Bütçeme uygun öneriler', langKey: 'chat_qs_budget' },
+    { icon: '🎨', text: 'Stil testini yapmak istiyorum', langKey: 'chat_qs_style' },
+    { icon: '📐', text: 'Oda planlayıcıya git', langKey: 'chat_qs_planner' },
 ];
 
 export function ChatWelcome() {
@@ -34,12 +34,14 @@ export function ChatWelcome() {
             </motion.div>
 
             <motion.h3 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                style={{ fontSize: 16, fontWeight: 600, color: '#1C1C1E', textAlign: 'center' }}>
+                style={{ fontSize: 16, fontWeight: 600, color: '#1C1C1E', textAlign: 'center' }}
+                data-lang-key="chat_welcome_title">
                 Merhaba! Ben Maison AI 👋
             </motion.h3>
 
             <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-                style={{ fontSize: 13, color: '#666', textAlign: 'center', marginTop: 8 }}>
+                style={{ fontSize: 13, color: '#666', textAlign: 'center', marginTop: 8 }}
+                data-lang-key="chat_welcome_desc">
                 Size özel mobilya önerileri için buradayım.
             </motion.p>
 
@@ -60,7 +62,7 @@ export function ChatWelcome() {
                         onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#C9A96E'; e.currentTarget.style.background = '#FDF8F0'; }}
                         onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#E8E3DC'; e.currentTarget.style.background = '#F5F0EB'; }}
                     >
-                        {qs.icon} {qs.text}
+                        {qs.icon} <span data-lang-key={qs.langKey}>{qs.text}</span>
                     </motion.button>
                 ))}
             </div>

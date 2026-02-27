@@ -11,13 +11,15 @@ import {
     X,
     Shield,
     Terminal,
-    Zap
+    Zap,
+    ChevronDown
 } from 'lucide-react';
 import Link from 'next/link';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/components/ProductCard/useWishlist';
+import { usePlannerStore } from '../RoomPlanner/plannerStore';
 
 export default function AntigravityBrowserControl() {
     const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +41,7 @@ export default function AntigravityBrowserControl() {
 
     const isPlanner = pathname === '/oda-planlayici';
     const isProductPage = pathname?.startsWith('/urun/');
+    const { planName, setPlanName } = usePlannerStore();
 
     const getContextActions = () => {
         const baseActions = [
@@ -53,7 +56,12 @@ export default function AntigravityBrowserControl() {
 
         if (isPlanner) {
             return [
-                { icon: <Box size={18} />, label: 'Taslağı Kaydet', onClick: () => { }, color: 'text-blue-400' },
+                {
+                    icon: <Box size={18} />, label: 'Taslağı Kaydet', onClick: () => {
+                        setPlanName(`Maison_${new Date().toLocaleTimeString()}`);
+                        // Optionally trigger a toast or notification
+                    }, color: 'text-blue-400'
+                },
                 ...baseActions
             ];
         }
@@ -80,13 +88,16 @@ export default function AntigravityBrowserControl() {
                     <motion.button
                         key="orb"
                         layoutId="control-center"
+                        drag
+                        dragConstraints={{ left: -500, right: 500, top: -800, bottom: 50 }}
+                        dragElastic={0.1}
                         onClick={() => setIsOpen(true)}
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 20, opacity: 0 }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="pointer-events-auto h-14 px-6 rounded-full bg-[#1C1C1E]/90 backdrop-blur-xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.3)] flex items-center gap-3 group overflow-hidden"
+                        className="pointer-events-auto h-14 px-6 rounded-full bg-[#1C1C1E]/90 backdrop-blur-xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.3)] flex items-center gap-3 group overflow-hidden cursor-grab active:cursor-grabbing"
                     >
                         <div className="relative">
                             <Cpu size={20} className="text-gold animate-pulse" />
@@ -114,10 +125,13 @@ export default function AntigravityBrowserControl() {
                     <motion.div
                         key="panel"
                         layoutId="control-center"
+                        drag
+                        dragConstraints={{ left: -500, right: 500, top: -800, bottom: 50 }}
+                        dragElastic={0.1}
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        className="pointer-events-auto w-[320px] bg-[#1C1C1E]/95 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-[0_32px_64px_rgba(0,0,0,0.5)] overflow-hidden"
+                        className="pointer-events-auto w-[320px] bg-[#1C1C1E]/95 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-[0_32px_64px_rgba(0,0,0,0.5)] overflow-hidden cursor-default"
                     >
                         {/* Header */}
                         <div className="p-4 border-b border-white/5 flex items-center justify-between">

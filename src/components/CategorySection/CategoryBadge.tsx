@@ -2,12 +2,14 @@
 
 interface CategoryBadgeProps {
     text: string;
+    textKey?: string;
     variant?: 'glass' | 'gold';
     isHovered?: boolean;
 }
 
 export function CategoryBadge({
     text,
+    textKey,
     variant = 'glass',
     isHovered = false,
 }: CategoryBadgeProps) {
@@ -20,6 +22,7 @@ export function CategoryBadge({
                     background: '#C9A96E',
                     color: '#1C1C1E',
                 }}
+                data-lang-key={textKey}
             >
                 {text}
             </span>
@@ -40,6 +43,7 @@ export function CategoryBadge({
                 backdropFilter: 'blur(8px)',
                 WebkitBackdropFilter: 'blur(8px)',
             }}
+            data-lang-key={textKey}
         >
             {text}
         </span>

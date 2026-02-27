@@ -63,7 +63,7 @@ function StatItem({
             </div>
 
             {/* LABEL */}
-            <p className="text-[13px] text-[#666] font-medium tracking-wide uppercase mt-1">
+            <p className="text-[13px] text-[#666] font-medium tracking-wide uppercase mt-1" data-lang-key={stat.langKey}>
                 {stat.label}
             </p>
 
@@ -90,12 +90,13 @@ export default function StatsCounter() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12"
                 >
-                    <p className="text-[11px] text-[#C9A96E] tracking-[0.3em] uppercase font-medium mb-3">
+                    <p className="text-[11px] text-[#C9A96E] tracking-[0.3em] uppercase font-medium mb-3" data-lang-key="stats_subtitle">
                         Rakamlarla MAISON
                     </p>
                     <h2
                         className="text-2xl md:text-3xl font-bold text-[#1C1C1E]"
                         style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}
+                        data-lang-key="stats_title"
                     >
                         Binlerce Mutlu Müşteri
                     </h2>
@@ -138,7 +139,7 @@ export default function StatsCounter() {
                             </motion.svg>
                         ))}
                     </div>
-                    <p className="text-[12px] text-[#999]">
+                    <p className="text-[12px] text-[#999]" data-lang-key="stats_based_on">
                         12.500+ müşteri değerlendirmesi üzerinden
                     </p>
                 </motion.div>

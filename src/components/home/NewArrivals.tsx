@@ -20,16 +20,16 @@ export function NewArrivals() {
                     className="flex flex-col md:flex-row md:items-end justify-between mb-14"
                 >
                     <div>
-                        <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
+                        <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="new_arr_badge">
                             Yeni Gelenler
                         </p>
-                        <h2 className="text-headline text-charcoal">Öne Çıkan Parçalar</h2>
+                        <h2 className="text-headline text-charcoal" data-lang-key="new_arr_title">Öne Çıkan Parçalar</h2>
                     </div>
                     <Link
                         href="/kategori/oturma-odasi"
                         className="group mt-4 md:mt-0 inline-flex items-center gap-2 text-sm font-sans font-medium text-warm-gray hover:text-gold transition-colors"
                     >
-                        Tüm Ürünleri Gör
+                        <span data-lang-key="new_arr_link">Tüm Ürünleri Gör</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </motion.div>

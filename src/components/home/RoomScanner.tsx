@@ -73,9 +73,9 @@ export function RoomScanner() {
                                 {(status === 'analyzing' || status === 'completed') && (
                                     <div className="absolute inset-0">
                                         {[
-                                            { top: '30%', left: '40%', label: 'Alan: 12.4m²' },
-                                            { top: '60%', left: '70%', label: 'Işık: İyi (Kuzey)' },
-                                            { top: '45%', left: '20%', label: 'Zemin: Meşe' },
+                                            { top: '30%', left: '40%', label: 'Alan: 12.4m²', langKey: 'scanner_hud_area' },
+                                            { top: '60%', left: '70%', label: 'Işık: İyi (Kuzey)', langKey: 'scanner_hud_light' },
+                                            { top: '45%', left: '20%', label: 'Zemin: Meşe', langKey: 'scanner_hud_floor' },
                                         ].map((pt, i) => (
                                             <motion.div
                                                 key={i}
@@ -87,7 +87,7 @@ export function RoomScanner() {
                                             >
                                                 <div className="w-4 h-4 rounded-full bg-gold animate-pulse mb-2 shadow-[0_0_10px_#D4AF37]" />
                                                 <div className="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/20">
-                                                    <span className="text-[10px] text-white font-sans font-bold uppercase tracking-widest">{pt.label}</span>
+                                                    <span className="text-[10px] text-white font-sans font-bold uppercase tracking-widest" data-lang-key={pt.langKey}>{pt.label}</span>
                                                 </div>
                                             </motion.div>
                                         ))}
@@ -110,8 +110,8 @@ export function RoomScanner() {
                                             <div className="w-24 h-24 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center mb-4 group-hover:bg-gold transition-all duration-500">
                                                 <Camera className="text-white" size={32} />
                                             </div>
-                                            <p className="text-white font-serif text-xl mb-1">Odanı Tara</p>
-                                            <p className="text-white/60 text-xs font-sans uppercase tracking-[0.2em]">Yapay Zeka Mimarı</p>
+                                            <p className="text-white font-serif text-xl mb-1" data-lang-key="scanner_hud_scan">Odanı Tara</p>
+                                            <p className="text-white/60 text-xs font-sans uppercase tracking-[0.2em]" data-lang-key="scanner_hud_architect">Yapay Zeka Mimarı</p>
                                         </motion.button>
                                     )}
 
@@ -125,7 +125,7 @@ export function RoomScanner() {
                                         >
                                             <div className="flex items-center justify-center gap-3 mb-6">
                                                 <Loader2 className="animate-spin text-gold" size={24} />
-                                                <span className="text-white font-sans font-bold uppercase tracking-widest text-xs">Alan Analiz Ediliyor...</span>
+                                                <span className="text-white font-sans font-bold uppercase tracking-widest text-xs" data-lang-key="scanner_hud_analyzing">Alan Analiz Ediliyor...</span>
                                             </div>
                                             <div className="h-1 bg-white/10 rounded-full overflow-hidden">
                                                 <motion.div
@@ -144,8 +144,8 @@ export function RoomScanner() {
                                             exit={{ opacity: 0 }}
                                         >
                                             <Sparkles className="text-gold mx-auto mb-4 animate-bounce" size={40} />
-                                            <p className="text-white font-serif text-2xl">Tarz Eşleşmesi Bulundu</p>
-                                            <p className="text-white/60 text-xs font-sans uppercase tracking-widest mt-2">Kişiye Özel Katalog Hazırlanıyor</p>
+                                            <p className="text-white font-serif text-2xl" data-lang-key="scanner_hud_match">Tarz Eşleşmesi Bulundu</p>
+                                            <p className="text-white/60 text-xs font-sans uppercase tracking-widest mt-2" data-lang-key="scanner_hud_catalog">Kişiye Özel Katalog Hazırlanıyor</p>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -171,37 +171,37 @@ export function RoomScanner() {
                     >
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 border border-gold/20 rounded-full text-gold mb-8">
                             <Sparkles size={16} />
-                            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.3em]">Yeni Nesil Deneyim</span>
+                            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.3em]" data-lang-key="scanner_badge">Yeni Nesil Deneyim</span>
                         </div>
 
                         <h2 className="text-display-md text-white font-serif mb-8">
-                            Eviniz İçin <br />
-                            <span className="italic text-warm-gray-light">Yapay Zeka</span> Asistanı
+                            <span data-lang-key="scanner_title_1">Eviniz İçin</span> <br />
+                            <span className="italic text-warm-gray-light" data-lang-key="scanner_title_2">Yapay Zeka</span> <span data-lang-key="scanner_title_3">Asistanı</span>
                         </h2>
 
-                        <p className="text-lg text-white/70 font-sans leading-relaxed mb-12">
+                        <p className="text-lg text-white/70 font-sans leading-relaxed mb-12" data-lang-key="scanner_desc">
                             Telefonunuzun kamerasıyla odanızı tarayın, yapay zekamız yaşam alanınızın boyutlarını, ışık miktarını ve mevcut tarzını analiz ederek size %100 uyumlu parçaları saniyeler içinde önersin.
                         </p>
 
                         <div className="space-y-6 mb-12">
                             {[
-                                { icon: SlidersHorizontal, title: 'Otomatik Ölçü Analizi', desc: 'Mobilyaların alanınıza sığıp sığmayacağını test edin.' },
-                                { icon: CheckCircle2, title: 'Işık ve Renk Uyumu', desc: 'Kumaş tonlarının odanızın ışığında nasıl görüneceğini simüle edin.' },
+                                { icon: SlidersHorizontal, title: 'Otomatik Ölçü Analizi', desc: 'Mobilyaların alanınıza sığıp sığmayacağını test edin.', titleKey: 'scanner_feature_1_title', descKey: 'scanner_feature_1_desc' },
+                                { icon: CheckCircle2, title: 'Işık ve Renk Uyumu', desc: 'Kumaş tonlarının odanızın ışığında nasıl görüneceğini simüle edin.', titleKey: 'scanner_feature_2_title', descKey: 'scanner_feature_2_desc' },
                             ].map((item, i) => (
                                 <div key={i} className="flex gap-4">
                                     <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
                                         <item.icon size={20} className="text-gold" />
                                     </div>
                                     <div>
-                                        <h4 className="text-white font-sans font-bold text-sm tracking-wide uppercase mb-1">{item.title}</h4>
-                                        <p className="text-white/50 text-xs font-sans">{item.desc}</p>
+                                        <h4 className="text-white font-sans font-bold text-sm tracking-wide uppercase mb-1" data-lang-key={item.titleKey}>{item.title}</h4>
+                                        <p className="text-white/50 text-xs font-sans" data-lang-key={item.descKey}>{item.desc}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
 
                         <Link href="/oda-planlayici" className="group flex w-fit items-center gap-3 text-sm font-sans font-bold uppercase tracking-[0.2em] text-white hover:text-gold transition-colors">
-                            HEMEN TEST ET
+                            <span data-lang-key="scanner_btn">HEMEN TEST ET</span>
                             <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-gold group-hover:bg-gold transition-all">
                                 <ArrowRight size={18} className="group-hover:text-white" />
                             </div>

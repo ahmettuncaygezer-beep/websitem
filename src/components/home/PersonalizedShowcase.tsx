@@ -64,13 +64,13 @@ export function PersonalizedShowcase() {
                     >
                         <div className="flex items-center gap-2 text-gold mb-3">
                             <Sparkles size={18} />
-                            <span className="text-xs font-sans font-bold uppercase tracking-[0.3em]">
+                            <span className="text-xs font-sans font-bold uppercase tracking-[0.3em]" data-lang-key="showcase_badge">
                                 Senin İçin Seçtiklerimiz
                             </span>
                         </div>
                         <h2 className="text-display-sm text-charcoal">
-                            Hoş Geldin, {userName}. <br />
-                            <span className="text-warm-gray-light">Sana Özel Seçkimiz</span>
+                            <span data-lang-key="showcase_title_1">Hoş Geldin, </span>{userName}. <br />
+                            <span className="text-warm-gray-light" data-lang-key="showcase_title_2">Sana Özel Seçkimiz</span>
                         </h2>
                     </motion.div>
 
@@ -78,7 +78,7 @@ export function PersonalizedShowcase() {
                         href="/kategori/oturma-odasi"
                         className="group flex items-center gap-2 text-sm font-sans font-bold tracking-widest uppercase text-charcoal hover:text-gold transition-colors"
                     >
-                        Tümünü Gör
+                        <span data-lang-key="showcase_btn_all">Tümünü Gör</span>
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>

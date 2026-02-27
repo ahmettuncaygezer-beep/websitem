@@ -78,6 +78,20 @@ export default function FurnitureItem({
         window.addEventListener('pointerup', handlePointerUp);
     };
 
+    const handleDragEnd = (e: any, info: any) => {
+        // Sürükleme bittiğinde toplam yer değiştirmeyi hesaplayıp store'u güncelliyoruz
+        const dx = info.offset.x / scale;
+        const dy = info.offset.y / scale;
+
+        onUpdate({
+            x: item.x + dx,
+            y: item.y + dy
+        });
+
+        // Reset transform to avoid double displacement when re-render sets new left/top
+        // Framer motion does this by default if we don't bind to motion values
+    };
+
     return (
         <motion.div
             ref={containerRef}
@@ -88,12 +102,7 @@ export default function FurnitureItem({
                 onSelect();
                 saveToHistory();
             }}
-            onDrag={(e, info) => {
-                // Sürükleme mesafesini tuval ölçeğine (scale) bölerek gerçek koordinatları hesaplıyoruz
-                const dx = info.delta.x / scale;
-                const dy = info.delta.y / scale;
-                onUpdate({ x: item.x + dx, y: item.y + dy });
-            }}
+            onDragEnd={handleDragEnd}
             onPointerDown={(e) => {
                 e.stopPropagation();
                 onSelect();

@@ -15,15 +15,17 @@ export default function PlannerBottomBar() {
     // Room Area
     const area = ((room.width / 100) * (room.depth / 100)).toFixed(1);
 
+    const [summaryOpen, setSummaryOpen] = React.useState(false);
+
     return (
         <footer className="h-[64px] bg-white border-t border-[#E8E3DC] px-6 flex items-center justify-between flex-shrink-0 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
-            {/* LEFT: SUMMARY */}
+            {/* ... summary ... */}
             <div className="flex flex-col justify-center">
                 <span className="text-[13px] text-[#666]">
-                    <strong className="text-[#1C1C1E] font-medium">{totalItems} ürün</strong> odada yer alıyor
+                    <strong className="text-[#1C1C1E] font-medium">{totalItems}</strong> <span data-lang-key="planner_items_in_room">ürün odada yer alıyor</span>
                 </span>
                 <span className="text-[15px] font-bold text-[#C9A96E]">
-                    Toplam: {formatPrice(totalPrice)}
+                    <span data-lang-key="planner_total">Toplam:</span> {formatPrice(totalPrice)}
                 </span>
             </div>
 
@@ -39,6 +41,7 @@ export default function PlannerBottomBar() {
             {/* RIGHT: ADD TO CART */}
             <div>
                 <button
+                    onClick={() => setSummaryOpen(true)}
                     disabled={totalItems === 0}
                     className={`flex items-center gap-2 px-6 py-2.5 text-[13px] font-semibold tracking-wide uppercase transition-all duration-300 rounded-sm
                         ${totalItems > 0
@@ -48,9 +51,13 @@ export default function PlannerBottomBar() {
                     `}
                 >
                     <ShoppingBag size={16} />
-                    Hepsini Sepete Ekle
+                    <span data-lang-key="planner_add_all_cart">Hepsini Sepete Ekle</span>
                 </button>
             </div>
+
+            <PlanSummaryModal open={summaryOpen} onClose={() => setSummaryOpen(false)} />
         </footer>
     );
 }
+
+import PlanSummaryModal from './Modals/PlanSummaryModal';

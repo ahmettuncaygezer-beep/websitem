@@ -36,6 +36,7 @@ export function SectionHeader() {
                         letterSpacing: '0.35em',
                         color: '#C9A96E',
                     }}
+                    data-lang-key="cat_badge"
                 >
                     Yaşam Alanlarınız
                 </span>
@@ -60,12 +61,13 @@ export function SectionHeader() {
                     color: '#1C1C1E',
                 }}
             >
-                <span className="text-2xl md:text-3xl lg:text-4xl">
+                <span className="text-2xl md:text-3xl lg:text-4xl" data-lang-key="cat_title_1">
                     Yaşam Alanınızı{' '}
                 </span>
                 <em
                     className="text-2xl md:text-3xl lg:text-4xl"
                     style={{ fontStyle: 'italic', color: '#C9A96E' }}
+                    data-lang-key="cat_title_2"
                 >
                     Keşfedin
                 </em>
@@ -78,6 +80,7 @@ export function SectionHeader() {
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.6, delay: 0.4 }}
+                data-lang-key="cat_desc"
             >
                 Her odanız için titizlikle seçilmiş, zamansız parçalar.
             </motion.p>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ShoppingBag, Heart, User, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CartBadge } from './CartBadge';
-import { useCart } from '@/hooks/useCart';
+import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useAuthStore } from '@/store/authStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
@@ -137,6 +137,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                                     onClick={() => { openAuth('register'); setIsUserMenuOpen(false); }}
                                     className="w-full py-2 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-[#F5F0EB] transition-colors"
                                     style={{ color: '#1C1C1E' }}
+                                    data-lang-key="auth_register_btn"
                                 >
                                     Üye Ol
                                 </button>
@@ -144,6 +145,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                                     onClick={() => { openAuth('login'); setIsUserMenuOpen(false); }}
                                     className="w-full py-2 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-[#F5F0EB] transition-colors"
                                     style={{ color: '#1C1C1E' }}
+                                    data-lang-key="auth_tab_login"
                                 >
                                     Giriş Yap
                                 </button>
@@ -160,6 +162,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                                         onClick={() => setIsUserMenuOpen(false)}
                                         className="block px-4 py-2.5 text-[13px] rounded hover:bg-[#F5F0EB] transition-colors"
                                         style={{ color: '#6B6560' }}
+                                        data-lang-key={label === 'Siparişlerim' ? 'nav_orders' : label === 'Favorilerim' ? 'nav_favorites' : 'nav_account'}
                                     >
                                         {label}
                                     </Link>

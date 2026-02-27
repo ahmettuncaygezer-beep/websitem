@@ -50,6 +50,7 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                             <p
                                 className="uppercase font-bold mb-2"
                                 style={{ fontSize: '10px', letterSpacing: '0.18em', color: '#C9A96E' }}
+                                data-lang-key={section.dataKey}
                             >
                                 {section.title}
                             </p>
@@ -81,7 +82,7 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                                             }}
                                         >
                                             <span className="text-[#C9A96E] group-hover:translate-x-1 transition-transform text-xs" aria-hidden="true">→</span>
-                                            {item.label}
+                                            <span data-lang-key={item.dataKey}>{item.label}</span>
                                         </Link>
                                     </motion.li>
                                 ))}
@@ -116,6 +117,7 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                                 <span
                                     className="absolute top-1 left-1 text-white text-[9px] font-bold px-1.5 py-0.5 leading-none"
                                     style={{ background: '#C9A96E' }}
+                                    data-lang-key={product.badgeKey}
                                 >
                                     {product.badge}
                                 </span>
@@ -124,8 +126,8 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
 
                         {/* Text */}
                         <div className="flex flex-col justify-center gap-1">
-                            <span className="text-[10px] uppercase tracking-wider" style={{ color: '#999' }}>{product.brand}</span>
-                            <h3 className="text-sm font-medium leading-snug" style={{ color: '#1C1C1E' }}>{product.name}</h3>
+                            <span className="text-[10px] uppercase tracking-wider" style={{ color: '#999' }} data-lang-key={product.brandKey}>{product.brand}</span>
+                            <h3 className="text-sm font-medium leading-snug" style={{ color: '#1C1C1E' }} data-lang-key={product.nameKey}>{product.name}</h3>
                             <div className="flex items-center gap-2">
                                 <span className="font-bold text-sm" style={{ color: '#1C1C1E' }}>₺{product.price.toLocaleString('tr-TR')}</span>
                                 {product.originalPrice && (
@@ -134,7 +136,7 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                             </div>
                             <span className="flex items-center gap-1 text-[11px] font-semibold border-b pb-0.5 w-fit transition-all duration-200 group-hover:tracking-widest"
                                 style={{ color: '#C9A96E', borderColor: '#C9A96E' }}>
-                                Ürünü İncele <ArrowRight size={9} />
+                                <span data-lang-key="mega_nav_view_product">Ürünü İncele</span> <ArrowRight size={9} />
                             </span>
                         </div>
                     </Link>
@@ -143,7 +145,7 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                     {(category.editorialText || category.colors) && (
                         <div className="flex items-center justify-between">
                             {category.editorialText && (
-                                <p className="text-xs italic" style={{ color: '#999' }}>{category.editorialText}</p>
+                                <p className="text-xs italic" style={{ color: '#999' }} data-lang-key={category.editorialTextKey}>{category.editorialText}</p>
                             )}
                             {category.colors && (
                                 <div className="flex items-center gap-1.5">
@@ -161,16 +163,16 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                     className="mt-5 -mx-6 -mb-5 px-6 py-2.5 flex items-center justify-between"
                     style={{ background: '#F5F0EB', borderTop: '1px solid #EDE8E1' }}
                 >
-                    <p className="text-[11px]" style={{ color: '#1C1C1E' }}>
+                    <p className="text-[11px]" style={{ color: '#1C1C1E' }} data-lang-key={category.promotionTextKey}>
                         {category.promotionText}
                     </p>
                     <Link
                         href="/kampanyalar"
                         onClick={onClose}
-                        className="text-[11px] font-semibold hover:underline whitespace-nowrap ml-4"
+                        className="text-[11px] font-semibold hover:underline whitespace-nowrap ml-4 flex items-center gap-1"
                         style={{ color: '#C9A96E' }}
                     >
-                        Tüm Kampanyaları Gör →
+                        <span data-lang-key="mega_nav_view_campaigns">Tüm Kampanyaları Gör →</span>
                     </Link>
                 </div>
             )}

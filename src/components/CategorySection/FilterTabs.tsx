@@ -60,7 +60,14 @@ export function FilterTabs({ active, onChange }: FilterTabsProps) {
                                 transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                             />
                         )}
-                        {tab}
+                        <span data-lang-key={
+                            tab === 'Tümü' ? 'cat_filter_all' :
+                                tab === 'Oturma' ? 'cat_filter_liv' :
+                                    tab === 'Yatak' ? 'cat_filter_bed' :
+                                        tab === 'Yemek' ? 'cat_filter_din' :
+                                            tab === 'Çalışma' ? 'cat_filter_off' :
+                                                'cat_filter_light'
+                        }>{tab}</span>
                     </button>
                 );
             })}

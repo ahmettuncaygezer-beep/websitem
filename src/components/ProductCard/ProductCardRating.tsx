@@ -23,6 +23,7 @@ export function ProductCardRating({ rating, slug }: ProductCardRatingProps) {
                         (e.currentTarget as HTMLElement).style.textDecoration = 'none';
                     }}
                     onClick={(e) => e.stopPropagation()}
+                    data-lang-key="product_write_review"
                 >
                     İlk yorumu yaz
                 </a>

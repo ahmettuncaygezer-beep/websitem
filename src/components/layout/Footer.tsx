@@ -42,8 +42,8 @@ export function Footer() {
                 <div className="container-premium py-16">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                         <div>
-                            <h3 className="font-serif text-2xl md:text-3xl mb-2">İlham Bülteniniz</h3>
-                            <p className="text-white/60 font-sans text-sm">
+                            <h3 className="font-serif text-2xl md:text-3xl mb-2" data-lang-key="footer_newsletter_title">İlham Bülteniniz</h3>
+                            <p className="text-white/60 font-sans text-sm" data-lang-key="footer_newsletter_desc">
                                 Yeni koleksiyonlar, trendler ve özel tekliflerden ilk siz haberdar olun.
                             </p>
                         </div>
@@ -57,6 +57,7 @@ export function Footer() {
                                     required
                                     disabled={status === 'loading' || status === 'success'}
                                     className="flex-1 w-full min-w-[200px] md:w-80 px-6 py-3.5 bg-white/10 border border-white/20 rounded-l-full text-sm font-sans text-white placeholder:text-white/40 focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
+                                    data-lang-key="footer_newsletter_placeholder"
                                 />
                                 <button
                                     type="submit"
@@ -67,7 +68,7 @@ export function Footer() {
                                         <>
                                             <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
                                         </>
-                                    ) : 'Katıl'}
+                                    ) : <span data-lang-key="footer_newsletter_btn">Katıl</span>}
                                 </button>
                             </form>
                             {message && (
@@ -88,7 +89,7 @@ export function Footer() {
                         <Link href="/" className="font-serif text-2xl tracking-[0.2em] font-medium block mb-4">
                             {SITE_NAME}
                         </Link>
-                        <p className="text-white/50 font-sans text-sm leading-relaxed">
+                        <p className="text-white/50 font-sans text-sm leading-relaxed" data-lang-key="footer_brand_desc">
                             Premium mobilya ve ev dekorasyonu. Evinizin yeni hikayesini birlikte yazalım.
                         </p>
                     </div>
@@ -118,32 +119,32 @@ export function Footer() {
 
                     {/* Support */}
                     <div>
-                        <h4 className="text-xs font-sans font-semibold uppercase tracking-widest text-gold mb-5">
+                        <h4 className="text-xs font-sans font-semibold uppercase tracking-widest text-gold mb-5" data-lang-key="footer_support_title">
                             Destek
                         </h4>
                         <ul className="space-y-2.5">
                             <li>
-                                <Link href="/iletisim" className="text-sm font-sans text-white/50 hover:text-white transition-colors">
+                                <Link href="/iletisim" className="text-sm font-sans text-white/50 hover:text-white transition-colors" data-lang-key="footer_support_contact">
                                     İletişim
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/sss" className="text-sm font-sans text-white/50 hover:text-white transition-colors">
+                                <Link href="/sss" className="text-sm font-sans text-white/50 hover:text-white transition-colors" data-lang-key="footer_support_faq">
                                     Sıkça Sorulan Sorular
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/kargo" className="text-sm font-sans text-white/50 hover:text-white transition-colors">
+                                <Link href="/kargo" className="text-sm font-sans text-white/50 hover:text-white transition-colors" data-lang-key="footer_support_shipping">
                                     Kargo & Teslimat
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/iade" className="text-sm font-sans text-white/50 hover:text-white transition-colors">
+                                <Link href="/iade" className="text-sm font-sans text-white/50 hover:text-white transition-colors" data-lang-key="footer_support_returns">
                                     İade Politikası
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/garanti" className="text-sm font-sans text-white/50 hover:text-white transition-colors">
+                                <Link href="/garanti" className="text-sm font-sans text-white/50 hover:text-white transition-colors" data-lang-key="footer_support_warranty">
                                     Garanti Koşulları
                                 </Link>
                             </li>
@@ -156,16 +157,16 @@ export function Footer() {
             <div className="border-t border-white/10">
                 <div className="container-premium py-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-xs font-sans text-white/30">
-                        © 2026 {SITE_NAME}. Tüm hakları saklıdır.
+                        © 2026 {SITE_NAME}. <span data-lang-key="footer_all_rights">Tüm hakları saklıdır.</span>
                     </p>
                     <div className="flex items-center gap-6">
-                        <Link href="/gizlilik" className="text-xs font-sans text-white/30 hover:text-white/60 transition-colors">
+                        <Link href="/gizlilik" className="text-xs font-sans text-white/30 hover:text-white/60 transition-colors" data-lang-key="footer_privacy">
                             Gizlilik Politikası
                         </Link>
-                        <Link href="/kullanim-kosullari" className="text-xs font-sans text-white/30 hover:text-white/60 transition-colors">
+                        <Link href="/kullanim-kosullari" className="text-xs font-sans text-white/30 hover:text-white/60 transition-colors" data-lang-key="footer_terms">
                             Kullanım Koşulları
                         </Link>
-                        <Link href="/cerez" className="text-xs font-sans text-white/30 hover:text-white/60 transition-colors">
+                        <Link href="/cerez" className="text-xs font-sans text-white/30 hover:text-white/60 transition-colors" data-lang-key="footer_cookies">
                             Çerez Politikası
                         </Link>
                     </div>

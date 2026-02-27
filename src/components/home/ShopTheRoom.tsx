@@ -59,13 +59,13 @@ export function ShopTheRoom() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-14"
                 >
-                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
+                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="shoproom_badge">
                         İlham Verici
                     </p>
-                    <h2 className="text-headline text-charcoal">
+                    <h2 className="text-headline text-charcoal" data-lang-key="shoproom_title">
                         Kombini Satın Al
                     </h2>
-                    <p className="text-body-lg mt-4 max-w-lg mx-auto">
+                    <p className="text-body-lg mt-4 max-w-lg mx-auto" data-lang-key="shoproom_desc">
                         İlham aldığınız görüntüden doğrudan alışveriş yapın.
                     </p>
                 </motion.div>
@@ -161,7 +161,7 @@ export function ShopTheRoom() {
                                                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-gold text-white text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full hover:bg-gold-dark transition-colors"
                                                             >
                                                                 <ShoppingBag size={10} />
-                                                                Ekle
+                                                                <span data-lang-key="shoproom_btn_add">Ekle</span>
                                                             </button>
                                                         </div>
                                                     </div>

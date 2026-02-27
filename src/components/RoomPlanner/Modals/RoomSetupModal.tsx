@@ -38,9 +38,10 @@ export function RoomSetupModal({ open, onClose }: Props) {
 
                     {/* Header */}
                     <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid #F0EDE8' }}>
-                        <h2 className="text-[16px] font-semibold" style={{ color: '#1C1C1E' }}>
-                            {step === 0 ? 'Oda Şablonu Seçin' : step === 1 ? 'Oda Boyutları' : step === 2 ? 'Zemin & Duvar' : 'Hazırsınız! 🎉'}
-                        </h2>
+                        {step === 0 && <h2 className="text-[16px] font-semibold" style={{ color: '#1C1C1E' }} data-lang-key="plan_setup_step1">Oda Şablonu Seçin</h2>}
+                        {step === 1 && <h2 className="text-[16px] font-semibold" style={{ color: '#1C1C1E' }} data-lang-key="plan_setup_step2">Oda Boyutları</h2>}
+                        {step === 2 && <h2 className="text-[16px] font-semibold" style={{ color: '#1C1C1E' }} data-lang-key="plan_setup_step3">Zemin & Duvar</h2>}
+                        {step === 3 && <h2 className="text-[16px] font-semibold" style={{ color: '#1C1C1E' }} data-lang-key="plan_setup_step4">Hazırsınız! 🎉</h2>}
                         <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#999' }}><X size={18} /></button>
                     </div>
 
@@ -79,9 +80,9 @@ export function RoomSetupModal({ open, onClose }: Props) {
                                 {/* Step 1 — Dimensions */}
                                 {step === 1 && (
                                     <div className="space-y-6">
-                                        {([['width', 'En (Genişlik)', 1, 15], ['depth', 'Boy (Derinlik)', 1, 15], ['height', 'Yükseklik', 2, 4]] as const).map(([k, label, min, max]) => (
+                                        {([['width', 'En (Genişlik)', 'plan_setup_width', 1, 15], ['depth', 'Boy (Derinlik)', 'plan_setup_depth', 1, 15], ['height', 'Yükseklik', 'plan_setup_height', 2, 4]] as const).map(([k, label, langKey, min, max]) => (
                                             <div key={k}>
-                                                <label className="text-[13px] font-medium block mb-2" style={{ color: '#1C1C1E' }}>{label}</label>
+                                                <label className="text-[13px] font-medium block mb-2" style={{ color: '#1C1C1E' }} data-lang-key={langKey as string}>{label}</label>
                                                 <div className="flex items-center gap-4">
                                                     <input type="range" min={min} max={max} step={0.1} value={dims[k]}
                                                         onChange={(e) => setDims((d) => ({ ...d, [k]: parseFloat(e.target.value) }))}
@@ -102,22 +103,23 @@ export function RoomSetupModal({ open, onClose }: Props) {
                                 {step === 2 && (
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="text-[13px] font-medium block mb-3" style={{ color: '#1C1C1E' }}>Zemin Türü</label>
+                                            <label className="text-[13px] font-medium block mb-3" style={{ color: '#1C1C1E' }} data-lang-key="plan_setup_floor">Zemin Türü</label>
                                             <div className="flex gap-3">
                                                 {(['parquet', 'marble', 'carpet', 'concrete', 'ceramic'] as const).map((t) => {
                                                     const labels: Record<string, string> = { parquet: 'Parke', marble: 'Mermer', carpet: 'Halı', concrete: 'Beton', ceramic: 'Seramik' };
+                                                    const langKeys: Record<string, string> = { parquet: 'planner_floor_wood', marble: 'planner_floor_marble', carpet: 'planner_floor_carpet', concrete: 'planner_floor_concrete', ceramic: 'planner_floor_ceramic' };
                                                     return (
-                                                        <button key={t} onClick={() => setDims((d) => ({ ...d, floorType: t }))}
+                                                        <button key={t} onClick={() => setDims((d) => ({ ...d, floorType: t as any }))}
                                                             className="px-4 py-2 text-[12px] font-medium rounded-sm transition-colors duration-150"
                                                             style={{ background: dims.floorType === t ? '#1C1C1E' : '#F5F0EB', color: dims.floorType === t ? 'white' : '#666', border: 'none', cursor: 'pointer' }}>
-                                                            {labels[t]}
+                                                            <span data-lang-key={langKeys[t]}>{labels[t]}</span>
                                                         </button>
                                                     );
                                                 })}
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="text-[13px] font-medium block mb-3" style={{ color: '#1C1C1E' }}>Duvar Rengi</label>
+                                            <label className="text-[13px] font-medium block mb-3" style={{ color: '#1C1C1E' }} data-lang-key="plan_setup_wall">Duvar Rengi</label>
                                             <div className="flex gap-2 flex-wrap">
                                                 {['#FFFFFF', '#F5F0EB', '#E8E3DC', '#D5CEC5', '#A8D8EA', '#C5E1A5', '#F8BBD0', '#455A64', '#37474F', '#263238', '#1C1C1E', '#B39DDB'].map((c) => (
                                                     <button key={c} onClick={() => setDims((d) => ({ ...d, wallColor: c }))}
@@ -133,8 +135,8 @@ export function RoomSetupModal({ open, onClose }: Props) {
                                 {step === 3 && (
                                     <div className="text-center py-8">
                                         <span className="text-5xl block mb-4">🏠</span>
-                                        <h3 className="text-xl font-semibold mb-2" style={{ color: '#1C1C1E' }}>Planınız Hazır!</h3>
-                                        <p className="text-[14px] mb-2" style={{ color: '#666' }}>Mobilya eklemeye başlayın</p>
+                                        <h3 className="text-xl font-semibold mb-2" style={{ color: '#1C1C1E' }} data-lang-key="plan_setup_ready">Planınız Hazır!</h3>
+                                        <p className="text-[14px] mb-2" style={{ color: '#666' }} data-lang-key="plan_setup_start_adding">Mobilya eklemeye başlayın</p>
                                         <p className="text-[12px]" style={{ color: '#999' }}>{dims.width}×{dims.depth}×{dims.height} m — {(dims.width * dims.depth).toFixed(1)} m²</p>
                                     </div>
                                 )}
@@ -147,12 +149,12 @@ export function RoomSetupModal({ open, onClose }: Props) {
                         <button onClick={() => step > 0 ? setStep(step - 1) : onClose}
                             className="flex items-center gap-1 px-4 py-2 text-[13px] font-medium rounded-sm"
                             style={{ color: '#999', background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                            <ChevronLeft size={16} /> {step > 0 ? 'Geri' : 'İptal'}
+                            <ChevronLeft size={16} /> {step > 0 ? <span data-lang-key="plan_setup_back">Geri</span> : <span data-lang-key="plan_setup_cancel">İptal</span>}
                         </button>
                         <button onClick={() => step < 3 ? setStep(step + 1) : handleFinish()}
                             className="flex items-center gap-1 px-6 py-2 text-[13px] font-semibold rounded-sm transition-colors duration-200"
                             style={{ background: step === 3 ? '#C9A96E' : '#1C1C1E', color: 'white', border: 'none', cursor: 'pointer' }}>
-                            {step === 3 ? 'Tasarlamaya Başla →' : 'İleri'} <ChevronRight size={16} />
+                            {step === 3 ? <span data-lang-key="plan_setup_start">Tasarlamaya Başla →</span> : <span data-lang-key="plan_setup_next">İleri</span>} <ChevronRight size={16} />
                         </button>
                     </div>
                 </motion.div>

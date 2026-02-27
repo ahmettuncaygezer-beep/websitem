@@ -168,7 +168,7 @@ export function Navbar() {
                                     color: '#1C1C1E', border: 'none', textDecoration: 'none',
                                     boxShadow: '0 2px 8px rgba(201,169,110,0.4)',
                                 }}>
-                                ✨ Oda Planla
+                                <span data-lang-key="nav_room_planner">✨ Oda Planla</span>
                                 <span className="text-[9px] px-1.5 py-0.5 rounded-full animate-pulse"
                                     style={{ background: '#1C1C1E', color: '#C9A96E' }}>Yeni</span>
                             </Link>

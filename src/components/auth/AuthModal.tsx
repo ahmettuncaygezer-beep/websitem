@@ -28,11 +28,11 @@ export function AuthModal() {
         return () => { document.body.style.overflow = ''; };
     }, [isAuthModalOpen]);
 
-    const titles: Record<string, { title: string; subtitle: string }> = {
-        login: { title: 'Tekrar Hoş Geldiniz', subtitle: 'Premium mobilya dünyasına girin' },
-        register: { title: 'Hesap Oluşturun', subtitle: 'MAISON ailesine katılın' },
-        forgot: { title: 'Şifre Sıfırlama', subtitle: 'E-posta adresinize bağlantı göndereceğiz' },
-        success: { title: 'Tebrikler! 🎉', subtitle: 'Hesabınız başarıyla oluşturuldu' },
+    const titles: Record<string, { title: string; subtitle: string; titleKey: string; subKey: string }> = {
+        login: { title: 'Tekrar Hoş Geldiniz', subtitle: 'Premium mobilya dünyasına girin', titleKey: 'auth_welcome_title', subKey: 'auth_welcome_sub' },
+        register: { title: 'Hesap Oluşturun', subtitle: 'MAISON ailesine katılın', titleKey: 'auth_register_title', subKey: 'auth_register_sub' },
+        forgot: { title: 'Şifre Sıfırlama', subtitle: 'E-posta adresinize bağlantı göndereceğiz', titleKey: 'auth_forgot_title', subKey: 'auth_forgot_sub' },
+        success: { title: 'Tebrikler! 🎉', subtitle: 'Hesabınız başarıyla oluşturuldu', titleKey: 'auth_success_title', subKey: 'auth_success_sub' },
     };
 
     const current = titles[view] || titles.login;
@@ -84,10 +84,10 @@ export function AuthModal() {
                             </div>
 
                             {/* Title */}
-                            <h2 className="text-2xl text-white mt-2" style={{ fontFamily: 'var(--font-playfair)' }}>
+                            <h2 className="text-2xl text-white mt-2" style={{ fontFamily: 'var(--font-playfair)' }} data-lang-key={current.titleKey}>
                                 {current.title}
                             </h2>
-                            <p className="text-[13px] mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                            <p className="text-[13px] mt-1" style={{ color: 'rgba(255,255,255,0.6)' }} data-lang-key={current.subKey}>
                                 {current.subtitle}
                             </p>
 
@@ -95,8 +95,8 @@ export function AuthModal() {
                             {(view === 'login' || view === 'register') && (
                                 <div className="flex mt-4 -mb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                                     {[
-                                        { key: 'login' as const, label: 'Giriş Yap' },
-                                        { key: 'register' as const, label: 'Kayıt Ol' },
+                                        { key: 'login' as const, label: 'Giriş Yap', langKey: 'auth_tab_login' },
+                                        { key: 'register' as const, label: 'Kayıt Ol', langKey: 'auth_tab_register' },
                                     ].map((tab) => (
                                         <button
                                             key={tab.key}
@@ -112,7 +112,7 @@ export function AuthModal() {
                                                 cursor: 'pointer',
                                             }}
                                         >
-                                            {tab.label}
+                                            <span data-lang-key={tab.langKey}>{tab.label}</span>
                                         </button>
                                     ))}
                                 </div>
@@ -165,10 +165,10 @@ export function AuthModal() {
                                         >
                                             ✉️
                                         </motion.div>
-                                        <h3 className="text-lg font-semibold mb-2" style={{ color: '#1C1C1E', fontFamily: 'var(--font-playfair)' }}>
+                                        <h3 className="text-lg font-semibold mb-2" style={{ color: '#1C1C1E', fontFamily: 'var(--font-playfair)' }} data-lang-key="auth_verify_email">
                                             E-postanızı Doğrulayın
                                         </h3>
-                                        <p className="text-[13px] mb-6" style={{ color: '#999' }}>
+                                        <p className="text-[13px] mb-6" style={{ color: '#999' }} data-lang-key="auth_verify_desc">
                                             Doğrulama linki e-posta adresinize gönderildi.
                                         </p>
                                         <button
@@ -176,7 +176,7 @@ export function AuthModal() {
                                             className="w-full py-3 text-[13px] font-semibold"
                                             style={{ background: '#1C1C1E', color: 'white', borderRadius: '6px', border: 'none', cursor: 'pointer' }}
                                         >
-                                            Giriş Sayfasına Dön
+                                            <span data-lang-key="auth_back_to_login">Giriş Sayfasına Dön</span>
                                         </button>
                                     </motion.div>
                                 )}

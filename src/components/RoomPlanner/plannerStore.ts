@@ -14,6 +14,7 @@ interface PlannerState {
     // UI State
     is2DMode: boolean; // default true
     showGrid: boolean; // default true
+    planName: string;
 
     // Actions - Items
     addItem: (item: PlacedFurniture) => void;
@@ -22,6 +23,7 @@ interface PlannerState {
     duplicateItem: (id: string) => void;
     clearItems: () => void;
     setSelectedItem: (id: string | null) => void;
+    setPlanName: (name: string) => void;
 
     // Actions - Room
     updateRoom: (updates: Partial<RoomSettings>) => void;
@@ -35,8 +37,9 @@ interface PlannerState {
     redo: () => void;
     saveToHistory: () => void;
 
-    // Save/Load raw state string for LocalStorage
+    // Save/Load
     loadState: (data: any) => void;
+    loadPlan: (data: { room: RoomSettings; furniture: PlacedFurniture[]; planName: string }) => void;
 }
 
 const MAX_HISTORY = 50;
@@ -58,6 +61,7 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
     future: [],
     is2DMode: true,
     showGrid: true,
+    planName: 'İsimsiz Plan',
 
     saveToHistory: () => {
         const { items, room, past } = get();
@@ -158,6 +162,7 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
     },
 
     setSelectedItem: (id) => set({ selectedItemId: id }),
+    setPlanName: (name) => set({ planName: name }),
 
     updateRoom: (updates) => {
         // Usually, we want to save history for room changes too, especially dimensions
@@ -178,5 +183,16 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
                 selectedItemId: null
             });
         }
+    },
+
+    loadPlan: (data) => {
+        set({
+            items: data.furniture || [],
+            room: data.room,
+            planName: data.planName || 'Yeni Plan',
+            past: [],
+            future: [],
+            selectedItemId: null
+        });
     }
 }));

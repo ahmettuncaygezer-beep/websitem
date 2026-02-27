@@ -12,6 +12,7 @@ import WebVitalsReporter from '@/components/Performance/WebVitalsReporter';
 import PWAInstallBanner from '@/components/Performance/PWAInstallBanner';
 import { generateOrganizationSchema, generateWebsiteSchema } from '@/lib/structured-data';
 import { ToastProvider } from '@/components/ui/Toast/ToastProvider';
+import TranslationProvider from '@/components/TranslationProvider';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -138,16 +139,14 @@ export default function RootLayout({
         <GlobalProvider>
           <CartProvider>
             <ToastProvider>
-              <LayoutWrapper>{children}</LayoutWrapper>
-
-              {/* Global UI */}
-              <NotificationQueue />
-              <ExitIntentPopup />
-              <ComparisonTray />
-              <PWAInstallBanner />
-
-              {/* Performance monitoring (client-side, async) */}
-              <WebVitalsReporter />
+              <TranslationProvider>
+                <LayoutWrapper>{children}</LayoutWrapper>
+                <NotificationQueue />
+                <ExitIntentPopup />
+                <ComparisonTray />
+                <PWAInstallBanner />
+                <WebVitalsReporter />
+              </TranslationProvider>
             </ToastProvider>
           </CartProvider>
         </GlobalProvider>

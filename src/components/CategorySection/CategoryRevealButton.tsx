@@ -42,7 +42,7 @@ export function CategoryRevealButton({
             }}
             aria-label={label}
         >
-            <span>Keşfet</span>
+            <span data-lang-key="cat_btn_reveal">Keşfet</span>
             <motion.span
                 animate={{ x: isHovered ? 4 : 0 }}
                 transition={{ duration: 0.2 }}

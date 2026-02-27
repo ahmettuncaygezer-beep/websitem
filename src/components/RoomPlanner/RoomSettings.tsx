@@ -5,12 +5,12 @@ import { X, Trash2, Copy, MoveDiagonal, RotateCw } from 'lucide-react';
 import { usePlannerStore } from './plannerStore';
 import { FloorType } from './planner.types';
 
-const FLOOR_TYPES: { id: FloorType, name: string, icon: string }[] = [
-    { id: 'wood', name: 'Parke', icon: '🟫' },
-    { id: 'marble', name: 'Mermer', icon: '🩶' },
-    { id: 'carpet', name: 'Halı', icon: '🟤' },
-    { id: 'concrete', name: 'Beton', icon: '⬜' },
-    { id: 'ceramic', name: 'Seramik', icon: '🟨' },
+const FLOOR_TYPES: { id: FloorType, name: string, nameKey: string, icon: string }[] = [
+    { id: 'wood', name: 'Parke', nameKey: 'planner_floor_wood', icon: '🟫' },
+    { id: 'marble', name: 'Mermer', nameKey: 'planner_floor_marble', icon: '🩶' },
+    { id: 'carpet', name: 'Halı', nameKey: 'planner_floor_carpet', icon: '🟤' },
+    { id: 'concrete', name: 'Beton', nameKey: 'planner_floor_concrete', icon: '⬜' },
+    { id: 'ceramic', name: 'Seramik', nameKey: 'planner_floor_ceramic', icon: '🟨' },
 ];
 
 const WALL_COLORS = [
@@ -45,7 +45,7 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
             {/* Header + Tabs */}
             <div className="flex flex-col border-b border-[#E8E3DC] flex-shrink-0">
                 <div className="flex items-center justify-between p-4 pb-2">
-                    <h2 className="text-[14px] font-bold text-[#1C1C1E]">Özellikler</h2>
+                    <h2 className="text-[14px] font-bold text-[#1C1C1E]" data-lang-key="planner_properties">Özellikler</h2>
                     <button onClick={onClose} className="text-[#999] hover:text-[#1C1C1E] transition-colors">
                         <X size={18} />
                     </button>
@@ -55,13 +55,13 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
                         onClick={() => setActiveTab('room')}
                         className={`pb-2 text-[13px] font-medium transition-colors border-b-2 ${activeTab === 'room' ? 'border-[#C9A96E] text-[#1C1C1E]' : 'border-transparent text-[#999] hover:text-[#1C1C1E]'}`}
                     >
-                        Oda
+                        <span data-lang-key="planner_prop_room">Oda</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('item')}
                         className={`pb-2 text-[13px] font-medium transition-colors border-b-2 flex items-center gap-1.5 ${activeTab === 'item' ? 'border-[#C9A96E] text-[#1C1C1E]' : 'border-transparent text-[#999] hover:text-[#1C1C1E]'}`}
                     >
-                        Seçili Mobilya
+                        <span data-lang-key="planner_prop_selected">Seçili Mobilya</span>
                         {selectedItem && <div className="w-1.5 h-1.5 rounded-full bg-[#C9A96E]" />}
                     </button>
                 </div>
@@ -74,12 +74,12 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
                         {/* dimensions */}
                         <div>
-                            <h3 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-4">Oda Boyutları</h3>
+                            <h3 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-4" data-lang-key="planner_dimensions">Oda Boyutları</h3>
 
                             <div className="space-y-4">
                                 <div>
                                     <div className="flex justify-between items-center mb-1">
-                                        <label className="text-[13px] font-medium text-[#1C1C1E]">Genişlik (En)</label>
+                                        <label className="text-[13px] font-medium text-[#1C1C1E]" data-lang-key="planner_width">Genişlik (En)</label>
                                         <span className="text-[12px] text-[#666]">{room.width / 100} m</span>
                                     </div>
                                     <input
@@ -91,7 +91,7 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
                                 </div>
                                 <div>
                                     <div className="flex justify-between items-center mb-1">
-                                        <label className="text-[13px] font-medium text-[#1C1C1E]">Derinlik (Boy)</label>
+                                        <label className="text-[13px] font-medium text-[#1C1C1E]" data-lang-key="planner_length">Derinlik (Boy)</label>
                                         <span className="text-[12px] text-[#666]">{room.depth / 100} m</span>
                                     </div>
                                     <input
@@ -106,7 +106,7 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
 
                         {/* Floor */}
                         <div>
-                            <h3 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-4">Zemin Türü</h3>
+                            <h3 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-4" data-lang-key="planner_floor_type">Zemin Türü</h3>
                             <div className="grid grid-cols-2 gap-2">
                                 {FLOOR_TYPES.map(floor => (
                                     <button
@@ -117,7 +117,7 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
                                         `}
                                     >
                                         <span className="text-xl mb-1">{floor.icon}</span>
-                                        <span className={`text-[12px] ${room.floorType === floor.id ? 'font-semibold text-[#1C1C1E]' : 'font-medium text-[#666]'}`}>{floor.name}</span>
+                                        <span className={`text-[12px] ${room.floorType === floor.id ? 'font-semibold text-[#1C1C1E]' : 'font-medium text-[#666]'}`} data-lang-key={floor.nameKey}>{floor.name}</span>
                                     </button>
                                 ))}
                             </div>
@@ -125,7 +125,7 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
 
                         {/* Walls */}
                         <div>
-                            <h3 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-4">Duvar Rengi</h3>
+                            <h3 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-4" data-lang-key="planner_wall_color">Duvar Rengi</h3>
                             <div className="grid grid-cols-4 gap-3">
                                 {WALL_COLORS.map(color => (
                                     <button
@@ -148,7 +148,7 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
                         {!selectedItem ? (
                             <div className="flex flex-col items-center justify-center h-full text-center text-[#999]">
                                 <MoveDiagonal size={32} className="mb-3 opacity-20" />
-                                <p className="text-[13px]">Düzenlemek için canvas üzerinden bir mobilya seçin.</p>
+                                <p className="text-[13px]" data-lang-key="planner_select_item">Düzenlemek için canvas üzerinden bir mobilya seçin.</p>
                             </div>
                         ) : (
                             <div className="space-y-6">
@@ -166,42 +166,42 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
                                 {/* Actions */}
                                 <div className="flex gap-2">
                                     <button onClick={() => duplicateItem(selectedItem.id)} className="flex-1 flex items-center justify-center gap-2 py-2 border border-[#E8E3DC] rounded-sm text-[12px] font-medium hover:bg-white transition-colors">
-                                        <Copy size={14} /> Çoğalt
+                                        <Copy size={14} /> <span data-lang-key="planner_duplicate">Çoğalt</span>
                                     </button>
                                     <button onClick={() => removeItem(selectedItem.id)} className="flex-1 flex items-center justify-center gap-2 py-2 border border-red-100 text-red-600 bg-red-50 rounded-sm text-[12px] font-medium hover:bg-red-100 transition-colors">
-                                        <Trash2 size={14} /> Sil
+                                        <Trash2 size={14} /> <span data-lang-key="planner_delete">Sil</span>
                                     </button>
                                 </div>
 
                                 {/* Transform */}
                                 <div>
-                                    <h4 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-3">Konum & Boyut</h4>
+                                    <h4 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-3" data-lang-key="planner_pos_size">Konum & Boyut</h4>
 
                                     <div className="grid grid-cols-2 gap-4 mb-4">
                                         <div>
-                                            <label className="text-[11px] text-[#666] mb-1 block">X Konumu (cm)</label>
+                                            <label className="text-[11px] text-[#666] mb-1 block" data-lang-key="planner_x_pos">X Konumu (cm)</label>
                                             <input type="number" value={Math.round(selectedItem.x)} onChange={(e) => updateItem(selectedItem.id, { x: Number(e.target.value) })} className="w-full bg-white border border-[#E8E3DC] rounded-sm py-1.5 px-3 text-[13px]" />
                                         </div>
                                         <div>
-                                            <label className="text-[11px] text-[#666] mb-1 block">Y Konumu (cm)</label>
+                                            <label className="text-[11px] text-[#666] mb-1 block" data-lang-key="planner_y_pos">Y Konumu (cm)</label>
                                             <input type="number" value={Math.round(selectedItem.y)} onChange={(e) => updateItem(selectedItem.id, { y: Number(e.target.value) })} className="w-full bg-white border border-[#E8E3DC] rounded-sm py-1.5 px-3 text-[13px]" />
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4 mb-4">
                                         <div>
-                                            <label className="text-[11px] text-[#666] mb-1 block">Genişlik (cm)</label>
+                                            <label className="text-[11px] text-[#666] mb-1 block" data-lang-key="planner_width_cm">Genişlik (cm)</label>
                                             <input type="number" value={Math.round(selectedItem.width)} onChange={(e) => updateItem(selectedItem.id, { width: Number(e.target.value) })} className="w-full bg-white border border-[#E8E3DC] rounded-sm py-1.5 px-3 text-[13px]" />
                                         </div>
                                         <div>
-                                            <label className="text-[11px] text-[#666] mb-1 block">Derinlik (cm)</label>
+                                            <label className="text-[11px] text-[#666] mb-1 block" data-lang-key="planner_depth_cm">Derinlik (cm)</label>
                                             <input type="number" value={Math.round(selectedItem.depth)} onChange={(e) => updateItem(selectedItem.id, { depth: Number(e.target.value) })} className="w-full bg-white border border-[#E8E3DC] rounded-sm py-1.5 px-3 text-[13px]" />
                                         </div>
                                     </div>
 
                                     <div>
                                         <div className="flex justify-between items-center mb-1">
-                                            <label className="text-[11px] text-[#666] flex items-center gap-1"><RotateCw size={12} /> Döndür</label>
+                                            <label className="text-[11px] text-[#666] flex items-center gap-1"><RotateCw size={12} /> <span data-lang-key="planner_rotate">Döndür</span></label>
                                             <span className="text-[12px]">{Math.round(selectedItem.rotation)}&deg;</span>
                                         </div>
                                         <input
@@ -215,7 +215,7 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
 
                                 <div className="pt-4 border-t border-[#E8E3DC]">
                                     <button className="w-full py-3 bg-[#1C1C1E] text-white rounded-sm text-[13px] font-semibold hover:bg-[#C9A96E] transition-colors">
-                                        Sepete Ekle — {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', minimumFractionDigits: 0 }).format(selectedItem.product.price)}
+                                        <span data-lang-key="planner_add_cart">Sepete Ekle</span> — {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', minimumFractionDigits: 0 }).format(selectedItem.product.price)}
                                     </button>
                                 </div>
                             </div>

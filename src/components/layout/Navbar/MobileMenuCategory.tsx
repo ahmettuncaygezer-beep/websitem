@@ -22,7 +22,7 @@ export const MobileMenuCategory = memo(function MobileMenuCategory({ category, o
                 onClick={() => setIsOpen(!isOpen)}
                 aria-expanded={isOpen}
             >
-                <span className="text-[18px] font-medium text-white">{category.label}</span>
+                <span className="text-[18px] font-medium text-white" data-lang-key={category.dataKey}>{category.label}</span>
                 <Plus
                     size={20}
                     className="text-white/60 transition-transform duration-300"
@@ -57,7 +57,7 @@ export const MobileMenuCategory = memo(function MobileMenuCategory({ category, o
                                         }}
                                     >
                                         <span className="text-white/30" aria-hidden="true">–</span>
-                                        {item.label}
+                                        <span data-lang-key={item.dataKey}>{item.label}</span>
                                     </Link>
                                 ))
                             )}
@@ -69,7 +69,7 @@ export const MobileMenuCategory = memo(function MobileMenuCategory({ category, o
                                 className="flex items-center gap-2 py-2.5 pl-4 text-[13px] font-medium mt-1"
                                 style={{ color: '#C9A96E' }}
                             >
-                                Tümünü Gör →
+                                <span data-lang-key="mobile_nav_view_all">Tümünü Gör →</span>
                             </Link>
                         </div>
                     </motion.div>

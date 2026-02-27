@@ -22,19 +22,20 @@ export default function InstagramFeed() {
                     className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4"
                 >
                     <div>
-                        <p className="text-[11px] text-[#C9A96E] tracking-[0.3em] uppercase font-medium mb-2">
+                        <p className="text-[11px] text-[#C9A96E] tracking-[0.3em] uppercase font-medium mb-2" data-lang-key="insta_subtitle">
                             @maisonmobilya
                         </p>
                         <h2
                             className="text-2xl md:text-3xl font-bold text-[#1C1C1E]"
                             style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}
+                            data-lang-key="insta_title"
                         >
                             Müşterilerimizin Evleri
                         </h2>
                         <p className="text-[13px] text-[#666] mt-2 max-w-md">
-                            Siz de evinizi paylaşın,{' '}
+                            <span data-lang-key="insta_desc_1">Siz de evinizi paylaşın, </span>
                             <span className="text-[#C9A96E] font-medium">#maisonmobilya</span>{' '}
-                            etiketiyle Instagram&apos;da görünün
+                            <span data-lang-key="insta_desc_2">etiketiyle Instagram'da görünün</span>
                         </p>
                     </div>
 
@@ -72,7 +73,7 @@ export default function InstagramFeed() {
                             onClick={() => setShowAll(true)}
                             className="px-8 py-3 border border-[#1C1C1E] text-[13px] font-semibold text-[#1C1C1E] hover:bg-[#1C1C1E] hover:text-white transition-all duration-300 rounded-sm"
                         >
-                            Daha Fazla Gör
+                            <span data-lang-key="insta_btn_more">Daha Fazla Gör</span>
                         </button>
                     </motion.div>
                 )}
@@ -86,12 +87,12 @@ export default function InstagramFeed() {
                     className="mt-14 bg-[#F5F0EB] rounded-sm p-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left"
                 >
                     <div>
-                        <h3 className="font-bold text-[#1C1C1E] text-lg mb-1">
+                        <h3 className="font-bold text-[#1C1C1E] text-lg mb-1" data-lang-key="insta_invite_title">
                             Evinizi Bizimle Paylaşın
                         </h3>
                         <p className="text-[13px] text-[#666]">
-                            MAISON mobilyalarınızı etiketleyin, sayfamızda öne çıkarılın ve{' '}
-                            <span className="font-semibold text-[#C9A96E]">₺500 hediye çeki</span> kazanın.
+                            <span data-lang-key="insta_invite_desc_1">MAISON mobilyalarınızı etiketleyin, sayfamızda öne çıkarılın ve </span>
+                            <span className="font-semibold text-[#C9A96E]" data-lang-key="insta_invite_reward">₺500 hediye çeki</span> <span data-lang-key="insta_invite_desc_2">kazanın.</span>
                         </p>
                     </div>
                     <a

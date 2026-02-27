@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 // ─── Hook ────────────────────────────────────────────────────────────────────
 
@@ -77,14 +78,16 @@ function useTypewriter(
     return { displayText, isTyping };
 }
 
-// ─── Texts ───────────────────────────────────────────────────────────────────
-
-const TEXTS = [
-    'Yeni Hikayesi',
-    'Hayalinizdeki Salon',
-    'Mükemmel Uyku Deneyimi',
-    'Sofistike Yemek Odaları',
-];
+// Helper to grab localised texts
+const getTexts = (langCode: string) => {
+    const dict = translations[langCode as keyof typeof translations] || translations['TR'];
+    return [
+        dict['hero_type_1'] || 'Yeni Hikayesi',
+        dict['hero_type_2'] || 'Hayalinizdeki Salon',
+        dict['hero_type_3'] || 'Mükemmel Uyku Deneyimi',
+        dict['hero_type_4'] || 'Sofistike Yemek Odaları',
+    ];
+};
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -99,7 +102,9 @@ export function TypewriterText({
     className = '',
 }: TypewriterTextProps) {
     const prefersReduced = useReducedMotion();
-    const { displayText, isTyping } = useTypewriter(TEXTS, 80, 40, 3000, typeStartDelay);
+    const { language } = useTranslationStore();
+    const texts = getTexts(language);
+    const { displayText, isTyping } = useTypewriter(texts, 80, 40, 3000, typeStartDelay);
 
     // Cursor fades out 2 s after typing completes each cycle
     const [cursorVisible, setCursorVisible] = useState(false);
@@ -116,7 +121,7 @@ export function TypewriterText({
     if (prefersReduced) {
         return (
             <span className={className}>
-                <span className="block text-white not-italic">Evinizin</span>
+                <span className="block text-white not-italic" data-lang-key="hero_intro">Evinizin</span>
                 <span
                     className="block italic"
                     style={{
@@ -124,7 +129,7 @@ export function TypewriterText({
                         color: '#C9A96E',
                     }}
                 >
-                    {TEXTS[0]}
+                    {texts[0]}
                 </span>
             </span>
         );
@@ -133,7 +138,7 @@ export function TypewriterText({
     return (
         <span className={className}>
             {/* Line 1 — always static */}
-            <span className="block text-white not-italic">Evinizin</span>
+            <span className="block text-white not-italic" data-lang-key="hero_intro">Evinizin</span>
             <span
                 className="block italic"
                 style={{

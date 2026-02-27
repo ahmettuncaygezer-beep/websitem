@@ -6,15 +6,15 @@ import { plannerMockData } from './planner.data';
 import FurnitureCard from './FurnitureCard';
 import { FurnitureCategory } from './planner.types';
 
-const CATEGORIES: { label: string; value: FurnitureCategory | 'All' }[] = [
-    { label: 'Tümü', value: 'All' },
-    { label: 'Koltuklar', value: 'Sofa' },
-    { label: 'Sandalye', value: 'Chair' },
-    { label: 'Yatak', value: 'Bed' },
-    { label: 'Masa', value: 'Table' },
-    { label: 'Gardırop', value: 'Wardrobe' },
-    { label: 'Aydınlatma', value: 'Lighting' },
-    { label: 'Dekorasyon', value: 'Decoration' },
+const CATEGORIES: { label: string; value: FurnitureCategory | 'All'; langKey: string }[] = [
+    { label: 'Tümü', value: 'All', langKey: 'planner_tab_all' },
+    { label: 'Koltuklar', value: 'Sofa', langKey: 'planner_tab_sofas' },
+    { label: 'Sandalye', value: 'Chair', langKey: 'planner_tab_chairs' },
+    { label: 'Yatak', value: 'Bed', langKey: 'planner_tab_beds' },
+    { label: 'Masa', value: 'Table', langKey: 'planner_tab_tables' },
+    { label: 'Gardırop', value: 'Wardrobe', langKey: 'planner_tab_wardrobes' },
+    { label: 'Aydınlatma', value: 'Lighting', langKey: 'planner_tab_lighting' },
+    { label: 'Dekorasyon', value: 'Decoration', langKey: 'planner_tab_decor' },
 ];
 
 export default function FurnitureLibrary({ onClose }: { onClose: () => void }) {
@@ -32,7 +32,7 @@ export default function FurnitureLibrary({ onClose }: { onClose: () => void }) {
         <div className="flex flex-col h-full">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-[#E8E3DC]">
-                <h2 className="text-[14px] font-bold text-[#1C1C1E]">Kütüphane</h2>
+                <h2 className="text-[14px] font-bold text-[#1C1C1E]" data-lang-key="planner_library">Kütüphane</h2>
                 <button onClick={onClose} className="text-[#999] hover:text-[#1C1C1E] transition-colors">
                     <X size={18} />
                 </button>
@@ -45,6 +45,7 @@ export default function FurnitureLibrary({ onClose }: { onClose: () => void }) {
                     <input
                         type="text"
                         placeholder="Mobilya ara..."
+                        data-lang-key="planner_search"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full bg-[#f9f9f9] border border-[#E8E3DC] rounded-sm py-2 pl-9 pr-8 text-[13px] text-[#1C1C1E] focus:outline-none focus:border-[#C9A96E] transition-colors"
@@ -67,6 +68,7 @@ export default function FurnitureLibrary({ onClose }: { onClose: () => void }) {
                                 : 'border-transparent text-[#999] hover:text-[#1C1C1E]'
                             }
                         `}
+                        data-lang-key={cat.langKey}
                     >
                         {cat.label}
                     </button>
@@ -81,7 +83,7 @@ export default function FurnitureLibrary({ onClose }: { onClose: () => void }) {
                     ))}
                 </div>
                 {filteredProducts.length === 0 && (
-                    <div className="mt-10 text-center text-[#999] text-[13px]">
+                    <div className="mt-10 text-center text-[#999] text-[13px]" data-lang-key="planner_not_found">
                         Aradığınız kriterlere uygun ürün bulunamadı.
                     </div>
                 )}

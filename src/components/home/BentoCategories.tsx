@@ -21,12 +21,12 @@ const itemVariants = {
 };
 
 const FILTERS = [
-    { label: 'Tümü', id: 'all' },
-    { label: 'Oturma', id: 'oturma-odasi' },
-    { label: 'Yatak', id: 'yatak-odasi' },
-    { label: 'Yemek', id: 'yemek-odasi' },
-    { label: 'Çalışma', id: 'calisma-odasi' },
-    { label: 'Aydınlatma', id: 'aydinlatma' },
+    { label: 'Tümü', id: 'all', langKey: 'bento_filter_all' },
+    { label: 'Oturma', id: 'oturma-odasi', langKey: 'bento_filter_living' },
+    { label: 'Yatak', id: 'yatak-odasi', langKey: 'bento_filter_bed' },
+    { label: 'Yemek', id: 'yemek-odasi', langKey: 'bento_filter_dining' },
+    { label: 'Çalışma', id: 'calisma-odasi', langKey: 'bento_filter_office' },
+    { label: 'Aydınlatma', id: 'aydinlatma', langKey: 'bento_filter_lighting' },
 ];
 
 // Bento grid layout configs
@@ -66,10 +66,10 @@ export function BentoCategories() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-10"
                 >
-                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
+                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="bento_badge">
                         Kategoriler
                     </p>
-                    <h2 className="text-headline text-charcoal mb-8">
+                    <h2 className="text-headline text-charcoal mb-8" data-lang-key="bento_title">
                         Yaşam Alanınızı Keşfedin
                     </h2>
 
@@ -81,6 +81,7 @@ export function BentoCategories() {
                                 onClick={() => setActiveFilter(filter.id)}
                                 className={`relative pb-2 text-sm font-sans font-bold uppercase tracking-widest transition-colors duration-300 ${activeFilter === filter.id ? 'text-charcoal' : 'text-charcoal/40 hover:text-charcoal/60'
                                     }`}
+                                data-lang-key={filter.langKey}
                             >
                                 {filter.label}
                                 {activeFilter === filter.id && (
@@ -138,7 +139,7 @@ export function BentoCategories() {
                                                 {category.name}
                                             </h3>
                                             <p className="text-xs font-sans text-white/70 mt-1">
-                                                {category.productCount} ürün
+                                                {category.productCount} <span data-lang-key="bento_products_count">ürün</span>
                                             </p>
                                         </div>
                                     </div>

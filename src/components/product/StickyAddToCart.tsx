@@ -68,7 +68,7 @@ export function StickyAddToCart({ product }: StickyAddToCartProps) {
                                     className="flex items-center gap-2 px-6 py-2.5 bg-gold text-white text-xs font-sans font-semibold uppercase tracking-widest rounded-full hover:bg-gold-dark transition-colors"
                                 >
                                     <ShoppingBag size={14} />
-                                    <span className="hidden sm:inline">Sepete Ekle</span>
+                                    <span className="hidden sm:inline" data-lang-key="prod_add_cart">Sepete Ekle</span>
                                 </button>
                             </div>
                         </div>

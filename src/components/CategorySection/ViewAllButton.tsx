@@ -59,6 +59,7 @@ export function ViewAllButton() {
                     id="btn-text"
                     className="relative z-10 transition-colors duration-[350ms]"
                     style={{ color: '#1C1C1E' }}
+                    data-lang-key="cat_view_all"
                 >
                     Tümünü Gör
                 </span>
@@ -93,7 +94,7 @@ export function ViewAllButton() {
                     (e.currentTarget as HTMLElement).style.textDecoration = 'none';
                 }}
             >
-                Tüm kategorilere göz atın
+                <span data-lang-key="cat_view_all_desc">Tüm kategorilere göz atın</span>
             </Link>
         </motion.div>
     );

@@ -38,3 +38,17 @@ export function useWishlist(productId: string) {
 
     return { isWishlisted, toggle };
 }
+
+export function useFavorites() {
+    const [favorites, setFavorites] = useState<string[]>([]);
+
+    useEffect(() => {
+        setFavorites(getWishlist());
+        // Listen for storage changes in other tabs
+        const handleStorage = () => setFavorites(getWishlist());
+        window.addEventListener('storage', handleStorage);
+        return () => window.removeEventListener('storage', handleStorage);
+    }, []);
+
+    return { favorites };
+}

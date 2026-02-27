@@ -139,6 +139,7 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                             caretColor: '#C9A96E',
                                         }}
                                         aria-label="Ürün ara"
+                                        data-lang-key="mobile_nav_search_placeholder"
                                     />
                                 </div>
                             </motion.div>
@@ -157,15 +158,16 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                 style={{ borderColor: 'rgba(255,255,255,0.08)' }}
                             >
                                 {[
-                                    { label: 'Hakkımızda', href: '/hakkimizda' },
-                                    { label: 'Blog', href: '/blog' },
-                                    { label: 'İletişim', href: '/iletisim' },
-                                ].map(({ label, href }) => (
+                                    { label: 'Hakkımızda', href: '/hakkimizda', langKey: 'nav_about' },
+                                    { label: 'Blog', href: '/blog', langKey: 'nav_blog' },
+                                    { label: 'İletişim', href: '/iletisim', langKey: 'nav_contact' },
+                                ].map(({ label, href, langKey }) => (
                                     <Link
                                         key={href}
                                         href={href}
                                         onClick={onClose}
                                         className="hover:text-white transition-colors duration-150"
+                                        data-lang-key={langKey}
                                     >
                                         {label}
                                     </Link>
@@ -195,7 +197,7 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                     className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors"
                                 >
                                     <Heart size={18} />
-                                    Favorilerim
+                                    <span data-lang-key="mobile_nav_favorites">Favorilerim</span>
                                     {favCount > 0 && (
                                         <span className="ml-auto text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#C9A96E', color: 'white' }}>
                                             {favCount}
@@ -207,7 +209,7 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                     className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors text-left"
                                 >
                                     <ShoppingBag size={18} />
-                                    Sepetim
+                                    <span data-lang-key="mobile_nav_cart">Sepetim</span>
                                     {itemCount > 0 && (
                                         <span className="ml-auto text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#C9A96E', color: 'white' }}>
                                             {itemCount}
@@ -219,16 +221,16 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                     onClick={onClose}
                                     className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors"
                                 >
-                                    👤 Giriş Yap / Hesabım
+                                    <span data-lang-key="mobile_nav_account">👤 Giriş Yap / Hesabım</span>
                                 </Link>
                                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2 pt-4 border-t border-white/5">
                                     {[
-                                        { label: 'SSS', href: '/sss' },
-                                        { label: 'Kargo', href: '/kargo' },
-                                        { label: 'İade', href: '/iade' },
-                                        { label: 'Garanti', href: '/garanti' }
+                                        { label: 'SSS', href: '/sss', langKey: 'footer_support_faq' },
+                                        { label: 'Kargo', href: '/kargo', langKey: 'footer_support_shipping' },
+                                        { label: 'İade', href: '/iade', langKey: 'footer_support_returns' },
+                                        { label: 'Garanti', href: '/garanti', langKey: 'footer_support_warranty' }
                                     ].map(link => (
-                                        <Link key={link.href} href={link.href} onClick={onClose} className="text-[12px] text-white/40 hover:text-white transition-colors">
+                                        <Link key={link.href} href={link.href} onClick={onClose} className="text-[12px] text-white/40 hover:text-white transition-colors" data-lang-key={link.langKey}>
                                             {link.label}
                                         </Link>
                                     ))}

@@ -88,7 +88,10 @@ export const ProductCard = memo(function ProductCard({ product }: ProductCardPro
                     {/* Badges */}
                     <div className="absolute top-3 left-3 flex flex-col gap-1.5">
                         {product.isNew && (
-                            <span className="px-2.5 py-1 bg-charcoal text-white text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full">
+                            <span
+                                className="px-2.5 py-1 bg-charcoal text-white text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full"
+                                data-lang-key="prod_badge_new"
+                            >
                                 Yeni
                             </span>
                         )}

@@ -12,10 +12,10 @@ export default function EmptyCart({ onClose }: { onClose: () => void }) {
                 <ShoppingBag className="w-8 h-8 text-[#C9A96E]" />
             </div>
             <div>
-                <p className="text-[16px] font-semibold text-[#1C1C1E] mb-2">
+                <p className="text-[16px] font-semibold text-[#1C1C1E] mb-2" data-lang-key="cart_empty">
                     Sepetiniz boş
                 </p>
-                <p className="text-[13px] text-[#666] leading-relaxed">
+                <p className="text-[13px] text-[#666] leading-relaxed" data-lang-key="cart_empty_desc">
                     Beğendiğiniz ürünleri sepetinize ekleyin,
                     burada görüntüleyin.
                 </p>
@@ -28,7 +28,7 @@ export default function EmptyCart({ onClose }: { onClose: () => void }) {
                   hover:bg-[#C9A96E] transition-colors duration-300
                   rounded-sm"
             >
-                Ürünleri Keşfet
+                <span data-lang-key="cart_explore_products">Ürünleri Keşfet</span>
             </Link>
         </div>
     )

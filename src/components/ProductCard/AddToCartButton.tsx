@@ -66,7 +66,15 @@ export function AddToCartButton({
                     </motion.span>
                 )}
                 {state === 'idle' && <ShoppingBag size={16} />}
-                {label}
+                <span data-lang-key={
+                    state === 'loading'
+                        ? 'prod_add_cart_adding'
+                        : state === 'success'
+                            ? 'prod_add_cart_added'
+                            : 'prod_add_cart'
+                }>
+                    {label}
+                </span>
             </button>
         </motion.div>
     );

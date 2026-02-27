@@ -54,6 +54,7 @@ export const NavbarDesktop = memo(function NavbarDesktop({
                             onMouseLeave={(e) => {
                                 if (!isActive) (e.currentTarget as HTMLElement).style.color = textBase;
                             }}
+                            data-lang-key={cat.dataKey}
                         >
                             {cat.label}
 

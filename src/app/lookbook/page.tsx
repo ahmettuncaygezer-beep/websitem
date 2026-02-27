@@ -43,16 +43,17 @@ export default function LookbookPage() {
             >
                 <div className="absolute inset-0 opacity-20 bg-gradient-to-b from-[#C9A96E]/20 to-transparent" />
                 <div className="relative z-10 max-w-2xl mx-auto">
-                    <p className="text-[11px] text-[#C9A96E] tracking-[0.35em] uppercase font-medium mb-4">
+                    <p className="text-[11px] text-[#C9A96E] tracking-[0.35em] uppercase font-medium mb-4" data-lang-key="lookbook_col_subtitle">
                         2026 Koleksiyonu
                     </p>
                     <h1
                         className="text-4xl md:text-5xl font-bold text-white mb-3"
                         style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}
+                        data-lang-key="nav_lookbook"
                     >
                         Lookbook
                     </h1>
-                    <p className="text-white/60 text-base">
+                    <p className="text-white/60 text-base" data-lang-key="lookbook_hero_desc">
                         Hayalinizdeki evin ilhamı burada
                     </p>
                 </div>

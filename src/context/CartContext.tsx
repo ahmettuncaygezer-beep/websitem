@@ -261,3 +261,5 @@ export function useCartContext() {
     }
     return ctx
 }
+
+export const useCart = useCartContext

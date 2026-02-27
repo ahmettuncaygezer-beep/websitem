@@ -85,6 +85,7 @@ export function GlassCard() {
                     <span
                         className="font-medium uppercase"
                         style={{ fontSize: '11px', letterSpacing: '0.3em', color: '#C9A96E' }}
+                        data-lang-key="hero_badge"
                     >
                         2026 Koleksiyonu
                     </span>
@@ -112,6 +113,7 @@ export function GlassCard() {
                     animate="show"
                     className="text-sm leading-relaxed max-w-xs mb-8"
                     style={{ color: 'rgba(255,255,255,0.75)' }}
+                    data-lang-key="hero_desc"
                 >
                     Doğal malzemeler, zamansız tasarımlar ve el işçiliği ile
                     yaşam alanlarınıza sofistike bir dokunuş.
@@ -126,10 +128,10 @@ export function GlassCard() {
                     className="flex flex-col sm:flex-row gap-3"
                 >
                     <PrimaryButton href="/kategori/oturma-odasi" delay={1.7}>
-                        Koleksiyonu Keşfet
+                        <span data-lang-key="hero_cta_1">Koleksiyonu Keşfet</span>
                     </PrimaryButton>
                     <GhostButton href="/lookbook" delay={1.85}>
-                        Lookbook
+                        <span data-lang-key="hero_cta_2">Lookbook</span>
                     </GhostButton>
                 </motion.div>
 
@@ -140,6 +142,7 @@ export function GlassCard() {
                     animate="show"
                     className="mt-6 uppercase tracking-wider"
                     style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)' }}
+                    data-lang-key="hero_trust"
                 >
                     ✓ Ücretsiz Kargo&nbsp;&nbsp;·&nbsp;&nbsp;✓ 5 Yıl Garanti&nbsp;&nbsp;·&nbsp;&nbsp;✓ 30 Gün İade
                 </motion.p>

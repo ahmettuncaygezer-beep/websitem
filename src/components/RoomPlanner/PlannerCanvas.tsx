@@ -329,10 +329,10 @@ export default function PlannerCanvas() {
             {/* GUIDES / HINTS */}
             <div className="absolute bottom-6 left-6 pointer-events-none z-40">
                 <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-sm border border-[#E8E3DC] shadow-sm">
-                    <p className="text-[10px] text-[#999] uppercase font-bold tracking-widest mb-1">Kontroller</p>
+                    <p className="text-[10px] text-[#999] uppercase font-bold tracking-widest mb-1" data-lang-key="planner_controls">Kontroller</p>
                     <div className="flex gap-4">
-                        <span className="text-[11px] text-[#1C1C1E] flex items-center gap-1.5"><Hand size={12} className="text-[#C9A96E]" /> Pan: Orta Tuş / Shift</span>
-                        <span className="text-[11px] text-[#1C1C1E] flex items-center gap-1.5"><MousePointer2 size={12} className="text-[#C9A96E]" /> Zoom: Mouse Tekerleği</span>
+                        <span className="text-[11px] text-[#1C1C1E] flex items-center gap-1.5"><Hand size={12} className="text-[#C9A96E]" /> <span data-lang-key="planner_ctrl_pan">Pan: Orta Tuş / Shift</span></span>
+                        <span className="text-[11px] text-[#1C1C1E] flex items-center gap-1.5"><MousePointer2 size={12} className="text-[#C9A96E]" /> <span data-lang-key="planner_ctrl_zoom">Zoom: Mouse Tekerleği</span></span>
                     </div>
                 </div>
             </div>

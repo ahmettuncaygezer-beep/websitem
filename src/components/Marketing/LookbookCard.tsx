@@ -111,6 +111,16 @@ export default function LookbookCard({ card }: { card: LookbookCardData }) {
         if (node) setContainerWidth(node.offsetWidth);
     }, []);
 
+    const getCategoryKey = (cat: string) => {
+        switch (cat) {
+            case 'Oturma Odası': return 'nav_living_room';
+            case 'Yatak Odası': return 'nav_bedroom';
+            case 'Yemek Odası': return 'nav_dining';
+            case 'Çalışma Odası': return 'nav_office';
+            default: return '';
+        }
+    };
+
     return (
         <div className="mb-16">
             {/* Görsel + Hotspot'lar */}
@@ -155,7 +165,7 @@ export default function LookbookCard({ card }: { card: LookbookCardData }) {
             {/* Konsept bilgisi */}
             <div className="mt-4 flex flex-col md:flex-row md:items-end justify-between gap-3">
                 <div>
-                    <span className="text-[10px] text-[#C9A96E] uppercase tracking-widest font-medium">
+                    <span className="text-[10px] text-[#C9A96E] uppercase tracking-widest font-medium" data-lang-key={getCategoryKey(card.category) || undefined}>
                         {card.category}
                     </span>
                     <h3
@@ -170,6 +180,7 @@ export default function LookbookCard({ card }: { card: LookbookCardData }) {
                 <button
                     onClick={() => setSheetOpen(true)}
                     className="flex-shrink-0 px-5 py-2.5 border border-[#1C1C1E] text-[13px] font-semibold text-[#1C1C1E] rounded-sm hover:bg-[#1C1C1E] hover:text-white transition-all duration-200"
+                    data-lang-key="lookbook_btn_all_products"
                 >
                     Bu odadaki tüm ürünleri gör →
                 </button>

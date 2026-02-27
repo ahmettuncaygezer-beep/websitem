@@ -8,37 +8,39 @@ export const STATS = [
         id: 'customers',
         value: 12500,
         suffix: '+',
-        label: 'Mutlu Müşteri',
+        label: 'MUTLU MÜŞTERİ',
         icon: '😊',
-        duration: 2000,
-        decimals: 0,
+        duration: 2.5,
+        langKey: 'stats_customers'
     },
     {
         id: 'rating',
         value: 4.9,
         suffix: '/5',
-        label: 'Ortalama Puan',
+        label: 'ORTALAMA PUAN',
         icon: '⭐',
+        duration: 2,
         decimals: 1,
-        duration: 1500,
+        langKey: 'stats_rating'
     },
     {
-        id: 'years',
+        id: 'experience',
         value: 12,
         suffix: ' Yıl',
-        label: 'Sektör Deneyimi',
+        label: 'SEKTÖR DENEYİMİ',
         icon: '🏆',
-        duration: 1200,
-        decimals: 0,
+        duration: 1.5,
+        langKey: 'stats_experience'
     },
     {
         id: 'products',
         value: 500,
         suffix: '+',
-        label: 'Farklı Ürün',
+        label: 'FARKLI ÜRÜN',
         icon: '🛋️',
-        duration: 1800,
+        duration: 2,
         decimals: 0,
+        langKey: 'stats_products'
     },
 ];
 

@@ -146,7 +146,7 @@ export function CategoryCard({
                     <div className="absolute top-4 left-4 flex items-center gap-2">
                         {category.badge ? (
                             <>
-                                <CategoryBadge text={category.badge} isHovered={isHovered} />
+                                <CategoryBadge text={category.badge} textKey={category.badgeKey} isHovered={isHovered} />
                                 {category.featured && (
                                     <CategoryBadge
                                         text={`${category.productCount} ürün`}
@@ -172,6 +172,7 @@ export function CategoryCard({
                                 letterSpacing: '0.25em',
                                 color: 'rgba(255,255,255,0.6)',
                             }}
+                            data-lang-key={category.subLabelKey}
                         >
                             {category.subLabel}
                         </p>
@@ -187,6 +188,7 @@ export function CategoryCard({
                                     : 'clamp(1.125rem, 2vw, 1.5rem)',
                                 marginTop: '2px',
                             }}
+                            data-lang-key={category.labelKey}
                         >
                             {category.label}
                         </h3>

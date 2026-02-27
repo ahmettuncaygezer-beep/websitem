@@ -43,20 +43,20 @@ export default function FlashSaleStrip() {
                             <Flame className="w-5 h-5 text-[#C9A96E] flex-shrink-0" />
                         </motion.div>
                         <div className="hidden sm:flex flex-col">
-                            <span className="text-[10px] text-[#C9A96E] tracking-[0.25em] uppercase font-medium leading-none">
+                            <span className="text-[10px] text-[#C9A96E] tracking-[0.25em] uppercase font-medium leading-none" data-lang-key="flash_sale_limited">
                                 Sınırlı Süreli
                             </span>
-                            <span className="text-white font-bold text-sm tracking-wide leading-tight">
+                            <span className="text-white font-bold text-sm tracking-wide leading-tight" data-lang-key="flash_sale_title">
                                 FLASH İNDİRİM
                             </span>
                         </div>
-                        <span className="sm:hidden text-[#C9A96E] font-bold text-xs tracking-wider">
+                        <span className="sm:hidden text-[#C9A96E] font-bold text-xs tracking-wider" data-lang-key="flash_sale_title">
                             FLASH İNDİRİM
                         </span>
 
                         <div className="w-px h-8 bg-white/10 hidden sm:block mx-1" />
 
-                        <span className="text-white/50 text-[11px] hidden md:block">
+                        <span className="text-white/50 text-[11px] hidden md:block" data-lang-key="flash_sale_desc">
                             Seçili ürünlerde <span className="text-[#C9A96E] font-semibold">%25'e varan indirim</span>
                         </span>
                     </div>
@@ -74,7 +74,7 @@ export default function FlashSaleStrip() {
                         href="/kampanyalar"
                         className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-[#C9A96E] text-[#1C1C1E] text-[12px] font-bold rounded-sm hover:bg-[#B8915A] transition-colors duration-200 group"
                     >
-                        <span>Kampanyayı Gör</span>
+                        <span data-lang-key="flash_sale_btn">Kampanyayı Gör</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
                 </div>

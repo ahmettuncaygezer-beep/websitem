@@ -3,20 +3,22 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useGlobal } from '@/context/GlobalContext';
+import { useTranslationStore, type Language } from '@/store/translationStore';
 
-// GlobalContext uses lowercase locale codes: 'tr' | 'en' | 'fr'
-const LANGUAGES = [
-    { code: 'tr' as const, display: 'TR', flag: '🇹🇷', label: 'Türkçe' },
-    { code: 'en' as const, display: 'EN', flag: '🇬🇧', label: 'English' },
-] as const;
+const LANGUAGES: { code: Language; display: string; flag: string; label: string }[] = [
+    { code: 'TR', display: 'TR', flag: '🇹🇷', label: 'Türkçe' },
+    { code: 'EN', display: 'EN', flag: '🇬🇧', label: 'English' },
+    { code: 'FR', display: 'FR', flag: '🇫🇷', label: 'Français' },
+    { code: 'DE', display: 'DE', flag: '🇩🇪', label: 'Deutsch' },
+    { code: 'AR', display: 'AR', flag: '🇦🇪', label: 'العربية' },
+];
 
 interface LanguageSwitcherProps {
     isScrolled: boolean;
 }
 
 export function LanguageSwitcher({ isScrolled }: LanguageSwitcherProps) {
-    const { language, setLanguage } = useGlobal();
+    const { language, setLanguage } = useTranslationStore();
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +34,7 @@ export function LanguageSwitcher({ isScrolled }: LanguageSwitcherProps) {
 
     const textColor = isScrolled ? 'text-[#1C1C1E]/70' : 'text-white/70';
     const hoverColor = isScrolled ? 'hover:text-[#1C1C1E]' : 'hover:text-white';
-    const activeDisplay = LANGUAGES.find((l) => l.code === language)?.display ?? language.toUpperCase();
+    const activeDisplay = LANGUAGES.find((l) => l.code === language)?.display ?? language;
 
     return (
         <div
