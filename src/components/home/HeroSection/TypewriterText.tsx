@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { useTranslationStore, translations } from '@/store/translationStore';
+import { useGlobal } from '@/context/GlobalContext';
 
 // ─── Hook ────────────────────────────────────────────────────────────────────
 
@@ -78,16 +78,6 @@ function useTypewriter(
     return { displayText, isTyping };
 }
 
-// Helper to grab localised texts
-const getTexts = (langCode: string) => {
-    const dict = translations[langCode as keyof typeof translations] || translations['TR'];
-    return [
-        dict['hero_type_1'] || 'Yeni Hikayesi',
-        dict['hero_type_2'] || 'Hayalinizdeki Salon',
-        dict['hero_type_3'] || 'Mükemmel Uyku Deneyimi',
-        dict['hero_type_4'] || 'Sofistike Yemek Odaları',
-    ];
-};
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -102,8 +92,14 @@ export function TypewriterText({
     className = '',
 }: TypewriterTextProps) {
     const prefersReduced = useReducedMotion();
-    const { language } = useTranslationStore();
-    const texts = getTexts(language);
+    const { t } = useGlobal();
+
+    const texts = [
+        t('hero.type_1'),
+        t('hero.type_2'),
+        t('hero.type_3'),
+        t('hero.type_4'),
+    ];
     const { displayText, isTyping } = useTypewriter(texts, 80, 40, 3000, typeStartDelay);
 
     // Cursor fades out 2 s after typing completes each cycle

@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { translations, currencies } from '@/lib/i18n';
 
-type Language = keyof typeof translations;
+type Language = 'tr' | 'en' | 'fr' | 'ar';
 type Currency = keyof typeof currencies;
 
 interface GlobalContextType {
@@ -21,10 +21,22 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const [language, setLanguage] = useState<Language>('tr');
     const [currency, setCurrency] = useState<Currency>('TRY');
 
+    // Auto-switch currency when language changes
+    useEffect(() => {
+        const langToCurrency: Record<Language, Currency> = {
+            tr: 'TRY',
+            en: 'USD',
+            fr: 'EUR',
+            ar: 'USD' // Default for Arabic market in this demo
+        };
+        setCurrency(langToCurrency[language]);
+    }, [language]);
+
     // Translation function
     const t = (keyPath: string): string => {
         const keys = keyPath.split('.');
-        let result: any = translations[language];
+        const dict: any = translations;
+        let result: any = dict[language];
 
         for (const key of keys) {
             if (result && result[key]) {
@@ -41,7 +53,12 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
         const config = currencies[currency];
         const converted = priceTRY * config.rate;
 
-        return new Intl.NumberFormat(language === 'tr' ? 'tr-TR' : 'en-US', {
+        // Define locale based on language
+        const locale = language === 'tr' ? 'tr-TR' :
+            language === 'en' ? 'en-US' :
+                'fr-FR';
+
+        return new Intl.NumberFormat(locale, {
             style: 'currency',
             currency: currency,
             minimumFractionDigits: 0,

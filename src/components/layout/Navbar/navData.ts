@@ -6,7 +6,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'oturma-odasi',
         label: 'Oturma Odası',
-        dataKey: 'nav_living_room',
+        dataKey: 'nav.living_room',
         href: '/kategori/oturma-odasi',
         subCategories: [
             {
@@ -57,7 +57,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'yatak-odasi',
         label: 'Yatak Odası',
-        dataKey: 'nav_bedroom',
+        dataKey: 'nav.bedroom',
         href: '/kategori/yatak-odasi',
         subCategories: [
             {
@@ -96,7 +96,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'yemek-odasi',
         label: 'Yemek Odası',
-        dataKey: 'nav_dining',
+        dataKey: 'nav.dining',
         href: '/kategori/yemek-odasi',
         subCategories: [
             {
@@ -132,7 +132,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'calisma-odasi',
         label: 'Çalışma Odası',
-        dataKey: 'nav_office',
+        dataKey: 'nav.office',
         href: '/kategori/calisma-odasi',
         subCategories: [
             {
@@ -160,7 +160,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'aydinlatma',
         label: 'Aydınlatma',
-        dataKey: 'nav_lighting',
+        dataKey: 'nav.lighting',
         href: '/kategori/aydinlatma',
         subCategories: [
             {
@@ -191,7 +191,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'dekorasyon',
         label: 'Dekorasyon',
-        dataKey: 'nav_decoration',
+        dataKey: 'nav.decoration',
         href: '/kategori/dekorasyon',
         subCategories: [
             {

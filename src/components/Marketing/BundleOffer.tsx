@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, ShoppingBag, CheckSquare } from 'lucide-react';
-import { formatPrice } from '@/lib/constants';
+import { Plus, ShoppingBag } from 'lucide-react';
+import { useGlobal } from '@/context/GlobalContext';
 
 export interface BundleProduct {
     id: string;
@@ -22,6 +22,7 @@ interface BundleOfferProps {
 }
 
 function AnimatedPrice({ value }: { value: number }) {
+    const { formatPrice } = useGlobal();
     return (
         <motion.span
             key={value}
@@ -36,6 +37,7 @@ function AnimatedPrice({ value }: { value: number }) {
 }
 
 export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscount = 0 }: BundleOfferProps) {
+    const { formatPrice } = useGlobal();
     const allProducts = [mainProduct, ...relatedProducts];
     const [selected, setSelected] = useState<Set<string>>(
         new Set(allProducts.map(p => p.id))
@@ -60,19 +62,18 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
     };
 
     const handleAddAll = () => {
-        // Cart integration placeholder
         console.log('Bundle sepete eklendi:', Array.from(selected));
     };
 
     return (
-        <div className="bg-[#F5F0EB] rounded-sm p-5 border border-[#E8E3DC]">
+        <div className="bg-[#F5F0EB] dark:bg-card rounded-sm p-5 border border-[#E8E3DC] dark:border-border transition-colors">
             {/* Başlık */}
             <div className="flex items-center justify-between mb-4">
                 <div>
                     <p className="text-[10px] text-[#C9A96E] tracking-[0.25em] uppercase font-medium mb-0.5">
                         Bundle Fırsatı
                     </p>
-                    <h3 className="font-bold text-[#1C1C1E] text-base"
+                    <h3 className="font-bold text-[#1C1C1E] dark:text-foreground text-base"
                         style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}>
                         Bu Koleksiyonu Tamamla
                     </h3>
@@ -98,34 +99,29 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                                 opacity: selected.has(product.id) ? 1 : 0.5,
                             }}
                             transition={{ duration: 0.2 }}
-                            className="relative bg-white border-2 rounded-sm overflow-hidden cursor-pointer group"
+                            className="relative bg-white dark:bg-muted border-2 rounded-sm overflow-hidden cursor-pointer group"
                             style={{ width: 96, flexShrink: 0 }}
                             onClick={() => toggle(product.id)}
                         >
-                            {/* Görsel */}
-                            <div className="relative h-20 bg-[#E8E3DC]">
+                            <div className="relative h-20 bg-[#E8E3DC] dark:bg-card">
                                 <Image
                                     src={product.image}
                                     alt={product.name}
                                     fill
                                     sizes="96px"
                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                    onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }}
                                 />
                             </div>
 
-                            {/* Ana ürün rozeti */}
                             {product.isMain && (
                                 <div className="absolute top-1 left-1 bg-[#1C1C1E] text-white text-[8px] px-1.5 py-0.5 rounded-sm font-medium">
                                     Bu Ürün
                                 </div>
                             )}
 
-                            {/* Checkbox */}
                             {!product.isMain && (
                                 <div className="absolute top-1 right-1">
-                                    <div className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-colors ${selected.has(product.id) ? 'bg-[#C9A96E] border-[#C9A96E]' : 'bg-white border-[#ccc]'
-                                        }`}>
+                                    <div className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-colors ${selected.has(product.id) ? 'bg-[#C9A96E] border-[#C9A96E]' : 'bg-white border-[#ccc]'}`}>
                                         {selected.has(product.id) && (
                                             <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 12 12">
                                                 <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -135,9 +131,8 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                                 </div>
                             )}
 
-                            {/* İsim + Fiyat */}
                             <div className="p-1.5">
-                                <p className="text-[10px] text-[#1C1C1E] font-medium leading-tight line-clamp-1">
+                                <p className="text-[10px] text-[#1C1C1E] dark:text-foreground font-medium leading-tight line-clamp-1">
                                     {product.name}
                                 </p>
                                 <p className="text-[11px] text-[#C9A96E] font-bold mt-0.5">
@@ -146,10 +141,9 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                             </div>
                         </motion.div>
 
-                        {/* Plus ayırıcı */}
                         {idx < allProducts.length - 1 && (
-                            <div className="w-6 h-6 rounded-full bg-white border border-[#E8E3DC] flex items-center justify-center flex-shrink-0">
-                                <Plus className="w-3 h-3 text-[#666]" />
+                            <div className="w-6 h-6 rounded-full bg-white dark:bg-muted border border-[#E8E3DC] dark:border-border flex items-center justify-center flex-shrink-0">
+                                <Plus className="w-3 h-3 text-[#666] dark:text-muted-foreground" />
                             </div>
                         )}
                     </div>
@@ -157,20 +151,19 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
             </div>
 
             {/* Toplam + CTA */}
-            <div className="mt-4 pt-4 border-t border-[#E8E3DC]">
+            <div className="mt-4 pt-4 border-t border-[#E8E3DC] dark:border-border">
                 <div className="flex items-center justify-between mb-3">
                     <div>
-                        <p className="text-[12px] text-[#666]">
-                            Seçilen <span className="font-semibold text-[#1C1C1E]">{selectedCount} ürün</span>
+                        <p className="text-[12px] text-[#666] dark:text-muted-foreground">
+                            Seçilen <span className="font-semibold text-[#1C1C1E] dark:text-foreground">{selectedCount} ürün</span>
                         </p>
-                        <div className="text-xl font-bold text-[#1C1C1E]">
+                        <div className="text-xl font-bold text-[#1C1C1E] dark:text-foreground">
                             <AnimatePresence mode="wait">
-                                <AnimatedPrice value={total} />
+                                <AnimatedPrice value={hasSavings ? (total - bundleDiscount) : total} />
                             </AnimatePresence>
                         </div>
                     </div>
 
-                    {/* Tasarruf etiketi */}
                     <AnimatePresence>
                         {hasSavings && (
                             <motion.div
@@ -179,12 +172,12 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 className="text-right"
                             >
-                                <p className="text-[10px] text-[#666] line-through">{formatPrice(total)}</p>
-                                <p className="text-[11px] text-green-600 font-semibold">
-                                    Bundle: {formatPrice(total - bundleDiscount)}
+                                <p className="text-[10px] text-[#666] dark:text-muted-foreground line-through">{formatPrice(total)}</p>
+                                <p className="text-[11px] text-green-600 dark:text-green-400 font-semibold">
+                                    Fırsat: {formatPrice(total - bundleDiscount)}
                                 </p>
-                                <p className="text-[10px] text-green-600">
-                                    ₺{bundleDiscount.toLocaleString('tr-TR')} tasarruf
+                                <p className="text-[10px] text-green-600 dark:text-green-500">
+                                    {formatPrice(bundleDiscount)} tasarruf
                                 </p>
                             </motion.div>
                         )}

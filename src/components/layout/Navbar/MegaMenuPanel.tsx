@@ -21,7 +21,7 @@ const ColorSwatch = memo(function ColorSwatch({ name, hex }: { name: string; hex
                 aria-label={name}
             />
             {showTip && (
-                <span className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] text-white bg-[#1C1C1E] px-1.5 py-0.5 rounded pointer-events-none z-10">
+                <span className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] text-white bg-black/90 px-1.5 py-0.5 rounded pointer-events-none z-10 backdrop-blur-sm">
                     {name}
                 </span>
             )}
@@ -30,7 +30,7 @@ const ColorSwatch = memo(function ColorSwatch({ name, hex }: { name: string; hex
 });
 
 export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: MegaMenuPanelProps) {
-    useGlobal();
+    const { formatPrice } = useGlobal();
     const product = category.featuredProduct;
 
     // Memoize variants to avoid recreation on every render
@@ -68,15 +68,17 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                                         <Link
                                             href={item.href}
                                             onClick={onClose}
-                                            className="group flex items-center gap-1.5 py-1 text-[13px] transition-all duration-150"
-                                            style={{ color: 'rgba(28,28,30,0.7)' }}
+                                            className="group flex items-center gap-1.5 py-1 text-[13px] transition-all duration-300"
+                                            style={{ color: 'var(--foreground)', opacity: 0.7 }}
                                             onMouseEnter={(e) => {
-                                                (e.currentTarget as HTMLElement).style.color = '#C9A96E';
+                                                (e.currentTarget as HTMLElement).style.color = 'var(--maison-gold)';
+                                                (e.currentTarget as HTMLElement).style.opacity = '1';
                                                 (e.currentTarget as HTMLElement).style.paddingLeft = '8px';
-                                                (e.currentTarget as HTMLElement).style.borderLeft = '2px solid #C9A96E';
+                                                (e.currentTarget as HTMLElement).style.borderLeft = '2px solid var(--maison-gold)';
                                             }}
                                             onMouseLeave={(e) => {
-                                                (e.currentTarget as HTMLElement).style.color = 'rgba(28,28,30,0.7)';
+                                                (e.currentTarget as HTMLElement).style.color = 'var(--foreground)';
+                                                (e.currentTarget as HTMLElement).style.opacity = '0.7';
                                                 (e.currentTarget as HTMLElement).style.paddingLeft = '0';
                                                 (e.currentTarget as HTMLElement).style.borderLeft = 'none';
                                             }}
@@ -96,13 +98,13 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                     <Link
                         href={product.href}
                         onClick={onClose}
-                        className="group flex gap-4 rounded-sm border overflow-hidden p-3 transition-shadow duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)]"
-                        style={{ borderColor: '#E8E3DC' }}
+                        className="group flex gap-4 rounded-xl border overflow-hidden p-3 transition-all duration-300 hover:shadow-maison-card-hover bg-background/50"
+                        style={{ borderColor: 'var(--glass-border)' }}
                     >
                         {/* Thumbnail — compact 80×80 */}
                         <div
-                            className="relative shrink-0 rounded-sm overflow-hidden"
-                            style={{ width: 80, height: 80, background: 'linear-gradient(135deg, #F5F0EB, #E8E3DC)' }}
+                            className="relative shrink-0 rounded-lg overflow-hidden"
+                            style={{ width: 80, height: 80, background: 'linear-gradient(135deg, var(--muted), var(--border))' }}
                         >
                             <Image
                                 src={product.image}
@@ -115,8 +117,8 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                             />
                             {product.badge && (
                                 <span
-                                    className="absolute top-1 left-1 text-white text-[9px] font-bold px-1.5 py-0.5 leading-none"
-                                    style={{ background: '#C9A96E' }}
+                                    className="absolute top-1 left-1 text-black text-[9px] font-bold px-1.5 py-0.5 leading-none rounded-sm"
+                                    style={{ background: 'var(--maison-gold)' }}
                                     data-lang-key={product.badgeKey}
                                 >
                                     {product.badge}
@@ -126,16 +128,16 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
 
                         {/* Text */}
                         <div className="flex flex-col justify-center gap-1">
-                            <span className="text-[10px] uppercase tracking-wider" style={{ color: '#999' }} data-lang-key={product.brandKey}>{product.brand}</span>
-                            <h3 className="text-sm font-medium leading-snug" style={{ color: '#1C1C1E' }} data-lang-key={product.nameKey}>{product.name}</h3>
+                            <span className="text-[10px] uppercase tracking-wider opacity-60" style={{ color: 'var(--foreground)' }} data-lang-key={product.brandKey}>{product.brand}</span>
+                            <h3 className="text-sm font-medium leading-snug" style={{ color: 'var(--foreground)' }} data-lang-key={product.nameKey}>{product.name}</h3>
                             <div className="flex items-center gap-2">
-                                <span className="font-bold text-sm" style={{ color: '#1C1C1E' }}>₺{product.price.toLocaleString('tr-TR')}</span>
+                                <span className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>{formatPrice(product.price)}</span>
                                 {product.originalPrice && (
-                                    <span className="text-xs line-through" style={{ color: '#bbb' }}>₺{product.originalPrice.toLocaleString('tr-TR')}</span>
+                                    <span className="text-xs line-through opacity-50 transition-opacity" style={{ color: 'var(--foreground)' }}>{formatPrice(product.originalPrice)}</span>
                                 )}
                             </div>
-                            <span className="flex items-center gap-1 text-[11px] font-semibold border-b pb-0.5 w-fit transition-all duration-200 group-hover:tracking-widest"
-                                style={{ color: '#C9A96E', borderColor: '#C9A96E' }}>
+                            <span className="flex items-center gap-1 text-[11px] font-semibold border-b pb-0.5 w-fit transition-all duration-300 group-hover:tracking-widest"
+                                style={{ color: 'var(--maison-gold)', borderColor: 'var(--maison-gold)' }}>
                                 <span data-lang-key="mega_nav_view_product">Ürünü İncele</span> <ArrowRight size={9} />
                             </span>
                         </div>
@@ -145,7 +147,7 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                     {(category.editorialText || category.colors) && (
                         <div className="flex items-center justify-between">
                             {category.editorialText && (
-                                <p className="text-xs italic" style={{ color: '#999' }} data-lang-key={category.editorialTextKey}>{category.editorialText}</p>
+                                <p className="text-xs italic" style={{ color: 'var(--muted-foreground)' }} data-lang-key={category.editorialTextKey}>{category.editorialText}</p>
                             )}
                             {category.colors && (
                                 <div className="flex items-center gap-1.5">
@@ -161,16 +163,16 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
             {category.promotionText && (
                 <div
                     className="mt-5 -mx-6 -mb-5 px-6 py-2.5 flex items-center justify-between"
-                    style={{ background: '#F5F0EB', borderTop: '1px solid #EDE8E1' }}
+                    style={{ background: 'var(--muted)', borderTop: '1px solid var(--glass-border)' }}
                 >
-                    <p className="text-[11px]" style={{ color: '#1C1C1E' }} data-lang-key={category.promotionTextKey}>
+                    <p className="text-[11px]" style={{ color: 'var(--foreground)' }} data-lang-key={category.promotionTextKey}>
                         {category.promotionText}
                     </p>
                     <Link
                         href="/kampanyalar"
                         onClick={onClose}
                         className="text-[11px] font-semibold hover:underline whitespace-nowrap ml-4 flex items-center gap-1"
-                        style={{ color: '#C9A96E' }}
+                        style={{ color: 'var(--maison-gold)' }}
                     >
                         <span data-lang-key="mega_nav_view_campaigns">Tüm Kampanyaları Gör →</span>
                     </Link>

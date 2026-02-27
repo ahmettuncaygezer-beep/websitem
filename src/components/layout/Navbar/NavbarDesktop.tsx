@@ -28,9 +28,9 @@ export const NavbarDesktop = memo(function NavbarDesktop({
         >
             {categories.map((cat) => {
                 const isActive = activeCategoryId === cat.id || pathname.startsWith(cat.href);
-                const textBase = isScrolled ? 'rgba(28,28,30,0.8)' : 'rgba(255,255,255,0.9)';
-                const textHover = isScrolled ? '#1C1C1E' : '#ffffff';
-                const textActive = '#C9A96E';
+                const textBase = isScrolled ? 'var(--foreground)' : 'rgba(255,255,255,0.85)';
+                const textHover = isScrolled ? 'var(--foreground)' : '#ffffff';
+                const textActive = 'var(--maison-gold)';
 
                 return (
                     <div
@@ -60,10 +60,11 @@ export const NavbarDesktop = memo(function NavbarDesktop({
 
                             {/* Animated underline */}
                             <span
-                                className="absolute bottom-[-4px] left-0 h-[1.5px] transition-all duration-[250ms] ease-out"
+                                className="absolute bottom-[-4px] left-0 h-[1.5px] transition-all duration-[300ms] ease-out"
                                 style={{
-                                    background: '#C9A96E',
+                                    background: 'var(--maison-gold)',
                                     width: isActive ? '100%' : '0%',
+                                    opacity: isActive ? 1 : 0,
                                 }}
                             />
                         </Link>

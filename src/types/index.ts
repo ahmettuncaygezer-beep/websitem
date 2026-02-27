@@ -1,8 +1,10 @@
 export interface Product {
   id: string;
   name: string;
+  nameKey?: string;
   slug: string;
   description: string;
+  descriptionKey?: string;
   price: number;
   salePrice?: number;
   originalPrice?: number;
@@ -57,8 +59,10 @@ export interface ProductDimensions {
 export interface Category {
   id: string;
   name: string;
+  nameKey?: string;
   slug: string;
   description: string;
+  descriptionKey?: string;
   image: string;
   parentId?: string;
   productCount?: number;
@@ -72,6 +76,7 @@ export interface CartItem {
 
 export interface NavItem {
   label: string;
+  labelKey?: string;
   href: string;
   children?: NavCategory[];
   featuredImage?: string;
@@ -79,7 +84,8 @@ export interface NavItem {
 
 export interface NavCategory {
   title: string;
-  items: { label: string; href: string }[];
+  titleKey?: string;
+  items: { label: string; labelKey?: string; href: string }[];
 }
 
 export interface FilterState {

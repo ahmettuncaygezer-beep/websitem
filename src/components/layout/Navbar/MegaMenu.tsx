@@ -27,15 +27,11 @@ export const MegaMenu = memo(function MegaMenu({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2, ease }}
-                    className="fixed left-0 right-0 z-[49] overflow-hidden"
+                    className="fixed left-0 right-0 z-[49] overflow-hidden glass-premium border-b border-glass-border"
                     style={{
                         top: '72px',
-                        background: 'rgba(255,255,255,0.98)',
-                        backdropFilter: 'blur(20px)',
-                        WebkitBackdropFilter: 'blur(20px)',
-                        borderTop: '2px solid #C9A96E',
-                        borderBottom: '1px solid rgba(0,0,0,0.06)',
-                        boxShadow: '0 20px 60px rgba(0,0,0,0.12)',
+                        borderTop: '2px solid var(--maison-gold)',
+                        boxShadow: 'var(--shadow-maison-mega-menu)',
                     }}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}

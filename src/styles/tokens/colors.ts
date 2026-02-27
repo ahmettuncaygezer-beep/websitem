@@ -14,36 +14,36 @@ export const colors = {
     // ── PRIMARY — Deep Anthracite ────────────────────────────────────
     // Navbar (scrolled), buttons, headings, dark surfaces
     primary: {
-        50: '#F7F7F7',
-        100: '#E8E8E8',
-        200: '#D4D4D4',
-        300: '#ABABAB',
+        50: '#F8F8F8',
+        100: '#EBEBEB',
+        200: '#D1D1D1',
+        300: '#A3A3A3',
         400: '#737373',
         500: '#525252',
         600: '#404040',
-        700: '#2C2C2E',   // dark mode secondary bg
-        800: '#1C1C1E',   // ← MAIN — most used
-        900: '#0D0D0F',
-        DEFAULT: '#1C1C1E',
+        700: '#1A1A1C',   // Deep anthracite for surfaces
+        800: '#121214',   // Midnight black for main backgrounds
+        900: '#080809',
+        DEFAULT: '#121214',
     },
 
     // ── ACCENT — Warm Gold / Bronze ─────────────────────────────────
     // CTA buttons, active elements, badges, underlines, emphasis points
     accent: {
-        50: '#FDF9F0',
-        100: '#FAF0D9',
-        200: '#F3DFB0',
-        300: '#E8C97A',
-        400: '#D4AA6E',   // dark mode accent
-        500: '#C9A96E',   // ← MAIN — most used
-        600: '#B8915A',   // hover state
-        700: '#9A7440',
-        800: '#7A5A2C',
-        900: '#5C4020',
-        DEFAULT: '#C9A96E',
-        hover: '#B8915A',
-        light: '#FAF0D9',
-        dark: '#D4AA6E',
+        50: '#FDFBEE',
+        100: '#FAF4D2',
+        200: '#F2E2A6',
+        300: '#EAB258',
+        400: '#D99B4B',   // Premium Gold/Bronze
+        500: '#BD8C40',   // ← MAIN — Richer Gold
+        600: '#A17336',   // Hover state
+        700: '#855B2C',
+        800: '#694222',
+        900: '#4D2918',
+        DEFAULT: '#BD8C40',
+        hover: '#A17336',
+        light: '#F2E2A6',
+        dark: '#D99B4B',
     },
 
     // ── SECONDARY — Cream / Beige ────────────────────────────────────
@@ -143,21 +143,21 @@ export const colors = {
     // ── DARK MODE OVERRIDES ──────────────────────────────────────────
     dark: {
         bg: {
-            page: '#1C1C1E',
-            section: '#2C2C2E',
-            card: '#2C2C2E',
-            elevated: '#3A3A3C',
+            page: '#0A0A0B',
+            section: '#121214',
+            card: '#1A1A1C',
+            elevated: '#242426',
         },
         text: {
-            primary: '#F5F0EB',
-            secondary: '#AEAEB2',
+            primary: '#FDFBEE',
+            secondary: '#A1A1A5',
             muted: '#636366',
             disabled: '#3A3A3C',
         },
         border: {
-            DEFAULT: 'rgba(255,255,255,0.08)',
-            medium: 'rgba(255,255,255,0.12)',
-            strong: 'rgba(255,255,255,0.20)',
+            DEFAULT: 'rgba(255,255,255,0.05)',
+            medium: 'rgba(255,255,255,0.10)',
+            strong: 'rgba(255,255,255,0.15)',
         },
     },
 } as const;

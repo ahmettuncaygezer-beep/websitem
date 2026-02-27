@@ -15,6 +15,8 @@ import { CompareButton } from './CompareButton';
 import { QuickViewModal } from './QuickViewModal';
 import type { Product, ViewMode } from './product.types';
 
+import { useGlobal } from '@/context/GlobalContext';
+
 interface ProductCardProps {
     product: Product;
     index?: number;
@@ -28,6 +30,7 @@ export const ProductCard = memo(function ProductCard({
     viewMode = 'grid',
     priority = false,
 }: ProductCardProps) {
+    const { formatPrice } = useGlobal();
     const {
         selectedColor,
         selectedColorId,
@@ -59,17 +62,17 @@ export const ProductCard = memo(function ProductCard({
             <>
                 <motion.article
                     role="article"
-                    className="relative flex bg-white overflow-hidden transition-shadow duration-300"
+                    className="relative flex bg-card overflow-hidden transition-all duration-300"
                     style={{
-                        borderRadius: '2px',
-                        boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                        border: '1px solid rgba(0,0,0,0.04)',
+                        borderRadius: '12px',
+                        boxShadow: 'var(--shadow-maison-card)',
+                        border: '1px solid var(--border)',
                     }}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     whileHover={{
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                        borderColor: '#C9A96E',
+                        boxShadow: 'var(--shadow-maison-card-hover)',
+                        borderColor: 'var(--maison-gold)',
                     }}
                 >
                     {/* Left image */}
@@ -92,17 +95,17 @@ export const ProductCard = memo(function ProductCard({
                         <div>
                             <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0">
-                                    <span className="uppercase font-medium block" style={{ fontSize: '10px', letterSpacing: '0.2em', color: '#C9A96E' }}>
+                                    <span className="uppercase font-medium block" style={{ fontSize: '10px', letterSpacing: '0.2em', color: 'var(--maison-gold)' }}>
                                         {product.brand}
                                     </span>
                                     <Link
                                         href={`/urun/${product.slug}`}
-                                        className="block mt-1 text-[15px] font-normal transition-colors duration-200 truncate"
-                                        style={{ fontFamily: 'var(--font-playfair, serif)', color: '#1C1C1E', textDecoration: 'none', lineHeight: 1.3 }}
-                                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C9A96E'; }}
-                                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#1C1C1E'; }}
+                                        className="block mt-1 text-[15px] font-normal transition-colors duration-300 truncate"
+                                        style={{ fontFamily: 'var(--font-playfair, serif)', color: 'var(--foreground)', textDecoration: 'none', lineHeight: 1.3 }}
+                                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--maison-gold)'; }}
+                                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--foreground)'; }}
                                     >
-                                        {product.name}
+                                        <span data-lang-key={product.nameKey}>{product.name}</span>
                                     </Link>
                                 </div>
                                 <ProductCardRating rating={product.rating} slug={product.slug} />
@@ -116,12 +119,12 @@ export const ProductCard = memo(function ProductCard({
                         <div className="flex items-end justify-between mt-2">
                             {/* Price */}
                             <div>
-                                <span className="text-base font-bold" style={{ color: '#1C1C1E' }}>
-                                    ₺{displayPrice.toLocaleString('tr-TR')}
+                                <span className="text-base font-bold" style={{ color: 'var(--foreground)' }}>
+                                    {formatPrice(displayPrice)}
                                 </span>
                                 {originalPrice && (
-                                    <span className="text-[12px] line-through ml-2" style={{ color: '#999' }}>
-                                        ₺{originalPrice.toLocaleString('tr-TR')}
+                                    <span className="text-[12px] line-through ml-2" style={{ color: 'var(--muted-foreground)' }}>
+                                        {formatPrice(originalPrice)}
                                     </span>
                                 )}
                             </div>
@@ -129,10 +132,10 @@ export const ProductCard = memo(function ProductCard({
                             {/* Cart */}
                             <button
                                 onClick={(e) => { e.preventDefault(); handleAddToCart(); }}
-                                className="px-4 py-2 flex items-center gap-2 font-semibold tracking-wider uppercase transition-colors duration-200"
-                                style={{ fontSize: '11px', background: '#1C1C1E', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer' }}
+                                className="px-4 py-2 flex items-center gap-2 font-semibold tracking-wider uppercase transition-all duration-300 hover:scale-105 active:scale-95"
+                                style={{ fontSize: '11px', background: 'var(--foreground)', color: 'var(--background)', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                             >
-                                Sepete Ekle
+                                <span data-lang-key="prod_add_to_cart">Sepete Ekle</span>
                             </button>
                         </div>
                     </div>
@@ -147,11 +150,12 @@ export const ProductCard = memo(function ProductCard({
         <>
             <motion.article
                 role="article"
-                className="group relative bg-white overflow-hidden"
+                className="group relative bg-card overflow-hidden"
                 style={{
-                    borderRadius: '2px',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                    borderRadius: '16px',
+                    boxShadow: 'var(--shadow-maison-card)',
                     cursor: 'pointer',
+                    border: '1px solid var(--border)',
                 }}
                 onMouseEnter={(e) => {
                     setIsHovered(true);
@@ -161,8 +165,8 @@ export const ProductCard = memo(function ProductCard({
                     setIsHovered(false);
                     (e.currentTarget as HTMLElement).style.willChange = 'auto';
                 }}
-                whileHover={{ y: -4, boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}
-                transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+                whileHover={{ y: -8, boxShadow: 'var(--shadow-maison-card-hover)', borderColor: 'var(--maison-gold)' }}
+                transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
             >
                 {/* ── IMAGE AREA ── */}
                 <Link
@@ -199,7 +203,7 @@ export const ProductCard = memo(function ProductCard({
                     {/* Brand */}
                     <span
                         className="uppercase font-medium block"
-                        style={{ fontSize: '10px', letterSpacing: '0.2em', color: '#C9A96E' }}
+                        style={{ fontSize: '10px', letterSpacing: '0.2em', color: 'var(--maison-gold)' }}
                     >
                         {product.brand}
                     </span>
@@ -207,23 +211,23 @@ export const ProductCard = memo(function ProductCard({
                     {/* Product name */}
                     <Link
                         href={`/urun/${product.slug}`}
-                        className="block mt-1 transition-colors duration-200"
+                        className="block mt-1 transition-colors duration-300"
                         style={{
                             fontFamily: 'var(--font-playfair, "Playfair Display", serif)',
                             fontWeight: 400,
                             fontSize: '15px',
                             lineHeight: 1.3,
-                            color: '#1C1C1E',
+                            color: 'var(--foreground)',
                             textDecoration: 'none',
                             display: '-webkit-box',
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: 'vertical',
                             overflow: 'hidden',
                         }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C9A96E'; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#1C1C1E'; }}
+                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--maison-gold)'; }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--foreground)'; }}
                     >
-                        {product.name}
+                        <span data-lang-key={product.nameKey}>{product.name}</span>
                     </Link>
 
                     {/* Colors */}
@@ -241,19 +245,19 @@ export const ProductCard = memo(function ProductCard({
                     {/* Price + Delivery */}
                     <div className="flex items-center justify-between mt-3">
                         <div className="flex items-baseline gap-2">
-                            <span className="text-base font-bold" style={{ color: '#1C1C1E' }}>
-                                ₺{displayPrice.toLocaleString('tr-TR')}
+                            <span className="text-base font-bold" style={{ color: 'var(--foreground)' }}>
+                                {formatPrice(displayPrice)}
                             </span>
                             {originalPrice && (
-                                <span className="text-[12px] line-through" style={{ color: '#999' }}>
-                                    ₺{originalPrice.toLocaleString('tr-TR')}
+                                <span className="text-[12px] line-through" style={{ color: 'var(--muted-foreground)' }}>
+                                    {formatPrice(originalPrice)}
                                 </span>
                             )}
                         </div>
 
-                        <div className="flex items-center gap-1" style={{ color: product.hasQuickShip ? '#4CAF50' : '#999' }}>
-                            {product.hasQuickShip ? <Zap size={12} /> : <Truck size={12} />}
-                            <span style={{ fontSize: '10px' }}>
+                        <div className="flex items-center gap-1" style={{ color: product.hasQuickShip ? 'var(--maison-success)' : 'var(--muted-foreground)' }}>
+                            {product.hasQuickShip ? <Zap size={12} fill="var(--maison-success)" /> : <Truck size={12} />}
+                            <span style={{ fontSize: '10px', fontWeight: 500 }}>
                                 {product.hasQuickShip ? '⚡ 2 gün' : `${product.deliveryDays || 7} gün`}
                             </span>
                         </div>
@@ -261,7 +265,7 @@ export const ProductCard = memo(function ProductCard({
 
                     {/* Installment hint */}
                     {product.price >= 5000 && (
-                        <p className="text-[10px] mt-1" style={{ color: '#999' }}>
+                        <p className="text-[10px] mt-1 font-medium italic opacity-70" style={{ color: 'var(--foreground)' }} data-lang-key="prod_installment_hint">
                             36 aya varan taksit
                         </p>
                     )}

@@ -138,13 +138,13 @@ export const NAVIGATION: NavItem[] = [
 ];
 
 export const CATEGORIES: Category[] = [
-    { id: '1', name: 'Oturma Odası', slug: 'oturma-odasi', description: 'Yaşam alanınız için lüks koltuklar ve mobilyalar', image: '/images/categories/living.jpg', productCount: 35 },
-    { id: '2', name: 'Yatak Odası', slug: 'yatak-odasi', description: 'Konforlu ve şık yatak odası mobilyaları', image: '/images/categories/bedroom.jpg', productCount: 3 },
-    { id: '3', name: 'Yemek Odası', slug: 'yemek-odasi', description: 'Zarif yemek masaları ve sandalyeler', image: '/images/categories/dining.jpg', productCount: 22 },
-    { id: '4', name: 'Çalışma Odası', slug: 'calisma-odasi', description: 'Üretken çalışma alanları', image: '/images/categories/office.jpg', productCount: 1 },
-    { id: '5', name: 'Aydınlatma', slug: 'aydinlatma', description: 'Atmosfer yaratan aydınlatma çözümleri', image: '/images/categories/lighting.jpg', productCount: 2 },
-    { id: '6', name: 'Dekorasyon', slug: 'dekorasyon', description: 'Evinizi tamamlayan dekoratif aksesuarlar', image: '/images/categories/decor.jpg', productCount: 2 },
-    { id: '7', name: 'Genç & Çocuk Odası', slug: 'genc-cocuk-odasi', description: 'Renkli ve enerjik genç odası mobilyaları', image: '/images/categories/placeholder.jpg', productCount: 27 },
+    { id: '1', name: 'Oturma Odası', nameKey: 'nav_living_room', slug: 'oturma-odasi', description: 'Yaşam alanınız için lüks koltuklar ve mobilyalar', descriptionKey: 'cat_desc_living', image: '/images/categories/living.jpg', productCount: 35 },
+    { id: '2', name: 'Yatak Odası', nameKey: 'nav_bedroom', slug: 'yatak-odasi', description: 'Konforlu ve şık yatak odası mobilyaları', descriptionKey: 'cat_desc_bedroom', image: '/images/categories/bedroom.jpg', productCount: 3 },
+    { id: '3', name: 'Yemek Odası', nameKey: 'nav_dining', slug: 'yemek-odasi', description: 'Zarif yemek masaları ve sandalyeler', descriptionKey: 'cat_desc_dining', image: '/images/categories/dining.jpg', productCount: 22 },
+    { id: '4', name: 'Çalışma Odası', nameKey: 'nav_office', slug: 'calisma-odasi', description: 'Üretken çalışma alanları', descriptionKey: 'cat_desc_office', image: '/images/categories/office.jpg', productCount: 1 },
+    { id: '5', name: 'Aydınlatma', nameKey: 'nav_lighting', slug: 'aydinlatma', description: 'Atmosfer yaratan aydınlatma çözümleri', descriptionKey: 'cat_desc_lighting', image: '/images/categories/lighting.jpg', productCount: 2 },
+    { id: '6', name: 'Dekorasyon', nameKey: 'nav_decoration', slug: 'dekorasyon', description: 'Evinizi tamamlayan dekoratif aksesuarlar', descriptionKey: 'cat_desc_decoration', image: '/images/categories/decor.jpg', productCount: 2 },
+    { id: '7', name: 'Genç & Çocuk Odası', nameKey: 'nav_kids_room', slug: 'genc-cocuk-odasi', description: 'Renkli ve enerjik genç odası mobilyaları', descriptionKey: 'cat_desc_kids', image: '/images/categories/placeholder.jpg', productCount: 27 },
 ];
 
 export const FILTER_COLORS = [

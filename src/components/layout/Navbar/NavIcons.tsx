@@ -50,8 +50,8 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
     const [heartHovered, setHeartHovered] = useState(false);
 
     const ui = useMemo(() => ({
-        iconColor: isScrolled ? '#1C1C1E' : 'white',
-        iconBtnHover: isScrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)'
+        iconColor: isScrolled ? 'var(--foreground)' : 'white',
+        iconBtnHover: isScrolled ? 'var(--border)' : 'rgba(255,255,255,0.1)'
     }), [isScrolled]);
 
     const { isDark, toggle, mounted } = useDarkMode();
@@ -124,27 +124,27 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                             initial={{ opacity: 0, y: 6, scale: 0.96 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 6, scale: 0.96 }}
-                            transition={{ duration: 0.15 }}
-                            className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg overflow-hidden"
+                            transition={{ duration: 0.2, ease: 'easeOut' }}
+                            className="absolute right-0 top-full mt-2 w-48 bg-background/80 backdrop-blur-xl rounded-xl overflow-hidden glass-premium"
                             style={{
-                                border: '1px solid rgba(0,0,0,0.06)',
-                                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                                border: '1px solid var(--glass-border)',
+                                boxShadow: 'var(--shadow-maison-mega-menu)',
                                 transformOrigin: 'top right',
                             }}
                         >
-                            <div className="p-2 border-b" style={{ borderColor: 'rgba(0,0,0,0.06)' }}>
+                            <div className="p-2 border-b" style={{ borderColor: 'var(--border)' }}>
                                 <button
                                     onClick={() => { openAuth('register'); setIsUserMenuOpen(false); }}
-                                    className="w-full py-2 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-[#F5F0EB] transition-colors"
-                                    style={{ color: '#1C1C1E' }}
+                                    className="w-full py-2 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-accent transition-colors"
+                                    style={{ color: 'var(--foreground)' }}
                                     data-lang-key="auth_register_btn"
                                 >
                                     Üye Ol
                                 </button>
                                 <button
                                     onClick={() => { openAuth('login'); setIsUserMenuOpen(false); }}
-                                    className="w-full py-2 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-[#F5F0EB] transition-colors"
-                                    style={{ color: '#1C1C1E' }}
+                                    className="w-full py-2 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-accent transition-colors"
+                                    style={{ color: 'var(--foreground)' }}
                                     data-lang-key="auth_tab_login"
                                 >
                                     Giriş Yap
@@ -160,8 +160,8 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                                         key={href}
                                         href={href}
                                         onClick={() => setIsUserMenuOpen(false)}
-                                        className="block px-4 py-2.5 text-[13px] rounded hover:bg-[#F5F0EB] transition-colors"
-                                        style={{ color: '#6B6560' }}
+                                        className="block px-4 py-2.5 text-[13px] rounded hover:bg-accent transition-colors"
+                                        style={{ color: 'var(--foreground)' }}
                                         data-lang-key={label === 'Siparişlerim' ? 'nav_orders' : label === 'Favorilerim' ? 'nav_favorites' : 'nav_account'}
                                     >
                                         {label}

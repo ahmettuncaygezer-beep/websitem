@@ -62,10 +62,10 @@ export function CurrencySwitcher({ isScrolled }: CurrencySwitcherProps) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -4 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full right-0 mt-2 min-w-[170px] bg-white rounded-md overflow-hidden z-[60]"
+                        className="absolute top-full right-0 mt-2 min-w-[170px] bg-white dark:bg-card rounded-md overflow-hidden z-[60]"
                         style={{
-                            border: '1px solid rgba(0,0,0,0.06)',
-                            boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                            border: '1px solid var(--border)',
+                            boxShadow: 'var(--shadow-premium)',
                         }}
                         role="listbox"
                     >
@@ -74,9 +74,9 @@ export function CurrencySwitcher({ isScrolled }: CurrencySwitcherProps) {
                                 key={code}
                                 role="option"
                                 aria-selected={currency === code}
-                                onClick={() => { setCurrency(code as 'TRY' | 'USD' | 'EUR'); setIsOpen(false); }}
+                                onClick={() => { setCurrency(code as any); setIsOpen(false); }}
                                 className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left
-                           hover:bg-[#F5F0EB] transition-colors duration-150"
+                           hover:bg-[#F5F0EB] dark:hover:bg-muted transition-colors duration-150"
                             >
                                 <span
                                     className="text-[13px] font-medium"
@@ -84,7 +84,7 @@ export function CurrencySwitcher({ isScrolled }: CurrencySwitcherProps) {
                                 >
                                     {symbol}
                                 </span>
-                                <span className="text-[12px]" style={{ color: '#1C1C1E' }}>
+                                <span className="text-[12px] dark:text-foreground">
                                     {code} — {label}
                                 </span>
                                 {currency === code && (

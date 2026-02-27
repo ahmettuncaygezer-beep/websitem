@@ -37,7 +37,7 @@ const features = [
 
 export function TrustBand() {
     return (
-        <section className="bg-sand-dark py-16">
+        <section className="bg-background py-16 md:py-24 border-t border-border/40 transition-colors duration-500">
             <div className="container-premium">
                 <motion.div
                     initial="hidden"
@@ -47,7 +47,7 @@ export function TrustBand() {
                         hidden: {},
                         visible: { transition: { staggerChildren: 0.1 } },
                     }}
-                    className="grid grid-cols-2 md:grid-cols-4 gap-8"
+                    className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12"
                 >
                     {features.map((feature) => (
                         <motion.div
@@ -56,13 +56,13 @@ export function TrustBand() {
                                 hidden: { opacity: 0, y: 20 },
                                 visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
                             }}
-                            className="flex flex-col items-center text-center"
+                            className="flex flex-col items-center text-center group"
                         >
-                            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm">
-                                <feature.icon size={20} className="text-gold" />
+                            <div className="w-14 h-14 rounded-full bg-accent/30 flex items-center justify-center mb-5 shadow-sm border border-gold/10 group-hover:border-gold/30 transition-all duration-300">
+                                <feature.icon size={22} className="text-maison-gold" />
                             </div>
-                            <h4 className="font-serif text-base mb-1" data-lang-key={feature.titleKey}>{feature.title}</h4>
-                            <p className="text-xs font-sans text-warm-gray" data-lang-key={feature.descKey}>{feature.description}</p>
+                            <h4 className="font-serif text-base md:text-lg mb-2 text-foreground" data-lang-key={`trust.${feature.titleKey.replace('trust_', '')}`}>{feature.title}</h4>
+                            <p className="text-xs md:text-sm font-sans text-muted-foreground/80" data-lang-key={`trust.${feature.descKey.replace('trust_', '')}`}>{feature.description}</p>
                         </motion.div>
                     ))}
                 </motion.div>

@@ -64,24 +64,24 @@ export function Navbar() {
         right: 0,
         zIndex: 50,
         transform: shouldHide ? 'translateY(-100%)' : 'translateY(0)',
-        transition: 'transform 300ms ease, background 400ms cubic-bezier(0.25,0.46,0.45,0.94), border-color 400ms ease, box-shadow 400ms ease',
+        transition: 'transform 400ms cubic-bezier(0.19, 1, 0.22, 1), background 500ms ease, border-color 500ms ease, box-shadow 500ms ease',
         background: isScrolled
-            ? 'rgba(255,255,255,0.96)'
-            : 'linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.30) 70%, transparent 100%)',
+            ? 'var(--glass-bg)'
+            : 'linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)',
         borderBottom: isScrolled
-            ? '1px solid rgba(0,0,0,0.07)'
+            ? '1px solid var(--glass-border)'
             : 'none',
-        backdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(4px)',
-        WebkitBackdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'blur(4px)',
-        boxShadow: isScrolled ? '0 1px 20px rgba(0,0,0,0.08)' : 'none',
+        backdropFilter: isScrolled ? 'var(--glass-blur)' : 'blur(4px)',
+        WebkitBackdropFilter: isScrolled ? 'var(--glass-blur)' : 'blur(4px)',
+        boxShadow: isScrolled ? 'var(--shadow-maison-navbar)' : 'none',
     }), [isScrolled, shouldHide]);
 
     const uiColors = useMemo(() => ({
-        btnColor: isMobileOpen ? 'white' : isScrolled ? '#1C1C1E' : 'white',
+        btnColor: isMobileOpen ? 'var(--foreground)' : isScrolled ? 'var(--foreground)' : 'white',
         btnHover: isMobileOpen
-            ? 'rgba(255,255,255,0.1)'
+            ? 'rgba(255,255,255,0.08)'
             : isScrolled
-                ? 'rgba(0,0,0,0.05)'
+                ? 'var(--border)'
                 : 'rgba(255,255,255,0.1)'
     }), [isMobileOpen, isScrolled]);
 
@@ -146,14 +146,15 @@ export function Navbar() {
                             {/* Language + currency (xl+ only) */}
                             <div
                                 className="hidden xl:flex items-center gap-3 pr-3 mr-1"
-                                style={{ borderRight: `1px solid ${isScrolled ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.2)'}` }}
+                                style={{ borderRight: `1px solid ${isScrolled ? 'var(--border)' : 'rgba(255,255,255,0.2)'}` }}
                             >
                                 <LanguageSwitcher isScrolled={isScrolled} />
                                 <span
+                                    className="opacity-20"
                                     style={{
                                         width: '1px',
                                         height: '14px',
-                                        background: isScrolled ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.25)',
+                                        background: isScrolled ? 'var(--foreground)' : 'white',
                                         display: 'inline-block',
                                     }}
                                 />
@@ -162,15 +163,15 @@ export function Navbar() {
 
                             {/* Room Planner button */}
                             <Link href="/oda-planlayici"
-                                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-semibold tracking-wide rounded-full transition-all duration-200"
+                                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-semibold tracking-wide rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
                                 style={{
-                                    background: 'linear-gradient(135deg, #C9A96E, #B8915A)',
-                                    color: '#1C1C1E', border: 'none', textDecoration: 'none',
-                                    boxShadow: '0 2px 8px rgba(201,169,110,0.4)',
+                                    background: 'linear-gradient(135deg, var(--maison-gold), var(--maison-gold-dark))',
+                                    color: 'black', border: 'none', textDecoration: 'none',
+                                    boxShadow: '0 4px 15px rgba(189,140,64,0.3)',
                                 }}>
                                 <span data-lang-key="nav_room_planner">✨ Oda Planla</span>
                                 <span className="text-[9px] px-1.5 py-0.5 rounded-full animate-pulse"
-                                    style={{ background: '#1C1C1E', color: '#C9A96E' }}>Yeni</span>
+                                    style={{ background: 'black', color: 'var(--maison-gold)' }}>Yeni</span>
                             </Link>
 
                             {/* Search icon (closed state only) */}

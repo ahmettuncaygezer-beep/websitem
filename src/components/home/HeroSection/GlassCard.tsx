@@ -140,8 +140,8 @@ export function GlassCard() {
                     variants={fadeIn(2.0)}
                     initial="hidden"
                     animate="show"
-                    className="mt-6 uppercase tracking-wider"
-                    style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)' }}
+                    className="mt-6 uppercase tracking-wider font-medium"
+                    style={{ fontSize: '10px', color: 'var(--maison-gold)', opacity: 0.8 }}
                     data-lang-key="hero_trust"
                 >
                     ✓ Ücretsiz Kargo&nbsp;&nbsp;·&nbsp;&nbsp;✓ 5 Yıl Garanti&nbsp;&nbsp;·&nbsp;&nbsp;✓ 30 Gün İade
@@ -185,25 +185,25 @@ function PrimaryButton({
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2
                    font-semibold text-sm"
                 style={{
-                    background: '#C9A96E',
-                    color: '#1C1C1E',
+                    background: 'var(--maison-gold)',
+                    color: '#000',
                     padding: '13px 28px',
                     letterSpacing: '0.03em',
-                    borderRadius: '2px',
+                    borderRadius: '4px',
                     border: '1px solid transparent',
-                    transition: 'all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    transition: 'all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     textDecoration: 'none',
                 }}
                 onMouseEnter={(e) => {
                     Object.assign((e.currentTarget as HTMLElement).style, {
-                        background: '#B8915A',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 8px 24px rgba(201,169,110,0.4)',
+                        background: 'var(--maison-gold-dark)',
+                        transform: 'translateY(-3px)',
+                        boxShadow: 'var(--shadow-maison-gold)',
                     });
                 }}
                 onMouseLeave={(e) => {
                     Object.assign((e.currentTarget as HTMLElement).style, {
-                        background: '#C9A96E',
+                        background: 'var(--maison-gold)',
                         transform: 'translateY(0)',
                         boxShadow: 'none',
                     });

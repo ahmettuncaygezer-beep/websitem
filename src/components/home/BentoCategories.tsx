@@ -57,7 +57,7 @@ export function BentoCategories() {
         : CATEGORIES.filter(cat => cat.slug === activeFilter);
 
     return (
-        <section className="bg-white py-20 md:py-28">
+        <section className="bg-background py-20 md:py-28 transition-colors duration-500">
             <div className="container-premium">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -66,10 +66,10 @@ export function BentoCategories() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-10"
                 >
-                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="bento_badge">
+                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-maison-gold mb-4" data-lang-key="bento_badge">
                         Kategoriler
                     </p>
-                    <h2 className="text-headline text-charcoal mb-8" data-lang-key="bento_title">
+                    <h2 className="text-headline text-foreground mb-8" data-lang-key="bento_title">
                         Yaşam Alanınızı Keşfedin
                     </h2>
 
@@ -79,9 +79,9 @@ export function BentoCategories() {
                             <button
                                 key={filter.id}
                                 onClick={() => setActiveFilter(filter.id)}
-                                className={`relative pb-2 text-sm font-sans font-bold uppercase tracking-widest transition-colors duration-300 ${activeFilter === filter.id ? 'text-charcoal' : 'text-charcoal/40 hover:text-charcoal/60'
+                                className={`relative pb-2 text-sm font-sans font-bold uppercase tracking-widest transition-all duration-300 ${activeFilter === filter.id ? 'text-maison-gold' : 'text-foreground/60 hover:text-maison-gold'
                                     }`}
-                                data-lang-key={filter.langKey}
+                                data-lang-key={`hero.${filter.langKey}`}
                             >
                                 {filter.label}
                                 {activeFilter === filter.id && (
@@ -113,18 +113,19 @@ export function BentoCategories() {
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
-                                className={`${gridConfigs[category.slug]} group relative rounded-2xl overflow-hidden cursor-pointer bg-[#F5F5F7]`}
+                                className={`${gridConfigs[category.slug]} group relative rounded-2xl overflow-hidden cursor-pointer bg-card/40`}
+                                style={{ border: '1px solid var(--glass-border)' }}
                             >
                                 <Link href={`/kategori/${category.slug}`} className="block h-full">
                                     <Image
                                         src={categoryImages[category.slug] || '/images/categories/placeholder.jpg'}
                                         alt={category.name}
                                         fill
-                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                        className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                                         sizes="(max-width: 768px) 50vw, 25vw"
                                     />
-
-                                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-charcoal/10 to-transparent group-hover:from-charcoal/70 transition-colors duration-500" />
+                                    {/* Glassy overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent group-hover:from-background/100 transition-colors duration-500" />
 
                                     <div className="relative h-full flex flex-col justify-between p-5 md:p-6">
                                         <div className="flex justify-between items-start">

@@ -139,7 +139,7 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                             caretColor: '#C9A96E',
                                         }}
                                         aria-label="Ürün ara"
-                                        data-lang-key="mobile_nav_search_placeholder"
+                                        data-lang-key="common.discover"
                                     />
                                 </div>
                             </motion.div>
@@ -158,9 +158,9 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                 style={{ borderColor: 'rgba(255,255,255,0.08)' }}
                             >
                                 {[
-                                    { label: 'Hakkımızda', href: '/hakkimizda', langKey: 'nav_about' },
-                                    { label: 'Blog', href: '/blog', langKey: 'nav_blog' },
-                                    { label: 'İletişim', href: '/iletisim', langKey: 'nav_contact' },
+                                    { label: 'Hakkımızda', href: '/hakkimizda', langKey: 'nav.about' },
+                                    { label: 'Blog', href: '/blog', langKey: 'nav.inspiration' },
+                                    { label: 'İletişim', href: '/iletisim', langKey: 'nav.contact' },
                                 ].map(({ label, href, langKey }) => (
                                     <Link
                                         key={href}
@@ -197,7 +197,7 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                     className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors"
                                 >
                                     <Heart size={18} />
-                                    <span data-lang-key="mobile_nav_favorites">Favorilerim</span>
+                                    <span data-lang-key="nav.favorites">Favorilerim</span>
                                     {favCount > 0 && (
                                         <span className="ml-auto text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#C9A96E', color: 'white' }}>
                                             {favCount}
@@ -209,7 +209,7 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                     className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors text-left"
                                 >
                                     <ShoppingBag size={18} />
-                                    <span data-lang-key="mobile_nav_cart">Sepetim</span>
+                                    <span data-lang-key="common.addToCart">Sepetim</span>
                                     {itemCount > 0 && (
                                         <span className="ml-auto text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#C9A96E', color: 'white' }}>
                                             {itemCount}
@@ -221,7 +221,7 @@ export const MobileMenu = memo(function MobileMenu({ isOpen, onClose, categories
                                     onClick={onClose}
                                     className="flex items-center gap-3 text-[14px] text-white/70 hover:text-white transition-colors"
                                 >
-                                    <span data-lang-key="mobile_nav_account">👤 Giriş Yap / Hesabım</span>
+                                    <span data-lang-key="nav.account">👤 Giriş Yap / Hesabım</span>
                                 </Link>
                                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2 pt-4 border-t border-white/5">
                                     {[

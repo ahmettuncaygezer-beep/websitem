@@ -5,17 +5,17 @@ import { motion } from 'framer-motion'
 import { ShoppingBag, Truck } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
 
+import { useGlobal } from '@/context/GlobalContext'
+
 const FREE_SHIPPING_THRESHOLD = 5000
 
 export default function CartSummary() {
     const { totalPrice, closeCart } = useCart()
+    const { formatPrice } = useGlobal()
 
     const remaining = FREE_SHIPPING_THRESHOLD - totalPrice
     const hasShipping = totalPrice >= FREE_SHIPPING_THRESHOLD
     const progressPercent = Math.min((totalPrice / FREE_SHIPPING_THRESHOLD) * 100, 100)
-
-    const formatted = (n: number) =>
-        new Intl.NumberFormat('tr-TR').format(Math.round(n))
 
     return (
         <div className="border-t border-[#E8E3DC] bg-white">
@@ -31,13 +31,13 @@ export default function CartSummary() {
                     ) : (
                         <p className="text-[12px] text-[#666]">
                             <span className="font-semibold text-[#1C1C1E]">
-                                ₺{formatted(remaining)}
+                                {formatPrice(remaining)}
                             </span>
                             {' '}<span data-lang-key="cart_add_more_for_free">daha ekleyin, kargo ücretsiz!</span>
                         </p>
                     )}
                 </div>
-                <div className="w-full h-1 bg-[#E8E3DC] rounded-full overflow-hidden">
+                <div className="w-full h-1 bg-[#E8E3DC] dark:bg-muted rounded-full overflow-hidden">
                     <motion.div
                         className="h-full bg-[#C9A96E] rounded-full"
                         initial={{ width: 0 }}
@@ -50,24 +50,24 @@ export default function CartSummary() {
             {/* TOPLAM */}
             <div className="px-6 py-3 space-y-2">
                 <div className="flex justify-between text-[13px]">
-                    <span className="text-[#666]" data-lang-key="cart_subtotal">Ara Toplam</span>
-                    <span className="font-medium text-[#1C1C1E]">
-                        ₺{formatted(totalPrice)}
+                    <span className="text-[#666] dark:text-muted-foreground" data-lang-key="cart_subtotal">Ara Toplam</span>
+                    <span className="font-medium text-[#1C1C1E] dark:text-foreground">
+                        {formatPrice(totalPrice)}
                     </span>
                 </div>
                 <div className="flex justify-between text-[13px]">
-                    <span className="text-[#666]" data-lang-key="cart_shipping">Kargo</span>
+                    <span className="text-[#666] dark:text-muted-foreground" data-lang-key="cart_shipping">Kargo</span>
                     <span className={hasShipping
                         ? 'text-[#4CAF50] font-medium'
-                        : 'font-medium text-[#1C1C1E]'}>
-                        {hasShipping ? <span data-lang-key="cart_free">Ücretsiz</span> : `₺${formatted(199)}`}
+                        : 'font-medium text-[#1C1C1E] dark:text-foreground'}>
+                        {hasShipping ? <span data-lang-key="cart_free">Ücretsiz</span> : formatPrice(199)}
                     </span>
                 </div>
                 <div className="flex justify-between text-[15px] pt-2
-                       border-t border-[#E8E3DC]">
-                    <span className="font-semibold text-[#1C1C1E]" data-lang-key="cart_total">Toplam</span>
-                    <span className="font-bold text-[#1C1C1E]">
-                        ₺{formatted(hasShipping ? totalPrice : totalPrice + 199)}
+                       border-t border-[#E8E3DC] dark:border-border">
+                    <span className="font-semibold text-[#1C1C1E] dark:text-foreground" data-lang-key="cart_total">Toplam</span>
+                    <span className="font-bold text-[#1C1C1E] dark:text-foreground">
+                        {formatPrice(hasShipping ? totalPrice : totalPrice + 199)}
                     </span>
                 </div>
             </div>

@@ -5,18 +5,16 @@ import { motion } from 'framer-motion'
 import { Trash2, Minus, Plus } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
+import { useGlobal } from '@/context/GlobalContext'
+
 export default function CartItem({ item }: { item: any }) {
     const { removeItem, updateQuantity } = useCart()
+    const { formatPrice } = useGlobal()
 
     // Support both {product, quantity} (Context) and flat properties (Store)
     const productData = item.product || item;
     const { id, name, price, image } = productData;
     const quantity = item.quantity || 1;
-
-    const formattedPrice = new Intl.NumberFormat('tr-TR').format(
-        (price || 0) * quantity
-    )
-    const formattedUnit = new Intl.NumberFormat('tr-TR').format(price)
 
     return (
         <motion.div
@@ -98,12 +96,12 @@ export default function CartItem({ item }: { item: any }) {
 
                     {/* FİYAT */}
                     <div className="text-right">
-                        <p className="text-[14px] font-bold text-[#1C1C1E]">
-                            ₺{formattedPrice}
+                        <p className="text-[14px] font-bold text-[#1C1C1E] dark:text-foreground">
+                            {formatPrice((price || 0) * quantity)}
                         </p>
                         {quantity > 1 && (
-                            <p className="text-[11px] text-[#999]">
-                                ₺{formattedUnit} / <span data-lang-key="cart_per_item">adet</span>
+                            <p className="text-[11px] text-[#999] dark:text-muted-foreground">
+                                {formatPrice(price)} / <span data-lang-key="cart_per_item">adet</span>
                             </p>
                         )}
                     </div>

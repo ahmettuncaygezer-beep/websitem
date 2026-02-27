@@ -1,19 +1,40 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useTranslationStore, translations } from '@/store/translationStore';
+import { useGlobal } from '@/context/GlobalContext';
+import { translations } from '@/lib/i18n';
 
 export default function TranslationProvider({ children }: { children: React.ReactNode }) {
-    const language = useTranslationStore((state) => state.language);
+    const { language } = useGlobal();
 
     useEffect(() => {
         const translateElement = (el: Element) => {
             const key = el.getAttribute('data-lang-key');
-            if (key && translations[language] && translations[language][key]) {
+            if (!key) return;
+
+            // Handle nested keys like "hero.badge"
+            const keys = key.split('.');
+            let result: any = translations[language as keyof typeof translations];
+
+            // Backwards compatibility for flat keys from old store
+            if (!result[keys[0]] && result[key]) {
+                result = result[key];
+            } else {
+                for (const k of keys) {
+                    if (result && result[k]) {
+                        result = result[k];
+                    } else {
+                        result = null;
+                        break;
+                    }
+                }
+            }
+
+            if (result && typeof result === 'string') {
                 if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                    (el as HTMLInputElement).placeholder = translations[language][key];
+                    (el as HTMLInputElement).placeholder = result;
                 } else {
-                    el.textContent = translations[language][key];
+                    el.textContent = result;
                 }
             }
         };
@@ -48,26 +69,23 @@ export default function TranslationProvider({ children }: { children: React.Reac
 
         // 2. RTL Handling for Arabic
         const htmlParams = document.documentElement;
-        if (language === 'AR') {
+        if (language === 'ar') {
             htmlParams.dir = 'rtl';
             htmlParams.lang = 'ar';
             document.body.classList.add('rtl-mode');
         } else {
             htmlParams.dir = 'ltr';
-            htmlParams.lang = language.toLowerCase();
+            htmlParams.lang = language;
             document.body.classList.remove('rtl-mode');
         }
 
         // 3. Dynamic SEO Tags
-        if (translations[language]) {
-            if (translations[language].seo_title) {
-                document.title = translations[language].seo_title;
-            }
-            if (translations[language].seo_desc) {
-                const metaDesc = document.querySelector('meta[name="description"]');
-                if (metaDesc) {
-                    metaDesc.setAttribute('content', translations[language].seo_desc);
-                }
+        const langDict: any = translations[language as keyof typeof translations];
+        if (langDict) {
+            if (langDict.seo_title) {
+                document.title = langDict.seo_title;
+            } else if (langDict.seo && langDict.seo.title) {
+                document.title = langDict.seo.title;
             }
         }
 

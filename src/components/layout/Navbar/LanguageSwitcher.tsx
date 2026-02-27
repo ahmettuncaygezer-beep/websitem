@@ -3,14 +3,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslationStore, type Language } from '@/store/translationStore';
+import { useGlobal } from '@/context/GlobalContext';
 
-const LANGUAGES: { code: Language; display: string; flag: string; label: string }[] = [
-    { code: 'TR', display: 'TR', flag: '🇹🇷', label: 'Türkçe' },
-    { code: 'EN', display: 'EN', flag: '🇬🇧', label: 'English' },
-    { code: 'FR', display: 'FR', flag: '🇫🇷', label: 'Français' },
-    { code: 'DE', display: 'DE', flag: '🇩🇪', label: 'Deutsch' },
-    { code: 'AR', display: 'AR', flag: '🇦🇪', label: 'العربية' },
+const LANGUAGES: { code: string; display: string; flag: string; label: string }[] = [
+    { code: 'tr', display: 'TR', flag: '🇹🇷', label: 'Türkçe' },
+    { code: 'en', display: 'EN', flag: '🇬🇧', label: 'English' },
+    { code: 'fr', display: 'FR', flag: '🇫🇷', label: 'Français' },
 ];
 
 interface LanguageSwitcherProps {
@@ -18,7 +16,7 @@ interface LanguageSwitcherProps {
 }
 
 export function LanguageSwitcher({ isScrolled }: LanguageSwitcherProps) {
-    const { language, setLanguage } = useTranslationStore();
+    const { language, setLanguage } = useGlobal();
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -63,10 +61,10 @@ export function LanguageSwitcher({ isScrolled }: LanguageSwitcherProps) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -4 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full right-0 mt-2 min-w-[130px] bg-white rounded-md overflow-hidden z-[60]"
+                        className="absolute top-full right-0 mt-2 min-w-[130px] bg-white dark:bg-card rounded-md overflow-hidden z-[60]"
                         style={{
-                            border: '1px solid rgba(0,0,0,0.06)',
-                            boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                            border: '1px solid var(--border)',
+                            boxShadow: 'var(--shadow-premium)',
                         }}
                         role="listbox"
                     >
@@ -75,14 +73,14 @@ export function LanguageSwitcher({ isScrolled }: LanguageSwitcherProps) {
                                 key={code}
                                 role="option"
                                 aria-selected={language === code}
-                                onClick={() => { setLanguage(code); setIsOpen(false); }}
+                                onClick={() => { setLanguage(code as any); setIsOpen(false); }}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 text-left
-                           hover:bg-[#F5F0EB] transition-colors duration-150"
+                           hover:bg-[#F5F0EB] dark:hover:bg-muted transition-colors duration-150"
                             >
                                 <span className="text-base">{flag}</span>
                                 <span
-                                    className="text-[13px]"
-                                    style={{ color: language === code ? '#C9A96E' : '#1C1C1E' }}
+                                    className="text-[13px] dark:text-foreground"
+                                    style={{ color: language === code ? '#C9A96E' : '' }}
                                 >
                                     {label}
                                 </span>
