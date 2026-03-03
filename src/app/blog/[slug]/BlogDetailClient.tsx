@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Twitter, Facebook, LinkIcon, Clock } from 'lucide-react';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface ShareBarProps {
     title: string;
@@ -13,25 +14,38 @@ interface ShareBarProps {
 }
 
 export function ShareBar({ title, slug, author, date, readingMinutes }: ShareBarProps) {
+    const { language, t } = useGlobal();
+
     const handleCopy = () => {
         navigator.clipboard.writeText(window.location.href);
+    };
+
+    const formatDate = (dateStr: string) => {
+        const locale = language === 'TR' ? 'tr-TR' :
+            language === 'EN' ? 'en-US' :
+                language === 'FR' ? 'fr-FR' :
+                    language === 'DE' ? 'de-DE' : 'ar-SA';
+        return new Date(dateStr).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
     };
 
     return (
         <div className="flex items-center justify-between flex-wrap gap-3 pb-5 border-b border-[#E8E3DC] mb-8">
             <div className="flex items-center gap-3 text-[12px] text-[#888]">
-                <div className="w-7 h-7 rounded-full bg-[#C9A96E] flex items-center justify-center text-white font-bold text-[11px]">M</div>
+                <div className="w-7 h-7 rounded-full bg-[#C9A96E] flex items-center justify-center text-white font-bold text-[11px]">S</div>
                 <span className="font-medium text-[#444]">{author}</span>
                 <span>·</span>
-                <span>{new Date(date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                <span>{formatDate(date)}</span>
                 <span>·</span>
-                <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{readingMinutes} dk okuma</span>
+                <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {readingMinutes} {t('blog_min_read')}
+                </span>
             </div>
             <div className="flex items-center gap-2">
-                <span className="text-[11px] text-[#aaa]">Paylaş:</span>
+                <span className="text-[11px] text-[#aaa]">{language === 'AR' ? 'مشاركة:' : 'Share:'}</span>
                 {[
                     { Icon: Twitter, label: 'Twitter', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}` },
-                    { Icon: Facebook, label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`/blog/${slug}`)}` },
+                    { Icon: Facebook, label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + `/blog/${slug}`)}` },
                 ].map(({ Icon, label, href }) => (
                     <a key={label} href={href} target="_blank" rel="noopener noreferrer"
                         className="w-7 h-7 rounded-full border border-[#E8E3DC] flex items-center justify-center text-[#666] hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors"
@@ -56,6 +70,8 @@ interface RelatedProductsProps {
 }
 
 export function RelatedProducts({ products }: RelatedProductsProps) {
+    const { formatPrice } = useGlobal();
+
     return (
         <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-none">
             {products.map(p => (
@@ -68,7 +84,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
                     </div>
                     <div className="p-2.5">
                         <p className="text-[12px] font-semibold text-[#1C1C1E] line-clamp-1">{p.name}</p>
-                        <p className="text-[13px] font-bold text-[#C9A96E] mt-0.5">₺{p.price.toLocaleString('tr-TR')}</p>
+                        <p className="text-[13px] font-bold text-[#C9A96E] mt-0.5">{formatPrice(p.price)}</p>
                     </div>
                 </Link>
             ))}

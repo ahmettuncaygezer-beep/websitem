@@ -3,8 +3,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useFilters } from '@/hooks/useFilters';
+import { useGlobal } from '@/context/GlobalContext';
 
 export function FilterChips() {
+    const { t } = useGlobal();
     const { filters, removeFilter, clearFilters, hasActiveFilters } = useFilters();
 
     if (!hasActiveFilters()) return null;
@@ -43,7 +45,7 @@ export function FilterChips() {
                 onClick={clearFilters}
                 className="text-xs font-sans text-gold hover:text-gold-dark transition-colors uppercase tracking-wider ml-2"
             >
-                Tümünü Temizle
+                {t('fav_clear_all')}
             </button>
         </motion.div>
     );

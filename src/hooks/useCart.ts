@@ -14,7 +14,7 @@ export function useCart() {
             image: product.image,
             slug: product.slug || product.href?.split('/').pop() || '',
             selectedColor: options?.selectedColor,
-        });
+        }, options?.quantity || 1);
 
         toast.success(
             'Sepete Eklendi',

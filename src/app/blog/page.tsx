@@ -14,12 +14,20 @@ export const metadata: Metadata = {
     },
 };
 
+export interface LocalizedString {
+    tr: string;
+    en: string;
+    fr: string;
+    ar: string;
+    de: string;
+}
+
 export interface BlogPost {
     slug: string;
-    title: string;
-    excerpt: string;
+    title: LocalizedString;
+    excerpt: LocalizedString;
     coverImage: string;
-    category: string;
+    category: string; // This will now be a translation key like 'blog_buying_guide'
     categoryColor: string;
     categorySlug: string;
     author: string;
@@ -33,11 +41,22 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
     {
         slug: 'kucuk-salona-mobilya-secimi-rehberi',
-        title: '50m² Salon İçin 5 Koltuk Önerisi',
-        excerpt:
-            'Küçük alanlarda büyük koltuklar sorun yaratabilir. Doğru ölçü ve yerleşimle hem şık hem ferah bir salon tasarlamak mümkün.',
+        title: {
+            tr: '50m² Salon İçin 5 Koltuk Önerisi',
+            en: '5 Sofa Suggestions for a 50m² Living Room',
+            fr: '5 suggestions de canapés pour un salon de 50m²',
+            ar: '5 اقتراحات للأرائك لغرفة معيشة بمساحة 50 مترًا مربعًا',
+            de: '5 Sofa-Vorschläge für ein 50m² großes Wohnzimmer'
+        },
+        excerpt: {
+            tr: 'Küçük alanlarda büyük koltuklar sorun yaratabilir. Doğru ölçü ve yerleşimle hem şık hem ferah bir salon tasarlamak mümkün.',
+            en: 'Large sofas can cause problems in small spaces. It is possible to design a stylish and spacious living room with the right dimensions and placement.',
+            fr: 'Les grands canapés peuvent poser des problèmes dans les petits espaces. Il est possible de concevoir un salon élégant et spacieux avec les bonnes dimensions et le bon placement.',
+            ar: 'يمكن أن تسبب الأرائك الكبيرة مشاكل في المساحات الصغيرة. من الممكن تصميم غرفة معيشة أنيقة وفسيحة بالأبعاد والوضع الصحيحين.',
+            de: 'Große Sofas können in kleinen Räumen Probleme verursachen. Mit den richtigen Maßen und der richtigen Platzierung ist es möglich, ein stilvolbes und geräumiges Wohnzimmer zu gestalten.'
+        },
         coverImage: '/images/gallery-1.jpg',
-        category: 'Alım Rehberi',
+        category: 'blog_buying_guide',
         categoryColor: '#C9A96E',
         categorySlug: 'alim-rehberi',
         author: 'Elif Kaya',
@@ -48,11 +67,22 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: '2026-ev-dekorasyonu-renk-trendleri',
-        title: '2026 Ev Dekorasyonu Renk Trendleri',
-        excerpt:
-            'Toprak tonları, vizon ve sage yeşili bu yılın hâkim renkleri. İşte evler için en çok öne çıkan palet kombinasyonları.',
+        title: {
+            tr: '2026 Ev Dekorasyonu Renk Trendleri',
+            en: '2026 Home Decoration Color Trends',
+            fr: 'Tendances couleurs de décoration intérieure 2026',
+            ar: 'اتجاهات ألوان ديكور المنزل لعام 2026',
+            de: 'Farbtrends für die Inneneinrichtung 2026'
+        },
+        excerpt: {
+            tr: 'Toprak tonları, vizon ve sage yeşili bu yılın hâkim renkleri. İşte evler için en çok öne çıkan palet kombinasyonları.',
+            en: 'Earth tones, mink, and sage green are the dominant colors of this year. Here are the most prominent palette combinations for homes.',
+            fr: 'Les tons terre, le vison et le vert sauge sont les couleurs dominantes de cette année. Voici les combinaisons de palettes les plus marquantes pour les maisons.',
+            ar: 'تعتبر الألوان الترابية والمنك والأخضر المريمي هي الألوان السائدة لهذا العام. إليكم أبرز مجموعات اللوحات للمنازل.',
+            de: 'Erdtöne, Nerz und Salbeigrün sind die dominierenden Farben dieses Jahres. Hier sind die prominentesten Palettenkombinationen für zu Hause.'
+        },
         coverImage: '/images/gallery-2.jpg',
-        category: 'Trend',
+        category: 'blog_trend',
         categoryColor: '#8B9E82',
         categorySlug: 'trend',
         author: 'Ayşe Demir',
@@ -62,11 +92,22 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: 'yemek-masasi-boyutu-nasil-secilir',
-        title: 'Yemek Masası Boyutu Nasıl Seçilir?',
-        excerpt:
-            'Kaç kişilik masa lazım? Hangi şekil odama yakışır? Uzun dikdörtgen mi, yuvarlak mı? Tüm cevaplar burada.',
+        title: {
+            tr: 'Yemek Masası Boyutu Nasıl Seçilir?',
+            en: 'How to Choose Your Dining Table Size?',
+            fr: 'Comment choisir la taille de votre table à manger ?',
+            ar: 'كيف تختار مقاس طاولة الطعام الخاصة بك؟',
+            de: 'Wie wählt man die Größe seines Esstisches?'
+        },
+        excerpt: {
+            tr: 'Kaç kişilik masa lazım? Hangi şekil odama yakışır? Uzun dikdörtgen mi, yuvarlak mı? Tüm cevaplar burada.',
+            en: 'How many people do you need a table for? Which shape suits my room? Long rectangular or round? All the answers are here.',
+            fr: "Pour combien de personnes avez-vous besoin d'une table? Quelle forme convient à ma chambre? Rectangulaire long ou rond? Toutes les réponses sont ici.",
+            ar: 'كم عدد الأشخاص الذين تحتاج لطاولة من أجلهم؟ أي شكل يناسب غرفتي؟ مستطيل طويل أم دائري؟ كل الإجابات هنا.',
+            de: 'Für wie viele Personen brauchen Sie einen Tisch? Welche Form passt in mein Zimmer? Lang rechteckig oder rund? Alle Antworten finden Sie hier.'
+        },
         coverImage: '/images/gallery-3.jpg',
-        category: 'Alım Rehberi',
+        category: 'blog_buying_guide',
         categoryColor: '#C9A96E',
         categorySlug: 'alim-rehberi',
         author: 'Can Yıldız',
@@ -76,11 +117,22 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: 'minimalist-yatak-odasi-dekorasyonu',
-        title: 'Minimalist Yatak Odası Dekorasyonu',
-        excerpt:
-            'Az eşya, maksimum huzur. Minimalist yatak odası tasarımında renk, doku ve boşluk dengesini doğru kurmak için 8 altın kural.',
+        title: {
+            tr: 'Minimalist Yatak Odası Dekorasyonu',
+            en: 'Minimalist Bedroom Decoration',
+            fr: 'Décoration de chambre minimaliste',
+            ar: 'ديكور غرفة نوم بسيطة',
+            de: 'Minimalistische Schlafzimmerdekoration'
+        },
+        excerpt: {
+            tr: 'Az eşya, maksimum huzur. Minimalist yatak odası tasarımında renk, doku ve boşluk dengesini doğru kurmak için 8 altın kural.',
+            en: 'Less furniture, maximum peace. 8 golden rules to establish the right balance of color, texture, and space in minimalist bedroom design.',
+            fr: "Moins de meubles, un maximum de tranquillité. 8 règles d'or pour établir le bon équilibre entre couleur, texture et espace dans la conception d'une chambre minimaliste.",
+            ar: 'أثاث أقل، أقصى درجات الراحة. 8 قواعد ذهبية لتحقيق التوازن الصحيح بين اللون والملمس والمساحة في تصميم غرفة النوم البسيطة.',
+            de: 'Weniger Möbel, maximale Ruhe. 8 goldene Regeln für die richtige Balance von Farbe, Textur und Raum in der minimalistischen Schlafzimmergestaltung.'
+        },
         coverImage: '/images/gallery-4.jpg',
-        category: 'Dekorasyon',
+        category: 'blog_decoration',
         categoryColor: '#7B9EB8',
         categorySlug: 'dekorasyon',
         author: 'Zeynep Arslan',
@@ -90,11 +142,22 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: 'ahsap-mi-metal-mi-malzeme-karsilastirmasi',
-        title: 'Ahşap mı, Metal mi? Malzeme Karşılaştırması',
-        excerpt:
-            'Mobilyada ahşap ve metal her ikisi de güçlü tarz ifadeleri. Hangisi dayanıklı, hangisi bakımı kolay?',
+        title: {
+            tr: 'Ahşap mı, Metal mi? Malzeme Karşılaştırması',
+            en: 'Wood or Metal? Material Comparison',
+            fr: 'Bois ou Métal ? Comparaison des matériaux',
+            ar: 'خشب أم معدن؟ مقارنة المواد',
+            de: 'Holz oder Metall? Materialvergleich'
+        },
+        excerpt: {
+            tr: 'Mobilyada ahşap ve metal her ikisi de güçlü tarz ifadeleri. Hangisi dayanıklı, hangisi bakımı kolay?',
+            en: 'Wood and metal are both strong style statements in furniture. Which one is durable, and which one is easy to maintain?',
+            fr: 'Le bois et le métal sont tous deux des affirmations de style fortes dans le mobilier. Lequel est durable et lequel est facile à entretenir ?',
+            ar: 'يعد كل من الخشب والمعدن من تعبيرات الأسلوب القوية في الأثاث. أيهما متين، وأيهما سهل الصيانة؟',
+            de: 'Holz und Metall sind beide starke Stil-Statements bei Möbeln. Welches ist langlebig und welches pflegeleicht?'
+        },
         coverImage: '/images/gallery-5.jpg',
-        category: 'Alım Rehberi',
+        category: 'blog_buying_guide',
         categoryColor: '#C9A96E',
         categorySlug: 'alim-rehberi',
         author: 'Murat Şahin',
@@ -104,11 +167,22 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: 'cocuk-odasi-mobilya-alirken-dikkat-edilecekler',
-        title: 'Çocuk Odası Mobilya Alırken Dikkat Edilenler',
-        excerpt:
-            'Güvenli malzeme sertifikaları, büyüyen çocuğa uyum sağlayan tasarımlar ve renklerin çocuğun gelişimine etkisi.',
+        title: {
+            tr: 'Çocuk Odası Mobilya Alırken Dikkat Edilenler',
+            en: 'Things to Consider When Buying Kids Room Furniture',
+            fr: "Points à considérer lors de l'achat de meubles pour chambre d'enfant",
+            ar: 'أشياء يجب مراعاتها عند شراء أثاث غرف الأطفال',
+            de: 'Was Sie beim Kauf von Kinderzimmermöbeln beachten sollten'
+        },
+        excerpt: {
+            tr: 'Güvenli malzeme sertifikaları, büyüyen çocuğa uyum sağlayan tasarımlar ve renklerin çocuğun gelişimine etkisi.',
+            en: 'Safe material certificates, designs that adapt to a growing child, and the impact of colors on child development.',
+            fr: "Certificats de matériaux sûrs, des modèles qui s'adaptent à l'enfant qui grandit et l'impact des couleurs sur son développement.",
+            ar: 'شهادات المواد الآمنة، والتصاميم التي تتكيف مع نمو الطفل، وتأثير الألوان على نمو الطفل.',
+            de: 'Sicherheitszertifikate für Materialien, Designs, die sich an ein wachsendes Kind anpassen, und der Einfluss von Farben auf die kindliche Entwicklung.'
+        },
         coverImage: '/images/gallery-6.jpg',
-        category: 'Alım Rehberi',
+        category: 'blog_buying_guide',
         categoryColor: '#C9A96E',
         categorySlug: 'alim-rehberi',
         author: 'Elif Kaya',
@@ -118,11 +192,22 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: 'mutfak-dekorasyonunda-renk-psikolojisi',
-        title: 'Mutfak Dekorasyonunda Renk Psikolojisi',
-        excerpt:
-            'Mutfağınızda kullandığınız renkler iştahınızı ve mutluluğunuzu etkiliyor. İşte bilim destekli renk seçimi rehberi.',
+        title: {
+            tr: 'Mutfak Dekorasyonunda Renk Psikolojisi',
+            en: 'Color Psychology in Kitchen Decoration',
+            fr: 'Psychologie des couleurs dans la décoration de la cuisine',
+            ar: 'علم نفس الألوان في ديكور المطبخ',
+            de: 'Farbpsychologie in der Küchendekoration'
+        },
+        excerpt: {
+            tr: 'Mutfağınızda kullandığınız renkler iştahınızı ve mutluluğunuzu etkiliyor. İşte bilim destekli renk seçimi rehberi.',
+            en: 'The colors you use in your kitchen affect your appetite and happiness. Here is a science-backed color selection guide.',
+            fr: 'Les couleurs que vous utilisez dans votre cuisine affectent votre appétit et votre bonheur. Voici un guide de sélection des couleurs basé sur la science.',
+            ar: 'تؤثر الألوان التي تستخدمها في مطبخك على شهيتك وسعادتك. إليك دليل اختيار الألوان المدعوم بالعلم.',
+            de: 'Die Farben, die Sie in Ihrer Küche verwenden, beeinflussen Ihren Appetit und Ihr Glück. Hier finden Sie einen wissenschaftlich fundierten Leitfaden zur Farbauswahl.'
+        },
         coverImage: '/images/gallery-1.jpg',
-        category: 'Dekorasyon',
+        category: 'blog_decoration',
         categoryColor: '#7B9EB8',
         categorySlug: 'dekorasyon',
         author: 'Ayşe Demir',
@@ -132,11 +217,22 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: 'balkon-mobilyasi-secim-rehberi',
-        title: 'Balkon Mobilyası Seçim Rehberi',
-        excerpt:
-            'Küçük ya da büyük her balkonu yaşam alanına dönüştürmek mümkün. Hava koşullarına dayanaklı malzemeler ve akıllı yerleşim fikirleri.',
+        title: {
+            tr: 'Balkon Mobilyası Seçim Rehberi',
+            en: 'Balcony Furniture Selection Guide',
+            fr: 'Guide de sélection de mobilier de balcon',
+            ar: 'دليل اختيار أثاث الشرفة',
+            de: 'Leitfaden zur Auswahl von Balkonmöbeln'
+        },
+        excerpt: {
+            tr: 'Küçük ya da büyük her balkonu yaşam alanına dönüştürmek mümkün. Hava koşullarına dayanaklı malzemeler ve akıllı yerleşim fikirleri.',
+            en: 'It is possible to transform any balcony, small or large, into a living space. Weather-resistant materials and smart layout ideas.',
+            fr: "Il est possible de transformer n'importe quel balcon, petit ou grand, en espace de vie.Matériaux resistentes aux intempéries et idées d'aménagement astucieuses.",
+            ar: 'من الممكن تحويل أي شرفة، صغيرة كانت أم كبيرة، إلى مساحة معيشة. مواد مقاومة للطقس وأفكار تخطيط ذكية.',
+            de: 'Es ist möglich, jeden Balkon, egal ob klein oder groß, in einen Wohnraum zu verwandeln. Wetterfeste Materialien und clevere Gestaltungsideen.'
+        },
         coverImage: '/images/gallery-2.jpg',
-        category: 'Alım Rehberi',
+        category: 'blog_buying_guide',
         categoryColor: '#C9A96E',
         categorySlug: 'alim-rehberi',
         author: 'Can Yıldız',
@@ -146,7 +242,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
 ];
 
-export const CATEGORIES = ['Tümü', 'Dekorasyon', 'Alım Rehberi', 'Trend'];
+export const CATEGORIES = ['blog_all', 'blog_decoration', 'blog_buying_guide', 'blog_trend'];
 
 // JSON-LD for list page
 const listSchema = {
@@ -157,8 +253,8 @@ const listSchema = {
     url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://selismobilya.com'}/blog`,
     blogPost: BLOG_POSTS.slice(0, 3).map(post =>
         generateArticleSchema({
-            headline: post.title,
-            description: post.excerpt,
+            headline: post.title.tr,
+            description: post.excerpt.tr,
             image: post.coverImage,
             datePublished: post.date,
             author: post.author,

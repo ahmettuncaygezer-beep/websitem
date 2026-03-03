@@ -9,6 +9,7 @@ import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useAuthStore } from '@/store/authStore';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface NavIconsProps {
     isScrolled: boolean;
@@ -48,6 +49,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
     const favCount = useFavorites((state) => state.favorites.length);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [heartHovered, setHeartHovered] = useState(false);
+    const { t, language } = useGlobal();
 
     const ui = useMemo(() => ({
         iconColor: 'var(--foreground)',
@@ -64,8 +66,8 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
             {mounted && (
                 <button
                     onClick={toggle}
-                    aria-label={isDark ? 'Aydınlık moda geç' : 'Karanlık moda geç'}
-                    title={isDark ? 'Aydınlık mod' : 'Karanlık mod'}
+                    aria-label={isDark ? t('sc_day_mode') : t('sc_night_mode')}
+                    title={isDark ? t('sc_day_mode') : t('sc_night_mode')}
                     className="relative hidden md:flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
                     style={{ color: ui.iconColor }}
                     onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = ui.iconBtnHover; }}
@@ -84,7 +86,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
             {/* ① Favorites */}
             <Link
                 href="/favoriler"
-                aria-label={`Favorilerim${favCount > 0 ? `, ${favCount} ürün` : ''}`}
+                aria-label={`${t('nav_favorites')}${favCount > 0 ? `, ${favCount} ${t('fav_count_suffix')}` : ''}`}
                 className="relative hidden md:flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
                 style={{ color: ui.iconColor }}
                 onMouseEnter={() => setHeartHovered(true)}
@@ -141,7 +143,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                                         style={{ color: 'var(--foreground)' }}
                                         data-lang-key="auth_register_btn"
                                     >
-                                        Üye Ol
+                                        {t('auth_register_btn')}
                                     </button>
                                     <button
                                         onClick={() => { openAuth('login'); setIsUserMenuOpen(false); }}
@@ -149,7 +151,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                                         style={{ color: 'var(--foreground)' }}
                                         data-lang-key="auth_tab_login"
                                     >
-                                        Giriş Yap
+                                        {t('auth_tab_login')}
                                     </button>
                                 </div>
                                 <div className="p-2">
@@ -166,7 +168,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                                             style={{ color: 'var(--foreground)' }}
                                             data-lang-key={langKey}
                                         >
-                                            {label}
+                                            {t(langKey)}
                                         </Link>
                                     ))}
                                 </div>
@@ -178,7 +180,7 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
 
             {/* ③ Cart */}
             <NavIconBtn
-                label={`Sepet, ${totalItems} ürün`}
+                label={`${t('mobile_nav_cart')}, ${totalItems} ${t('fav_count_suffix')}`}
                 onClick={openCart}
                 color={ui.iconColor}
                 hoverBg={ui.iconBtnHover}

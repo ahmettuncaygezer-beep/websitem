@@ -1,5 +1,5 @@
 export const translations = {
-    tr: {
+    TR: {
         // Mega Menu Translations
         nav_featured: "Öne Çıkanlar",
         nav_corner_sofas: "Köşe Koltuklar",
@@ -75,6 +75,13 @@ export const translations = {
         cat_desc_lighting: "Atmosfer yaratan aydınlatma çözümleri",
         cat_desc_decoration: "Evinizi tamamlayan dekoratif aksesuarlar",
         cat_desc_kids: "Renkli ve enerjik genç odası mobilyaları",
+        cat_living_room: "Oturma Odası",
+        cat_bedroom: "Yatak Odası",
+        cat_dining: "Yemek Odası",
+        cat_office: "Çalışma Odası",
+        cat_lighting: "Aydınlatma",
+        cat_decoration: "Dekorasyon",
+        cat_kids: "Genç & Çocuk Odası",
         col_desc_spring: "Doğanın uyanışından ilham alan taze tasarımlar.",
         col_desc_minimalist: "Az ama öz. Sade çizgilerle maksimum şıklık.",
         col_desc_classic: "Zamana meydan okuyan klasik ve zarif dokunuşlar.",
@@ -98,6 +105,8 @@ export const translations = {
         // Common
         common_discover: "Keşfet",
         common_shopNow: "Şimdi Al",
+        common_search: "Ara",
+        common_search_placeholder: "Ne arıyorsunuz?",
         common_viewAll: "Tümünü Gör",
         common_addToCart: "Sepete Ekle",
         common_loading: "Yükleniyor...",
@@ -430,28 +439,17 @@ export const translations = {
         shoproom_btn_add: "Ekle",
 
         // Categories
-        cat_living_room: "Oturma Odası",
-        cat_bedroom: "Yatak Odası",
-        cat_dining: "Yemek Odası",
-        cat_office: "Çalışma Odası",
-        cat_lighting: "Aydınlatma",
-        cat_decoration: "Dekorasyon",
+// DUPLICATE:         cat_living_room: "Oturma Odası",
+// DUPLICATE:         cat_bedroom: "Yatak Odası",
+// DUPLICATE:         cat_dining: "Yemek Odası",
+// DUPLICATE:         cat_office: "Çalışma Odası",
+// DUPLICATE:         cat_lighting: "Aydınlatma",
+// DUPLICATE:         cat_decoration: "Dekorasyon",
         cat_youth: "Genç Odası",
         cat_view_all: "TÜMÜNÜ GÖR",
         cat_view_all_desc: "Tüm kategorilere göz atın",
         cat_view_all_aria: "Tüm kategorileri görüntüle",
 
-        // Newly added missing translations
-        search_placeholder: "Ürün, kategori veya koleksiyon ara...",
-        auth_welcome_title: "Tekrar Hoş Geldiniz",
-        auth_welcome_sub: "Premium mobilya dünyasına girin",
-        auth_login_btn: "Giriş Yap",
-        auth_login_link: "Giriş Yapın →",
-        auth_logging_in: "Giriş yapılıyor...",
-        auth_tab_login: "Giriş Yap",
-        new_arr_title: "Öne Çıkan Parçalar",
-        common_view_all_arrow: "Tümünü Gör →",
-        shop_room_btn: "Bu odadaki tüm ürünleri gör →",
 
         // Added for Auth Forms
         auth_email_label: "E-posta adresi",
@@ -491,24 +489,60 @@ export const translations = {
         auth_verify_email: "E-postanızı Doğrulayın",
         auth_verify_desc: "Doğrulama linki e-posta adresinize gönderildi.",
 
-        // Product specific missing keys
-        media_title: "Modern Oturma Odası",
-        media_subtitle: "İlham Veren Mekanlar",
-        media_quote: "Doğal ışık ve nötr tonların mükemmel uyumu ile yaratılan geniş ve ferah bir yaşam alanı.",
-        media_quote_author: "Hürriyet Ev, Ocak 2026",
-        social_mins_ago: "dk önce",
-        explore_btn: "Keşfet",
 
-        // AI Assistant
-        chat_welcome_title: "Merhaba! Ben Selis AI 👋",
-        chat_welcome_desc: "Size özel mobilya önerileri için buradayım.",
-        chat_qs_living: "Oturma odası için mobilya",
-        chat_qs_bedroom: "Yatak odası dekorasyonu",
-        chat_qs_budget: "Bütçeme uygun öneriler",
-        chat_qs_style: "Stil testini çözmek istiyorum",
-        chat_qs_planner: "Oda planlayıcıya git",
+        // Search
+        search_close: "Aramayı kapat",
+        search_history: "Arama Geçmişi",
+        search_clear_history: "Temizle",
+        search_no_results: "Sonuç bulunamadı.",
+        search_input_aria: "Ürün ara",
+        search_placeholder: "Ürün, kategori veya koleksiyon ara...",
+
+        // Floating Bar / System Control
+        sc_title: "Sistem Kontrol Merkezi",
+        sc_antigravity: "Antigravity",
+        sc_cart: "Sepet",
+        sc_fav: "Favori",
+        sc_night_mode: "Gece Modu",
+        sc_day_mode: "Gündüz Modu",
+        sc_smart_search: "Akıllı Arama",
+        sc_install_app: "Uygulamayı Yükle",
+        sc_save_draft: "Taslağı Kaydet",
+        sc_find_similar: "Benzerini Bul",
+        sc_room_planner: "Oda Planlayıcı",
+        sc_core_status: "Çekirdek Durumu",
+        sc_environment: "Ortam",
+        sc_built_with: "Antigravity ile üretildi",
+
+        // Blog
+        blog_title: "İlham & Rehberler",
+        blog_subtitle: "Uzman tavsiyeleri · Dekorasyon fikirleri · Mobilya rehberleri",
+        blog_all: "Tümü",
+        blog_decoration: "Dekorasyon",
+        blog_buying_guide: "Alım Rehberi",
+        blog_trend: "Trend",
+        blog_search_placeholder: "Yazı veya konu ara...",
+        blog_read_more: "Devamını Oku",
+        blog_min_read: "dk okuma",
+        blog_featured: "Öne Çıkan",
+        blog_no_results: "Sonuç bulunamadı.",
+        blog_newsletter_title: "Haftanın Seçkileri",
+        blog_newsletter_desc: "Her hafta en ilham verici dekorasyon yazıları ve özel fırsatlar e-posta kutunuza gelsin.",
+        blog_newsletter_placeholder: "E-posta adresiniz",
+        blog_newsletter_btn: "Abone Ol",
+        blog_newsletter_success: "Harika! Sizi listeye ekledik.",
+        blog_popular_topics: "Popüler Konular",
+
+        // Social Proof / Notifications
+        social_just_now: "Az önce",
+
+        // WhatsApp
+        wa_default_msg: "Merhaba! Mobilya hakkında bilgi almak istiyorum.",
+        wa_product_msg_prefix: 'Merhaba! "x" ürünü hakkında bilgi almak istiyorum.',
+        wa_product_link_prefix: "Ürün linki:",
+        wa_cart_msg: "Merhaba! Siparişim hakkında yardım almak istiyorum.",
     },
-    en: {
+    EN: {
         // Mega Menu Translations
         nav_featured: "Featured",
         nav_corner_sofas: "Corner Sofas",
@@ -611,6 +645,8 @@ export const translations = {
         // Common
         common_discover: "Discover",
         common_shopNow: "Shop Now",
+        common_search: "Search",
+        common_search_placeholder: "What are you looking for?",
         common_viewAll: "View All",
         common_addToCart: "Add to Cart",
         common_loading: "Loading...",
@@ -682,7 +718,6 @@ export const translations = {
         flash_sale_limited: "Limited Time",
         flash_sale_ended: "Campaign Ended",
         flash_sale_ends: "⚡ Price ends in:",
-        social_bought: "was just ordered.",
         stats_subtitle: "SELIS by Numbers",
         stats_title: "Thousands of Happy Customers",
         stats_customers: "HAPPY CUSTOMERS",
@@ -855,7 +890,6 @@ export const translations = {
         common_go_to_product: "Go to product page",
         common_items: "items",
         hero_video_button: "Collection Film",
-        wa_tooltip: "Hello! 👋 How can we help?",
         wa_offline_title: "We are currently offline",
         wa_offline_desc: "Leave a message, we'll get back to you during business hours (09:00–18:00).",
         wa_offline_btn: "Send Message Anyway",
@@ -947,17 +981,6 @@ export const translations = {
         cat_view_all_desc: "Browse all categories",
         cat_view_all_aria: "View all categories",
 
-        // Newly added missing translations
-        search_placeholder: "Search for product, category or collection...",
-        auth_welcome_title: "Welcome Back",
-        auth_welcome_sub: "Enter the world of premium furniture",
-        auth_login_btn: "Log In",
-        auth_login_link: "Log In →",
-        auth_logging_in: "Logging in...",
-        auth_tab_login: "Log In",
-        new_arr_title: "Featured Pieces",
-        common_view_all_arrow: "View All →",
-        shop_room_btn: "View all products in this room →",
 
         // Added for Auth Forms
         auth_email_label: "Email address",
@@ -997,24 +1020,66 @@ export const translations = {
         auth_verify_email: "Verify Your Email",
         auth_verify_desc: "Verification link sent to your email address.",
 
-        // Product specific missing keys
-        media_title: "Modern Living Room",
-        media_subtitle: "Inspiring Spaces",
-        media_quote: "A wide and spacious living area created with the perfect harmony of natural light and neutral tones.",
-        media_quote_author: "Hurriyet Home, January 2026",
-        social_mins_ago: "mins ago",
-        explore_btn: "Explore",
 
-        // AI Assistant
-        chat_welcome_title: "Hello! I am Selis AI 👋",
-        chat_welcome_desc: "I am here for personalized furniture recommendations.",
-        chat_qs_living: "Furniture for the living room",
-        chat_qs_bedroom: "Bedroom decoration",
-        chat_qs_budget: "Budget-friendly suggestions",
-        chat_qs_style: "I want to take the style test",
-        chat_qs_planner: "Go to room planner",
+        // Search
+        search_close: "Close search",
+        search_history: "Search History",
+        search_clear_history: "Clear",
+        search_no_results: "No results found.",
+        search_input_aria: "Search products",
+        search_placeholder: "Search for product, category or collection...",
+
+        // Floating Bar / System Control
+        sc_title: "System Control Center",
+        sc_antigravity: "Antigravity",
+        sc_cart: "Cart",
+        sc_fav: "Fav",
+        sc_night_mode: "Night Mode",
+        sc_day_mode: "Day Mode",
+        sc_smart_search: "Smart Search",
+        sc_install_app: "Install App",
+        sc_save_draft: "Save Draft",
+        sc_find_similar: "Find Similar",
+        sc_room_planner: "Room Planner",
+        sc_core_status: "Core Status",
+        sc_environment: "Environment",
+        sc_built_with: "Built with Antigravity",
+
+        // Blog
+        blog_title: "Inspiration & Guides",
+        blog_subtitle: "Expert advice · Decoration ideas · Furniture guides",
+        blog_all: "All",
+        blog_decoration: "Decoration",
+        blog_buying_guide: "Buying Guide",
+        blog_trend: "Trend",
+        blog_search_placeholder: "Search articles or topics...",
+        blog_read_more: "Read More",
+        blog_min_read: "min read",
+        blog_featured: "Featured",
+        blog_no_results: "No results found.",
+        blog_newsletter_title: "Weekly Picks",
+        blog_newsletter_desc: "Get the most inspiring decoration articles and special offers in your inbox every week.",
+        blog_newsletter_placeholder: "Your email address",
+        blog_newsletter_btn: "Subscribe",
+        blog_newsletter_success: "Great! We've added you to the list.",
+        blog_popular_topics: "Popular Topics",
+
+        // Social Proof / Notifications
+        social_just_now: "Just now",
+        social_mins_ago: "mins ago",
+        social_bought: "ordered",
+
+        // WhatsApp
+        wa_tooltip: "Hello! 👋 Do you need help?",
+        wa_default_msg: "Hello! I would like to get information about furniture.",
+        wa_product_msg_prefix: 'Hello! I would like to get information about the "x" product.',
+        wa_product_link_prefix: "Product link:",
+        wa_cart_msg: "Hello! I would like to get help with my order.",
+        blog_related_products: "Related Products",
+        blog_back_to_all: "Back to All Posts",
+        nav_home: "Home",
     },
-    de: {
+    DE: {
         // Mega Menu Translations
         nav_featured: "Hervorgehoben",
         nav_corner_sofas: "Ecksofas",
@@ -1351,6 +1416,9 @@ export const translations = {
         cat_view_all: "ALLE ANSEHEN",
         cat_view_all_desc: "Durchsuchen Sie alle Kategorien",
         cat_view_all_aria: "Alle Kategorien anzeigen",
+        blog_related_products: "In diesem Artikel erwähnte Produkte",
+        blog_back_to_all: "Zurück zu allen Beiträgen",
+        nav_home: "Startseite",
 
         // Newly added missing translations
         search_placeholder: "Nach Produkt, Kategorie oder Kollektion suchen...",
@@ -1365,7 +1433,7 @@ export const translations = {
         shop_room_title: "Modernes Wohnzimmer",
         shop_room_btn: "Alle Produkte in diesem Raum ansehen →",
     },
-    fr: {
+    FR: {
         // Mega Menu Translations
         nav_featured: "En vedette",
         nav_corner_sofas: "Canapés d'Angle",
@@ -1690,8 +1758,11 @@ export const translations = {
         wa_offline_title: "Nous sommes actuellement hors ligne",
         wa_offline_desc: "Laissez un message, nous vous répondrons pendant les heures de bureau (09:00–18:00).",
         wa_offline_btn: "Envoyer le message quand même",
+        blog_related_products: "Produits mentionnés dans cet article",
+        blog_back_to_all: "Retour à tous les articles",
+        nav_home: "Accueil",
     },
-    ar: {
+    AR: {
         // Mega Menu Translations
         nav_featured: "متميز",
         nav_corner_sofas: "أرائك زاوية",
@@ -2016,7 +2087,16 @@ export const translations = {
         wa_offline_title: "نحن حاليًا غير متصلين",
         wa_offline_desc: "اترك رسالة، وسنقوم بالرد عليك خلال ساعات العمل (09:00–18:00).",
         wa_offline_btn: "إرسال الرسالة على أي حال",
+        blog_related_products: "المنتجات المذكورة في هذا المقال",
+        blog_back_to_all: "العودة إلى جميع المقالات",
+        nav_home: "الصفحة الرئيسية",
     }
+};
+
+export type Language = keyof typeof translations;
+
+export const getDictionary = (lang: Language) => {
+    return translations[lang] || translations.TR;
 };
 
 export const currencies = {

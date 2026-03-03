@@ -3,6 +3,7 @@
 import { useState, useCallback, forwardRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, Heart, GitCompareArrows, Check, Loader2 } from 'lucide-react';
+import { useGlobal } from '@/context/GlobalContext';
 
 type CartState = 'idle' | 'loading' | 'success';
 
@@ -27,9 +28,9 @@ export const ActionButtons = forwardRef<HTMLButtonElement, Props>(
             setTimeout(() => { setCartState('success'); setTimeout(() => setCartState('idle'), 1200); }, 1000);
         }, [cartState, inStock, onAddToCart]);
 
+        const { t } = useGlobal();
         const cartBg = cartState === 'success' ? '#2E7D32' : inStock ? 'var(--foreground)' : 'var(--muted)';
-        const cartTextKey = cartState === 'loading' ? 'prod_add_cart_adding' : cartState === 'success' ? 'prod_add_cart_added' : inStock ? 'prod_add_to_cart' : 'prod_out_of_stock';
-        // const cartText = cartState === 'loading' ? 'Ekleniyor...' : cartState === 'success' ? 'Sepete Eklendi ✓' : inStock ? 'Sepete Ekle' : 'Stokta Yok'; // This line is no longer needed
+        const cartTextKey = cartState === 'loading' ? 'pdp_adding' : cartState === 'success' ? 'cart_success_added' : inStock ? 'pdp_add_to_cart' : 'pdp_out_of_stock';
 
         return (
             <div className="mt-5">
@@ -49,7 +50,7 @@ export const ActionButtons = forwardRef<HTMLButtonElement, Props>(
                     {cartState === 'success' && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 500, damping: 15 }}><Check size={18} /></motion.span>}
                     {cartState === 'idle' && <ShoppingBag size={18} />}
                     <span data-lang-key={cartTextKey}>
-                        {cartState === 'loading' ? 'Ekleniyor...' : cartState === 'success' ? 'Sepete Eklendi ✓' : inStock ? 'Sepete Ekle' : 'Stokta Yok'}
+                        {t(cartTextKey)}
                     </span>
                 </button>
 
@@ -73,13 +74,13 @@ export const ActionButtons = forwardRef<HTMLButtonElement, Props>(
                         className="flex-1 py-3.5 flex items-center justify-center gap-2 font-medium transition-all duration-200 rounded-sm"
                         style={{ fontSize: '12px', border: `1.5px solid ${isWishlisted ? '#E53935' : 'var(--border)'}`, background: 'transparent', color: isWishlisted ? '#E53935' : 'var(--foreground)', cursor: 'pointer' }}>
                         <Heart size={16} fill={isWishlisted ? '#E53935' : 'transparent'} stroke={isWishlisted ? '#E53935' : 'currentColor'} />
-                        <span data-lang-key={isWishlisted ? 'prod_wishlist_added' : 'prod_wishlist_add'}>{isWishlisted ? 'Favorilerde' : 'Favorilere Ekle'}</span>
+                        <span data-lang-key={isWishlisted ? 'prod_wishlisted' : 'prod_add_wishlist'}>{isWishlisted ? t('prod_wishlisted') : t('prod_add_wishlist')}</span>
                     </button>
                     <button onClick={(e) => { e.preventDefault(); onToggleCompare(); }}
                         className="flex-1 py-3.5 flex items-center justify-center gap-2 font-medium transition-all duration-200 rounded-sm"
                         style={{ fontSize: '12px', border: `1.5px solid ${isCompared ? '#C9A96E' : 'var(--border)'}`, background: isCompared ? 'var(--accent)' : 'transparent', color: isCompared ? '#C9A96E' : 'var(--foreground)', cursor: 'pointer' }}>
                         <GitCompareArrows size={16} />
-                        <span data-lang-key={isCompared ? 'prod_compare_added' : 'prod_compare_add'}>{isCompared ? 'Eklendi ✓' : 'Karşılaştır'}</span>
+                        <span data-lang-key={isCompared ? 'prod_compared' : 'prod_add_compare'}>{isCompared ? t('prod_compared') : t('prod_add_compare')}</span>
                     </button>
                 </div>
             </div>

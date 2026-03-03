@@ -40,19 +40,19 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
         setError('');
 
         if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.password) {
-            setError('Lütfen tüm zorunlu alanları doldurun.');
+            setError(t('auth_error_required_fields') || 'Lütfen tüm zorunlu alanları doldurun.');
             return;
         }
         if (form.password.length < 8) {
-            setError('Şifre en az 8 karakter olmalıdır.');
+            setError(t('auth_error_password_min') || 'Şifre en az 8 karakter olmalıdır.');
             return;
         }
         if (form.password !== form.confirmPassword) {
-            setError('Şifreler eşleşmiyor.');
+            setError(t('auth_error_password_mismatch') || 'Şifreler eşleşmiyor.');
             return;
         }
         if (!form.acceptTerms) {
-            setError('Kullanım koşullarını kabul etmeniz gerekiyor.');
+            setError(t('auth_error_accept_terms') || 'Kullanım koşullarını kabul etmeniz gerekiyor.');
             return;
         }
 
@@ -67,7 +67,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
             });
             onSuccess();
         } catch {
-            setError('Bir hata oluştu. Tekrar deneyin.');
+            setError(t('auth_error_generic') || 'Bir hata oluştu. Tekrar deneyin.');
         } finally {
             setLoading(false);
         }

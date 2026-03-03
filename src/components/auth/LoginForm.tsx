@@ -27,16 +27,19 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        // The provided Code Edit block seems to be for a registration form, not a login form.
+        // Applying the spirit of the instruction "Replace hardcoded Turkish strings with translation keys"
+        // to the existing login form's validation logic.
         if (!email || !password) {
-            setError('Lütfen tüm alanları doldurun.');
+            setError(t('auth_error_all_fields') || 'Lütfen tüm alanları doldurun.');
             return;
         }
         setLoading(true);
         try {
             const success = await login(email, password);
-            if (!success) setError('E-posta veya şifre hatalı.');
+            if (!success) setError(t('auth_error_invalid_credentials') || 'E-posta veya şifre hatalı.');
         } catch {
-            setError('Bir hata oluştu. Tekrar deneyin.');
+            setError(t('auth_error_generic') || 'Bir hata oluştu. Tekrar deneyin.');
         } finally {
             setLoading(false);
         }

@@ -3,10 +3,12 @@
 import Image from 'next/image';
 import { ShieldCheck, Truck, RefreshCw, Star } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
+import { useGlobal } from '@/context/GlobalContext';
 
 const FREE_SHIPPING_THRESHOLD = 5000;
 
 export function CheckoutSummary() {
+    const { t, formatPrice } = useGlobal();
     const { items, totalPrice } = useCart();
 
     const shippingCost = totalPrice >= FREE_SHIPPING_THRESHOLD ? 0 : 199;
@@ -15,8 +17,8 @@ export function CheckoutSummary() {
     return (
         <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm">
             <div className="bg-muted/30 px-5 py-4 border-b border-border">
-                <h3 className="text-[14px] font-bold text-foreground uppercase tracking-wider">Sipariş Özeti</h3>
-                <p className="text-[11px] text-muted-foreground mt-0.5">{items.length} Farklı Ürün</p>
+                <h3 className="text-[14px] font-bold text-foreground uppercase tracking-wider">{t('cart_summary_title')}</h3>
+                <p className="text-[11px] text-muted-foreground mt-0.5">{items.length} {t('checkout_different_items')}</p>
             </div>
 
             <div className="max-h-[300px] overflow-y-auto px-5 divide-y divide-border">
@@ -28,10 +30,10 @@ export function CheckoutSummary() {
                         <div className="flex-1 min-w-0">
                             <h4 className="text-[13px] font-medium text-foreground leading-tight line-clamp-2">{item.name}</h4>
                             <p className="text-[11px] text-muted-foreground mt-1">
-                                {item.selectedColor && `${item.selectedColor} | `}Adet: {item.quantity}
+                                {item.selectedColor && `${item.selectedColor} | `}{t('checkout_quantity')}: {item.quantity}
                             </p>
                             <p className="text-[13px] font-bold text-foreground mt-1">
-                                ₺{(item.price * item.quantity).toLocaleString('tr-TR')}
+                                {formatPrice(item.price * item.quantity)}
                             </p>
                         </div>
                     </div>
@@ -40,18 +42,18 @@ export function CheckoutSummary() {
 
             <div className="p-5 border-t border-border bg-card space-y-2">
                 <div className="flex justify-between text-[13px]">
-                    <span className="text-muted-foreground">Ara Toplam</span>
-                    <span className="font-medium text-foreground">₺{totalPrice.toLocaleString('tr-TR')}</span>
+                    <span className="text-muted-foreground">{t('cart_subtotal')}</span>
+                    <span className="font-medium text-foreground">{formatPrice(totalPrice)}</span>
                 </div>
                 <div className="flex justify-between text-[13px]">
-                    <span className="text-muted-foreground">Kargo</span>
+                    <span className="text-muted-foreground">{t('cart_shipping')}</span>
                     <span className={`font-medium ${shippingCost === 0 ? 'text-green-600 dark:text-green-400' : 'text-foreground'}`}>
-                        {shippingCost === 0 ? 'Ücretsiz' : `₺${shippingCost.toLocaleString('tr-TR')}`}
+                        {shippingCost === 0 ? t('cart_free') : formatPrice(shippingCost)}
                     </span>
                 </div>
                 <div className="pt-3 border-t border-dashed border-border mt-2 flex justify-between items-end">
-                    <span className="text-[14px] font-bold text-foreground">TOPLAM</span>
-                    <span className="text-xl font-bold text-selis-gold">₺{total.toLocaleString('tr-TR')}</span>
+                    <span className="text-[14px] font-bold text-foreground">{t('cart_total')}</span>
+                    <span className="text-xl font-bold text-selis-gold">{formatPrice(total)}</span>
                 </div>
             </div>
 
@@ -59,19 +61,19 @@ export function CheckoutSummary() {
             <div className="p-5 border-t border-dashed border-border grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-2">
                     <ShieldCheck size={14} className="text-selis-gold" />
-                    <span className="text-[10px] text-muted-foreground font-medium">SSL Güvenli Ödeme</span>
+                    <span className="text-[10px] text-muted-foreground font-medium">{t('checkout_secure_ssl')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <RefreshCw size={14} className="text-selis-gold" />
-                    <span className="text-[10px] text-muted-foreground font-medium">30 Gün İade</span>
+                    <span className="text-[10px] text-muted-foreground font-medium">{t('trust_return_title')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <Truck size={14} className="text-selis-gold" />
-                    <span className="text-[10px] text-muted-foreground font-medium">Sigortalı Gönderim</span>
+                    <span className="text-[10px] text-muted-foreground font-medium">{t('checkout_insured_shipping')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <Star size={14} className="text-selis-gold" />
-                    <span className="text-[10px] text-muted-foreground font-medium">5 Yıl Garanti</span>
+                    <span className="text-[10px] text-muted-foreground font-medium">{t('trust_warranty_title')}</span>
                 </div>
             </div>
         </div>

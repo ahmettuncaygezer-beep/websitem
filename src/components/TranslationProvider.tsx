@@ -14,7 +14,8 @@ export default function TranslationProvider({ children }: { children: React.Reac
 
             // Handle nested keys like "hero.badge"
             const keys = key.split('.');
-            let langDict = translations[language as keyof typeof translations];
+            const langUpper = language.toUpperCase();
+            let langDict = translations[langUpper as keyof typeof translations];
 
             // Backwards compatibility for flat keys from old store
             let translationStr = undefined;
@@ -38,8 +39,8 @@ export default function TranslationProvider({ children }: { children: React.Reac
 
             // Fallback to English if translation is missing
             if (!translationStr) {
-                let enDict = translations['en'];
-                if (enDict[key as keyof typeof enDict]) {
+                let enDict = translations['EN' as keyof typeof translations];
+                if (enDict && enDict[key as keyof typeof enDict]) {
                     translationStr = enDict[key as keyof typeof enDict];
                 } else {
                     let temp: any = enDict;
@@ -57,8 +58,8 @@ export default function TranslationProvider({ children }: { children: React.Reac
 
             // Fallback to Turkish if English is missing
             if (!translationStr) {
-                let trDict = translations['tr'];
-                if (trDict[key as keyof typeof trDict]) {
+                let trDict = translations['TR' as keyof typeof translations];
+                if (trDict && trDict[key as keyof typeof trDict]) {
                     translationStr = trDict[key as keyof typeof trDict];
                 }
             }
@@ -115,7 +116,7 @@ export default function TranslationProvider({ children }: { children: React.Reac
         }
 
         // 3. Dynamic SEO Tags
-        const langDict: any = translations[language as keyof typeof translations];
+        const langDict: any = translations[language.toUpperCase() as keyof typeof translations];
         if (langDict) {
             if (langDict.seo_title) {
                 document.title = langDict.seo_title;

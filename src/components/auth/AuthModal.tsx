@@ -1,21 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
+import { useDarkMode } from '@/hooks/useDarkMode';
+import { useGlobal } from '@/context/GlobalContext';
 import { SocialLogin } from './SocialLogin';
 import { AuthDivider } from './AuthDivider';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
-import { useTranslationStore, translations } from '@/store/translationStore';
+import { translations, currencies } from '@/lib/i18n';
+import { useTranslationStore, translations as storeTranslations } from '@/store/translationStore';
 
 export function AuthModal() {
     const { isAuthModalOpen, authModalView, closeAuthModal } = useAuthStore();
     const [view, setView] = useState<'login' | 'register' | 'forgot' | 'success'>(authModalView);
-    const { language } = useTranslationStore();
-    const t = (key: string) => translations[language]?.[key];
+    const { t } = useGlobal();
 
     useEffect(() => {
         setView(authModalView);
@@ -81,7 +83,6 @@ export function AuthModal() {
                                 <X size={20} />
                             </button>
 
-                            {/* Logo */}
                             <div className="text-xl text-white font-bold tracking-wider" style={{ fontFamily: 'var(--font-playfair)' }}>
                                 SELIS
                             </div>
@@ -179,7 +180,7 @@ export function AuthModal() {
                                             className="w-full py-3 text-[13px] font-semibold"
                                             style={{ background: '#1C1C1E', color: 'white', borderRadius: '6px', border: 'none', cursor: 'pointer' }}
                                         >
-                                            <span data-lang-key="auth_back_to_login">Giriş Sayfasına Dön</span>
+                                            <span data-lang-key="auth_back_to_login">{t('auth_back_to_login') || "Giriş Sayfasına Dön"}</span>
                                         </button>
                                     </motion.div>
                                 )}

@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { translations, currencies } from '@/lib/i18n';
-import { translations as storeTranslations } from '@/store/translationStore';
+import { useTranslationStore, translations as storeTranslations } from '@/store/translationStore';
 
 type Language = 'tr' | 'en' | 'fr' | 'ar' | 'de';
 type Currency = keyof typeof currencies;
@@ -82,6 +82,8 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     const setLanguage = (lang: Language) => {
         setLanguageState(lang);
         localStorage.setItem('selis_language_pref', lang);
+        // Sync with translationStore
+        (useTranslationStore.getState() as any).setLanguage(lang.toUpperCase() as any);
     };
     const [currency, setCurrency] = useState<Currency>('TRY');
 
@@ -102,9 +104,8 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
         const dict: any = translations;
         const storeDict: any = storeTranslations;
 
-        // language is lowercase 'tr', 'en', etc.
-        // translationStore uses uppercase 'TR', 'EN', etc.
-        let result: any = dict[language];
+        // translationStore and i18n.ts now both use uppercase 'TR', 'EN', etc.
+        let result: any = dict[language.toUpperCase()];
         let storeResult: any = storeDict[language.toUpperCase()];
 
         let finalString: string = keyPath; // fallback

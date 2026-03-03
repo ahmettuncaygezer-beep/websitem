@@ -14,7 +14,8 @@ import {
     removeFromHistory,
     clearHistory,
 } from './SearchResults';
-import { useTranslationStore, translations } from '@/store/translationStore';
+import { useGlobal } from '@/context/GlobalContext';
+import { useTranslationStore } from '@/store/translationStore';
 
 interface SearchBarProps {
     isScrolled: boolean;
@@ -32,8 +33,7 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
     const [history, setHistory] = useState<string[]>([]);
     const [focusedIndex, setFocusedIndex] = useState(-1);
     const debouncedQuery = useSearchDebounce(query, 300);
-    const { language } = useTranslationStore();
-    const t = (key: string) => translations[language]?.[key];
+    const { t, language } = useGlobal();
 
     // Global access for Browser Control
     useEffect(() => {
@@ -110,7 +110,7 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
                 <button
                     onClick={onOpen}
                     className="flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200 text-[#4A4A4A] dark:text-white hover:bg-black/5 dark:hover:bg-white/10"
-                    aria-label="Ürün ara"
+                    aria-label={t('search_input_aria') || "Ürün ara"}
                 >
                     <Search size={20} strokeWidth={1.5} />
                 </button>
@@ -127,7 +127,7 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
                         transition={{ duration: 0.3, ease: 'easeOut' }}
                         className="relative flex items-center gap-3 flex-1"
                         role="search"
-                        aria-label="Ürün ara"
+                        aria-label={t('search_input_aria') || "Ürün ara"}
                     >
                         <Search size={18} strokeWidth={1.5} className="text-[#999] dark:text-white/50" style={{ flexShrink: 0 }} />
                         <input
@@ -137,7 +137,7 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
                             onChange={(e) => { setQuery(e.target.value); setFocusedIndex(-1); }}
                             onKeyDown={handleKeyDown}
                             placeholder={t('search_placeholder') || "Ürün, kategori veya koleksiyon ara..."}
-                            aria-label="Ürün ara"
+                            aria-label={t('search_input_aria') || "Ürün ara"}
                             className="flex-1 bg-transparent border-0 focus:border-0 border-transparent focus:border-transparent focus:ring-0 outline-none text-[#1A1A1A] dark:text-white placeholder:text-[#999] dark:placeholder:text-white/40 placeholder:font-light font-medium tracking-wide"
                             style={{
                                 fontSize: '15px',
@@ -159,7 +159,7 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
                         <button
                             onClick={handleClose}
                             className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors ml-1"
-                            aria-label="Aramayı kapat"
+                            aria-label={t('search_close') || "Aramayı kapat"}
                         >
                             <X size={20} strokeWidth={1.5} className="text-[#4A4A4A] dark:text-white" />
                         </button>
