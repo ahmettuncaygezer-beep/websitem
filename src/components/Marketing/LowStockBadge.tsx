@@ -1,12 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface LowStockBadgeProps {
     stock: number; // 0 = stokta yok, 1-5 = az
 }
 
 export default function LowStockBadge({ stock }: LowStockBadgeProps) {
+    const { t } = useGlobal();
+
     if (stock <= 0 || stock > 5) return null;
 
     return (
@@ -21,7 +24,7 @@ export default function LowStockBadge({ stock }: LowStockBadgeProps) {
             >
                 ⚠️
             </motion.span>
-            Son {stock} adet kaldı!
+            {t('pdp_low_stock', { count: stock })}
         </motion.div>
     );
 }

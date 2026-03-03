@@ -57,7 +57,7 @@ export function mockSearch(query: string): SearchResultsData {
 }
 
 // ─── History helpers ──────────────────────────────────────────────────────────
-const HISTORY_KEY = 'maison_search_history';
+const HISTORY_KEY = 'selis_search_history';
 const MAX_HISTORY = 5;
 
 export function getSearchHistory(): string[] {
@@ -109,14 +109,13 @@ export function SearchResults({
     return (
         <AnimatePresence>
             <motion.div
-                initial={{ opacity: 0, y: -8 }}
+                initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-                className="absolute top-full left-0 right-0 bg-white overflow-hidden"
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                className="absolute top-[calc(100%+16px)] left-0 right-0 bg-[#FCFBF7]/95 dark:bg-black/95 backdrop-blur-xl transition-colors duration-300 rounded-2xl border border-[#E5D5BC]/50 dark:border-white/10 z-[60]"
                 style={{
-                    boxShadow: '0 8px 40px rgba(0,0,0,0.12)',
-                    borderTop: '1px solid rgba(0,0,0,0.06)',
+                    boxShadow: '0 20px 40px -10px rgba(0,0,0,0.15)',
                     maxHeight: '70vh',
                     overflowY: 'auto',
                 }}
@@ -156,7 +155,7 @@ export function SearchResults({
                                 ))}
                             </>
                         ) : (
-                            <p className="text-[13px]" style={{ color: '#999' }}>
+                            <p className="text-[13px] text-muted-foreground/60">
                                 Arama yapmak için yazmaya başlayın...
                             </p>
                         )}
@@ -166,10 +165,10 @@ export function SearchResults({
                 {/* ── Has query but no results ── */}
                 {query && results?.total === 0 && (
                     <div className="px-6 py-8 text-center">
-                        <p className="font-medium mb-2" style={{ color: '#1C1C1E' }}>
+                        <p className="font-medium mb-2 text-[#1C1C1E] dark:text-[#FCFBF7]">
                             &ldquo;{query}&rdquo; için sonuç bulunamadı
                         </p>
-                        <p className="text-[13px] mb-4" style={{ color: '#999' }}>
+                        <p className="text-[13px] mb-4 text-muted-foreground/60">
                             Bunları deneyin:<br />
                             • Yazımı kontrol edin &nbsp;•&nbsp; Daha genel bir terim kullanın
                         </p>
@@ -179,8 +178,7 @@ export function SearchResults({
                                     key={cat.href}
                                     href={cat.href}
                                     onClick={onClose}
-                                    className="px-3 py-1.5 text-[12px] font-medium rounded-full border transition-colors duration-150 hover:border-[#C9A96E] hover:text-[#C9A96E]"
-                                    style={{ borderColor: '#E8E3DC', color: '#1C1C1E' }}
+                                    className="px-3 py-1.5 text-[12px] font-medium rounded-full border transition-colors duration-150 hover:border-[#C9A96E] hover:text-[#C9A96E] border-[#E8E3DC] dark:border-white/10 text-[#1C1C1E] dark:text-[#FCFBF7]"
                                 >
                                     {cat.label}
                                 </Link>
@@ -191,7 +189,7 @@ export function SearchResults({
 
                 {/* ── Results ── */}
                 {query && results && results.total > 0 && (
-                    <div className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.04)' }}>
+                    <div className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
                         {/* Products */}
                         {results.products.length > 0 && (
                             <section className="px-6 py-4">
@@ -247,12 +245,11 @@ export function SearchResults({
                                         key={cat.href}
                                         href={cat.href}
                                         onClick={onClose}
-                                        className="flex items-center gap-2 py-2 text-[13px] hover:text-[#C9A96E] transition-colors duration-150"
-                                        style={{ color: '#1C1C1E' }}
+                                        className="flex items-center gap-2 py-2 text-[13px] text-[#1C1C1E] dark:text-[#FCFBF7] hover:text-[#C9A96E] transition-colors duration-150"
                                     >
-                                        <FolderOpen size={14} style={{ color: '#C9A96E' }} />
+                                        <FolderOpen size={14} className="text-[#C9A96E]" />
                                         {cat.name}
-                                        <span className="ml-auto text-xs" style={{ color: '#999' }}>{cat.count} ürün</span>
+                                        <span className="ml-auto text-xs text-muted-foreground/60">{cat.count} ürün</span>
                                     </Link>
                                 ))}
                             </section>
@@ -281,12 +278,11 @@ export function SearchResults({
                         )}
 
                         {/* View all */}
-                        <div className="px-6 py-3 flex justify-center" style={{ background: '#F5F0EB' }}>
+                        <div className="px-6 py-3 flex justify-center bg-[#F5F0EB]/50 dark:bg-white/[0.02]">
                             <Link
                                 href={`/urunler?q=${encodeURIComponent(query)}`}
                                 onClick={onClose}
-                                className="text-[13px] font-semibold hover:underline"
-                                style={{ color: '#C9A96E' }}
+                                className="text-[13px] font-semibold hover:underline text-[#C9A96E]"
                             >
                                 &ldquo;{query}&rdquo; için tüm sonuçları gör ({results.total}) →
                             </Link>

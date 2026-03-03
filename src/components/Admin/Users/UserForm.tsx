@@ -156,7 +156,7 @@ export function UserForm() {
                                 <input
                                     {...register('email')}
                                     className="w-full bg-white/[0.03] border border-white/[0.08] rounded-sm pl-10 pr-4 py-2.5 text-[13px] text-[#F5F0EB] outline-none focus:border-[#C9A96E]/40"
-                                    placeholder="ali.yilmaz@maison.com"
+                                    placeholder="ali.yilmaz@selis.com"
                                 />
                             </div>
                             {errors.email && <p className="text-[11px] text-[#FF453A]">{errors.email.message}</p>}

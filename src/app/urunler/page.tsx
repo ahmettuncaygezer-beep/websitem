@@ -33,15 +33,15 @@ export default function ProductsPage() {
             <div className="container-premium">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div>
-                        <h1 className="text-4xl font-serif mb-4">Tüm Ürünler</h1>
-                        <p className="text-charcoal/60">Yaşam alanlarınız için özenle seçilmiş premium koleksiyonlar.</p>
+                        <h1 className="text-4xl font-serif mb-4" data-lang-key="cat_all_products">Tüm Ürünler</h1>
+                        <p className="text-charcoal/60" data-lang-key="cat_all_products_desc">Yaşam alanlarınız için özenle seçilmiş premium koleksiyonlar.</p>
                     </div>
 
                     <div className="flex items-center gap-4">
                         <div className="relative group">
                             <button className="flex items-center gap-2 px-4 py-2 bg-white border border-sand-dark rounded-sm text-sm font-medium">
                                 <SlidersHorizontal size={16} />
-                                Filtrele
+                                <span data-lang-key="cat_filter">Filtrele</span>
                             </button>
                         </div>
                         <div className="relative group">
@@ -50,9 +50,9 @@ export default function ProductsPage() {
                                 onChange={(e) => setSortBy(e.target.value)}
                                 className="appearance-none bg-white border border-sand-dark px-4 py-2 pr-10 rounded-sm text-sm font-medium outline-none focus:border-gold"
                             >
-                                <option value="newest">En Yeniler</option>
-                                <option value="price-low">Fiyat: Düşükten Yükseğe</option>
-                                <option value="price-high">Fiyat: Yüksekten Düşüğe</option>
+                                <option value="newest" data-lang-key="sort_newest">En Yeniler</option>
+                                <option value="price-low" data-lang-key="sort_price_low">Fiyat: Düşükten Yükseğe</option>
+                                <option value="price-high" data-lang-key="sort_price_high">Fiyat: Yüksekten Düşüğe</option>
                             </select>
                             <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-charcoal/40" />
                         </div>
@@ -72,7 +72,7 @@ export default function ProductsPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.05 }}
                             >
-                                <ProductCard product={product} />
+                                <ProductCard product={product} priority={idx < 4} />
                             </motion.div>
                         ))}
                     </div>

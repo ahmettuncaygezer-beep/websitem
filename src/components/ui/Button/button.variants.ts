@@ -1,5 +1,5 @@
 /**
- * MAISON Button Variants
+ * SELIS Button Variants
  * ─────────────────────────────────────────────
  * Uses class-variance-authority (CVA) for type-safe variant composition.
  * Usage: import { buttonVariants } from './button.variants'
@@ -74,7 +74,7 @@ export const buttonVariants = cva(
 
             // ── SHAPE ────────────────────────────────────────────────────
             shape: {
-                rounded: ['rounded-[2px]'],     // MAISON default — minimal
+                rounded: ['rounded-[2px]'],     // SELIS default — minimal
                 pill: ['rounded-full'],
                 square: ['rounded-none'],
             },

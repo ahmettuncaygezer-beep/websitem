@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Eye } from 'lucide-react';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface ProductCardQuickViewProps {
     isCardHovered: boolean;
@@ -14,6 +15,7 @@ export function ProductCardQuickView({
     onOpen,
     productName,
 }: ProductCardQuickViewProps) {
+    const { t } = useGlobal();
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -63,7 +65,7 @@ export function ProductCardQuickView({
                 }}
             >
                 <Eye size={14} />
-                Hızlı İncele
+                <span>{t('prod_quick_view') || 'Hızlı İncele'}</span>
             </button>
         </motion.div>
     );

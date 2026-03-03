@@ -14,7 +14,7 @@ export default function GarantiPage() {
                 >
                     <ShieldCheck className="w-12 h-12 text-[#C9A96E] mx-auto mb-4" />
                     <h1 className="text-display mb-4">Ürün Garantisi</h1>
-                    <p className="text-body-lg">5 yıl MAISON güvencesi.</p>
+                    <p className="text-body-lg">5 yıl SELIS güvencesi.</p>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -33,7 +33,7 @@ export default function GarantiPage() {
                             <li>• Kullanım kaynaklı yırtılma ve yanmalar</li>
                             <li>• Sıvı teması sonucu oluşan lekelenmeler</li>
                             <li>• Yanlış temizlik ürünleri kullanımı</li>
-                            <li>• Taşınma esnasında oluşan hasarlar (MAISON dışı nakil)</li>
+                            <li>• Taşınma esnasında oluşan hasarlar (SELIS dışı nakil)</li>
                         </ul>
                     </div>
                 </div>

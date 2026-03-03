@@ -24,8 +24,8 @@ export function Step2_Payment({ onNext, onPrev }: Props) {
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-            <div className="bg-white p-8 rounded-xl border border-[#E8E3DC] shadow-sm">
-                <h2 className="font-serif text-2xl text-[#1C1C1E] mb-6">Ödeme Yöntemi</h2>
+            <div className="bg-card p-8 rounded-xl border border-border shadow-sm">
+                <h2 className="font-serif text-2xl text-foreground mb-6" style={{ fontFamily: 'var(--font-playfair, serif)' }}>Ödeme Yöntemi</h2>
 
                 <PaymentMethods activeMethod={method} onSelect={setMethod} />
 
@@ -58,22 +58,22 @@ export function Step2_Payment({ onNext, onPrev }: Props) {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="p-6 bg-[#F9F9F9] rounded-lg border border-[#E0E0E0] space-y-4"
+                                className="p-6 bg-muted border border-border rounded-lg space-y-4"
                             >
-                                <h3 className="text-[14px] font-bold text-[#1C1C1E] uppercase tracking-wider">Banka Hesap Bilgilerimiz</h3>
+                                <h3 className="text-[14px] font-bold text-foreground uppercase tracking-wider">Banka Hesap Bilgilerimiz</h3>
                                 <div className="space-y-3">
-                                    <div className="p-4 bg-white border border-[#F0EDE8] rounded-md flex justify-between items-center group">
+                                    <div className="p-4 bg-background border border-border rounded-md flex justify-between items-center group">
                                         <div>
-                                            <p className="text-[12px] font-bold text-[#1C1C1E]">MAISON MOBİLYA A.Ş. - Ziraat Bankası</p>
-                                            <p className="text-[14px] font-mono mt-1">TR42 0001 0000 0000 1234 5678 90</p>
+                                            <p className="text-[12px] font-bold text-foreground">SELIS MOBİLYA A.Ş. - Ziraat Bankası</p>
+                                            <p className="text-[14px] font-mono mt-1 text-foreground">TR42 0001 0000 0000 1234 5678 90</p>
                                         </div>
-                                        <button className="text-[11px] font-bold text-[#C9A96E] uppercase tracking-wider hover:underline opacity-0 group-hover:opacity-100 transition-all">
+                                        <button className="text-[11px] font-bold text-selis-gold uppercase tracking-wider hover:underline opacity-0 group-hover:opacity-100 transition-all bg-transparent border-none cursor-pointer">
                                             KOPYALA
                                         </button>
                                     </div>
                                 </div>
-                                <div className="p-4 bg-[#FFF9C4] border border-[#FBC02D] rounded-md text-[12px] text-[#7B5E00]">
-                                    ⚠️ Lütfen açıklama kısmına <strong>MSN-2026-PREVIEW</strong> sipariş kodunuzu yazmayı unutmayın.
+                                <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md text-[12px] text-yellow-800 dark:text-yellow-200">
+                                    ⚠️ Lütfen açıklama kısmına <strong>SLS-2026-PREVIEW</strong> sipariş kodunuzu yazmayı unutmayın.
                                 </div>
                             </motion.div>
                         )}
@@ -84,12 +84,12 @@ export function Step2_Payment({ onNext, onPrev }: Props) {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="p-6 bg-[#FDF8F0] border border-[#FFE0B2] rounded-lg text-center"
+                                className="p-6 bg-muted/30 border border-border rounded-lg text-center"
                             >
-                                <p className="text-[14px] text-[#E65100] font-medium">
+                                <p className="text-[14px] text-selis-gold font-medium">
                                     Kapıda ödeme seçeneğinde +₺49 hizmet bedeli uygulanır.
                                 </p>
-                                <p className="text-[12px] text-[#999] mt-2">
+                                <p className="text-[12px] text-muted-foreground mt-2">
                                     Teslimat sırasında nakit veya kredi kartı ile ödeme yapabilirsiniz.
                                 </p>
                             </motion.div>
@@ -101,13 +101,13 @@ export function Step2_Payment({ onNext, onPrev }: Props) {
             <div className="flex gap-4">
                 <button
                     onClick={onPrev}
-                    className="px-10 py-4 border-2 border-[#1C1C1E] text-[#1C1C1E] text-[13px] font-bold uppercase tracking-[0.1em] rounded-[4px] hover:bg-[#1C1C1E] hover:text-white transition-all"
+                    className="px-10 py-4 border-2 border-foreground text-foreground text-[13px] font-bold uppercase tracking-[0.1em] rounded-[4px] hover:bg-foreground hover:text-background transition-all bg-transparent cursor-pointer"
                 >
                     ← GERİ
                 </button>
                 <button
                     onClick={onNext}
-                    className="flex-1 py-4 bg-[#1C1C1E] text-white text-[13px] font-bold uppercase tracking-[0.1em] rounded-[4px] hover:bg-[#2C2C2E] transition-all transform active:scale-[0.98]"
+                    className="flex-1 py-4 bg-foreground text-background text-[13px] font-bold uppercase tracking-[0.1em] rounded-[4px] hover:opacity-90 transition-all transform active:scale-[0.98] border-none cursor-pointer"
                 >
                     DEVAM ET →
                 </button>

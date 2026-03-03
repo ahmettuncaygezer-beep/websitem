@@ -1,38 +1,74 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SettingsPageHeader } from '@/components/Admin/Settings/SettingsPageHeader';
 import { SettingsCard } from '@/components/Admin/Settings/SettingsCard';
 import { EmailNotifications } from '@/components/Admin/Settings/Notifications/EmailNotifications';
 import { NotificationEmails } from '@/components/Admin/Settings/Notifications/NotificationEmails';
 import { SmsConfig } from '@/components/Admin/Settings/Notifications/SmsConfig';
-import { mockNotificationSettings } from '@/lib/mock/settings';
+import { toast } from 'react-hot-toast';
+import { useGlobal } from '@/context/GlobalContext';
 
 export default function BildirimAyarlarPage() {
-    const [settings, setSettings] = useState(mockNotificationSettings);
+    const [settings, setSettings] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [isDirty, setIsDirty] = useState(false);
+    const { refreshSettings } = useGlobal() || {};
+
+    useEffect(() => {
+        fetch('/api/admin/settings')
+            .then(res => res.json())
+            .then(data => {
+                setSettings(data.notification_settings);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.error(err);
+                setIsLoading(false);
+            });
+    }, []);
 
     const handleUpdate = (updates: any) => {
-        setSettings(prev => ({ ...prev, ...updates }));
+        setSettings((prev: any) => ({ ...prev, ...updates }));
         setIsDirty(true);
     };
 
     const handleUpdateEvents = (id: string, val: boolean) => {
-        setSettings(prev => ({
+        setSettings((prev: any) => ({
             ...prev,
             emailNotifications: { ...prev.emailNotifications, [id]: val }
         }));
         setIsDirty(true);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         setIsSaving(true);
-        setTimeout(() => {
-            setIsSaving(false);
+        try {
+            const batchUpdates = [
+                { key: 'notification_settings', value: settings }
+            ];
+
+            const res = await fetch('/api/admin/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(batchUpdates)
+            });
+
+            if (!res.ok) throw new Error('Save failed');
+
+            if (refreshSettings) await refreshSettings();
+            toast.success('Bildirim ayarları başarıyla kaydedildi');
             setIsDirty(false);
-        }, 1500);
+        } catch (error) {
+            console.error(error);
+            toast.error('Ayarlar kaydedilirken bir hata oluştu');
+        } finally {
+            setIsSaving(false);
+        }
     };
+
+    if (isLoading) return <div style={{ color: '#F5F0EB', padding: 32 }}>Yükleniyor...</div>;
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>

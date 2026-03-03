@@ -11,9 +11,8 @@ interface EmailNotificationsProps {
 const EVENTS = [
     {
         group: 'Siparişler', items: [
-            { id: 'new_order', label: 'Yeni sipariş alındı', desc: 'Her yeni sipariş için anında bildir.' },
-            { id: 'order_status', label: 'Sipariş durumu güncellendi', desc: 'Durum değişikliklerinde bildir.' },
-            { id: 'order_cancel', label: 'Sipariş iptal edildi', desc: 'İptal edilen siparişler için.' }
+            { id: 'orderUpdates', label: <span data-lang-key="notification_order_updated">Sipariş durumu güncellendi</span>, desc: 'Durum değişikliklerinde bildir.' },
+            { id: 'orderCancellations', label: <span data-lang-key="notification_order_cancelled">Sipariş iptal edildi</span>, desc: 'İptal edilen siparişler için.' }
         ]
     },
     {
@@ -35,7 +34,7 @@ export function EmailNotifications({ notifications, onChange }: EmailNotificatio
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
             {EVENTS.map(group => (
                 <div key={group.group}>
-                    <h4 style={groupTitleStyle}>{group.group}</h4>
+                    <h4 className="font-medium text-white text-[14px]" data-lang-key="nav_orders">{group.group}</h4>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         {group.items.map(item => (
                             <div key={item.id} style={rowStyle}>

@@ -63,7 +63,7 @@ interface CartContextValue {
 }
 
 /* ── STORAGE KEY ─────────────────────────── */
-const STORAGE_KEY = 'maison_cart_v1'
+const STORAGE_KEY = 'selis_cart_v1'
 
 /* ── REDUCER ─────────────────────────────── */
 function cartReducer(state: CartState, action: CartAction): CartState {

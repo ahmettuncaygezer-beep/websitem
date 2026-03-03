@@ -5,16 +5,18 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingBag } from 'lucide-react';
 import { useNotifications } from './useNotifications';
+import { useGlobal } from '@/context/GlobalContext';
 
 export default function NotificationQueue() {
-    const { current, isVisible, dismiss } = useNotifications(9000, 5000);
+    const { t } = useGlobal();
+    const { current, isVisible, dismiss } = useNotifications(25000, 5000);
 
     if (!current) return null;
 
     const minuteText =
         current.minutesAgo === 0
-            ? 'az önce'
-            : `${current.minutesAgo} dakika önce`;
+            ? t('social_just_now') || "Az önce" // default to just now
+            : `${current.minutesAgo} ${t('social_mins_ago') || 'dk önce'}`;
 
     return (
         <AnimatePresence>
@@ -71,7 +73,7 @@ export default function NotificationQueue() {
                                 {current.emoji} {current.productName}
                             </p>
                             <p className="text-[10px] text-[#C9A96E] font-medium mt-0.5">
-                                {minuteText} satın aldı
+                                {minuteText} <span data-lang-key="social_bought">{t('social_bought')}</span>
                             </p>
                         </div>
 

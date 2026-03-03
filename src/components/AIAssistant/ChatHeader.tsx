@@ -2,13 +2,14 @@
 
 import { Minus, X, Bot } from 'lucide-react';
 import { useChatStore } from './store/chatStore';
+import { useGlobal } from '@/context/GlobalContext';
 
 export function ChatHeader() {
     const minimizeChat = useChatStore((s) => s.minimizeChat);
     const closeChat = useChatStore((s) => s.closeChat);
     const isMinimized = useChatStore((s) => s.isMinimized);
     const maximizeChat = useChatStore((s) => s.maximizeChat);
-
+    const { t } = useGlobal();
 
     return (
         <div className="flex items-center justify-between flex-shrink-0"
@@ -24,9 +25,10 @@ export function ChatHeader() {
                     <div className="absolute" style={{ bottom: -1, right: -1, width: 10, height: 10, borderRadius: '50%', background: '#4CAF50', border: '1.5px solid #1C1C1E', animation: 'pulse-dot 2s infinite' }} />
                 </div>
                 <div>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: 'white' }}>Maison AI</p>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: 'white' }}>Selis AI</p>
                     <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)' }}>
-                        <span style={{ color: '#4CAF50', marginRight: 4 }}>●</span>Çevrimiçi
+                        <span style={{ color: '#4CAF50', marginRight: 4 }}>●</span>
+                        {t('chat.online') || 'Online'}
                     </p>
                 </div>
             </div>

@@ -58,16 +58,16 @@ export default function CartDrawer() {
                             stiffness: 300
                         }}
                         className="fixed right-0 top-0 h-full w-full max-w-[420px]
-                       bg-white z-50 flex flex-col shadow-2xl"
+                       bg-background z-50 flex flex-col shadow-2xl"
                         role="dialog"
                         aria-modal="true"
                         aria-label="Alışveriş sepeti"
                     >
                         {/* BAŞLIK */}
                         <div className="flex items-center justify-between
-                           px-6 py-5 border-b border-[#E8E3DC]">
+                           px-6 py-5 border-b border-border">
                             <div className="flex items-center gap-3">
-                                <h2 className="text-[15px] font-semibold text-[#1C1C1E]
+                                <h2 className="text-[15px] font-semibold text-foreground
                                tracking-wide">
                                     SEPETİM
                                 </h2>
@@ -87,11 +87,11 @@ export default function CartDrawer() {
                             <button
                                 onClick={closeCart}
                                 className="w-8 h-8 flex items-center justify-center
-                          rounded-full hover:bg-[#F5F0EB]
+                          rounded-full hover:bg-accent
                           transition-colors duration-200"
                                 aria-label="Sepeti kapat"
                             >
-                                <X className="w-4 h-4 text-[#1C1C1E]" />
+                                <X className="w-4 h-4 text-foreground" />
                             </button>
                         </div>
 
@@ -101,7 +101,7 @@ export default function CartDrawer() {
                                 <EmptyCart onClose={closeCart} />
                             ) : (
                                 <div className="px-6 py-4 space-y-0 divide-y
-                               divide-[#E8E3DC]">
+                               divide-border">
                                     <AnimatePresence initial={false}>
                                         {items.map(item => (
                                             <CartItem key={item.id} item={item} />

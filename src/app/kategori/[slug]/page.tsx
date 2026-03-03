@@ -37,7 +37,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     }, [slug]);
 
     return (
-        <main className="py-24 min-h-screen bg-background transition-colors duration-500">
+        <main className="py-8 md:py-12 min-h-screen bg-background transition-colors duration-500">
             <div className="container-premium">
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
@@ -61,7 +61,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                             exit={{ opacity: 0 }}
                             className="flex flex-col items-center justify-center py-32"
                         >
-                            <Loader2 className="animate-spin text-maison-gold mb-4" size={48} />
+                            <Loader2 className="animate-spin text-selis-gold mb-4" size={48} />
                             <p className="text-muted-foreground font-medium uppercase tracking-widest text-xs" data-lang-key="cat_preparing_collection">Koleksiyon Hazırlanıyor</p>
                         </motion.div>
                     ) : products.length > 0 ? (
@@ -95,6 +95,6 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                     )}
                 </AnimatePresence>
             </div>
-        </main>
+        </main >
     );
 }

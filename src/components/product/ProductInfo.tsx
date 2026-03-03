@@ -28,7 +28,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             {
                 id: product.id,
                 name: product.name,
-                brand: product.brand ?? 'MAISON',
+                brand: product.brand ?? 'SELIS',
                 price: product.salePrice || product.price,
                 originalPrice: product.price,
                 image: product.images[0],

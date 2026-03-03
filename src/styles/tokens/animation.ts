@@ -1,5 +1,5 @@
 /**
- * MAISON Animation System
+ * SELIS Animation System
  * ─────────────────────────────────────────────
  * Easing, durations, delays, Framer Motion variant presets.
  * Usage: import { animation } from '@/lib/design-system'

@@ -1,5 +1,5 @@
 /**
- * MAISON Color System
+ * SELIS Color System
  * ─────────────────────────────────────────────
  * Single source of truth for all colors.
  * Components must import from here — never use raw hex strings.

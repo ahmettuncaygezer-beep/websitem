@@ -53,24 +53,17 @@ export function AccountSidebar() {
 
     return (
         <aside
-            className="hidden lg:block sticky w-[280px] flex-shrink-0"
-            style={{ top: '88px', borderRadius: '8px', background: 'white', boxShadow: '0 2px 16px rgba(0,0,0,0.04)', overflow: 'hidden' }}
+            className="hidden lg:block sticky w-[280px] flex-shrink-0 bg-card border border-border shadow-sm overflow-hidden"
+            style={{ top: '88px', borderRadius: '8px' }}
             role="navigation"
             aria-label="Hesap menüsü"
         >
             {/* Profile Card */}
-            <div style={{ background: 'linear-gradient(135deg, #1C1C1E, #2C2C2E)', padding: '20px' }}>
+            <div className="bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] p-5">
                 {/* Avatar */}
                 <div className="flex items-center gap-3">
                     <div
-                        className="flex items-center justify-center rounded-full text-lg font-bold flex-shrink-0"
-                        style={{
-                            width: '56px',
-                            height: '56px',
-                            border: '2px solid #C9A96E',
-                            background: user.avatar ? 'transparent' : '#C9A96E',
-                            color: user.avatar ? 'transparent' : '#1C1C1E',
-                        }}
+                        className="flex items-center justify-center rounded-full text-lg font-bold flex-shrink-0 w-14 h-14 border-2 border-selis-gold bg-selis-gold text-black"
                     >
                         {user.avatar ? (
                             <img src={user.avatar} alt={user.firstName} className="w-full h-full rounded-full object-cover" />
@@ -80,22 +73,21 @@ export function AccountSidebar() {
                     </div>
                     <div>
                         <p className="text-[15px] font-semibold text-white">{user.firstName} {user.lastName}</p>
-                        <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.5)' }}>{user.email}</p>
+                        <p className="text-[11px] text-white/50">{user.email}</p>
                     </div>
                 </div>
 
                 {/* Tier */}
                 <div className="flex items-center gap-2 mt-3">
                     <span
-                        className="px-2.5 py-1 rounded-full flex items-center gap-1.5 text-[12px] font-medium"
-                        style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}
+                        className="px-2.5 py-1 rounded-full flex items-center gap-1.5 text-[12px] font-medium bg-selis-gold/15 text-selis-gold"
                     >
                         {tier.icon} {tier.name} Üye
                     </span>
                 </div>
 
                 {/* Points */}
-                <p className="text-[13px] mt-2 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.8)' }}>
+                <p className="text-[13px] mt-2 flex items-center gap-1 text-white/80">
                     ⭐ {user.points.toLocaleString('tr-TR')} Puan
                 </p>
             </div>
@@ -104,10 +96,9 @@ export function AccountSidebar() {
             <div className="p-2">
                 {NAV_GROUPS.map((group, gi) => (
                     <div key={group.label}>
-                        {gi > 0 && <div className="h-px my-2" style={{ background: '#F0EDE8' }} />}
+                        {gi > 0 && <div className="h-px my-2 bg-border" />}
                         <p
-                            className="px-4 py-2 text-[10px] tracking-[0.2em] uppercase font-medium"
-                            style={{ color: '#CCC' }}
+                            className="px-4 py-2 text-[10px] tracking-[0.2em] uppercase font-medium text-muted-foreground/50"
                         >
                             {group.label}
                         </p>
@@ -118,25 +109,14 @@ export function AccountSidebar() {
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className="flex items-center gap-3 px-4 py-2.5 text-[13px] font-medium transition-all duration-150"
-                                    style={{
-                                        borderRadius: '6px',
-                                        color: isActive ? '#1C1C1E' : '#666',
-                                        background: isActive ? '#F5F0EB' : 'transparent',
-                                        borderLeft: isActive ? '3px solid #C9A96E' : '3px solid transparent',
-                                        cursor: 'pointer',
-                                    }}
+                                    className={`flex items-center gap-3 px-4 py-2.5 text-[13px] font-medium transition-all duration-150 rounded-md cursor-pointer border-l-3 ${isActive ? 'text-foreground bg-accent/50 border-selis-gold' : 'text-muted-foreground border-transparent hover:bg-accent/30'}`}
                                     aria-current={isActive ? 'page' : undefined}
                                 >
-                                    <Icon size={16} style={{ color: isActive ? '#C9A96E' : '#999' }} />
+                                    <Icon size={16} className={isActive ? 'text-selis-gold' : 'text-muted-foreground/60'} />
                                     <span className="flex-1">{item.label}</span>
                                     {item.badgeKey && badges[item.badgeKey] > 0 && (
                                         <span
-                                            className="text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center"
-                                            style={{
-                                                background: isActive ? '#C9A96E' : '#F0EDE8',
-                                                color: isActive ? 'white' : '#999',
-                                            }}
+                                            className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center ${isActive ? 'bg-selis-gold text-white' : 'bg-muted text-muted-foreground'}`}
                                         >
                                             {badges[item.badgeKey]}
                                         </span>
@@ -148,13 +128,10 @@ export function AccountSidebar() {
                 ))}
 
                 {/* Logout */}
-                <div className="h-px my-2" style={{ background: '#F0EDE8' }} />
+                <div className="h-px my-2 bg-border" />
                 <button
                     onClick={logout}
-                    className="flex items-center gap-3 px-4 py-2.5 w-full text-[13px] font-medium transition-colors duration-150"
-                    style={{ borderRadius: '6px', color: '#E53935', background: 'transparent', border: 'none', cursor: 'pointer' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = '#FFF5F5'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                    className="flex items-center gap-3 px-4 py-2.5 w-full text-[13px] font-medium transition-colors duration-150 rounded-md border-none cursor-pointer text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 bg-transparent"
                 >
                     <LogOut size={16} /> Çıkış Yap
                 </button>

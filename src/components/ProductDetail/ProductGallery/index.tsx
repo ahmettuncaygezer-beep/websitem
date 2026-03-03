@@ -2,10 +2,8 @@
 
 import { useRef } from 'react';
 import { useProductGallery, type GalleryItem } from '../hooks/useProductGallery';
-import { useZoomLens } from '../hooks/useZoomLens';
 import { MainImage } from './MainImage';
 import { ThumbnailStrip } from './ThumbnailStrip';
-import { ZoomLens } from './ZoomLens';
 import { ImageModal } from './ImageModal';
 import { GalleryBadge } from './GalleryBadge';
 import { ARButton } from './ARButton';
@@ -19,7 +17,6 @@ interface ProductGalleryProps {
 export function ProductGallery({ items, badges = [] }: ProductGalleryProps) {
     const imageRef = useRef<HTMLDivElement>(null);
     const gallery = useProductGallery(items);
-    const zoom = useZoomLens(imageRef);
 
     const imageItems = gallery.filtered;
 
@@ -62,17 +59,10 @@ export function ProductGallery({ items, badges = [] }: ProductGalleryProps) {
                 <MainImage
                     item={gallery.activeItem}
                     onOpenModal={gallery.openModal}
-                    zoomProps={zoom}
                     onSwipe={(dir) => { dir === 'left' ? gallery.next() : gallery.prev(); }}
                 />
                 <GalleryBadge badges={badges} />
                 <ARButton />
-                <ZoomLens
-                    src={gallery.activeItem.src}
-                    alt={gallery.activeItem.alt}
-                    isActive={zoom.isActive}
-                    position={zoom.position}
-                />
             </div>
 
             {/* Thumbnails */}

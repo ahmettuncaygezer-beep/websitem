@@ -92,7 +92,7 @@ export function MaintenanceToggle({ maintenanceMode, onChange }: MaintenanceTogg
                 <div style={inputGroupStyle}>
                     <label style={labelStyle}>İZİN VERİLEN IP ADRESLERİ</label>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {maintenanceMode.allowedIps.map(ip => (
+                        {maintenanceMode.allowedIps?.map(ip => (
                             <span key={ip} style={ipChipStyle}>
                                 {ip} <button style={{ background: 'none', border: 'none', color: '#636366', cursor: 'pointer' }}>×</button>
                             </span>

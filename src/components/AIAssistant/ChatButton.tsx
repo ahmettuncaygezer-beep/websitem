@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Bot } from 'lucide-react';
 import { useChatStore } from './store/chatStore';
+import { useGlobal } from '@/context/GlobalContext';
 
 export function ChatButton() {
     const isOpen = useChatStore((s) => s.isOpen);
     const openChat = useChatStore((s) => s.openChat);
     const closeChat = useChatStore((s) => s.closeChat);
     const messages = useChatStore((s) => s.messages);
+    const { t } = useGlobal();
 
     const [showGreeting, setShowGreeting] = useState(false);
     const [hovered, setHovered] = useState(false);
@@ -17,12 +19,12 @@ export function ChatButton() {
 
     // Show greeting bubble after 8s, hide after 12s, only once
     useEffect(() => {
-        const shown = localStorage.getItem('maison_greeting_shown');
+        const shown = localStorage.getItem('selis_greeting_shown');
         if (shown || isOpen) return;
         const t1 = setTimeout(() => setShowGreeting(true), 8000);
         const t2 = setTimeout(() => {
             setShowGreeting(false);
-            localStorage.setItem('maison_greeting_shown', '1');
+            localStorage.setItem('selis_greeting_shown', '1');
         }, 20000);
         return () => { clearTimeout(t1); clearTimeout(t2); };
     }, [isOpen]);
@@ -43,7 +45,7 @@ export function ChatButton() {
                         exit={{ opacity: 0, scale: 0.8 }}
                         style={{ transformOrigin: 'bottom right', position: 'absolute', bottom: 70, right: 0, width: 250, background: '#1C1C1E', color: 'white', borderRadius: 12, padding: '14px 16px', fontSize: 13, lineHeight: 1.5, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}
                     >
-                        👋 Merhaba! Mobilya seçiminde yardım ister misiniz?
+                        👋 {t('chat.welcome_title') || 'Hello! Can I help you choose furniture?'}
                         <div style={{ position: 'absolute', bottom: -6, right: 20, width: 12, height: 12, background: '#1C1C1E', transform: 'rotate(45deg)' }} />
                     </motion.div>
                 )}
@@ -59,7 +61,7 @@ export function ChatButton() {
                         className="absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap"
                         style={{ background: '#1C1C1E', color: 'white', padding: '6px 12px', borderRadius: 6, fontSize: 12 }}
                     >
-                        Size nasıl yardımcı olabilirim?
+                        {t('chat.welcome_desc') || 'How can I help you?'}
                     </motion.div>
                 )}
             </AnimatePresence>

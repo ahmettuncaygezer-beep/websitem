@@ -42,7 +42,7 @@ export default function AboutPage() {
             <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
                 <Image
                     src="/images/rooms/lookbook-1.jpg"
-                    alt="MAISON Atölye"
+                    alt="SELIS Atölye"
                     fill
                     className="object-cover"
                     priority
@@ -54,6 +54,7 @@ export default function AboutPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                         className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4"
+                        data-lang-key="about_hero_badge"
                     >
                         Hikayemiz
                     </motion.p>
@@ -63,13 +64,14 @@ export default function AboutPage() {
                         transition={{ duration: 0.8, delay: 0.1 }}
                         className="text-display text-white"
                     >
-                        MAISON
+                        SELIS
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="text-lg font-sans text-white/80 mt-4 max-w-lg"
+                        data-lang-key="about_hero_desc"
                     >
                         Doğal malzemeler, zamansız tasarım ve el işçiliğiyle
                         yaşam alanlarınıza anlam katıyoruz.
@@ -86,26 +88,26 @@ export default function AboutPage() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
+                        <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="about_story_badge">
                             Bir Tutku Hikayesi
                         </p>
                         <h2 className="text-headline text-charcoal mb-6">
-                            Evinize Dokunan<br />
-                            <span className="italic text-gold">Tasarım Felsefesi</span>
+                            <span data-lang-key="about_story_title">Evinize Dokunan</span><br />
+                            <span className="italic text-gold" data-lang-key="about_story_title_italic">Tasarım Felsefesi</span>
                         </h2>
                         <div className="space-y-4 text-body text-warm-gray">
-                            <p>
-                                MAISON, 2009 yılında İstanbul&apos;da küçük bir atölyede doğdu. Kurucumuz,
-                                İtalya&apos;da mobilya tasarımı eğitimi aldıktan sonra, Anadolu&apos;nun zengin
+                            <p data-lang-key="about_story_p1">
+                                SELIS, 2009 yılında İstanbul&apos;da küçük bir atölyede doğdu. Kurucumuz,
+                                İtalya&apos;da mobilya tasarımı eğitimi aldıktan sonra, Anadolu&apos;un zengin
                                 zanaat geleneğini modern Avrupa estetiğiyle buluşturma vizyonuyla yola çıktı.
                             </p>
-                            <p>
+                            <p data-lang-key="about_story_p2">
                                 Bugün, 50&apos;den fazla usta zanaatkarımızla birlikte, her parçayı aynı
                                 tutkuyla üretmeye devam ediyoruz. Seri üretimin hızına değil, kalıcılığın
                                 değerine inanıyoruz.
                             </p>
-                            <p>
-                                Her MAISON parçası, bir hikaye anlatır — doğal malzemelerin sıcaklığını,
+                            <p data-lang-key="about_story_p3">
+                                Her SELIS parçası, bir hikaye anlatır — doğal malzemelerin sıcaklığını,
                                 insan elinin inceliğini ve zamansız tasarımın zarafetini.
                             </p>
                         </div>
@@ -120,7 +122,7 @@ export default function AboutPage() {
                     >
                         <Image
                             src="/images/categories/living-room.jpg"
-                            alt="MAISON Atölye"
+                            alt="SELIS Atölye"
                             fill
                             className="object-cover"
                         />
@@ -138,10 +140,10 @@ export default function AboutPage() {
                         transition={{ duration: 0.8 }}
                         className="text-center mb-14"
                     >
-                        <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
+                        <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="about_values_badge">
                             Değerlerimiz
                         </p>
-                        <h2 className="text-headline text-charcoal">
+                        <h2 className="text-headline text-charcoal" data-lang-key="about_values_title">
                             Bizi Farklı Kılan
                         </h2>
                     </motion.div>
@@ -149,7 +151,7 @@ export default function AboutPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {values.map((value, index) => (
                             <motion.div
-                                key={value.title}
+                                key={index}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
@@ -159,10 +161,10 @@ export default function AboutPage() {
                                 <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mx-auto mb-5">
                                     <value.icon size={24} className="text-gold" />
                                 </div>
-                                <h3 className="font-serif text-lg text-charcoal mb-3">
+                                <h3 className="font-serif text-lg text-charcoal mb-3" data-lang-key={`about_v${index + 1}_title`}>
                                     {value.title}
                                 </h3>
-                                <p className="text-sm font-sans text-warm-gray leading-relaxed">
+                                <p className="text-sm font-sans text-warm-gray leading-relaxed" data-lang-key={`about_v${index + 1}_desc`}>
                                     {value.description}
                                 </p>
                             </motion.div>
@@ -180,16 +182,16 @@ export default function AboutPage() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-14"
                 >
-                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
+                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="about_stats_badge">
                         Rakamlarla
                     </p>
-                    <h2 className="text-headline text-charcoal">MAISON</h2>
+                    <h2 className="text-headline text-charcoal">SELIS</h2>
                 </motion.div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                     {stats.map((stat, index) => (
                         <motion.div
-                            key={stat.label}
+                            key={index}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -199,7 +201,7 @@ export default function AboutPage() {
                             <p className="font-serif text-4xl md:text-5xl text-gold mb-2">
                                 {stat.number}
                             </p>
-                            <p className="text-sm font-sans uppercase tracking-widest text-warm-gray">
+                            <p className="text-sm font-sans uppercase tracking-widest text-warm-gray" data-lang-key={`about_stat_${index + 1}`}>
                                 {stat.label}
                             </p>
                         </motion.div>
@@ -216,17 +218,17 @@ export default function AboutPage() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h2 className="font-serif text-3xl md:text-4xl text-white mb-4">
+                        <h2 className="font-serif text-3xl md:text-4xl text-white mb-4" data-lang-key="about_cta_title">
                             Hikayenizi Birlikte Yazalım
                         </h2>
-                        <p className="text-base font-sans text-white/60 max-w-lg mx-auto mb-8">
+                        <p className="text-base font-sans text-white/60 max-w-lg mx-auto mb-8" data-lang-key="about_cta_desc">
                             Yaşam alanınızı hayal edin, biz gerçeğe dönüştürelim.
                         </p>
                         <Link
                             href="/kategori/oturma-odasi"
                             className="group inline-flex items-center gap-2 px-8 py-4 bg-gold text-white text-sm font-sans font-semibold uppercase tracking-widest rounded-full hover:bg-gold-dark transition-colors duration-500"
                         >
-                            Koleksiyonu Keşfet
+                            <span data-lang-key="about_cta_btn">Koleksiyonu Keşfet</span>
                             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </motion.div>

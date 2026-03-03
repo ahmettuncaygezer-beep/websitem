@@ -31,7 +31,7 @@ export function CardPreview({ data }: Props) {
                 <div className="absolute inset-0 backface-hidden bg-gradient-to-br from-[#1C1C1E] to-[#3A3A3D] rounded-xl p-6 text-white flex flex-col justify-between border border-white/10">
                     <div className="flex justify-between items-start">
                         <div className="w-10 h-8 bg-gradient-to-tr from-amber-200 to-amber-500 rounded-md opacity-80" />
-                        <div className="text-[14px] font-bold italic tracking-tighter opacity-80">MAISON GOLD</div>
+                        <div className="text-[14px] font-bold italic tracking-tighter opacity-80">SELIS GOLD</div>
                     </div>
 
                     <div className="space-y-1">

@@ -197,7 +197,7 @@ export const mockCampaigns: Campaign[] = [
         validProducts: [],
         targetSegment: TargetSegment.Tümü,
         perUserLimit: 2,
-        bundleProducts: ["Maison Mum Seti", "Dekoratif Yastık", "Minimalist Vazo"],
+        bundleProducts: ["Selis Mum Seti", "Dekoratif Yastık", "Minimalist Vazo"],
         bundleCondition: {
             buyCount: 2,
             getCount: 1,
@@ -256,7 +256,7 @@ export const mockCampaigns: Campaign[] = [
         createdAt: "2025-12-30T16:00:00Z",
         revenue: 224400,
         orders: 56,
-        description: "MAISON dünyasına hoş geldiniz! İlk alışverişinizde %5 indirim."
+        description: "SELIS dünyasına hoş geldiniz! İlk alışverişinizde %5 indirim."
     }
 ];
 

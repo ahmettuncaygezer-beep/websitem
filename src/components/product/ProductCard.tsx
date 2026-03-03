@@ -5,8 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Heart } from 'lucide-react';
 import { Product } from '@/types';
-import { formatPrice } from '@/lib/constants';
 import { useFavorites } from '@/hooks/useFavorites';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface ProductCardProps {
     product: Product;
@@ -46,6 +46,7 @@ const lifestyleImages: Record<string, string> = {
 const fallbackImage = '/images/products/luna-sofa.jpg';
 
 export const ProductCard = memo(function ProductCard({ product }: ProductCardProps) {
+    const { formatPrice } = useGlobal();
     const [isHovered, setIsHovered] = useState(false);
     const { toggleFavorite, isFavorite } = useFavorites();
     const isLiked = isFavorite(product.id);
@@ -67,21 +68,21 @@ export const ProductCard = memo(function ProductCard({ product }: ProductCardPro
             <Link href={`/urun/${product.slug}`} className="block">
                 {/* Image container */}
                 <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-sand mb-4">
-                    {/* Main product image */}
+                    {/* Main product image (görünür -> hover'da gizlenir) */}
                     <Image
                         src={mainImage}
                         alt={product.name}
                         fill
-                        className={`object-cover transition-opacity duration-700 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                        className="object-cover transition-opacity duration-700 opacity-100 group-hover:opacity-0"
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                     />
 
-                    {/* Hover lifestyle image */}
+                    {/* Hover lifestyle image (gizli -> hover'da görünür) */}
                     <Image
                         src={hoverImage}
                         alt={`${product.name} - Yaşam alanı`}
                         fill
-                        className={`object-cover transition-opacity duration-700 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                        className="object-cover transition-opacity duration-700 opacity-0 group-hover:opacity-100"
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                     />
 

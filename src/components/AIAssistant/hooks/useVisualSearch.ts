@@ -40,7 +40,7 @@ export function useVisualSearch() {
             const { analysis, products } = data;
 
             store.updateLastMessage(
-                `Bu görseli analiz ettim:\n\n**Tür:** ${analysis.type}\n**Stil:** ${analysis.style}\n**Renk:** ${analysis.color}\n**Malzeme:** ${analysis.material}\n\nBenzer MAISON ürünleri:`,
+                `Bu görseli analiz ettim:\n\n**Tür:** ${analysis.type}\n**Stil:** ${analysis.style}\n**Renk:** ${analysis.color}\n**Malzeme:** ${analysis.material}\n\nBenzer SELIS ürünleri:`,
                 { isStreaming: false, products },
             );
         } catch {

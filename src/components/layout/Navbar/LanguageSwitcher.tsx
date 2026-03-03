@@ -9,6 +9,8 @@ const LANGUAGES: { code: string; display: string; flag: string; label: string }[
     { code: 'tr', display: 'TR', flag: '🇹🇷', label: 'Türkçe' },
     { code: 'en', display: 'EN', flag: '🇬🇧', label: 'English' },
     { code: 'fr', display: 'FR', flag: '🇫🇷', label: 'Français' },
+    { code: 'ar', display: 'AR', flag: '🇦🇪', label: 'العربية' },
+    { code: 'de', display: 'DE', flag: '🇩🇪', label: 'Deutsch' },
 ];
 
 interface LanguageSwitcherProps {
@@ -30,8 +32,8 @@ export function LanguageSwitcher({ isScrolled }: LanguageSwitcherProps) {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const textColor = isScrolled ? 'text-[#1C1C1E]/70' : 'text-white/70';
-    const hoverColor = isScrolled ? 'hover:text-[#1C1C1E]' : 'hover:text-white';
+    const textColor = 'text-foreground/70 dark:text-white/70';
+    const hoverColor = 'hover:text-foreground dark:hover:text-white';
     const activeDisplay = LANGUAGES.find((l) => l.code === language)?.display ?? language;
 
     return (

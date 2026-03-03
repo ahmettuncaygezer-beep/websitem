@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maisonmobilya.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://selismobilya.com';
 
 // Mock data — production'da DB'den çek
 const CATEGORY_SLUGS = [

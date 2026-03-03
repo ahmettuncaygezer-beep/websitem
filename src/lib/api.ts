@@ -10,21 +10,24 @@ const mapProduct = (p: any): Product => ({
     description: p.description || '',
     price: Number(p.price),
     salePrice: p.sale_price ? Number(p.sale_price) : undefined,
-    originalPrice: p.original_price ? Number(p.original_price) : (p.price * 1.2), // Default original price if missing
+    originalPrice: p.original_price ? Number(p.original_price) : (p.price * 1.2),
     currency: p.currency || 'TRY',
     categoryId: p.category_id,
     categorySlug: p.category_slug,
     category: p.category_name || 'Mobilya',
     images: p.images || [],
     lifestyleImage: p.lifestyle_image,
-    colors: (p.colors || []).map((c: any, i: number) => ({
-        id: c.id || `color-${i}`,
-        name: c.name || 'Standart',
-        hex: c.hex || '#D4C5B2',
-        image: c.image || (p.images ? p.images[0] : ''),
-        lifestyleImage: c.lifestyle_image || p.lifestyle_image || '',
-        inStock: c.in_stock !== false
-    })),
+    colors: (p.colors || []).map((c: any, i: number) => {
+        const parsed = typeof c === 'string' ? (() => { try { return JSON.parse(c); } catch { return {}; } })() : c;
+        return {
+            id: parsed.id || `color-${i}`,
+            name: parsed.name || 'Standart',
+            hex: parsed.hex || '#D4C5B2',
+            image: parsed.image || (p.images ? p.images[0] : ''),
+            lifestyleImage: parsed.lifestyle_image || p.lifestyle_image || '',
+            inStock: parsed.in_stock !== false
+        };
+    }),
     materials: p.materials || [],
     dimensions: p.dimensions || { width: 0, height: 0, depth: 0, unit: 'cm' },
     rating: {
@@ -36,7 +39,7 @@ const mapProduct = (p: any): Product => ({
     featured: p.featured || false,
     isFeatured: p.featured || false,
     isNew: !!p.is_new,
-    brand: p.brand || 'MAISON',
+    brand: p.brand || 'SELIS',
     deliveryDays: p.delivery_days || 14,
     hasQuickShip: !!p.has_quick_ship
 });
@@ -52,36 +55,12 @@ export const getProducts = async (filters?: { categorySlug?: string; featured?: 
         const { data, error } = await query;
 
         if (error || !data || data.length === 0) {
-            console.warn(`[API] Fallback for slug: ${filters?.categorySlug}`);
+            // DB fallback: use mock only if no DB results for this specific filter
+            console.warn(`[API] DB returned no results for: ${JSON.stringify(filters)}, using mock fallback`);
             let products = mockProducts;
-
-            if (filters?.categorySlug) {
-                const exactMatch = products.filter(p => p.categorySlug === filters.categorySlug);
-                console.log(`[API] Exact matches found: ${exactMatch.length}`);
-                if (exactMatch.length === 0) {
-                    // Try to find products that are "similar" to the slug (e.g. 'oturma-odasi' matches 'kose-koltuklar' if tags were present)
-                    // For now, let's just return Oturma Odası products if a sub-category of it is requested
-                    const parents: Record<string, string> = {
-                        'kose-koltuklar': 'oturma-odasi',
-                        'ikili-koltuklar': 'oturma-odasi',
-                        'tekli-koltuklar': 'oturma-odasi',
-                        'berjerler': 'oturma-odasi'
-                    };
-                    const parentSlug = parents[filters.categorySlug];
-                    if (parentSlug) {
-                        products = products.filter(p => p.categorySlug === parentSlug);
-                    } else {
-                        // General fallback to all products if slug doesn't match anything specific
-                        products = products.filter(p => p.categorySlug.includes('odasi') || p.categorySlug === 'oturma-odasi');
-                    }
-                } else {
-                    products = exactMatch;
-                }
-            }
-
+            if (filters?.categorySlug) products = products.filter(p => p.categorySlug === filters.categorySlug);
             if (filters?.featured) products = products.filter(p => p.featured);
             if (filters?.isNew) products = products.filter(p => p.isNew);
-
             return products;
         }
 
@@ -121,7 +100,6 @@ export const searchProducts = async (query: string): Promise<Product[]> => {
             .limit(6);
 
         if (error || !data || data.length === 0) {
-            // Fallback search in mock
             const q = query.toLowerCase();
             return mockProducts.filter(p =>
                 p.name.toLowerCase().includes(q) ||

@@ -48,7 +48,7 @@ export function TwoFactorSetup() {
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                     <div style={{ display: 'flex', gap: '32px' }}>
                         <div style={qrBoxStyle}>
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=MaisonOTP" alt="QR" />
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=SelisOTP" alt="QR" />
                         </div>
                         <div style={{ flex: 1 }}>
                             <div style={{ fontSize: '13px', fontWeight: 600, color: '#F5F0EB' }}>1. Adım: QR Kodu Okutun</div>

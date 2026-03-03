@@ -11,7 +11,7 @@ export default function AIAssistant() {
 
     // Expose chat control to window for non-react or distant components
     useEffect(() => {
-        (window as any).MaisonChat = {
+        (window as any).SelisChat = {
             open: openChat
         };
     }, [openChat]);
@@ -21,7 +21,7 @@ export default function AIAssistant() {
         updateContext({ currentPage: window.location.pathname });
 
         // Check for saved style profile
-        const savedStyle = localStorage.getItem('maison_style_profile');
+        const savedStyle = localStorage.getItem('selis_style_profile');
         if (savedStyle) updateContext({ styleProfile: savedStyle });
     }, [updateContext]);
 

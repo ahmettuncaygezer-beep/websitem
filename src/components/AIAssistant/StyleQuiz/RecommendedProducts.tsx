@@ -26,7 +26,7 @@ export function RecommendedProducts({ products }: Props) {
             addItem({
                 id: product.id,
                 name: product.name,
-                brand: 'MAISON',
+                brand: 'SELIS',
                 price: product.price,
                 originalPrice: product.price,
                 image: product.image,
@@ -103,7 +103,7 @@ export function RecommendedProducts({ products }: Props) {
                                         addItem({
                                             id: product.id,
                                             name: product.name,
-                                            brand: 'MAISON',
+                                            brand: 'SELIS',
                                             price: product.price,
                                             originalPrice: product.price,
                                             image: product.image,
@@ -111,7 +111,7 @@ export function RecommendedProducts({ products }: Props) {
                                         });
                                     }}
                                     className="text-[11px] font-bold text-[#C9A96E] hover:text-[#B8915A] transition-colors leading-none pb-0.5 border-b border-[#C9A96E]">
-                                    Sepete Ekle
+                                    <span data-lang-key="prod_add_to_cart">Sepete Ekle</span>
                                 </button>
                             </div>
                         </div>
@@ -123,7 +123,7 @@ export function RecommendedProducts({ products }: Props) {
                 <button
                     onClick={handleAddAll}
                     className="px-12 py-4 bg-[#1C1C1E] text-white text-sm font-bold tracking-widest uppercase rounded-full hover:bg-[#C9A96E] hover:text-[#1C1C1E] transition-all duration-300 shadow-xl shadow-black/10">
-                    Tüm Önerileri Sepete Ekle
+                    <span data-lang-key="bundle_add_all_cart">Tüm Önerileri Sepete Ekle</span>
                 </button>
             </div>
         </div>

@@ -69,7 +69,7 @@ export function Toolbar({ onSave, onShare }: Props) {
 
             {/* LEFT — Logo + Plan name */}
             <div className="flex items-center gap-3">
-                <span className="text-[14px] font-bold tracking-wider" style={{ color: '#C9A96E' }}>MAISON</span>
+                <span className="text-[14px] font-bold tracking-wider" style={{ color: '#C9A96E' }}>SELIS</span>
                 <span style={{ color: '#DDD' }}>|</span>
                 {editing ? (
                     <input value={nameVal}

@@ -12,9 +12,9 @@ export function Checkout() {
     const { currentStep, nextStep, prevStep } = useCheckout();
 
     return (
-        <div className="bg-[#F5F0EB] min-h-screen">
+        <div className="bg-background min-h-screen transition-colors duration-300">
             <div className="max-w-6xl mx-auto px-6 py-12">
-                <h1 className="font-serif text-3xl text-[#1C1C1E] mb-8 text-center">Ödeme İşlemi</h1>
+                <h1 className="font-serif text-3xl text-foreground mb-8 text-center" style={{ fontFamily: 'var(--font-playfair, serif)' }}>Ödeme İşlemi</h1>
 
                 <CheckoutSteps currentStep={currentStep} />
 

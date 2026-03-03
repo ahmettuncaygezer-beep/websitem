@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
     Users, UserPlus, Zap, Crown, Search, Download,
@@ -60,6 +60,8 @@ function KpiCard({ value, label, icon, trend, variant = 'default' }: KpiCardProp
 }
 
 export default function CustomersPage() {
+    const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
+    const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [segmentFilter, setSegmentFilter] = useState('Tümü');
     const [statusFilter, setStatusFilter] = useState('Tümü');
@@ -68,9 +70,39 @@ export default function CustomersPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const perPage = 20;
 
+    // Fetch from DB, fallback to mock
+    useEffect(() => {
+        async function fetchCustomers() {
+            try {
+                const res = await fetch('/api/admin/customers');
+                const data = await res.json();
+                if (data.customers && data.customers.length > 0) {
+                    setCustomers(data.customers.map((c: any) => ({
+                        ...mockCustomers[0], // Use as template for missing fields
+                        id: c.id,
+                        firstName: c.first_name || 'Anonim',
+                        lastName: c.last_name || '',
+                        email: c.email || '',
+                        phone: c.phone || '',
+                        avatar: ((c.first_name || 'A')[0] + (c.last_name || '')[0]).toUpperCase(),
+                        segment: 'Normal' as CustomerSegment,
+                        status: 'Aktif' as CustomerStatus,
+                        totalOrders: c.total_orders || 0,
+                        totalSpent: c.total_spent || 0,
+                        averageOrderValue: c.total_orders ? Math.round((c.total_spent || 0) / c.total_orders) : 0,
+                        registeredAt: c.created_at || new Date().toISOString(),
+                        lastLoginAt: c.updated_at || new Date().toISOString(),
+                    })));
+                }
+            } catch { /* keep mock */ }
+            finally { setLoading(false); }
+        }
+        fetchCustomers();
+    }, []);
+
     // Filter & Sort Logic
     const filteredCustomers = useMemo(() => {
-        let result = [...mockCustomers];
+        let result = [...customers];
 
         if (searchQuery) {
             const q = searchQuery.toLowerCase();
@@ -103,7 +135,7 @@ export default function CustomersPage() {
         });
 
         return result;
-    }, [searchQuery, segmentFilter, statusFilter, sortBy, sortOrder]);
+    }, [customers, searchQuery, segmentFilter, statusFilter, sortBy, sortOrder]);
 
     const paginatedCustomers = filteredCustomers.slice((currentPage - 1) * perPage, currentPage * perPage);
 

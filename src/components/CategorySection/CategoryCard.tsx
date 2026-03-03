@@ -8,6 +8,7 @@ import { CategoryBadge } from './CategoryBadge';
 import { CategoryRevealButton } from './CategoryRevealButton';
 import type { CategoryItem, FilterTab } from './category.types';
 import { CATEGORY_FILTER_MAP } from './category.data';
+import { useGlobal } from '@/context/GlobalContext';
 
 const EASE_SMOOTH = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -28,6 +29,7 @@ export function CategoryCard({
 }: CategoryCardProps) {
     const [isHovered, setIsHovered] = useState(false);
     const reduceMotion = useReducedMotion();
+    const { language, t } = useGlobal();
 
     const isLarge = span >= 7;
     const isPriority = index < 3;
@@ -57,7 +59,7 @@ export function CategoryCard({
             <Link
                 href={category.href}
                 className="group relative block w-full h-full overflow-hidden"
-                aria-label={`${category.label} kategorisini keşfet — ${category.productCount} ürün`}
+                aria-label={`${category.labelKey ? t(category.labelKey) : category.label} ${t('cat_btn_reveal') || 'kategorisini keşfet'} — ${category.productCount} ${t('common_items') || 'ürün'}`}
                 style={{
                     borderRadius: '4px',
                     cursor: 'pointer',
@@ -90,7 +92,7 @@ export function CategoryCard({
                     />
                     <Image
                         src={category.image}
-                        alt={`${category.label} kategorisi — ${category.productCount} ürün`}
+                        alt={`${category.labelKey ? t(category.labelKey) : category.label} ${t('cat_cat') || 'kategorisi'} — ${category.productCount} ${t('common_items') || 'ürün'}`}
                         fill
                         priority={isPriority}
                         loading={isPriority ? 'eager' : 'lazy'}
@@ -149,7 +151,7 @@ export function CategoryCard({
                                 <CategoryBadge text={category.badge} textKey={category.badgeKey} isHovered={isHovered} />
                                 {category.featured && (
                                     <CategoryBadge
-                                        text={`${category.productCount} ürün`}
+                                        text={`${category.productCount} ${t('common_items') || 'parça'}`}
                                         variant="glass"
                                         isHovered={isHovered}
                                     />
@@ -157,7 +159,7 @@ export function CategoryCard({
                             </>
                         ) : (
                             <CategoryBadge
-                                text={`${category.productCount} ürün`}
+                                text={`${category.productCount} ${t('common_items') || 'parça'}`}
                                 isHovered={isHovered}
                             />
                         )}
@@ -172,9 +174,8 @@ export function CategoryCard({
                                 letterSpacing: '0.25em',
                                 color: 'rgba(255,255,255,0.6)',
                             }}
-                            data-lang-key={category.subLabelKey}
                         >
-                            {category.subLabel}
+                            {category.subLabelKey ? t(category.subLabelKey) : category.subLabel}
                         </p>
                         <h3
                             style={{
@@ -190,19 +191,19 @@ export function CategoryCard({
                             }}
                             data-lang-key={category.labelKey}
                         >
-                            {category.label}
+                            {category.labelKey ? t(category.labelKey) : category.label}
                         </h3>
                         <p
                             className="mt-1"
                             style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)' }}
                         >
-                            {category.productCount} parça
+                            {category.productCount} {t('common_items') || 'parça'}
                         </p>
                     </div>
 
                     {/* Reveal button — bottom right */}
                     <CategoryRevealButton
-                        label={`${category.label} kategorisini keşfet`}
+                        label={`${category.labelKey ? t(category.labelKey) : category.label} ${t('cat_btn_reveal') || 'kategorisini keşfet'}`}
                         isHovered={isHovered}
                     />
                 </div>

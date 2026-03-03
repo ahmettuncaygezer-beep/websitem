@@ -11,11 +11,9 @@ interface IntegrationModalProps {
 }
 
 export function IntegrationModal({ isOpen, onClose, integration }: IntegrationModalProps) {
-    if (!integration) return null;
-
     return (
         <AnimatePresence>
-            {isOpen && (
+            {isOpen && integration && (
                 <div style={overlayStyle}>
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -52,7 +50,7 @@ export function IntegrationModal({ isOpen, onClose, integration }: IntegrationMo
                             )}
 
                             <div style={{ marginTop: '8px' }}>
-                                <a href="#" style={{ fontSize: '12px', color: '#C9A96E', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <a href="https://mailchimp.com/help/about-api-keys/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '12px', color: '#C9A96E', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                     {integration.name} üzerinden API anahtarı nasıl alınır? <ExternalLink size={12} />
                                 </a>
                             </div>

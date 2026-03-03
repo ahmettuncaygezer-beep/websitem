@@ -16,7 +16,7 @@ export function useExport() {
         doc.rect(0, 0, 297, 20, 'F');
         doc.setTextColor(201, 169, 110);
         doc.setFontSize(14);
-        doc.text('MAISON', 15, 13);
+        doc.text('SELIS', 15, 13);
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(10);
         doc.text(`${planName} — Oda Planı`, 60, 13);
@@ -66,7 +66,7 @@ export function useExport() {
         // Footer
         doc.setTextColor(180, 180, 180);
         doc.setFontSize(7);
-        doc.text('maison.com.tr', 15, 200);
+        doc.text('selis.com.tr', 15, 200);
 
         doc.save(`${planName.replace(/\s+/g, '_')}_plan.pdf`);
     }, []);

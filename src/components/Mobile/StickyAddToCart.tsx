@@ -53,34 +53,29 @@ export default function StickyAddToCart({
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 100, opacity: 0 }}
                         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                        className="fixed left-0 right-0 z-40 px-4 py-3"
+                        className="fixed left-0 right-0 z-40 px-4 py-3 bg-background/95 backdrop-blur-xl border-t border-border shadow-[0_-8px_24px_rgba(0,0,0,0.08)]"
                         style={{
                             bottom: 'calc(64px + env(safe-area-inset-bottom))',
-                            background: 'rgba(255,255,255,0.97)',
-                            backdropFilter: 'blur(20px)',
-                            WebkitBackdropFilter: 'blur(20px)',
-                            borderTop: '1px solid rgba(0,0,0,0.06)',
-                            boxShadow: '0 -8px 24px rgba(0,0,0,0.08)',
                         }}
                     >
                         <div className="flex items-center gap-3">
                             {/* Product summary */}
-                            <div className="relative w-12 h-12 rounded-sm overflow-hidden flex-shrink-0 bg-[#F5F0EB]">
+                            <div className="relative w-12 h-12 rounded-sm overflow-hidden flex-shrink-0 bg-muted">
                                 <Image src={productImage} alt={productName} fill className="object-cover" sizes="48px" />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-[12px] font-medium text-[#1C1C1E] truncate">{productName}</p>
+                                <p className="text-[12px] font-medium text-foreground truncate">{productName}</p>
                                 <div className="flex items-center gap-2 mt-0.5">
                                     <motion.span
                                         key={price}
                                         initial={{ opacity: 0, y: -4 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="text-[14px] font-bold text-[#1C1C1E]"
+                                        className="text-[14px] font-bold text-foreground"
                                     >
                                         ₺{price.toLocaleString('tr-TR')}
                                     </motion.span>
                                     {originalPrice && originalPrice > price && (
-                                        <span className="text-[11px] line-through text-[#bbb]">
+                                        <span className="text-[11px] line-through text-muted-foreground/60">
                                             ₺{originalPrice.toLocaleString('tr-TR')}
                                         </span>
                                     )}
@@ -89,18 +84,18 @@ export default function StickyAddToCart({
 
                             {/* Quantity stepper */}
                             {hasVariantSelected && (
-                                <div className="flex items-center border border-[#E8E3DC] rounded-sm overflow-hidden flex-shrink-0">
+                                <div className="flex items-center border border-border rounded-sm overflow-hidden flex-shrink-0">
                                     <button
                                         onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                                        className="w-8 h-9 flex items-center justify-center text-[#666] hover:bg-[#F5F0EB] transition-colors"
+                                        className="w-8 h-9 flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"
                                         style={{ WebkitTapHighlightColor: 'transparent' }}
                                     >
                                         <Minus size={12} />
                                     </button>
-                                    <span className="w-8 text-center text-[13px] font-semibold text-[#1C1C1E]">{quantity}</span>
+                                    <span className="w-8 text-center text-[13px] font-semibold text-foreground">{quantity}</span>
                                     <button
                                         onClick={() => setQuantity(q => q + 1)}
-                                        className="w-8 h-9 flex items-center justify-center text-[#666] hover:bg-[#F5F0EB] transition-colors"
+                                        className="w-8 h-9 flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"
                                         style={{ WebkitTapHighlightColor: 'transparent' }}
                                     >
                                         <Plus size={12} />
@@ -111,29 +106,27 @@ export default function StickyAddToCart({
                             {/* CTA button */}
                             <motion.button
                                 onClick={handleAddToCart}
-                                className="flex-shrink-0 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-sm text-[13px] font-semibold text-white transition-colors"
+                                className={`flex-shrink-0 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-sm text-[13px] font-semibold transition-colors
+                                    ${added ? 'bg-green-600 text-white' : 'bg-foreground text-background'}`}
                                 style={{
-                                    background: added ? '#4CAF50' : '#1C1C1E',
                                     minWidth: 120,
                                     WebkitTapHighlightColor: 'transparent',
                                 }}
-                                animate={{ background: added ? '#4CAF50' : '#1C1C1E' }}
-                                transition={{ duration: 0.2 }}
                                 whileTap={{ scale: 0.97 }}
                             >
                                 {added ? (
                                     <>
                                         <Check size={14} />
-                                        Eklendi
+                                        <span data-lang-key="prod_add_cart_added">Eklendi</span>
                                     </>
                                 ) : hasVariantSelected ? (
                                     <>
                                         <ShoppingBag size={14} />
-                                        Sepete Ekle
+                                        <span data-lang-key="prod_add_to_cart">Sepete Ekle</span>
                                     </>
                                 ) : (
                                     <>
-                                        Seçenek Seç
+                                        <span data-lang-key="prod_select_option">Seçenek Seç</span>
                                         <ChevronRight size={14} />
                                     </>
                                 )}

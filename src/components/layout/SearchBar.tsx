@@ -182,9 +182,9 @@ export function SearchBar({ onClose }: SearchBarProps) {
                             ) : (
                                 !loading && !hasResults && (
                                     <div className="text-center py-12">
-                                        <p className="font-serif text-lg text-warm-gray mb-2">
+                                        <div className="text-[#999] text-center py-10" data-lang-key="common_no_results">
                                             Sonuç bulunamadı
-                                        </p>
+                                        </div>
                                         <p className="text-sm font-sans text-warm-gray-light">
                                             &ldquo;{query}&rdquo; ile eşleşen ürün veya kategori yok.
                                         </p>

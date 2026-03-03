@@ -44,7 +44,7 @@ export function CouponGenerator({ value, onChange, type = 'single', onTypeChange
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `maison_coupons_${new Date().toISOString().split('T')[0]}.csv`);
+        link.setAttribute("download", `selis_coupons_${new Date().toISOString().split('T')[0]}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -145,7 +145,7 @@ export function CouponGenerator({ value, onChange, type = 'single', onTypeChange
                                         type="text"
                                         value={prefix}
                                         onChange={(e) => setPrefix(e.target.value.toUpperCase())}
-                                        placeholder="MAISON-"
+                                        placeholder="SELIS-"
                                         style={{
                                             width: '100%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
                                             borderRadius: '6px', padding: '8px 12px', color: '#F5F0EB', outline: 'none'

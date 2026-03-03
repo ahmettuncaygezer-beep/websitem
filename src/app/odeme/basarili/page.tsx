@@ -10,11 +10,21 @@ export default function OrderSuccessPage() {
     const { clearCart } = useCart();
     const [orderId, setOrderId] = useState('');
 
+    // Dynamically compute estimated delivery date range (10-16 days from now)
+    const deliveryRange = (() => {
+        const fmt = new Intl.DateTimeFormat('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+        const from = new Date();
+        from.setDate(from.getDate() + 10);
+        const to = new Date();
+        to.setDate(to.getDate() + 16);
+        return `${fmt.format(from).replace(' ', ' ')} - ${fmt.format(to)}`;
+    })();
+
     useEffect(() => {
         if (clearCart && typeof clearCart === 'function') {
             clearCart();
         }
-        setOrderId(`MSN-${Math.random().toString(36).substr(2, 9).toUpperCase()}`);
+        setOrderId(`SLS-${Math.random().toString(36).substr(2, 9).toUpperCase()}`);
     }, []);
 
     return (
@@ -55,7 +65,7 @@ export default function OrderSuccessPage() {
                         <div className="h-px md:h-12 w-full md:w-px bg-border" />
                         <div className="text-left">
                             <span className="text-[10px] font-sans font-bold text-warm-gray uppercase tracking-widest">Tahmini Teslimat</span>
-                            <div className="text-xl font-sans font-bold text-charcoal">12 - 18 Mart 2026</div>
+                            <div className="text-xl font-sans font-bold text-charcoal">{deliveryRange}</div>
                         </div>
                     </div>
                 </motion.div>
@@ -91,7 +101,7 @@ export default function OrderSuccessPage() {
                     <div className="flex items-center justify-center gap-8 opacity-40 grayscale">
                         <Share2 size={24} />
                         <Star size={24} />
-                        <div className="font-serif italic text-lg tracking-widest">MAISON Excellence</div>
+                        <div className="font-serif italic text-lg tracking-widest">SELIS Excellence</div>
                     </div>
                 </motion.div>
             </div>

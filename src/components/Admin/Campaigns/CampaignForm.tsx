@@ -266,7 +266,7 @@ export function CampaignForm() {
                                 status: CampaignStatus.Aktif,
                                 discountValue: formValues.discountValue || 10,
                                 discountUnit: selectedType === CampaignType.FixedDiscount ? 'TL' : 'yüzde',
-                                couponCode: couponType === 'none' ? null : (formValues.couponCode || 'MAISON20'),
+                                couponCode: couponType === 'none' ? null : (formValues.couponCode || 'SELIS20'),
                                 usageCount: 0,
                                 usageLimit: formValues.usageLimit || 100,
                                 startDate: formValues.startDate || '',

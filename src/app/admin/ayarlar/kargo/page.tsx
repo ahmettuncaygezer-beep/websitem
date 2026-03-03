@@ -1,30 +1,66 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SettingsPageHeader } from '@/components/Admin/Settings/SettingsPageHeader';
 import { CarrierList } from '@/components/Admin/Settings/Shipping/CarrierList';
 import { ShippingRules } from '@/components/Admin/Settings/Shipping/ShippingRules';
-import { mockShippingSettings } from '@/lib/mock/settings';
 import { Truck, Clock, MapPin } from 'lucide-react';
 import { SettingsCard } from '@/components/Admin/Settings/SettingsCard';
+import { toast } from 'react-hot-toast';
+import { useGlobal } from '@/context/GlobalContext';
 
 export default function KargoAyarlarPage() {
-    const [settings, setSettings] = useState(mockShippingSettings);
+    const [settings, setSettings] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [isDirty, setIsDirty] = useState(false);
+    const { refreshSettings } = useGlobal() || {};
+
+    useEffect(() => {
+        fetch('/api/admin/settings')
+            .then(res => res.json())
+            .then(data => {
+                setSettings(data.shipping_settings);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.error(err);
+                setIsLoading(false);
+            });
+    }, []);
 
     const handleUpdate = (updates: any) => {
-        setSettings(prev => ({ ...prev, ...updates }));
+        setSettings((prev: any) => ({ ...prev, ...updates }));
         setIsDirty(true);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         setIsSaving(true);
-        setTimeout(() => {
-            setIsSaving(false);
+        try {
+            const batchUpdates = [
+                { key: 'shipping_settings', value: settings }
+            ];
+
+            const res = await fetch('/api/admin/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(batchUpdates)
+            });
+
+            if (!res.ok) throw new Error('Save failed');
+
+            if (refreshSettings) await refreshSettings();
+            toast.success('Kargo ayarları başarıyla kaydedildi');
             setIsDirty(false);
-        }, 1500);
+        } catch (error) {
+            console.error(error);
+            toast.error('Ayarlar kaydedilirken bir hata oluştu');
+        } finally {
+            setIsSaving(false);
+        }
     };
+
+    if (isLoading) return <div style={{ color: '#F5F0EB', padding: 32 }}>Yükleniyor...</div>;
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>

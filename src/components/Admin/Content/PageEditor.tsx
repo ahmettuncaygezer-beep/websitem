@@ -7,17 +7,39 @@ import {
     MousePointer2, HelpCircle, CheckCircle2
 } from 'lucide-react';
 import Link from 'next/link';
-import { mockPageSections, PageSection } from '@/lib/mock/content';
+import { PageSection } from '@/lib/mock/content';
 import { SectionList } from './SectionList';
 import { HeroEditor } from './HeroEditor';
 import { FeaturesEditor } from './FeaturesEditor';
 import { BannerEditor } from './BannerEditor';
+import { ProductGridEditor } from './ProductGridEditor';
+import { TestimonialsEditor } from './TestimonialsEditor';
+import { NewsletterEditor } from './NewsletterEditor';
 
 export default function PageEditor() {
-    const [sections, setSections] = useState<PageSection[]>(mockPageSections);
-    const [selectedId, setSelectedId] = useState<string | null>(sections[0]?.id || null);
+    const [sections, setSections] = useState<PageSection[]>([]);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
-    const [lastSaved, setLastSaved] = useState('12 dk önce');
+    const [lastSaved, setLastSaved] = useState('Henüz kaydedilmedi');
+
+    React.useEffect(() => {
+        const fetchSections = async () => {
+            try {
+                const res = await fetch('/api/admin/content/home');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setSections(data);
+                    setSelectedId(data[0]?.id || null);
+                }
+            } catch (err) {
+                console.error('Failed to fetch home sections:', err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchSections();
+    }, []);
 
     const selectedSection = sections.find(s => s.id === selectedId);
 
@@ -27,9 +49,20 @@ export default function PageEditor() {
 
     const handleSave = async () => {
         setIsSaving(true);
-        await new Promise(r => setTimeout(r, 1500));
-        setIsSaving(false);
-        setLastSaved('Az önce');
+        try {
+            const res = await fetch('/api/admin/content/home', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sections)
+            });
+            if (res.ok) {
+                setLastSaved('Az önce');
+            }
+        } catch (err) {
+            console.error('Failed to save home sections:', err);
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     return (
@@ -110,7 +143,25 @@ export default function PageEditor() {
                                         onChange={(content) => handleUpdateSection(selectedId, { content })}
                                     />
                                 )}
-                                {['featured-products', 'lookbook-banner', 'testimonials', 'newsletter', 'text-block', 'gallery'].includes(selectedSection?.type || '') && (
+                                {selectedSection?.type === 'featured-products' && (
+                                    <ProductGridEditor
+                                        content={selectedSection.content}
+                                        onChange={(content) => handleUpdateSection(selectedId, { content })}
+                                    />
+                                )}
+                                {selectedSection?.type === 'testimonials' && (
+                                    <TestimonialsEditor
+                                        content={selectedSection.content}
+                                        onChange={(content) => handleUpdateSection(selectedId, { content })}
+                                    />
+                                )}
+                                {selectedSection?.type === 'newsletter' && (
+                                    <NewsletterEditor
+                                        content={selectedSection.content}
+                                        onChange={(content) => handleUpdateSection(selectedId, { content })}
+                                    />
+                                )}
+                                {['lookbook-banner', 'text-block', 'gallery'].includes(selectedSection?.type || '') && (
                                     <div style={{ padding: '80px 0', textAlign: 'center' }}>
                                         <div style={{ fontSize: '13px', color: '#636366' }}>Bu bölümün ({selectedSection?.type}) detaylı editörü yapım aşamasında.</div>
                                     </div>

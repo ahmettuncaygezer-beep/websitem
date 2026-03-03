@@ -8,7 +8,7 @@ import {
     LogOut, User as UserIcon, MessageSquare, Mail
 } from 'lucide-react';
 import { SidebarGroup } from './SidebarGroup';
-import { mockUser } from '@/lib/mock/user';
+import { useAuthStore } from '@/store/authStore';
 
 const navGroups = [
     {
@@ -60,6 +60,16 @@ const navGroups = [
 
 export function AdminSidebar() {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const { user, logout } = useAuthStore();
+
+    // Get initials safely
+    const getInitials = () => {
+        if (!user || (!user.firstName && !user.lastName && !user.email)) return 'A';
+        const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || '';
+        const parts = name.split(' ');
+        if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+        return name.substring(0, 2).toUpperCase();
+    };
 
     return (
         <aside
@@ -70,7 +80,7 @@ export function AdminSidebar() {
             {/* Logo */}
             <div className="px-5 pt-7 pb-5 border-b border-white/[0.04]">
                 <div className="font-['Playfair_Display',Georgia,serif] text-[22px] font-semibold tracking-[0.12em] text-[#F5F0EB]">
-                    MAISON
+                    SELIS
                 </div>
                 <span className="inline-block mt-1.5 text-[9px] font-medium tracking-[0.25em] text-[#C9A96E] bg-[rgba(201,169,110,0.1)] border border-[rgba(201,169,110,0.2)] px-2 py-0.5 rounded-[2px] uppercase">
                     Admin Panel
@@ -105,12 +115,14 @@ export function AdminSidebar() {
                         style={{ background: 'linear-gradient(135deg, #C9A96E 0%, #8B6A3A 100%)' }}
                         aria-hidden="true"
                     >
-                        {mockUser.initials}
+                        {getInitials()}
                     </div>
                     {/* Name + Role */}
                     <div className="flex-1 text-left min-w-0">
-                        <div className="text-[12px] font-medium text-[#F5F0EB] truncate">{mockUser.name}</div>
-                        <div className="text-[10px] text-[#C9A96E] truncate">{mockUser.role}</div>
+                        <div className="text-[12px] font-medium text-[#F5F0EB] truncate">
+                            {user ? `${user.firstName} ${user.lastName}`.trim() : 'Admin'}
+                        </div>
+                        <div className="text-[10px] text-[#C9A96E] truncate">Admin</div>
                     </div>
                     <MoreHorizontal size={16} className="text-[#636366] flex-shrink-0" />
                 </button>
@@ -136,6 +148,7 @@ export function AdminSidebar() {
                             <div className="h-px bg-white/[0.06] mx-2" />
                             <button
                                 role="menuitem"
+                                onClick={() => logout()}
                                 className="w-full flex items-center gap-3 px-4 py-2.5 text-[12px] text-[#AEAEB2] hover:text-[#FF453A] hover:bg-[rgba(255,69,58,0.05)] transition-colors cursor-pointer text-left"
                             >
                                 <LogOut size={14} />

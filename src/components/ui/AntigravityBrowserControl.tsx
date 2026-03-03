@@ -46,19 +46,19 @@ export default function AntigravityBrowserControl() {
     const getContextActions = () => {
         const baseActions = [
             { icon: isDark ? <Sun size={18} /> : <Moon size={18} />, label: isDark ? 'Gündüz Modu' : 'Gece Modu', onClick: toggleDarkMode, color: 'text-amber-400' },
-            { icon: <Search size={18} />, label: 'Akıllı Arama', onClick: () => (window as any).MaisonSearch?.open(), color: 'text-purple-400' },
+            { icon: <Search size={18} />, label: 'Akıllı Arama', onClick: () => (window as any).SelisSearch?.open(), color: 'text-purple-400' },
         ];
 
         // PWA Install Check
-        if ((window as any).MaisonPWA?.trigger) {
-            baseActions.push({ icon: <Cpu size={18} />, label: 'Uygulamayı Yükle', onClick: () => (window as any).MaisonPWA.trigger(), color: 'text-green-400' });
+        if ((window as any).SelisPWA?.trigger) {
+            baseActions.push({ icon: <Cpu size={18} />, label: 'Uygulamayı Yükle', onClick: () => (window as any).SelisPWA.trigger(), color: 'text-green-400' });
         }
 
         if (isPlanner) {
             return [
                 {
                     icon: <Box size={18} />, label: 'Taslağı Kaydet', onClick: () => {
-                        setPlanName(`Maison_${new Date().toLocaleTimeString()}`);
+                        setPlanName(`Selis_${new Date().toLocaleTimeString()}`);
                         // Optionally trigger a toast or notification
                     }, color: 'text-blue-400'
                 },

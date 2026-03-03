@@ -1,12 +1,12 @@
 /*
- * MAISON Animation Keyframes
+ * SELIS Animation Keyframes
  * ─────────────────────────────────────────────
  * Imported by globals.css.
  * Contains all keyframe definitions used across the design system.
  */
 
 /* ── Fade & Slide ───────────────────────────────────────────────────── */
-@keyframes maison-fade-in {
+@keyframes selis-fade-in {
     from {
         opacity: 0;
     }
@@ -16,7 +16,7 @@
     }
 }
 
-@keyframes maison-fade-in-up {
+@keyframes selis-fade-in-up {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -28,7 +28,7 @@
     }
 }
 
-@keyframes maison-fade-in-down {
+@keyframes selis-fade-in-down {
     from {
         opacity: 0;
         transform: translateY(-20px);
@@ -40,7 +40,7 @@
     }
 }
 
-@keyframes maison-slide-in-right {
+@keyframes selis-slide-in-right {
     from {
         transform: translateX(100%);
     }
@@ -50,7 +50,7 @@
     }
 }
 
-@keyframes maison-slide-in-bottom {
+@keyframes selis-slide-in-bottom {
     from {
         transform: translateY(100%);
     }
@@ -61,7 +61,7 @@
 }
 
 /* ── Scale ──────────────────────────────────────────────────────────── */
-@keyframes maison-scale-in {
+@keyframes selis-scale-in {
     from {
         opacity: 0;
         transform: scale(0.95);
@@ -73,7 +73,7 @@
     }
 }
 
-@keyframes maison-pop-in {
+@keyframes selis-pop-in {
     0% {
         opacity: 0;
         transform: scale(0.8);
@@ -90,7 +90,7 @@
 }
 
 /* ── Special effects ────────────────────────────────────────────────── */
-@keyframes maison-flip-in {
+@keyframes selis-flip-in {
     from {
         opacity: 0;
         transform: rotateX(-90deg);
@@ -102,7 +102,7 @@
     }
 }
 
-@keyframes maison-wa-pulse {
+@keyframes selis-wa-pulse {
     0% {
         transform: scale(1);
         opacity: 0.5;
@@ -114,7 +114,7 @@
     }
 }
 
-@keyframes maison-ping {
+@keyframes selis-ping {
 
     75%,
     100% {
@@ -123,13 +123,13 @@
     }
 }
 
-@keyframes maison-spin {
+@keyframes selis-spin {
     to {
         transform: rotate(360deg);
     }
 }
 
-@keyframes maison-bounce {
+@keyframes selis-bounce {
 
     0%,
     100% {
@@ -144,7 +144,7 @@
 }
 
 /* Progress bar for Toast auto-dismiss */
-@keyframes maison-progress {
+@keyframes selis-progress {
     from {
         width: 100%;
     }
@@ -155,28 +155,28 @@
 }
 
 /* ── Utility classes for CSS animation (non-Framer Motion paths) ────── */
-.animate-maison-fade-in {
-    animation: maison-fade-in 0.3s cubic-bezier(0, 0, 0.2, 1) both;
+.animate-selis-fade-in {
+    animation: selis-fade-in 0.3s cubic-bezier(0, 0, 0.2, 1) both;
 }
 
-.animate-maison-fade-in-up {
-    animation: maison-fade-in-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+.animate-selis-fade-in-up {
+    animation: selis-fade-in-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-.animate-maison-scale-in {
-    animation: maison-scale-in 0.2s cubic-bezier(0, 0, 0.2, 1) both;
+.animate-selis-scale-in {
+    animation: selis-scale-in 0.2s cubic-bezier(0, 0, 0.2, 1) both;
 }
 
-.animate-maison-pop-in {
-    animation: maison-pop-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+.animate-selis-pop-in {
+    animation: selis-pop-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-.animate-maison-spin {
-    animation: maison-spin 0.8s linear infinite;
+.animate-selis-spin {
+    animation: selis-spin 0.8s linear infinite;
 }
 
-.animate-maison-wa-pulse {
-    animation: maison-wa-pulse 2s ease-out infinite;
+.animate-selis-wa-pulse {
+    animation: selis-wa-pulse 2s ease-out infinite;
 }
 
 /* Stagger delay helpers */
@@ -207,11 +207,11 @@
 /* Respect user's motion preference */
 @media (prefers-reduced-motion: reduce) {
 
-    .animate-maison-fade-in,
-    .animate-maison-fade-in-up,
-    .animate-maison-scale-in,
-    .animate-maison-pop-in,
-    .animate-maison-wa-pulse {
+    .animate-selis-fade-in,
+    .animate-selis-fade-in-up,
+    .animate-selis-scale-in,
+    .animate-selis-pop-in,
+    .animate-selis-wa-pulse {
         animation: none;
         opacity: 1;
         transform: none;

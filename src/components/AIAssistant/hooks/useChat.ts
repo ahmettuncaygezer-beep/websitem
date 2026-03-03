@@ -2,10 +2,23 @@
 
 import { useCallback } from 'react';
 import { useChatStore } from '../store/chatStore';
+import { useGlobal } from '@/context/GlobalContext';
+import { translations } from '@/lib/i18n';
 import type { RecommendedProduct } from '../types/ai.types';
 
 export function useChat() {
     const store = useChatStore();
+    const { language } = useGlobal();
+
+    const t = useCallback((key: string) => {
+        const keys = key.split('.');
+        let result: any = translations[language as keyof typeof translations];
+        for (const k of keys) {
+            if (result && result[k]) result = result[k];
+            else return null;
+        }
+        return result;
+    }, [language]);
 
     const parseProducts = useCallback((content: string): RecommendedProduct[] => {
         const match = content.match(/<products>([\s\S]*?)<\/products>/);
@@ -46,6 +59,7 @@ export function useChat() {
                 body: JSON.stringify({
                     messages: apiMessages,
                     context: useChatStore.getState().context,
+                    language,
                 }),
             });
 
@@ -76,13 +90,13 @@ export function useChat() {
             });
         } catch (err) {
             store.updateLastMessage(
-                'Üzgünüm, bir hata oluştu. Lütfen tekrar deneyin.',
+                t('chat.error') || 'Üzgünüm, bir hata oluştu. Lütfen tekrar deneyin.',
                 { isStreaming: false },
             );
         } finally {
             store.setLoading(false);
         }
-    }, [store, parseProducts, parseQuickReplies, cleanResponse]);
+    }, [store, parseProducts, parseQuickReplies, cleanResponse, language, t]);
 
     return { sendMessage };
 }

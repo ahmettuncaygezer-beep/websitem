@@ -5,10 +5,10 @@ import type { LookbookCardData } from '@/components/Marketing/LookbookCard';
 import { mockLookbooks } from '@/lib/mock/content';
 
 export const metadata: Metadata = {
-    title: 'Lookbook 2026 | MAISON Premium Mobilya',
-    description: 'MAISON 2026 Koleksiyon Lookbook\'u — Hayalinizdeki evin ilhamı burada.',
+    title: 'Lookbook 2026 | SELIS Premium Mobilya',
+    description: 'SELIS 2026 Koleksiyon Lookbook\'u — Hayalinizdeki evin ilhamı burada.',
     openGraph: {
-        title: 'MAISON Lookbook 2026',
+        title: 'SELIS Lookbook 2026',
         description: 'Editorial fotoğraflar ve hotspot ürün keşfi.',
         type: 'website',
     },

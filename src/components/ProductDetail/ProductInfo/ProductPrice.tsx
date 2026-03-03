@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function ProductPrice({ price, originalPrice }: Props) {
-    const { formatPrice } = useGlobal();
+    const { formatPrice, t } = useGlobal();
     const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
     const monthly = Math.ceil(price / 36);
 
@@ -39,12 +39,12 @@ export function ProductPrice({ price, originalPrice }: Props) {
             {/* Installment hint */}
             {price >= 5000 && (
                 <p className="text-[12px] mt-2 text-muted-foreground">
-                    veya 36 aya kadar taksit — <strong>Aylık {formatPrice(monthly)}&apos;den</strong>
+                    <span>{t('pdp_installment_hint_1') || 'veya 36 aya kadar taksit —'}</span> <strong>{t('pdp_monthly_from') || 'Aylık'} {formatPrice(monthly)}{t('pdp_monthly_suffix') || "'den"}</strong>
                 </p>
             )}
 
             {/* VAT */}
-            <p className="text-[11px] mt-1 text-muted-foreground/60 uppercase tracking-widest">KDV dahil fiyattır</p>
+            <p className="text-[11px] mt-1 text-muted-foreground/60 uppercase tracking-widest">{t('pdp_vat_included') || 'KDV dahil fiyattır'}</p>
         </div>
     );
 }

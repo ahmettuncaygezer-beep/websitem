@@ -101,7 +101,7 @@ export function ContentPreviewModal({ isOpen, onClose, title }: ContentPreviewMo
 
                     {/* Iframe or Render Simulation */}
                     <div style={{ width: '100%', height: 'calc(100% - 32px)', padding: '40px', color: '#141416', textAlign: 'center' }}>
-                        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '32px', marginTop: '100px' }}>MAISON</div>
+                        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '32px', marginTop: '100px' }}>SELIS</div>
                         <p style={{ color: '#666', marginTop: '20px' }}>Site arayüzü bu pencere içerisinde gerçek boyutlarıyla simüle edilir.</p>
                         <div style={{ marginTop: '50px', display: 'flex', flexDirection: 'column', gap: '40px' }}>
                             <div style={{ height: '200px', background: '#eee', borderRadius: '8px' }} />

@@ -27,7 +27,7 @@ export default function PlanSummaryModal({ open, onClose }: Props) {
                 addItem({
                     id: item.product.id,
                     name: item.product.name,
-                    brand: item.product.brand || 'MAISON Exclusive',
+                    brand: item.product.brand || 'SELIS Exclusive',
                     price: item.product.price,
                     image: item.product.image,
                     href: item.product.originalHref || `/urun/${item.product.id}`
@@ -82,7 +82,7 @@ export default function PlanSummaryModal({ open, onClose }: Props) {
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="text-[13px] font-semibold text-[#1C1C1E]">{item.name}</h3>
-                                        <p className="text-[11px] text-[#999]">{item.product?.brand || 'MAISON Exclusive'}</p>
+                                        <p className="text-[11px] text-[#999]">{item.product?.brand || 'SELIS Exclusive'}</p>
                                     </div>
                                     <div className="text-right">
                                         <p className="text-[13px] font-bold text-[#C9A96E]">{formatPrice(item.product?.price || 0)}</p>

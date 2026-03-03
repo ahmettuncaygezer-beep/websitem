@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-const STORAGE_KEY = 'maison_wishlist';
+const STORAGE_KEY = 'selis_wishlist';
 
 function getWishlist(): string[] {
     if (typeof window === 'undefined') return [];

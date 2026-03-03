@@ -9,34 +9,36 @@ const GUARANTEES = [
     {
         icon: Truck,
         title: 'Ücretsiz Kargo',
-        desc: '₺5.000 üzeri siparişlerde kapınıza kadar',
+        desc: '₺5.000 üzeri siparişlerde',
         titleKey: 'trust_shipping_title',
         descKey: 'trust_shipping_desc'
     },
     {
         icon: Shield,
         title: '5 Yıl Garanti',
-        desc: 'Tüm mobilya ürünlerinde standart garanti',
+        desc: 'Tüm mobilya ürünlerinde',
         titleKey: 'trust_warranty_title',
         descKey: 'trust_warranty_desc'
     },
     {
         icon: RotateCcw,
         title: '30 Gün İade',
-        desc: 'Koşulsuz iade, kapıdan teslim alma',
+        desc: 'Koşulsuz iade garantisi',
         titleKey: 'trust_return_title',
         descKey: 'trust_return_desc'
     },
     {
         icon: Headphones,
-        title: '7/24 Destek',
-        desc: 'Uzman ekibimiz her an yanınızda',
+        title: 'VIP Destek',
+        desc: '7/24 kişiye özel danışmanlık',
         titleKey: 'trust_support_title',
         descKey: 'trust_support_desc'
     },
 ];
+import { useGlobal } from '@/context/GlobalContext';
 
 export default function TrustBadges() {
+    const { t } = useGlobal();
     return (
         <div>
             {/* ÜST: GARANTİ KUTULARI (Footer'dan önce, tam genişlik) */}
@@ -58,10 +60,10 @@ export default function TrustBadges() {
                                         <Icon className="w-5 h-5 text-[#C9A96E]" />
                                     </div>
                                     <div>
-                                        <p className="font-semibold text-[#1C1C1E] text-[13px] mb-1" data-lang-key={item.titleKey}>
+                                        <p className="font-semibold text-[#1C1C1E] text-[13px] mb-1" data-lang-key={item.titleKey} suppressHydrationWarning>
                                             {item.title}
                                         </p>
-                                        <p className="text-[11px] text-[#666] leading-relaxed" data-lang-key={item.descKey}>
+                                        <p className="text-[11px] text-[#666] leading-relaxed" data-lang-key={item.descKey} suppressHydrationWarning>
                                             {item.desc}
                                         </p>
                                     </div>
@@ -76,7 +78,7 @@ export default function TrustBadges() {
             <div className="bg-[#1C1C1E] py-8 px-6 border-t border-white/5">
                 <div className="max-w-6xl mx-auto">
                     <p className="text-center text-[11px] text-white/40 tracking-[0.25em] uppercase mb-6" data-lang-key="trust_secure_shopping">
-                        Güvenli Alışveriş
+                        {t('trust_secure_shopping') || 'Güvenli Alışveriş'}
                     </p>
 
                     {/* ROZET SATIRI */}
@@ -94,7 +96,7 @@ export default function TrustBadges() {
                                     256-bit SSL
                                 </p>
                                 <p className="text-white/40 text-[9px] mt-0.5" data-lang-key="trust_ssl_encrypted">
-                                    Şifreli bağlantı
+                                    {t('trust_ssl_encrypted') || 'Şifreli bağlantı'}
                                 </p>
                             </div>
                         </motion.div>
@@ -145,8 +147,7 @@ export default function TrustBadges() {
 
                     {/* ALT NOT */}
                     <p className="text-center text-white/25 text-[10px] mt-6 tracking-wide" data-lang-key="trust_secure_desc">
-                        Tüm ödemeleriniz 256-bit SSL şifreleme ile korunmaktadır. iyzico ve PayTR güvencesiyle
-                        güvenli alışveriş.
+                        {t('trust_secure_desc') || 'Tüm ödemeleriniz 256-bit SSL şifreleme ile korunmaktadır. iyzico ve PayTR güvencesiyle güvenli alışveriş.'}
                     </p>
                 </div>
             </div>

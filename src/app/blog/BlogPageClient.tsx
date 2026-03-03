@@ -225,7 +225,7 @@ export default function BlogPageClient({ posts, categories }: Props) {
                 <div className="flex items-end justify-between mb-6">
                     <div>
                         <p className="text-[10px] text-[#C9A96E] tracking-[0.3em] uppercase font-semibold mb-1">
-                            MAISON Editorial
+                            SELIS Editorial
                         </p>
                         <h1 className="text-3xl md:text-5xl font-bold text-[#1C1C1E] dark:text-[#F5F0EB]"
                             style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}>

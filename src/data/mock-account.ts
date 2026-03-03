@@ -65,7 +65,7 @@ export const mockAddresses: Address[] = [
 // ━━━ MOCK ORDERS ━━━
 export const mockOrders: Order[] = [
     {
-        id: 'MSN-2026-00482',
+        id: 'SLS-2026-00482',
         status: 'shipped',
         items: [
             { id: 'oi_1', productId: '1', name: 'Luna Köşe Koltuk', image: '/images/products/luna-sofa-1.jpg', price: 74990, quantity: 1, color: 'Kum Beji', slug: 'luna-kose-koltuk' },
@@ -86,7 +86,7 @@ export const mockOrders: Order[] = [
         canReview: false,
     },
     {
-        id: 'MSN-2026-00475',
+        id: 'SLS-2026-00475',
         status: 'preparing',
         items: [
             { id: 'oi_3', productId: '4', name: 'Zen Yatak Başlığı', image: '/images/products/zen-bed-1.jpg', price: 28990, quantity: 1, color: 'Gri Kadife', slug: 'zen-yatak-basligi' },
@@ -104,7 +104,7 @@ export const mockOrders: Order[] = [
         canReview: false,
     },
     {
-        id: 'MSN-2026-00460',
+        id: 'SLS-2026-00460',
         status: 'delivered',
         items: [
             { id: 'oi_4', productId: '2', name: 'Aria Berjer', image: '/images/products/aria-chair-1.jpg', price: 34990, quantity: 1, color: 'Keten Beyaz', slug: 'aria-berjer', reviewId: 'rev_001' },
@@ -124,7 +124,7 @@ export const mockOrders: Order[] = [
         canReview: true,
     },
     {
-        id: 'MSN-2026-00441',
+        id: 'SLS-2026-00441',
         status: 'delivered',
         items: [
             { id: 'oi_6', productId: '3', name: 'Nova Yemek Masası', image: '/images/products/nova-table-1.jpg', price: 45990, quantity: 1, color: 'Doğal Meşe', slug: 'nova-yemek-masasi', reviewId: 'rev_002' },
@@ -144,7 +144,7 @@ export const mockOrders: Order[] = [
         canReview: true,
     },
     {
-        id: 'MSN-2025-00398',
+        id: 'SLS-2025-00398',
         status: 'delivered',
         items: [
             { id: 'oi_8', productId: '9', name: 'Oslo Çalışma Masası', image: '/images/products/oslo-desk-1.jpg', price: 24990, quantity: 1, color: 'Doğal Meşe', slug: 'oslo-calisma-masasi' },
@@ -163,7 +163,7 @@ export const mockOrders: Order[] = [
         canReview: true,
     },
     {
-        id: 'MSN-2025-00367',
+        id: 'SLS-2025-00367',
         status: 'cancelled',
         items: [
             { id: 'oi_9', productId: '11', name: 'Celestia Avize', image: '/images/products/celestia-chandelier-1.jpg', price: 22990, quantity: 1, color: 'Mat Altın', slug: 'celestia-avize' },
@@ -181,7 +181,7 @@ export const mockOrders: Order[] = [
         canReview: false,
     },
     {
-        id: 'MSN-2026-00490',
+        id: 'SLS-2026-00490',
         status: 'pending',
         items: [
             { id: 'oi_10', productId: '8', name: 'Botanica Vazo Seti', image: '/images/products/botanica-vase-1.jpg', price: 4990, quantity: 2, color: 'Terakota', slug: 'botanica-vazo-seti' },
@@ -200,7 +200,7 @@ export const mockOrders: Order[] = [
         canReview: false,
     },
     {
-        id: 'MSN-2025-00320',
+        id: 'SLS-2025-00320',
         status: 'returned',
         items: [
             { id: 'oi_12', productId: '7', name: 'Serene İkili Koltuk', image: '/images/products/serene-sofa-1.jpg', price: 44990, quantity: 1, color: 'Krem', slug: 'serene-ikili-koltuk' },
@@ -222,16 +222,16 @@ export const mockOrders: Order[] = [
 
 // ━━━ MOCK POINT TRANSACTIONS ━━━
 export const mockPointTransactions: PointTransaction[] = [
-    { id: 'pt_1', type: 'earned', points: 940, description: 'Luna Köşe Koltuk + Orbit Sehpa alımı', orderId: 'MSN-2026-00482', createdAt: '2026-02-14T14:32:00Z', expiresAt: '2027-02-14T14:32:00Z' },
-    { id: 'pt_2', type: 'earned', points: 261, description: 'Zen Yatak Başlığı alımı', orderId: 'MSN-2026-00475', createdAt: '2026-02-20T09:15:00Z', expiresAt: '2027-02-20T09:15:00Z' },
-    { id: 'pt_3', type: 'earned', points: 610, description: 'Aria Berjer + Aura Lambader alımı', orderId: 'MSN-2026-00460', createdAt: '2026-01-25T16:45:00Z', expiresAt: '2027-01-25T16:45:00Z' },
+    { id: 'pt_1', type: 'earned', points: 940, description: 'Luna Köşe Koltuk + Orbit Sehpa alımı', orderId: 'SLS-2026-00482', createdAt: '2026-02-14T14:32:00Z', expiresAt: '2027-02-14T14:32:00Z' },
+    { id: 'pt_2', type: 'earned', points: 261, description: 'Zen Yatak Başlığı alımı', orderId: 'SLS-2026-00475', createdAt: '2026-02-20T09:15:00Z', expiresAt: '2027-02-20T09:15:00Z' },
+    { id: 'pt_3', type: 'earned', points: 610, description: 'Aria Berjer + Aura Lambader alımı', orderId: 'SLS-2026-00460', createdAt: '2026-01-25T16:45:00Z', expiresAt: '2027-01-25T16:45:00Z' },
     { id: 'pt_4', type: 'earned', points: 100, description: 'Aria Berjer değerlendirme puanı', createdAt: '2026-02-10T10:00:00Z', expiresAt: '2027-02-10T10:00:00Z' },
-    { id: 'pt_5', type: 'earned', points: 899, description: 'Nova Yemek Masası + Como Sandalye alımı', orderId: 'MSN-2026-00441', createdAt: '2026-01-08T10:30:00Z', expiresAt: '2027-01-08T10:30:00Z' },
+    { id: 'pt_5', type: 'earned', points: 899, description: 'Nova Yemek Masası + Como Sandalye alımı', orderId: 'SLS-2026-00441', createdAt: '2026-01-08T10:30:00Z', expiresAt: '2027-01-08T10:30:00Z' },
     { id: 'pt_6', type: 'spent', points: -200, description: 'Kupon kodu oluşturuldu: PUAN200', createdAt: '2026-01-15T12:00:00Z' },
     { id: 'pt_7', type: 'bonus', points: 250, description: 'Doğum günü bonusu 🎂', createdAt: '2025-05-15T00:00:00Z', expiresAt: '2025-11-15T00:00:00Z' },
     { id: 'pt_8', type: 'expired', points: -250, description: 'Doğum günü bonusu süresi doldu', createdAt: '2025-11-15T00:00:00Z' },
     { id: 'pt_9', type: 'earned', points: 500, description: 'Arkadaş davet bonusu 👥', createdAt: '2025-09-01T10:00:00Z', expiresAt: '2026-09-01T10:00:00Z' },
-    { id: 'pt_10', type: 'earned', points: 250, description: 'Oslo Çalışma Masası alımı', orderId: 'MSN-2025-00398', createdAt: '2025-12-12T08:00:00Z', expiresAt: '2026-12-12T08:00:00Z' },
+    { id: 'pt_10', type: 'earned', points: 250, description: 'Oslo Çalışma Masası alımı', orderId: 'SLS-2025-00398', createdAt: '2025-12-12T08:00:00Z', expiresAt: '2026-12-12T08:00:00Z' },
 ];
 
 // ━━━ MOCK REVIEWS ━━━
@@ -248,7 +248,7 @@ export const mockReviews: Review[] = [
         status: 'published',
         helpfulCount: 47,
         createdAt: '2026-02-10T10:00:00Z',
-        orderId: 'MSN-2026-00460',
+        orderId: 'SLS-2026-00460',
     },
     {
         id: 'rev_002',
@@ -262,7 +262,7 @@ export const mockReviews: Review[] = [
         status: 'published',
         helpfulCount: 32,
         createdAt: '2026-01-22T14:00:00Z',
-        orderId: 'MSN-2026-00441',
+        orderId: 'SLS-2026-00441',
     },
     {
         id: 'rev_003',
@@ -276,7 +276,7 @@ export const mockReviews: Review[] = [
         status: 'published',
         helpfulCount: 18,
         createdAt: '2026-01-22T14:30:00Z',
-        orderId: 'MSN-2026-00441',
+        orderId: 'SLS-2026-00441',
     },
     {
         id: 'rev_004',
@@ -290,15 +290,15 @@ export const mockReviews: Review[] = [
         status: 'pending',
         helpfulCount: 0,
         createdAt: '2026-02-22T16:00:00Z',
-        orderId: 'MSN-2026-00482',
+        orderId: 'SLS-2026-00482',
     },
 ];
 
 // Products awaiting review (delivered, no review yet)
 export const mockPendingReviewProducts = [
-    { productId: '6', name: 'Aura Lambader', image: '/images/products/aura-lamp-1.jpg', slug: 'aura-lambader', deliveredAt: '2026-02-05T14:00:00Z', orderId: 'MSN-2026-00460' },
-    { productId: '9', name: 'Oslo Çalışma Masası', image: '/images/products/oslo-desk-1.jpg', slug: 'oslo-calisma-masasi', deliveredAt: '2025-12-22T10:00:00Z', orderId: 'MSN-2025-00398' },
-    { productId: '5', name: 'Orbit Sehpa', image: '/images/products/orbit-table-1.jpg', slug: 'orbit-sehpa', deliveredAt: '2026-02-28T10:00:00Z', orderId: 'MSN-2026-00482' },
+    { productId: '6', name: 'Aura Lambader', image: '/images/products/aura-lamp-1.jpg', slug: 'aura-lambader', deliveredAt: '2026-02-05T14:00:00Z', orderId: 'SLS-2026-00460' },
+    { productId: '9', name: 'Oslo Çalışma Masası', image: '/images/products/oslo-desk-1.jpg', slug: 'oslo-calisma-masasi', deliveredAt: '2025-12-22T10:00:00Z', orderId: 'SLS-2025-00398' },
+    { productId: '5', name: 'Orbit Sehpa', image: '/images/products/orbit-table-1.jpg', slug: 'orbit-sehpa', deliveredAt: '2026-02-28T10:00:00Z', orderId: 'SLS-2026-00482' },
 ];
 
 // ━━━ MOCK SESSIONS ━━━

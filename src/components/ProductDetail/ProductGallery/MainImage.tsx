@@ -38,10 +38,7 @@ export function MainImage({ item, onOpenModal, zoomProps, onSwipe }: MainImagePr
     return (
         <div
             className="relative w-full overflow-hidden"
-            style={{ aspectRatio: '4/5', borderRadius: '2px', background: '#F5F0EB', cursor: zoomProps?.isActive ? 'crosshair' : 'pointer' }}
-            onMouseMove={zoomProps?.handleMouseMove}
-            onMouseEnter={zoomProps?.handleMouseEnter}
-            onMouseLeave={zoomProps?.handleMouseLeave}
+            style={{ aspectRatio: '4/5', borderRadius: '2px', background: '#F5F0EB', cursor: 'pointer' }}
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
             onDoubleClick={onOpenModal}
@@ -67,22 +64,7 @@ export function MainImage({ item, onOpenModal, zoomProps, onSwipe }: MainImagePr
                 </motion.div>
             </AnimatePresence>
 
-            {/* Zoom lens indicator */}
-            {zoomProps?.isActive && (
-                <div
-                    className="absolute pointer-events-none hidden md:block"
-                    style={{
-                        width: '25%',
-                        height: '25%',
-                        left: `${zoomProps.position.x}%`,
-                        top: `${zoomProps.position.y}%`,
-                        transform: 'translate(-50%, -50%)',
-                        border: '1px solid rgba(201,169,110,0.5)',
-                        background: 'rgba(201,169,110,0.05)',
-                        zIndex: 5,
-                    }}
-                />
-            )}
+            {/* Zoom lens indicator removed per user request */}
 
             {/* Fullscreen icon */}
             <button

@@ -145,7 +145,7 @@ export function CustomerProfile({ customer }: CustomerProfileProps) {
                     <StatBox label="Top. Harcama" value={formatPrice(customer.totalSpent)} color="#C9A96E" />
                     <StatBox label="Ort. Sipariş" value={formatPrice(customer.averageOrderValue)} />
                     <StatBox label="İade Sayısı" value={customer.returnCount.toString()} color={customer.returnCount > 0 ? '#FF453A' : '#F5F0EB'} />
-                    <StatBox label="Maison Puan" value={customer.maisonPoints.toString()} color="#FFD60A" />
+                    <StatBox label="Selis Puan" value={customer.selisPoints.toString()} color="#FFD60A" />
                     <StatBox label="Bağlılık" value={customer.segment === 'VIP' ? '%98' : '%72'} />
                 </div>
             </div>

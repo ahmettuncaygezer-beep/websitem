@@ -44,7 +44,9 @@ export function CompareButton({
                 if (!isCompared) (e.currentTarget as HTMLElement).style.color = '#999';
             }}
         >
-            {isCompared ? '✓ Eklendi' : '⊕ Karşılaştır'}
+            <span data-lang-key={isCompared ? "prod_compare_added" : "prod_compare_add"}>
+                {isCompared ? '✓ Eklendi' : '⊕ Karşılaştır'}
+            </span>
         </button>
     );
 }

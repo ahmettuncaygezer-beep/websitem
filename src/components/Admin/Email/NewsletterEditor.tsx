@@ -18,7 +18,7 @@ interface ContentBlock {
 export function NewsletterEditor() {
     const [view, setView] = useState<'desktop' | 'mobile'>('desktop');
     const [blocks, setBlocks] = useState<ContentBlock[]>([
-        { id: '1', type: 'text', content: { title: 'Yeni Koleksiyonu Keşfedin', body: 'Lüks ve konforun buluştuğu MAISON ürünleri şimdi özel indirimlerle.' } }
+        { id: '1', type: 'text', content: { title: 'Yeni Koleksiyonu Keşfedin', body: 'Lüks ve konforun buluştuğu SELIS ürünleri şimdi özel indirimlerle.' } }
     ]);
 
     const addBlock = (type: ContentBlock['type']) => {
@@ -108,7 +108,7 @@ export function NewsletterEditor() {
                     >
                         {/* Email Header */}
                         <div className="bg-[#1C1C1E] p-8 text-center border-b border-black/05">
-                            <span className="text-[#C9A96E] text-2xl font-['Playfair_Display',serif] tracking-widest font-bold">MAISON</span>
+                            <span className="text-[#C9A96E] text-2xl font-['Playfair_Display',serif] tracking-widest font-bold">SELIS</span>
                         </div>
 
                         {/* Blocks */}
@@ -185,7 +185,7 @@ export function NewsletterEditor() {
 
                         {/* Footer */}
                         <div className="p-8 border-t border-gray-100 text-center text-[10px] text-gray-400 uppercase tracking-widest">
-                            © 2024 MAISON COLLECTIVE • Tüm Hakları Saklıdır
+                            © 2024 SELIS COLLECTIVE • Tüm Hakları Saklıdır
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,8 @@ import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, ArrowRight } from 'lucide-react';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 export interface Hotspot {
     id: string;
@@ -19,7 +20,9 @@ export interface Hotspot {
 export interface LookbookCardData {
     id: string;
     title: string;
+    titleKey?: string;
     description: string;
+    descriptionKey?: string;
     imageUrl: string;
     category: string;
     hotspots: Hotspot[];
@@ -34,6 +37,8 @@ function HotspotPin({
 }) {
     const [visible, setVisible] = useState(false);
     const pinRef = useRef<HTMLButtonElement>(null);
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     // Viewport collision: tooltip sağa mı sola mı açılsın?
     const openLeft = hotspot.x > 55;
@@ -89,9 +94,10 @@ function HotspotPin({
                                 </p>
                                 <Link
                                     href={hotspot.productHref}
-                                    className="text-[10px] text-[#C9A96E] font-medium hover:underline"
+                                    className="text-[10px] text-[#C9A96E] font-medium hover:underline inline-flex items-center group/link"
                                 >
-                                    İncele →
+                                    <span data-lang-key="prod_view_details">{t('prod_view_details') || "İncele"}</span>
+                                    <ArrowRight size={12} className="ml-1 opacity-0 -translate-x-2 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all" />
                                 </Link>
                             </div>
                         </div>
@@ -106,17 +112,19 @@ export default function LookbookCard({ card }: { card: LookbookCardData }) {
     const [containerWidth, setContainerWidth] = useState(0);
     const [sheetOpen, setSheetOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     const measuredRef = useCallback((node: HTMLDivElement | null) => {
         if (node) setContainerWidth(node.offsetWidth);
     }, []);
 
-    const getCategoryKey = (cat: string) => {
-        switch (cat) {
-            case 'Oturma Odası': return 'nav_living_room';
-            case 'Yatak Odası': return 'nav_bedroom';
-            case 'Yemek Odası': return 'nav_dining';
-            case 'Çalışma Odası': return 'nav_office';
+    const getCategoryKey = (category: string) => {
+        switch (category.toLowerCase()) {
+            case 'oturma odası': return 'nav_living_room';
+            case 'yatak odası': return 'nav_bedroom';
+            case 'yemek odası': return 'nav_dining';
+            case 'çalışma odası': return 'nav_office';
             default: return '';
         }
     };
@@ -165,16 +173,29 @@ export default function LookbookCard({ card }: { card: LookbookCardData }) {
             {/* Konsept bilgisi */}
             <div className="mt-4 flex flex-col md:flex-row md:items-end justify-between gap-3">
                 <div>
-                    <span className="text-[10px] text-[#C9A96E] uppercase tracking-widest font-medium" data-lang-key={getCategoryKey(card.category) || undefined}>
-                        {card.category}
-                    </span>
+                    {getCategoryKey(card.category) ? (
+                        <span className="text-[10px] text-[#C9A96E] uppercase tracking-widest font-medium" data-lang-key={getCategoryKey(card.category)}>
+                            {t(getCategoryKey(card.category))}
+                        </span>
+                    ) : (
+                        <span className="text-[10px] text-[#C9A96E] uppercase tracking-widest font-medium">
+                            {card.category}
+                        </span>
+                    )}
+
                     <h3
                         className="text-xl font-bold text-[#1C1C1E] mt-0.5"
                         style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}
+                        data-lang-key={card.titleKey || undefined}
                     >
-                        {card.title}
+                        {card.titleKey ? t(card.titleKey) : card.title}
                     </h3>
-                    <p className="text-[13px] text-[#666] mt-1 max-w-md">{card.description}</p>
+                    <p
+                        className="text-[13px] text-[#666] mt-1 max-w-md"
+                        data-lang-key={card.descriptionKey || undefined}
+                    >
+                        {card.descriptionKey ? t(card.descriptionKey) : card.description}
+                    </p>
                 </div>
 
                 <button
@@ -182,7 +203,7 @@ export default function LookbookCard({ card }: { card: LookbookCardData }) {
                     className="flex-shrink-0 px-5 py-2.5 border border-[#1C1C1E] text-[13px] font-semibold text-[#1C1C1E] rounded-sm hover:bg-[#1C1C1E] hover:text-white transition-all duration-200"
                     data-lang-key="lookbook_btn_all_products"
                 >
-                    Bu odadaki tüm ürünleri gör →
+                    {t('lookbook_btn_all_products') || "Bu odadaki tüm ürünleri gör →"}
                 </button>
             </div>
 
@@ -224,7 +245,7 @@ export default function LookbookCard({ card }: { card: LookbookCardData }) {
                                                     alt={spot.productName}
                                                     fill
                                                     sizes="56px"
-                                                    className="object-cover group-hover:scale-105 transition-transform"
+                                                    className="object-cover"
                                                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                                                 />
                                             </div>

@@ -23,7 +23,7 @@ export function ProductAccordion({ product }: ProductAccordionProps) {
                     {product.description}
                     <br /><br />
                     Üstün kaliteli malzemeler ve el işçiliği ile üretilmiştir. Her parça,
-                    MAISON kalite standartlarına uygun olarak titizlikle kontrol edilir.
+                    SELIS kalite standartlarına uygun olarak titizlikle kontrol edilir.
                 </AccordionContent>
             </AccordionItem>
 

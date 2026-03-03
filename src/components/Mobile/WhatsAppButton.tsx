@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, MessageCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useGlobal } from '@/context/GlobalContext';
 
 /* ─── WhatsApp SVG icon ─────────────────────────────────────────────── */
 function WhatsAppIcon({ size = 24 }: { size?: number }) {
@@ -23,14 +24,14 @@ function isBusinessHours(): boolean {
 }
 
 /* ─── URL builder ────────────────────────────────────────────────────── */
-function buildWhatsAppUrl(pathname: string, productName?: string): string {
+function buildWhatsAppUrl(pathname: string, productName?: string, t: (key: string) => string = (k) => k): string {
     const phone = '905000000000'; // replace with real number
-    let message = 'Merhaba! Mobilya hakkında bilgi almak istiyorum.';
+    let message = t('wa_default_msg') || 'Merhaba! Mobilya hakkında bilgi almak istiyorum.';
 
     if (pathname.startsWith('/urun/') && productName) {
-        message = `Merhaba! "${productName}" ürünü hakkında bilgi almak istiyorum.\nÜrün linki: ${typeof window !== 'undefined' ? window.location.href : ''}`;
+        message = `${t('wa_product_msg_prefix') || 'Merhaba! "x" ürünü hakkında bilgi almak istiyorum.'.replace('"x"', `"${productName}"`)}\n${t('wa_product_link_prefix') || 'Ürün linki:'} ${typeof window !== 'undefined' ? window.location.href : ''}`;
     } else if (pathname.startsWith('/sepet')) {
-        message = 'Merhaba! Siparişim hakkında yardım almak istiyorum.';
+        message = t('wa_cart_msg') || 'Merhaba! Siparişim hakkında yardım almak istiyorum.';
     }
 
     return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
@@ -42,6 +43,7 @@ interface WhatsAppButtonProps {
 }
 
 export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
+    const { t } = useGlobal();
     const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -88,15 +90,15 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
             setShowOfflineWarning(true);
             return;
         }
-        const url = buildWhatsAppUrl(pathname, productName);
+        const url = buildWhatsAppUrl(pathname, productName, t);
         window.open(url, '_blank', 'noopener,noreferrer');
-    }, [pathname, productName]);
+    }, [pathname, productName, t]);
 
     const handleOpenAnyway = useCallback(() => {
         setShowOfflineWarning(false);
-        const url = buildWhatsAppUrl(pathname, productName);
+        const url = buildWhatsAppUrl(pathname, productName, t);
         window.open(url, '_blank', 'noopener,noreferrer');
-    }, [pathname, productName]);
+    }, [pathname, productName, t]);
 
     if (isHidden || keyboardOpen) return null;
 
@@ -132,7 +134,7 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
                                             className="relative px-3 py-2 rounded-xl text-[12px] font-medium text-[#1C1C1E] shadow-lg"
                                             style={{ background: 'white', boxShadow: '0 4px 16px rgba(0,0,0,0.12)' }}
                                         >
-                                            Merhaba! 👋 Yardım ister misiniz?
+                                            <span>{t('wa_tooltip') || 'Merhaba! 👋 Yardım ister misiniz?'}</span>
                                             {/* Arrow */}
                                             <div
                                                 className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rotate-45"
@@ -142,7 +144,7 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
                                         <button
                                             onClick={dismissTooltip}
                                             className="w-5 h-5 rounded-full bg-[#E8E3DC] flex items-center justify-center flex-shrink-0"
-                                            aria-label="Kapat"
+                                            aria-label={t('common_close') || 'Kapat'}
                                         >
                                             <X size={10} className="text-[#666]" />
                                         </button>
@@ -198,22 +200,24 @@ export default function WhatsAppButton({ productName }: WhatsAppButtonProps) {
                             onClick={e => e.stopPropagation()}
                         >
                             <div className="text-3xl mb-3">🌙</div>
-                            <h3 className="font-bold text-[17px] text-[#1C1C1E] mb-1">Şu an çevrimdışıyız</h3>
+                            <h3 className="font-bold text-[17px] text-[#1C1C1E] mb-1">
+                                {t('wa_offline_title') || 'Şu an çevrimdışıyız'}
+                            </h3>
                             <p className="text-[13px] text-[#666] mb-5">
-                                Mesajınızı bırakın, mesai saatlerinde (09:00–18:00) yanıtlayalım.
+                                {t('wa_offline_desc') || 'Mesajınızı bırakın, mesai saatlerinde (09:00–18:00) yanıtlayalım.'}
                             </p>
                             <button
                                 onClick={handleOpenAnyway}
                                 className="w-full py-3.5 rounded-xl text-[14px] font-bold text-white mb-3"
                                 style={{ background: '#25D366' }}
                             >
-                                Yine de Mesaj Gönder
+                                <span>{t('wa_offline_btn') || 'Yine de Mesaj Gönder'}</span>
                             </button>
                             <button
                                 onClick={() => setShowOfflineWarning(false)}
                                 className="text-[13px] text-[#999]"
                             >
-                                İptal
+                                <span>{t('common_cancel') || 'İptal'}</span>
                             </button>
                         </motion.div>
                     </motion.div>

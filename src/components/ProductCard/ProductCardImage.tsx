@@ -1,8 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
-import type { ProductColor } from './product.types';
+import ImageOptimized from '@/components/Performance/ImageOptimized';
 
 interface ProductCardImageProps {
     mainImage?: string;
@@ -19,66 +17,40 @@ export function ProductCardImage({
     isHovered,
     priority,
 }: ProductCardImageProps) {
-    const [mainLoaded, setMainLoaded] = useState(false);
-
     return (
         <div
             className="relative w-full overflow-hidden"
             style={{ aspectRatio: '3/4', background: '#F5F0EB', borderRadius: '2px 2px 0 0' }}
         >
-            {/* Shimmer skeleton */}
-            {!mainLoaded && (
-                <div className="absolute inset-0" aria-hidden="true">
-                    <div
-                        className="w-full h-full"
-                        style={{
-                            background: 'linear-gradient(90deg, #F5F0EB 25%, #EDE8E2 50%, #F5F0EB 75%)',
-                            backgroundSize: '400% 100%',
-                            animation: 'shimmer 1.5s infinite',
-                        }}
-                    />
-                </div>
-            )}
-
             {/* Main product image */}
             {mainImage && (
-                <Image
+                <ImageOptimized
                     src={mainImage}
                     alt={name}
-                    fill
+                    variant="product"
                     priority={priority}
-                    loading={priority ? 'eager' : 'lazy'}
                     className="object-cover"
-                    sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
                     style={{
                         opacity: isHovered ? 0 : 1,
-                        transform: isHovered ? 'scale(1.08)' : 'scale(1)',
-                        transition: 'opacity 500ms ease, transform 700ms cubic-bezier(0.25,0.46,0.45,0.94)',
+                        transition: 'opacity 500ms ease',
                     }}
-                    onLoad={() => setMainLoaded(true)}
-                    onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display = 'none';
-                    }}
+                    fill
                 />
             )}
 
             {/* Lifestyle crossfade image — loads on hover */}
             {hoverImage && (
-                <Image
+                <ImageOptimized
                     src={hoverImage}
                     alt={`${name} yaşam alanı`}
-                    fill
-                    loading="lazy"
+                    variant="product"
+                    priority={false}
                     className="object-cover"
-                    sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
                     style={{
                         opacity: isHovered ? 1 : 0,
-                        transform: isHovered ? 'scale(1.08)' : 'scale(1)',
-                        transition: 'opacity 500ms ease, transform 700ms cubic-bezier(0.25,0.46,0.45,0.94)',
+                        transition: 'opacity 500ms ease',
                     }}
-                    onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display = 'none';
-                    }}
+                    fill
                 />
             )}
         </div>

@@ -15,13 +15,11 @@ export function ProductBreadcrumb({ items }: Props) {
                         const isLast = i === items.length - 1;
                         return (
                             <li key={i} className="flex items-center gap-2">
-                                {i > 0 && <span style={{ color: '#CCC', fontSize: '12px' }}>›</span>}
+                                {i > 0 && <span className="text-border" style={{ fontSize: '12px' }}>›</span>}
                                 {isLast || !item.href ? (
-                                    <span className="font-medium" style={{ fontSize: '12px', color: '#1C1C1E' }}>{item.label}</span>
+                                    <span className="font-medium text-foreground text-[12px]">{item.label}</span>
                                 ) : (
-                                    <Link href={item.href} className="transition-colors duration-150" style={{ fontSize: '12px', color: '#999', textDecoration: 'none' }}
-                                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C9A96E'; }}
-                                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#999'; }}>
+                                    <Link href={item.href} className="text-muted-foreground hover:text-selis-gold transition-colors duration-150 text-[12px] no-underline">
                                         {item.label}
                                     </Link>
                                 )}

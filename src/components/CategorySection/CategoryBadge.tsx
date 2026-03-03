@@ -23,6 +23,7 @@ export function CategoryBadge({
                     color: '#1C1C1E',
                 }}
                 data-lang-key={textKey}
+                suppressHydrationWarning
             >
                 {text}
             </span>
@@ -44,6 +45,7 @@ export function CategoryBadge({
                 WebkitBackdropFilter: 'blur(8px)',
             }}
             data-lang-key={textKey}
+            suppressHydrationWarning
         >
             {text}
         </span>

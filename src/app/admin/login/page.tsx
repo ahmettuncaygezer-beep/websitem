@@ -21,7 +21,7 @@ export default function LoginPage() {
                     className="space-y-8"
                 >
                     <div className="mb-12">
-                        <h2 className="text-[32px] font-bold text-[#F5F0EB] font-['Playfair_Display',serif] tracking-widest">MAISON</h2>
+                        <h2 className="text-[32px] font-bold text-[#F5F0EB] font-['Playfair_Display',serif] tracking-widest">SELIS</h2>
                         <div className="w-20 h-[1px] bg-[#C9A96E] mx-auto mt-4" />
                     </div>
 
@@ -30,7 +30,7 @@ export default function LoginPage() {
                     </h1>
 
                     <p className="text-[14px] text-[#AEAEB2] max-w-sm mx-auto leading-relaxed">
-                        Yönetim paneliniz üzerinden tüm operasyonlarınızı kolayca yönetin ve MAISON deneyimini kontrol edin.
+                        Yönetim paneliniz üzerinden tüm operasyonlarınızı kolayca yönetin ve SELIS deneyimini kontrol edin.
                     </p>
 
                     <div className="pt-12 space-y-4 text-left inline-block">
@@ -58,7 +58,7 @@ export default function LoginPage() {
                 <div className="absolute top-0 right-0 bottom-0 w-24 bg-gradient-to-l from-white/05 to-transparent pointer-events-none" />
 
                 <div className="absolute bottom-12 text-[11px] text-[#636366] uppercase tracking-[0.2em]">
-                    MAISON ADMIN PANEL v2.0
+                    SELIS ADMIN PANEL v2.0
                 </div>
             </div>
 

@@ -82,7 +82,7 @@ export function IyzicoConfig({ config, onChange }: IyzicoConfigProps) {
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <a href="#" style={{ fontSize: '12px', color: '#C9A96E', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <a href="https://merchant.iyzipay.com/login" target="_blank" rel="noopener noreferrer" style={{ fontSize: '12px', color: '#C9A96E', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         iyzico panelinden API bilgilerini al <ExternalLink size={12} />
                     </a>
                     <button style={testBtnStyle}>Bağlantıyı Test Et</button>
@@ -93,12 +93,28 @@ export function IyzicoConfig({ config, onChange }: IyzicoConfigProps) {
 }
 
 const activeTabStyle = {
-    background: 'none', border: 'none', color: '#C9A96E', fontSize: '13px',
-    fontWeight: 600, padding: '8px 0', borderBottom: '2px solid #C9A96E', cursor: 'pointer'
+    background: 'none',
+    borderTop: 'none',
+    borderLeft: 'none',
+    borderRight: 'none',
+    borderBottom: '2px solid #C9A96E',
+    color: '#C9A96E',
+    fontSize: '13px',
+    fontWeight: 600,
+    padding: '8px 0',
+    cursor: 'pointer'
 };
 const inactiveTabStyle = {
-    background: 'none', border: 'none', color: '#636366', fontSize: '13px',
-    fontWeight: 500, padding: '8px 0', cursor: 'pointer'
+    background: 'none',
+    borderTop: 'none',
+    borderLeft: 'none',
+    borderRight: 'none',
+    borderBottom: '2px solid transparent',
+    color: '#636366',
+    fontSize: '13px',
+    fontWeight: 500,
+    padding: '8px 0',
+    cursor: 'pointer'
 };
 const inputGroupStyle = { display: 'flex', flexDirection: 'column' as const, gap: '8px' };
 const labelStyle = { fontSize: '11px', fontWeight: 600, color: '#636366', letterSpacing: '0.05em' };

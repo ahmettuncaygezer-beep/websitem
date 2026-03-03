@@ -19,7 +19,7 @@ export function DeliveryOptions({ selectedMethod, onSelect }: Props) {
             desc: '3-7 iş günü içinde teslimat',
             price: isFreeEligible ? 0 : 149,
             icon: isFreeEligible ? Gift : Truck,
-            color: isFreeEligible ? '#4CAF50' : '#1C1C1E'
+            color: 'var(--foreground)'
         },
         {
             id: 'express',
@@ -27,7 +27,7 @@ export function DeliveryOptions({ selectedMethod, onSelect }: Props) {
             desc: '1-2 iş günü içinde teslimat',
             price: 299,
             icon: Zap,
-            color: '#C9A96E'
+            color: 'var(--selis-gold)'
         }
     ];
 
@@ -36,7 +36,7 @@ export function DeliveryOptions({ selectedMethod, onSelect }: Props) {
             {methods.map((m) => (
                 <label
                     key={m.id}
-                    className={`relative p-5 border-2 rounded-xl cursor-pointer transition-all flex items-start gap-4 ${selectedMethod === m.id ? 'border-[#C9A96E] bg-[#FDF8F0]' : 'border-[#E8E3DC] hover:border-[#1C1C1E]'}`}
+                    className={`relative p-5 border-2 rounded-xl cursor-pointer transition-all flex items-start gap-4 ${selectedMethod === m.id ? 'border-selis-gold bg-selis-gold/10' : 'border-border bg-card hover:border-foreground'}`}
                 >
                     <input
                         type="radio"
@@ -46,20 +46,20 @@ export function DeliveryOptions({ selectedMethod, onSelect }: Props) {
                         onChange={() => onSelect(m.id as any)}
                     />
 
-                    <div className="p-3 bg-white rounded-lg shadow-sm" style={{ color: m.color }}>
+                    <div className="p-3 bg-background rounded-lg shadow-sm" style={{ color: m.color }}>
                         <m.icon size={24} />
                     </div>
 
                     <div className="flex-1">
-                        <h4 className="text-[14px] font-bold text-[#1C1C1E]">{m.title}</h4>
-                        <p className="text-[12px] text-[#999] mt-0.5">{m.desc}</p>
-                        <p className="text-[14px] font-bold mt-2" style={{ color: m.price === 0 ? '#4CAF50' : '#1C1C1E' }}>
+                        <h4 className="text-[14px] font-bold text-foreground">{m.title}</h4>
+                        <p className="text-[12px] text-muted-foreground mt-0.5">{m.desc}</p>
+                        <p className="text-[14px] font-bold mt-2" style={{ color: m.price === 0 ? 'var(--selis-gold)' : 'var(--foreground)' }}>
                             {m.price === 0 ? 'Ücretsiz' : `₺${m.price.toLocaleString('tr-TR')}`}
                         </p>
                     </div>
 
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${selectedMethod === m.id ? 'border-[#C9A96E]' : 'border-[#E8E3DC]'}`}>
-                        {selectedMethod === m.id && <div className="w-2.5 h-2.5 bg-[#C9A96E] rounded-full" />}
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${selectedMethod === m.id ? 'border-selis-gold' : 'border-border'}`}>
+                        {selectedMethod === m.id && <div className="w-2.5 h-2.5 bg-selis-gold rounded-full" />}
                     </div>
                 </label>
             ))}

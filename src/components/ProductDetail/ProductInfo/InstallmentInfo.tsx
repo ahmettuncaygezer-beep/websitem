@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface Props { price: number; }
 
@@ -14,6 +15,7 @@ const RATES: Record<string, Record<number, number>> = {
 };
 
 export function InstallmentInfo({ price }: Props) {
+    const { t } = useGlobal();
     const [isOpen, setIsOpen] = useState(false);
     const [bank, setBank] = useState<typeof BANKS[number]>('Ziraat');
 
@@ -21,7 +23,7 @@ export function InstallmentInfo({ price }: Props) {
         <div className="mt-4">
             <button onClick={() => setIsOpen(!isOpen)} className="text-[12px] font-medium transition-colors duration-150"
                 style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
-                Taksit seçeneklerini gör {isOpen ? '▴' : '▾'}
+                <span>{t('pdp_view_installments') || 'Taksit seçeneklerini gör'}</span> {isOpen ? '▴' : '▾'}
             </button>
 
             <AnimatePresence>
@@ -32,20 +34,22 @@ export function InstallmentInfo({ price }: Props) {
                         <div className="flex gap-1 mb-3">
                             {BANKS.map((b) => (
                                 <button key={b} onClick={() => setBank(b)}
-                                    className="px-3 py-1.5 text-[11px] font-medium transition-colors duration-150 rounded-sm"
-                                    style={{ background: bank === b ? '#1C1C1E' : '#F5F0EB', color: bank === b ? 'white' : '#666', border: 'none', cursor: 'pointer' }}>
+                                    className={`px-3 py-1.5 text-[11px] font-medium transition-colors duration-150 rounded-sm border-none cursor-pointer ${bank === b
+                                        ? 'bg-foreground text-background'
+                                        : 'bg-muted text-muted-foreground'
+                                        }`}>
                                     {b}
                                 </button>
                             ))}
                         </div>
 
                         {/* Table */}
-                        <table className="w-full text-[12px]" style={{ borderCollapse: 'collapse' }}>
+                        <table className="w-full text-[12px] border-collapse">
                             <thead>
-                                <tr style={{ borderBottom: '1px solid #E8E3DC' }}>
-                                    <th className="text-left py-2 px-3 font-medium" style={{ color: '#999' }}>Taksit</th>
-                                    <th className="text-right py-2 px-3 font-medium" style={{ color: '#999' }}>Aylık</th>
-                                    <th className="text-right py-2 px-3 font-medium" style={{ color: '#999' }}>Toplam</th>
+                                <tr className="border-b border-border">
+                                    <th className="text-left py-2 px-3 font-medium text-muted-foreground">{t('pdp_installment') || 'Taksit'}</th>
+                                    <th className="text-right py-2 px-3 font-medium text-muted-foreground">{t('pdp_monthly') || 'Aylık'}</th>
+                                    <th className="text-right py-2 px-3 font-medium text-muted-foreground">{t('pdp_total') || 'Toplam'}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,10 +59,12 @@ export function InstallmentInfo({ price }: Props) {
                                     const monthly = Math.round(total / n);
                                     const isBest = n === 1;
                                     return (
-                                        <tr key={n} style={{ background: isBest ? '#FDF8F0' : i % 2 === 0 ? '#FAFAF8' : 'white' }}>
-                                            <td className="py-2.5 px-3" style={{ color: '#1C1C1E' }}>{n === 1 ? 'Tek çekim' : `${n} Taksit`}</td>
-                                            <td className="py-2.5 px-3 text-right font-medium" style={{ color: '#1C1C1E' }}>₺{monthly.toLocaleString('tr-TR')}</td>
-                                            <td className="py-2.5 px-3 text-right" style={{ color: '#666' }}>₺{total.toLocaleString('tr-TR')}</td>
+                                        <tr key={n} className={`${isBest ? 'bg-primary/5' : i % 2 === 0 ? 'bg-muted/10' : 'bg-transparent'}`}>
+                                            <td className="py-2.5 px-3 text-foreground">
+                                                {n === 1 ? <span>{t('pdp_single_payment') || 'Tek çekim'}</span> : <span>{n} <span>{t('pdp_n_installment') || 'Taksit'}</span></span>}
+                                            </td>
+                                            <td className="py-2.5 px-3 text-right font-medium text-foreground">₺{monthly.toLocaleString('tr-TR')}</td>
+                                            <td className="py-2.5 px-3 text-right text-muted-foreground">₺{total.toLocaleString('tr-TR')}</td>
                                         </tr>
                                     );
                                 })}

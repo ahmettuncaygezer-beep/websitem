@@ -1,5 +1,5 @@
 /**
- * MAISON Breakpoints
+ * SELIS Breakpoints
  * ─────────────────────────────────────────────
  * Pixel values matching the @theme screen values in globals.css.
  * Use for window.matchMedia() calls in TypeScript.

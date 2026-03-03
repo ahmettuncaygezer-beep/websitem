@@ -69,7 +69,7 @@ export const MobileMenuCategory = memo(function MobileMenuCategory({ category, o
                                 className="flex items-center gap-2 py-2.5 pl-4 text-[13px] font-medium mt-1"
                                 style={{ color: '#C9A96E' }}
                             >
-                                <span data-lang-key="mobile_nav_view_all">Tümünü Gör →</span>
+                                <span data-lang-key="common_view_all_arrow">Tümünü Gör →</span>
                             </Link>
                         </div>
                     </motion.div>

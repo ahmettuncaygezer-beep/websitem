@@ -6,7 +6,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'oturma-odasi',
         label: 'Oturma Odası',
-        dataKey: 'nav.living_room',
+        dataKey: 'nav_living_room',
         href: '/kategori/oturma-odasi',
         subCategories: [
             {
@@ -35,11 +35,11 @@ export const NAV_CATEGORIES: NavCategory[] = [
         featuredProduct: {
             name: 'Luna Köşe Koltuk',
             nameKey: 'nav_luna_sofa',
-            brand: 'MAISON Atelier',
+            brand: 'SELIS Atelier',
             brandKey: 'nav_brand_atelier',
             price: 74990,
             originalPrice: 89990,
-            image: '/images/products/luna-kose-koltuk.jpg',
+            image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=800',
             href: '/urun/luna-kose-koltuk',
             badge: 'YENİ',
             badgeKey: 'nav_badge_new',
@@ -57,7 +57,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'yatak-odasi',
         label: 'Yatak Odası',
-        dataKey: 'nav.bedroom',
+        dataKey: 'nav_bedroom',
         href: '/kategori/yatak-odasi',
         subCategories: [
             {
@@ -82,10 +82,10 @@ export const NAV_CATEGORIES: NavCategory[] = [
         featuredProduct: {
             name: 'Aria Platform Yatak',
             nameKey: 'nav_aria_bed',
-            brand: 'MAISON Sleep',
+            brand: 'SELIS Sleep',
             brandKey: 'nav_brand_sleep',
             price: 54990,
-            image: '/images/products/aria-platform-yatak.jpg',
+            image: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&q=80&w=800',
             href: '/urun/aria-platform-yatak',
         },
         editorialText: 'Dinlendirici Uyku İçin Tasarlandı',
@@ -96,7 +96,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'yemek-odasi',
         label: 'Yemek Odası',
-        dataKey: 'nav.dining',
+        dataKey: 'nav_dining',
         href: '/kategori/yemek-odasi',
         subCategories: [
             {
@@ -120,10 +120,10 @@ export const NAV_CATEGORIES: NavCategory[] = [
         featuredProduct: {
             name: 'Oslo Yemek Masası',
             nameKey: 'nav_oslo_table',
-            brand: 'MAISON Studio',
+            brand: 'SELIS Studio',
             brandKey: 'nav_brand_studio',
             price: 38990,
-            image: '/images/products/oslo-yemek-masasi.jpg',
+            image: 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&q=80&w=800',
             href: '/urun/oslo-yemek-masasi',
         },
         promotionText: '🔥 Sandalye Setlerinde %15 İndirim',
@@ -132,7 +132,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'calisma-odasi',
         label: 'Çalışma Odası',
-        dataKey: 'nav.office',
+        dataKey: 'nav_office',
         href: '/kategori/calisma-odasi',
         subCategories: [
             {
@@ -148,10 +148,10 @@ export const NAV_CATEGORIES: NavCategory[] = [
         featuredProduct: {
             name: 'Studio Çalışma Masası',
             nameKey: 'nav_studio_desk',
-            brand: 'MAISON Work',
+            brand: 'SELIS Work',
             brandKey: 'nav_brand_work',
             price: 29990,
-            image: '/images/products/studio-calisma-masasi.jpg',
+            image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&q=80&w=800',
             href: '/urun/studio-calisma-masasi',
         },
         promotionText: '🔥 Ev Ofis Setlerinde Ücretsiz Kargo',
@@ -160,7 +160,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'aydinlatma',
         label: 'Aydınlatma',
-        dataKey: 'nav.lighting',
+        dataKey: 'nav_lighting',
         href: '/kategori/aydinlatma',
         subCategories: [
             {
@@ -177,10 +177,10 @@ export const NAV_CATEGORIES: NavCategory[] = [
         featuredProduct: {
             name: 'Celeste Avize',
             nameKey: 'nav_celeste_chan',
-            brand: 'MAISON Light',
+            brand: 'SELIS Light',
             brandKey: 'nav_brand_light',
             price: 18990,
-            image: '/images/products/celeste-avize.jpg',
+            image: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?auto=format&fit=crop&q=80&w=800',
             href: '/urun/celeste-avize',
             badge: 'TREND',
             badgeKey: 'cat_badge_trend',
@@ -191,7 +191,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     {
         id: 'dekorasyon',
         label: 'Dekorasyon',
-        dataKey: 'nav.decoration',
+        dataKey: 'nav_decoration',
         href: '/kategori/dekorasyon',
         subCategories: [
             {
@@ -208,10 +208,10 @@ export const NAV_CATEGORIES: NavCategory[] = [
         featuredProduct: {
             name: 'Marble Vase Set',
             nameKey: 'nav_marble_vase',
-            brand: 'MAISON Decor',
+            brand: 'SELIS Decor',
             brandKey: 'nav_brand_decor',
             price: 4990,
-            image: '/images/products/marble-vase-set.jpg',
+            image: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&q=80&w=800',
             href: '/urun/marble-vase-set',
         },
         promotionText: '🔥 Dekorasyonda 3 Al 2 Öde',
@@ -258,7 +258,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
             brand: 'Dekorasyon Rehberi',
             brandKey: 'nav_brand_decor_guide',
             price: 0,
-            image: '/images/gallery-1.jpg',
+            image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800',
             href: '/blog/kucuk-salona-mobilya-secimi-rehberi',
             badge: 'YENİ',
             badgeKey: 'nav_badge_new',

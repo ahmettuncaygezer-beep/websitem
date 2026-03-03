@@ -34,7 +34,7 @@ export default function KargoPage() {
                 <div className="bg-white rounded-2xl p-8 md:p-12 border border-[#E8E3DC]">
                     <h2 className="font-serif text-2xl mb-6">Detaylı Teslimat Süreci</h2>
                     <div className="space-y-6 text-[#666] leading-relaxed">
-                        <p>MAISON olarak siparişlerinizi kendi özel lojistik ağımız ve uzman ekiplerimizle teslim ediyoruz. Mobilyalarınızın hassasiyetini biliyor, taşınma ve kurulum aşamasında en yüksek özeni gösteriyoruz.</p>
+                        <p>SELIS olarak siparişlerinizi kendi özel lojistik ağımız ve uzman ekiplerimizle teslim ediyoruz. Mobilyalarınızın hassasiyetini biliyor, taşınma ve kurulum aşamasında en yüksek özeni gösteriyoruz.</p>
                         <ul className="list-disc pl-5 space-y-3">
                             <li>Siparişiniz kargoya verilmeden önce kalite kontrol ekibimiz tarafından detaylıca incelenir.</li>
                             <li>Teslimat gününden bir gün önce ekiplerimiz sizi arayarak uygunluk durumunuzu teyit eder.</li>

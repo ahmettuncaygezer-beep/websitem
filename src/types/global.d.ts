@@ -2,14 +2,14 @@ export { };
 
 declare global {
     interface Window {
-        MaisonChat?: {
+        SelisChat?: {
             open: () => void;
         };
-        MaisonSearch?: {
+        SelisSearch?: {
             open: () => void;
             close: () => void;
         };
-        MaisonPWA?: {
+        SelisPWA?: {
             trigger: () => void;
             install: () => Promise<void>;
         };

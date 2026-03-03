@@ -50,9 +50,9 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
     const [heartHovered, setHeartHovered] = useState(false);
 
     const ui = useMemo(() => ({
-        iconColor: isScrolled ? 'var(--foreground)' : 'white',
-        iconBtnHover: isScrolled ? 'var(--border)' : 'rgba(255,255,255,0.1)'
-    }), [isScrolled]);
+        iconColor: 'var(--foreground)',
+        iconBtnHover: 'rgba(128,128,128,0.1)'
+    }), []);
 
     const { isDark, toggle, mounted } = useDarkMode();
 
@@ -109,66 +109,69 @@ export const NavIcons = memo(function NavIcons({ isScrolled }: NavIconsProps) {
                 onMouseEnter={() => setIsUserMenuOpen(true)}
                 onMouseLeave={() => setIsUserMenuOpen(false)}
             >
-                <NavIconBtn
-                    label="Hesabım"
+                <div
+                    className="relative flex items-center justify-center w-10 h-10 rounded-full cursor-pointer transition-colors duration-200"
+                    style={{ color: ui.iconColor }}
                     onClick={handleLoginClick}
-                    color={ui.iconColor}
-                    hoverBg={ui.iconBtnHover}
+                    onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = ui.iconBtnHover; }}
+                    onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
                 >
                     <User size={20} />
-                </NavIconBtn>
+                </div>
 
                 <AnimatePresence>
                     {isUserMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 6, scale: 0.96 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 6, scale: 0.96 }}
-                            transition={{ duration: 0.2, ease: 'easeOut' }}
-                            className="absolute right-0 top-full mt-2 w-48 bg-background/80 backdrop-blur-xl rounded-xl overflow-hidden glass-premium"
-                            style={{
-                                border: '1px solid var(--glass-border)',
-                                boxShadow: 'var(--shadow-maison-mega-menu)',
-                                transformOrigin: 'top right',
-                            }}
-                        >
-                            <div className="p-2 border-b" style={{ borderColor: 'var(--border)' }}>
-                                <button
-                                    onClick={() => { openAuth('register'); setIsUserMenuOpen(false); }}
-                                    className="w-full py-2 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-accent transition-colors"
-                                    style={{ color: 'var(--foreground)' }}
-                                    data-lang-key="auth_register_btn"
-                                >
-                                    Üye Ol
-                                </button>
-                                <button
-                                    onClick={() => { openAuth('login'); setIsUserMenuOpen(false); }}
-                                    className="w-full py-2 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-accent transition-colors"
-                                    style={{ color: 'var(--foreground)' }}
-                                    data-lang-key="auth_tab_login"
-                                >
-                                    Giriş Yap
-                                </button>
-                            </div>
-                            <div className="p-1">
-                                {[
-                                    { label: 'Siparişlerim', href: '/siparis-takip' },
-                                    { label: 'Favorilerim', href: '/favoriler' },
-                                    { label: 'Hesabım', href: '/hesabim' },
-                                ].map(({ label, href }) => (
-                                    <Link
-                                        key={href}
-                                        href={href}
-                                        onClick={() => setIsUserMenuOpen(false)}
-                                        className="block px-4 py-2.5 text-[13px] rounded hover:bg-accent transition-colors"
+                        <div className="absolute top-[100%] right-[-10px] pt-4 z-50">
+                            <motion.div
+                                initial={{ opacity: 0, y: 6, scale: 0.96 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                                transition={{ duration: 0.2, ease: 'easeOut' }}
+                                className="w-[200px] bg-background/80 backdrop-blur-xl rounded-xl overflow-hidden glass-premium"
+                                style={{
+                                    border: '1px solid var(--glass-border)',
+                                    boxShadow: 'var(--shadow-selis-mega-menu)',
+                                    transformOrigin: 'top right',
+                                }}
+                            >
+                                <div className="p-3 border-b" style={{ borderColor: 'var(--border)' }}>
+                                    <button
+                                        onClick={() => { openAuth('register'); setIsUserMenuOpen(false); }}
+                                        className="w-full py-2.5 mb-1 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-accent transition-colors"
                                         style={{ color: 'var(--foreground)' }}
-                                        data-lang-key={label === 'Siparişlerim' ? 'nav_orders' : label === 'Favorilerim' ? 'nav_favorites' : 'nav_account'}
+                                        data-lang-key="auth_register_btn"
                                     >
-                                        {label}
-                                    </Link>
-                                ))}
-                            </div>
-                        </motion.div>
+                                        Üye Ol
+                                    </button>
+                                    <button
+                                        onClick={() => { openAuth('login'); setIsUserMenuOpen(false); }}
+                                        className="w-full py-2.5 text-[11px] font-bold uppercase tracking-wider rounded hover:bg-accent transition-colors"
+                                        style={{ color: 'var(--foreground)' }}
+                                        data-lang-key="auth_tab_login"
+                                    >
+                                        Giriş Yap
+                                    </button>
+                                </div>
+                                <div className="p-2">
+                                    {[
+                                        { label: 'Siparişlerim', href: '/siparis-takip', langKey: 'nav_orders' },
+                                        { label: 'Favorilerim', href: '/favoriler', langKey: 'nav_favorites' },
+                                        { label: 'Hesabım', href: '/hesabim', langKey: 'nav_account' },
+                                    ].map(({ label, href, langKey }) => (
+                                        <Link
+                                            key={href}
+                                            href={href}
+                                            onClick={() => setIsUserMenuOpen(false)}
+                                            className="block px-4 py-3 text-[13px] rounded hover:bg-accent transition-colors"
+                                            style={{ color: 'var(--foreground)' }}
+                                            data-lang-key={langKey}
+                                        >
+                                            {label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </div>
                     )}
                 </AnimatePresence>
             </div>

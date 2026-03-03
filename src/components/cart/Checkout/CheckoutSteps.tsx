@@ -22,18 +22,18 @@ export function CheckoutSteps({ currentStep }: { currentStep: CheckoutStep }) {
                     <div key={step.id} className="flex items-center gap-3">
                         <div className={`
               w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold transition-all duration-500
-              ${isCompleted ? 'bg-[#C9A96E] text-white' : isActive ? 'bg-[#1C1C1E] text-white scale-110 shadow-lg' : 'bg-white border border-[#E8E3DC] text-[#999]'}
+              ${isCompleted ? 'bg-selis-gold text-white' : isActive ? 'bg-foreground text-background scale-110 shadow-lg' : 'bg-background border border-border text-muted-foreground'}
             `}>
                             {isCompleted ? <Check size={16} /> : index + 1}
                         </div>
                         <span className={`
               text-[12px] font-bold uppercase tracking-widest hidden sm:inline
-              ${isActive ? 'text-[#1C1C1E]' : 'text-[#999]'}
+              ${isActive ? 'text-foreground' : 'text-muted-foreground'}
             `}>
                             {step.label}
                         </span>
                         {index < STEPS.length - 1 && (
-                            <div className="w-8 sm:w-16 h-px bg-[#E8E3DC] ml-2 hidden sm:block" />
+                            <div className="w-8 sm:w-16 h-px bg-border ml-2 hidden sm:block" />
                         )}
                     </div>
                 );

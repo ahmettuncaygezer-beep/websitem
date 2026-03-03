@@ -25,6 +25,25 @@ export interface GeneralSettings {
     };
     logo?: string;
     favicon?: string;
+    // Expanded Fields
+    address?: {
+        full: string;
+        city: string;
+        district: string;
+    };
+    social?: {
+        instagram?: string;
+        facebook?: string;
+        youtube?: string;
+        twitter?: string;
+        whatsapp?: string;
+    };
+    seo?: {
+        ogTitle?: string;
+        ogDescription?: string;
+        ogImage?: string;
+        keywords?: string[];
+    };
 }
 
 export interface BankAccount {

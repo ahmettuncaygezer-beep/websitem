@@ -23,7 +23,7 @@ const faqs = [
     },
     {
         q: 'Garanti süresi ne kadar?',
-        a: 'Tüm mobilya ürünlerimiz üretim ve malzeme hatalarına karşı 5 yıl MAISON garantisi altındadır.'
+        a: 'Tüm mobilya ürünlerimiz üretim ve malzeme hatalarına karşı 5 yıl SELIS garantisi altındadır.'
     }
 ];
 
@@ -39,8 +39,8 @@ export default function SSSPage() {
                     className="text-center mb-16"
                 >
                     <HelpCircle className="w-12 h-12 text-[#C9A96E] mx-auto mb-4" />
-                    <h1 className="text-display mb-4">Sıkça Sorulan Sorular</h1>
-                    <p className="text-body-lg">Aradığınız cevabı burada bulabilirsiniz.</p>
+                    <h1 className="text-display mb-4" data-lang-key="faq_title">Sıkça Sorulan Sorular</h1>
+                    <p className="text-body-lg" data-lang-key="faq_subtitle">Aradığınız cevabı burada bulabilirsiniz.</p>
                 </motion.div>
 
                 <div className="space-y-4">
@@ -50,7 +50,7 @@ export default function SSSPage() {
                                 onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                                 className="w-full px-6 py-5 flex items-center justify-between text-left"
                             >
-                                <span className="font-semibold text-[#1C1C1E]">{faq.q}</span>
+                                <span className="font-semibold text-[#1C1C1E]" data-lang-key={`faq_q${idx + 1}`}>{faq.q}</span>
                                 <ChevronDown
                                     className={`w-5 h-5 text-[#C9A96E] transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`}
                                 />
@@ -60,7 +60,7 @@ export default function SSSPage() {
                                 animate={{ height: openIndex === idx ? 'auto' : 0, opacity: openIndex === idx ? 1 : 0 }}
                                 className="overflow-hidden"
                             >
-                                <div className="px-6 pb-6 text-sm text-[#666] leading-relaxed border-t border-[#F5F0EB] pt-4">
+                                <div className="px-6 pb-6 text-sm text-[#666] leading-relaxed border-t border-[#F5F0EB] pt-4" data-lang-key={`faq_a${idx + 1}`}>
                                     {faq.a}
                                 </div>
                             </motion.div>

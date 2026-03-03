@@ -19,10 +19,10 @@ export default function RoomPlanner() {
 
     // Show setup wizard on first visit
     useEffect(() => {
-        const hasVisited = localStorage.getItem('maison_planner_visited');
+        const hasVisited = localStorage.getItem('selis_planner_visited');
         if (!hasVisited) {
             setShowSetup(true);
-            localStorage.setItem('maison_planner_visited', '1');
+            localStorage.setItem('selis_planner_visited', '1');
         }
     }, []);
 
@@ -43,7 +43,7 @@ export default function RoomPlanner() {
         const interval = setInterval(() => {
             const state = usePlannerStore.getState();
             if (state.furniture.length > 0) {
-                localStorage.setItem('maison_planner_autosave', JSON.stringify({
+                localStorage.setItem('selis_planner_autosave', JSON.stringify({
                     room: state.room, furniture: state.furniture, planName: state.planName,
                 }));
             }

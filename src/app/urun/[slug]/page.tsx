@@ -6,14 +6,14 @@ import BundleOffer, { type BundleProduct } from '@/components/Marketing/BundleOf
 import StockNotifyForm from '@/components/Marketing/StockNotifyForm';
 import LowStockBadge from '@/components/Marketing/LowStockBadge';
 import FlashSaleTimer from '@/components/Marketing/FlashSaleTimer';
-import { mockProducts } from '@/data/mock-products';
+import { getProductBySlug, getProducts } from '@/lib/api';
 
 // Adapter to transform storefront product to the PDP's strict component interface
 function mapToPDPProduct(p: any): Product {
     return {
         id: p.id,
         name: p.name,
-        brand: p.brand || 'MAISON',
+        brand: p.brand || 'SELIS',
         slug: p.slug,
         price: p.salePrice || p.price,
         originalPrice: p.originalPrice || (p.salePrice ? p.price : undefined),
@@ -59,18 +59,17 @@ const BUNDLE_PRODUCTS: BundleProduct[] = [
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
 
-    // Find product in mock data
-    const rawProduct = mockProducts.find(p => p.slug === slug);
+    const rawProduct = await getProductBySlug(slug);
     if (!rawProduct) {
-        return { title: 'Ürün Bulunamadı | MAISON' };
+        return { title: 'Ürün Bulunamadı | SELIS' };
     }
     const product = mapToPDPProduct(rawProduct);
 
     return {
-        title: `${product.name} | MAISON Premium Mobilya`,
+        title: `${product.name} | SELIS Premium Mobilya`,
         description: `El yapımı ${product.name} — ${product.brand} koleksiyonu. ${product.description?.slice(0, 120)}...`,
         openGraph: {
-            title: `${product.name} | MAISON`,
+            title: `${product.name} | SELIS`,
             description: product.description?.slice(0, 160),
             images: [product.colors[0]?.image || '/images/products/luna-sofa.jpg'],
         },
@@ -80,13 +79,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
 
-    // Fetch product by slug from mock data
-    const rawProduct = mockProducts.find(p => p.slug === slug);
+    const rawProduct = await getProductBySlug(slug);
 
     if (!rawProduct) {
         notFound();
     }
     const product = mapToPDPProduct(rawProduct);
+
+    // Fetch related products from DB
+    const rawRelated = await getProducts({ categorySlug: product.categorySlug });
+    const relatedProducts = rawRelated.filter(p => p.id !== product.id).map(mapToPDPProduct);
 
     const mainBundleProduct: BundleProduct = {
         id: product.id,
@@ -107,10 +109,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                         '@context': 'https://schema.org',
                         '@type': 'Product',
                         name: product.name,
-                        brand: { '@type': 'Brand', name: 'MAISON' },
+                        brand: { '@type': 'Brand', name: 'SELIS' },
                         image: product.colors.map((c) => c.image),
                         description: product.description,
-                        sku: `MSN-${product.slug.toUpperCase().slice(0, 8)}`,
+                        sku: `SLS-${product.slug.toUpperCase().slice(0, 8)}`,
                         offers: {
                             '@type': 'Offer',
                             price: product.price.toString(),
@@ -125,7 +127,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     }),
                 }}
             />
-            <ProductDetail product={product} />
+            <ProductDetail product={product} relatedProducts={relatedProducts} />
 
             {/* Pazarlama özellikleri */}
             <div className="max-w-5xl mx-auto px-4 pb-16 flex flex-col gap-8">

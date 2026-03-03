@@ -204,13 +204,13 @@ export type LiveEvent = {
 
 export const initialLiveEvents: LiveEvent[] = [
     { id: '1', type: 'order', message: 'Yeni Sipariş: Luna Köşe Koltuk (#3821)', time: 'Şimdi' },
-    { id: '2', type: 'user', message: 'Yeni Üye Kaydı: Ahmet Yılmaz', time: '2dk önce' },
+    { id: '2', type: 'user', message: 'Yeni Üye Kaydı: Müşteri #124', time: '2dk önce' },
     { id: '3', type: 'payment', message: 'Ödeme Alındı: ₺42.500 (Akbank)', time: '5dk önce' },
 ];
 
 export const liveEventPool: Omit<LiveEvent, 'id' | 'time'>[] = [
     { type: 'order', message: 'Yeni Sipariş: Atlas Yatak Odası (#3822)' },
-    { type: 'user', message: 'Yeni Üye Kaydı: Elif Demir' },
+    { type: 'user', message: 'Yeni Üye Kaydı: Yeni Müşteri' },
     { type: 'payment', message: 'Ödeme Alındı: ₺12.400 (Bonus)' },
     { type: 'order', message: 'Yeni Sipariş: Velvet Berjer (#3823)' },
 ];

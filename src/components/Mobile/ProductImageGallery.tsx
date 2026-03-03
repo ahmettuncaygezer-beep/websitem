@@ -13,58 +13,7 @@ interface ProductImageGalleryProps {
 }
 
 /* ─── Desktop lens zoom ─────────────────────────────────────────────── */
-function DesktopZoom({ src, label }: { src: string; label: string }) {
-    const [lensPos, setLensPos] = useState({ x: 0, y: 0 });
-    const [isHovered, setIsHovered] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        const rect = containerRef.current!.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        setLensPos({ x, y });
-    };
-
-    return (
-        <div className="flex gap-4">
-            {/* Main image */}
-            <div
-                ref={containerRef}
-                className="relative flex-1 aspect-square bg-[#F5F0EB] overflow-hidden cursor-crosshair rounded-sm"
-                onMouseMove={handleMouseMove}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            >
-                <Image src={src} alt={label} fill className="object-cover" sizes="(max-width:1280px) 50vw, 600px" priority />
-            </div>
-
-            {/* Zoom preview */}
-            <AnimatePresence>
-                {isHovered && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.15 }}
-                        className="hidden lg:block w-72 h-72 rounded-sm overflow-hidden border border-[#E8E3DC] flex-shrink-0"
-                        style={{ position: 'relative', background: '#F5F0EB' }}
-                    >
-                        <div
-                            style={{
-                                position: 'absolute',
-                                inset: 0,
-                                backgroundImage: `url(${src})`,
-                                backgroundSize: '250%',
-                                backgroundPosition: `${lensPos.x}% ${lensPos.y}%`,
-                                backgroundRepeat: 'no-repeat',
-                            }}
-                        />
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
-    );
-}
 
 /* ─── Full-screen overlay ───────────────────────────────────────────── */
 function FullscreenModal({
@@ -220,10 +169,22 @@ export default function ProductImageGallery({ images, productName }: ProductImag
                     ))}
                 </div>
 
-                {/* Main image with lens zoom */}
+                {/* Main image - Click to expand */}
                 <div className="flex-1">
                     <div className="relative">
-                        <DesktopZoom src={images[activeIndex] ?? images[0]} label={productName} />
+                        <div
+                            onClick={() => setIsFullscreen(true)}
+                            className="relative aspect-square bg-[#F5F0EB] overflow-hidden cursor-zoom-in rounded-sm transition-transform duration-300 active:scale-[0.98]"
+                        >
+                            <Image
+                                src={images[activeIndex] ?? images[0]}
+                                alt={productName}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width:1280px) 50vw, 600px"
+                                priority
+                            />
+                        </div>
                         {/* Expand button */}
                         <button
                             onClick={() => setIsFullscreen(true)}

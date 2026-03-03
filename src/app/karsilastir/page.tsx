@@ -5,7 +5,7 @@ import ComparisonTable from '@/components/Marketing/ComparisonTable';
 import { ComparisonClientWrapper } from './ComparisonClientWrapper';
 
 export const metadata: Metadata = {
-    title: 'Ürün Karşılaştırma | MAISON',
+    title: 'Ürün Karşılaştırma | SELIS',
     description: 'Ürünleri yan yana karşılaştırın, en iyi seçimi yapın.',
 };
 

@@ -7,7 +7,7 @@ import { VideoModal } from './VideoModal';
 import { useParallax } from './useParallax';
 
 export function HeroSection() {
-    const parallaxOffset = useParallax(0.4);
+    const parallaxOffset = useParallax(0.15);
 
     return (
         <section
@@ -16,7 +16,7 @@ export function HeroSection() {
                  h-[100svh] min-h-[560px]
                  md:h-screen md:min-h-[600px]
                  xl:min-h-[700px]"
-            aria-label="MAISON Hero"
+            aria-label="SELIS Hero"
         >
             {/* Background Image Slider: fades between images with Ken Burns zoom */}
             <ImageSlider parallaxOffset={parallaxOffset} />

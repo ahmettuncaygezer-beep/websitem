@@ -41,7 +41,7 @@ export function BlogSeoCard({ title, description, keyword, content }: BlogSeoCar
                     <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Globe size={12} color="#AEAEB2" />
                     </div>
-                    <div style={{ fontSize: '12px', color: '#AEAEB2' }}>maison.com.tr › blog › ...</div>
+                    <div style={{ fontSize: '12px', color: '#AEAEB2' }}>selis.com.tr › blog › ...</div>
                 </div>
                 <div style={{ fontSize: '16px', color: '#8AB4F8', marginBottom: '4px', cursor: 'pointer' }}>{title || 'Yazı Başlığı'}</div>
                 <div style={{ fontSize: '13px', color: '#BDC1C6', lineHeight: 1.5 }}>{description || 'Meta açıklama burada görünecek...'}</div>

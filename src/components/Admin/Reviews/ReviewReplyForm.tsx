@@ -33,7 +33,7 @@ export function ReviewReplyForm({ onCancel, onSubmit }: ReviewReplyFormProps) {
             <div className="bg-[#242426] border-t border-white/[0.06] p-5">
                 <div className="flex items-center gap-2 mb-4 text-[13px] font-medium text-[#C9A96E]">
                     <ShieldCheck size={16} />
-                    <span>MAISON olarak yanıtlıyorsunuz</span>
+                    <span>SELIS olarak yanıtlıyorsunuz</span>
                 </div>
 
                 <form onSubmit={handleSubmit}>

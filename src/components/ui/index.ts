@@ -1,5 +1,5 @@
 /**
- * MAISON UI Component Library — Barrel Export
+ * SELIS UI Component Library — Barrel Export
  * ─────────────────────────────────────────────
  * Usage: import { Button, Badge, Toast, useToast } from '@/components/UI'
  */

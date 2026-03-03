@@ -1,5 +1,5 @@
 /**
- * MAISON Typography System
+ * SELIS Typography System
  * ─────────────────────────────────────────────
  * Usage: import { typography, textStyles } from '@/lib/design-system'
  */
@@ -101,7 +101,7 @@ export const typography = {
         wide: '0.025em',
         wider: '0.05em',
         widest: '0.1em',
-        ultrawide: '0.3em',    // Brand label: MAISON ATELIER
+        ultrawide: '0.3em',    // Brand label: SELIS ATELIER
     },
 };
 

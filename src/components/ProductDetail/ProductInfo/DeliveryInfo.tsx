@@ -11,20 +11,20 @@ export function DeliveryInfo({ deliveryDays = 14, hasQuickShip = false, price }:
     const fmt = (d: Date) => d.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     const rows = [
-        { icon: <Truck size={16} />, title: price >= 5000 ? 'Ücretsiz Kargo' : 'Kargo', sub: price >= 5000 ? '₺5.000 ve üzeri siparişlerde' : 'Kargo ücreti ödeme adımında hesaplanır', color: '#1C1C1E' },
-        { icon: <Calendar size={16} />, title: 'Tahmini Teslimat', sub: `${fmt(start)} — ${fmt(end)}`, color: '#1C1C1E' },
-        ...(hasQuickShip ? [{ icon: <Zap size={16} />, title: 'Hızlı Teslimat', sub: '2 iş günü — +₺299', color: '#4CAF50' }] : []),
-        { icon: <Wrench size={16} />, title: 'Ücretsiz Kurulum', sub: 'Profesyonel montaj hizmeti dahil', color: '#1C1C1E' },
+        { icon: <Truck size={16} />, titleKey: price >= 5000 ? 'pdp_free_shipping' : 'pdp_shipping', title: price >= 5000 ? 'Ücretsiz Kargo' : 'Kargo', subKey: price >= 5000 ? 'pdp_free_shipping_sub' : 'pdp_shipping_sub', sub: price >= 5000 ? '₺5.000 ve üzeri siparişlerde' : 'Kargo ücreti ödeme adımında hesaplanır', color: 'var(--selis-primary)' },
+        { icon: <Calendar size={16} />, titleKey: 'pdp_est_delivery', title: 'Tahmini Teslimat', sub: `${fmt(start)} — ${fmt(end)}`, color: 'var(--selis-primary)' },
+        ...(hasQuickShip ? [{ icon: <Zap size={16} />, titleKey: 'pdp_fast_delivery', title: 'Hızlı Teslimat', subKey: 'pdp_fast_delivery_sub', sub: '2 iş günü — +₺299', color: '#4CAF50' }] : []),
+        { icon: <Wrench size={16} />, titleKey: 'pdp_free_install', title: 'Ücretsiz Kurulum', subKey: 'pdp_free_install_sub', sub: 'Profesyonel montaj hizmeti dahil', color: 'var(--selis-primary)' },
     ];
 
     return (
-        <div className="mt-6 pt-6" style={{ borderTop: '1px solid #F0EDE8' }}>
+        <div className="mt-6 pt-6" style={{ borderTop: '1px solid var(--border)' }}>
             {rows.map((r, i) => (
-                <div key={i} className="flex items-start gap-3 py-3" style={{ borderBottom: i < rows.length - 1 ? '1px solid #F0EDE8' : 'none' }}>
+                <div key={i} className="flex items-start gap-3 py-3" style={{ borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none' }}>
                     <span style={{ color: r.color, marginTop: 2 }}>{r.icon}</span>
                     <div>
-                        <p className="text-[13px] font-medium" style={{ color: r.color }}>{r.title}</p>
-                        <p className="text-[11px]" style={{ color: '#999' }}>{r.sub}</p>
+                        <p className="text-[13px] font-medium" style={{ color: r.color }} data-lang-key={r.titleKey as string}>{r.title}</p>
+                        <p className="text-[11px] text-muted-foreground" data-lang-key={r.subKey as string | undefined}>{r.sub}</p>
                     </div>
                 </div>
             ))}

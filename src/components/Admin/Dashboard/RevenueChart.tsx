@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     ResponsiveContainer,
     ComposedChart,
@@ -11,8 +11,6 @@ import {
     CartesianGrid,
     Tooltip,
 } from 'recharts';
-import { mockMonthlyRevenue } from '@/lib/mock/analytics';
-import type { MonthlyRevenue } from '@/lib/mock/analytics';
 
 type DataKey = 'revenue' | 'orders' | 'visitors';
 
@@ -75,8 +73,35 @@ function CustomTooltip({ active, payload, label, dataKey }: CustomTooltipProps) 
 }
 
 export function RevenueChart() {
+    const [data, setData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     const [activeKey, setActiveKey] = useState<DataKey>('revenue');
     const [compare, setCompare] = useState(false);
+
+    useEffect(() => {
+        async function fetchChartData() {
+            try {
+                const res = await fetch('/api/admin/dashboard');
+                const result = await res.json();
+                if (result.monthlyRevenue) {
+                    setData(result.monthlyRevenue);
+                }
+            } catch (error) {
+                console.error('Failed to fetch chart data:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchChartData();
+    }, []);
+
+    if (loading) {
+        return (
+            <div style={{ padding: '40px', textAlign: 'center', color: '#636366', background: '#1C1C1E', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '20px', height: '360px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                Veriler yükleniyor...
+            </div>
+        );
+    }
 
     return (
         <div
@@ -167,7 +192,7 @@ export function RevenueChart() {
             {/* Chart */}
             <div style={{ padding: '20px 20px 8px' }}>
                 <ResponsiveContainer width="100%" height={280}>
-                    <ComposedChart data={mockMonthlyRevenue} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                    <ComposedChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                         <defs>
                             <linearGradient id="revGradient" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="0%" stopColor="#C9A96E" stopOpacity={0.25} />
@@ -233,7 +258,7 @@ export function RevenueChart() {
             {/* Timestamp */}
             <div style={{ padding: '0 20px 16px', display: 'flex', justifyContent: 'flex-end' }}>
                 <span style={{ fontSize: '11px', color: '#636366' }}>
-                    Son güncelleme: bugün 09:14
+                    Son güncelleme: {new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
                 </span>
             </div>
         </div>

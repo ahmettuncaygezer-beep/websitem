@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'MAISON — Premium Mobilya',
-        short_name: 'MAISON',
+        name: 'SELIS HOME CONCEPT — Premium Mobilya',
+        short_name: 'SELIS',
         description: 'Premium mobilya ve ev dekorasyonu. Türk tasarımı, dünya kalitesi.',
         start_url: '/',
         display: 'standalone',
@@ -27,13 +27,13 @@ export default function manifest(): MetadataRoute.Manifest {
                 src: '/screenshots/desktop.jpg',
                 sizes: '1280x800',
                 type: 'image/jpeg',
-                label: 'MAISON Ana Sayfa — Desktop',
+                label: 'SELIS Ana Sayfa — Desktop',
             },
             {
                 src: '/screenshots/mobile.jpg',
                 sizes: '390x844',
                 type: 'image/jpeg',
-                label: 'MAISON Ana Sayfa — Mobil',
+                label: 'SELIS Ana Sayfa — Mobil',
             },
         ],
     };

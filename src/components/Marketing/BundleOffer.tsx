@@ -37,7 +37,7 @@ function AnimatedPrice({ value }: { value: number }) {
 }
 
 export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscount = 0 }: BundleOfferProps) {
-    const { formatPrice } = useGlobal();
+    const { formatPrice, t } = useGlobal();
     const allProducts = [mainProduct, ...relatedProducts];
     const [selected, setSelected] = useState<Set<string>>(
         new Set(allProducts.map(p => p.id))
@@ -70,12 +70,12 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
             {/* Başlık */}
             <div className="flex items-center justify-between mb-4">
                 <div>
-                    <p className="text-[10px] text-[#C9A96E] tracking-[0.25em] uppercase font-medium mb-0.5">
-                        Bundle Fırsatı
+                    <p data-lang-key="bundle_offer_title" className="text-[10px] text-[#C9A96E] tracking-[0.25em] uppercase font-medium mb-0.5">
+                        {t('bundle_offer_title')}
                     </p>
-                    <h3 className="font-bold text-[#1C1C1E] dark:text-foreground text-base"
+                    <h3 data-lang-key="bundle_complete_collection" className="font-bold text-[#1C1C1E] dark:text-foreground text-base"
                         style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}>
-                        Bu Koleksiyonu Tamamla
+                        {t('bundle_complete_collection')}
                     </h3>
                 </div>
                 {!hasAll && (
@@ -83,7 +83,7 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                         onClick={() => setSelected(new Set(allProducts.map(p => p.id)))}
                         className="text-[11px] text-[#C9A96E] font-medium hover:underline"
                     >
-                        Tümünü Seç
+                        <span data-lang-key="bundle_select_all">{t('bundle_select_all')}</span>
                     </button>
                 )}
             </div>
@@ -109,13 +109,13 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                                     alt={product.name}
                                     fill
                                     sizes="96px"
-                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                    className="object-cover"
                                 />
                             </div>
 
                             {product.isMain && (
-                                <div className="absolute top-1 left-1 bg-[#1C1C1E] text-white text-[8px] px-1.5 py-0.5 rounded-sm font-medium">
-                                    Bu Ürün
+                                <div data-lang-key="bundle_this_product" className="absolute top-1 left-1 bg-[#1C1C1E] text-white text-[8px] px-1.5 py-0.5 rounded-sm font-medium">
+                                    {t('bundle_this_product')}
                                 </div>
                             )}
 
@@ -155,7 +155,7 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                 <div className="flex items-center justify-between mb-3">
                     <div>
                         <p className="text-[12px] text-[#666] dark:text-muted-foreground">
-                            Seçilen <span className="font-semibold text-[#1C1C1E] dark:text-foreground">{selectedCount} ürün</span>
+                            <span data-lang-key="bundle_selected">{t('bundle_selected')}</span> <span className="font-semibold text-[#1C1C1E] dark:text-foreground">{selectedCount} <span data-lang-key="bundle_products">{t('bundle_products')}</span></span>
                         </p>
                         <div className="text-xl font-bold text-[#1C1C1E] dark:text-foreground">
                             <AnimatePresence mode="wait">
@@ -174,10 +174,10 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                             >
                                 <p className="text-[10px] text-[#666] dark:text-muted-foreground line-through">{formatPrice(total)}</p>
                                 <p className="text-[11px] text-green-600 dark:text-green-400 font-semibold">
-                                    Fırsat: {formatPrice(total - bundleDiscount)}
+                                    <span data-lang-key="bundle_deal">{t('bundle_deal')}:</span> {formatPrice(total - bundleDiscount)}
                                 </p>
                                 <p className="text-[10px] text-green-600 dark:text-green-500">
-                                    {formatPrice(bundleDiscount)} tasarruf
+                                    {formatPrice(bundleDiscount)} <span data-lang-key="bundle_savings">{t('bundle_savings')}</span>
                                 </p>
                             </motion.div>
                         )}
@@ -191,7 +191,7 @@ export default function BundleOffer({ mainProduct, relatedProducts, bundleDiscou
                     className="w-full flex items-center justify-center gap-2 py-3 bg-[#C9A96E] text-white font-semibold text-[13px] rounded-sm hover:bg-[#B8915A] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                     <ShoppingBag className="w-4 h-4" />
-                    Tümünü Sepete Ekle
+                    <span data-lang-key="bundle_add_all_cart">{t('bundle_add_all_cart')}</span>
                 </motion.button>
             </div>
         </div>

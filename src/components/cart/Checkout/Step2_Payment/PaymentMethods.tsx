@@ -16,12 +16,12 @@ export function PaymentMethods({ activeMethod, onSelect }: Props) {
     ] as const;
 
     return (
-        <div className="flex border-b border-[#F0EDE8]">
+        <div className="flex border-b border-border">
             {methods.map((m) => (
                 <button
                     key={m.id}
                     onClick={() => onSelect(m.id)}
-                    className={`relative flex-1 py-4 flex flex-col items-center gap-2 transition-all ${activeMethod === m.id ? 'text-[#1C1C1E]' : 'text-[#999] hover:text-[#666]'}`}
+                    className={`relative flex-1 py-4 flex flex-col items-center gap-2 transition-all bg-transparent border-none cursor-pointer ${activeMethod === m.id ? 'text-foreground' : 'text-muted-foreground hover:text-foreground/80'}`}
                 >
                     <m.icon size={20} strokeWidth={activeMethod === m.id ? 2 : 1.5} />
                     <span className="text-[11px] font-bold uppercase tracking-wider">{m.label}</span>
@@ -29,7 +29,7 @@ export function PaymentMethods({ activeMethod, onSelect }: Props) {
                     {activeMethod === m.id && (
                         <motion.div
                             layoutId="activePaymentTab"
-                            className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#C9A96E]"
+                            className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-selis-gold"
                         />
                     )}
                 </button>

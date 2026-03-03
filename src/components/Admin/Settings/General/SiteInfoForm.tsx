@@ -103,6 +103,36 @@ export function SiteInfoForm({ settings, onChange }: SiteInfoFormProps) {
                         style={inputStyle}
                     />
                 </div>
+
+                <div style={dividerStyle} />
+
+                <div style={{ ...inputGroupStyle, gridColumn: 'span 2' }}>
+                    <label style={labelStyle}>MAĞAZA ADRESİ</label>
+                    <textarea
+                        value={settings.address?.full || ''}
+                        onChange={(e) => onChange({ address: { ...settings.address, full: e.target.value } as any })}
+                        style={{ ...inputStyle, height: '60px', resize: 'none' }}
+                        placeholder="Örn: Modoko Mobilyacılar Sitesi, 2. Cadde No: 45"
+                    />
+                </div>
+
+                <div style={inputGroupStyle}>
+                    <label style={labelStyle}>ŞEHİR</label>
+                    <input
+                        type="text" value={settings.address?.city || ''}
+                        onChange={(e) => onChange({ address: { ...settings.address, city: e.target.value } as any })}
+                        style={inputStyle}
+                    />
+                </div>
+
+                <div style={inputGroupStyle}>
+                    <label style={labelStyle}>İLÇE</label>
+                    <input
+                        type="text" value={settings.address?.district || ''}
+                        onChange={(e) => onChange({ address: { ...settings.address, district: e.target.value } as any })}
+                        style={inputStyle}
+                    />
+                </div>
             </div>
         </SettingsCard>
     );
@@ -115,6 +145,12 @@ const inputStyle = {
     background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
     borderRadius: '8px', padding: '10px 14px', color: '#F5F0EB', fontSize: '14px', outline: 'none',
     transition: 'border-color 200ms'
+};
+const dividerStyle = {
+    gridColumn: 'span 2',
+    height: '1px',
+    background: 'rgba(255,255,255,0.06)',
+    margin: '8px 0'
 };
 const hintStyle = { fontSize: '11px', color: '#636366' };
 const uploadIconBtnStyle = {

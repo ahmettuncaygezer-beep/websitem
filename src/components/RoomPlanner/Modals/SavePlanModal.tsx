@@ -16,7 +16,7 @@ export function SavePlanModal({ open, onClose }: Props) {
     useEffect(() => {
         if (open) {
             setName(usePlannerStore.getState().planName);
-            try { setSaved(JSON.parse(localStorage.getItem('maison_plans') || '[]')); } catch { setSaved([]); }
+            try { setSaved(JSON.parse(localStorage.getItem('selis_plans') || '[]')); } catch { setSaved([]); }
         }
     }, [open]);
 
@@ -25,7 +25,7 @@ export function SavePlanModal({ open, onClose }: Props) {
         const state = usePlannerStore.getState();
         const plan: SavedPlan = { name, date: new Date().toLocaleString('tr-TR'), state: { room: state.room, items: state.items, planName: name } as any };
         const plans = [plan, ...saved.filter((p) => p.name !== name)].slice(0, 10);
-        localStorage.setItem('maison_plans', JSON.stringify(plans));
+        localStorage.setItem('selis_plans', JSON.stringify(plans));
         setSaved(plans);
         onClose();
     };
@@ -39,7 +39,7 @@ export function SavePlanModal({ open, onClose }: Props) {
 
     const handleDelete = (planName: string) => {
         const plans = saved.filter((p) => p.name !== planName);
-        localStorage.setItem('maison_plans', JSON.stringify(plans));
+        localStorage.setItem('selis_plans', JSON.stringify(plans));
         setSaved(plans);
     };
 

@@ -7,6 +7,8 @@ import { useChat } from './hooks/useChat';
 import { useVisualSearch } from './hooks/useVisualSearch';
 import { useChatStore } from './store/chatStore';
 import Image from 'next/image';
+import { useGlobal } from '@/context/GlobalContext';
+
 
 export function ChatInput() {
     const [text, setText] = useState('');
@@ -17,6 +19,7 @@ export function ChatInput() {
     const { sendMessage } = useChat();
     const { analyzeImage, isAnalyzing } = useVisualSearch();
     const isLoading = useChatStore((s) => s.isLoading);
+    const { t } = useGlobal();
 
     // Auto-resize textarea
     useEffect(() => {
@@ -95,7 +98,7 @@ export function ChatInput() {
 
                 {/* Textarea */}
                 <textarea ref={textareaRef} value={text} onChange={(e) => setText(e.target.value)} onKeyDown={handleKey}
-                    placeholder="Bir soru sorun..."
+                    placeholder={t('chat.input_placeholder') || 'Ask a question...'}
                     rows={1}
                     className="flex-1 resize-none outline-none"
                     style={{
@@ -103,7 +106,7 @@ export function ChatInput() {
                         border: '1px solid #E8E3DC', borderRadius: 20,
                         fontSize: 13, lineHeight: 1.5, background: 'white',
                     }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = '#C9A96E'; }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = '#C9A96E'; e.currentTarget.style.background = 'white'; }}
                     onBlur={(e) => { e.currentTarget.style.borderColor = '#E8E3DC'; }}
                 />
 

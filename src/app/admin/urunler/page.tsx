@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { mockProducts } from '@/lib/mock/products';
 import type { Product } from '@/lib/mock/products';
 import { ProductFilters } from '@/components/Admin/Products/ProductFilters';
 import { BulkActions } from '@/components/Admin/Products/BulkActions';
@@ -12,8 +11,57 @@ import type { ViewMode } from '@/components/Admin/Products/ProductFilters';
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
+// Map DB product to admin Product type
+function mapDbToAdminProduct(p: any): Product {
+    const colors = (p.colors || []).map((c: any) => {
+        try { return typeof c === 'string' ? JSON.parse(c) : c; } catch { return { name: 'Standart', hex: '#D4C5B2' }; }
+    });
+    return {
+        id: p.id,
+        name: p.name || '',
+        slug: p.slug || '',
+        sku: `SKU-${(p.slug || '').toUpperCase().slice(0, 8)}`,
+        barcode: '',
+        category: p.category_slug || 'Genel',
+        subcategory: '',
+        price: Number(p.price) || 0,
+        comparePrice: p.sale_price ? Number(p.price) : 0,
+        costPrice: Math.round((Number(p.price) || 0) * 0.6),
+        stock: p.stock || 0,
+        stockTracking: true,
+        stockThreshold: 5,
+        status: p.stock > 0 ? 'Aktif' as const : 'Pasif' as const,
+        images: (p.images || []).map((url: string, i: number) => ({
+            id: `img-${i}`,
+            url,
+            altText: p.name || '',
+            isPrimary: i === 0,
+            order: i,
+        })),
+        variants: [],
+        tags: (p.materials || []),
+        metaTitle: p.name || '',
+        metaDescription: (p.description || '').slice(0, 160),
+        relatedProducts: [],
+        complementaryProducts: [],
+        createdAt: p.created_at || new Date().toISOString(),
+        updatedAt: p.updated_at || new Date().toISOString(),
+        weight: 0,
+        dimensions: {
+            width: p.dimensions?.width || 0,
+            height: p.dimensions?.height || 0,
+            depth: p.dimensions?.depth || 0,
+        },
+    };
+}
+
 export default function UrunlerPage() {
     const router = useRouter();
+
+    // ── Data state ─────────────────────────────────────────────────────────────
+    const [products, setProducts] = useState<Product[]>([]);
+    const [totalCount, setTotalCount] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     // ── Filter state ───────────────────────────────────────────────────────────
     const [searchQuery, setSearchQuery] = useState('');
@@ -26,18 +74,54 @@ export default function UrunlerPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [perPage, setPerPage] = useState(20);
 
-    // ── Filtered + sorted products ─────────────────────────────────────────────
-    const filtered = useMemo<Product[]>(() => {
-        let result = [...mockProducts];
+    // ── Fetch products from API ────────────────────────────────────────────────
+    useEffect(() => {
+        async function fetchProducts() {
+            setLoading(true);
+            try {
+                const params = new URLSearchParams();
+                params.set('page', '1');
+                params.set('perPage', '500'); // Fetch all for client-side filtering
+                if (searchQuery) params.set('search', searchQuery);
 
-        if (searchQuery) {
-            const q = searchQuery.toLowerCase();
-            result = result.filter((p) =>
-                p.name.toLowerCase().includes(q) ||
-                p.sku.toLowerCase().includes(q) ||
-                p.barcode.includes(q)
-            );
+                const res = await fetch(`/api/admin/products?${params}`);
+                const data = await res.json();
+
+                if (data.products) {
+                    setProducts(data.products.map(mapDbToAdminProduct));
+                    setTotalCount(data.total || data.products.length);
+                }
+            } catch (err) {
+                console.error('Failed to fetch products:', err);
+            } finally {
+                setLoading(false);
+            }
         }
+        fetchProducts();
+    }, [searchQuery]);
+
+    // ── Delete handler ─────────────────────────────────────────────────────────
+    const handleDelete = async () => {
+        if (selectedIds.length === 0) return;
+        if (!confirm(`${selectedIds.length} ürün silinecek. Emin misiniz?`)) return;
+
+        for (const id of selectedIds) {
+            await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
+        }
+        setSelectedIds([]);
+        // Refresh
+        const res = await fetch('/api/admin/products?perPage=500');
+        const data = await res.json();
+        if (data.products) {
+            setProducts(data.products.map(mapDbToAdminProduct));
+            setTotalCount(data.total || data.products.length);
+        }
+    };
+
+    // ── Client-side filtering ──────────────────────────────────────────────────
+    const filtered = useMemo<Product[]>(() => {
+        let result = [...products];
+
         if (selectedCategory !== 'Tümü') result = result.filter((p) => p.category === selectedCategory);
         if (selectedStatus !== 'Tümü') result = result.filter((p) => p.status === selectedStatus);
         if (selectedStock !== 'Tümü') {
@@ -57,9 +141,10 @@ export default function UrunlerPage() {
             }
         });
         return result;
-    }, [searchQuery, selectedCategory, selectedStatus, selectedStock, sortBy]);
+    }, [products, selectedCategory, selectedStatus, selectedStock, sortBy]);
 
     const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
+    const activeCount = products.filter(p => p.status === 'Aktif').length;
 
     function handlePerPageChange(n: number) { setPerPage(n); setCurrentPage(1); }
 
@@ -77,7 +162,7 @@ export default function UrunlerPage() {
                         Ürünler
                     </h1>
                     <p style={{ fontSize: '13px', color: '#AEAEB2', margin: 0 }}>
-                        {mockProducts.length} ürün &nbsp;·&nbsp; {mockProducts.filter((p) => p.status === 'Aktif').length} aktif
+                        {loading ? 'Yükleniyor...' : `${totalCount} ürün · ${activeCount} aktif`}
                     </p>
                 </div>
                 <button
@@ -96,7 +181,7 @@ export default function UrunlerPage() {
                 onClearSelection={() => setSelectedIds([])}
                 onSetActive={() => setSelectedIds([])}
                 onSetPassive={() => setSelectedIds([])}
-                onDelete={() => setSelectedIds([])}
+                onDelete={handleDelete}
             />
 
             {/* ── Filters ─────────────────────────────────────────────────────── */}

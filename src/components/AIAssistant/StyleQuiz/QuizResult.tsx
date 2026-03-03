@@ -118,7 +118,7 @@ export function QuizResult({
                             <div className="w-10 h-10 rounded-full bg-[#C9A96E] flex items-center justify-center">
                                 <Sparkles size={20} color="#1C1C1E" />
                             </div>
-                            <h3 className="text-xl font-serif italic">MAISON AI Kişisel Analizi</h3>
+                            <h3 className="text-xl font-serif italic">SELIS AI Kişisel Analizi</h3>
                         </div>
 
                         <div className="prose prose-invert max-w-none text-white/80 leading-relaxed font-light">
@@ -168,7 +168,7 @@ export function QuizResult({
                         Stilinizle uyumlu ürünleri nasıl kombinleyebileceğinizi veya merak ettiğiniz detayları dijital danışmanımıza sorabilirsiniz.
                     </p>
                     <button
-                        onClick={() => (window as any).MaisonChat?.open()}
+                        onClick={() => (window as any).SelisChat?.open()}
                         className="inline-flex items-center gap-3 text-[#C9A96E] font-bold text-sm tracking-widest uppercase border-b-2 border-[#C9A96E] pb-1 hover:text-[#1C1C1E] hover:border-[#1C1C1E] transition-all duration-300"
                     >
                         Danışmanla Sohbeti Başlat <ArrowRight size={18} />

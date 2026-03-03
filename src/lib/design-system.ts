@@ -1,5 +1,5 @@
 /**
- * MAISON Design System — Barrel Export
+ * SELIS Design System — Barrel Export
  * ─────────────────────────────────────────────
  * Single import point for all design tokens.
  *

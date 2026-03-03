@@ -17,7 +17,7 @@ export default function OrderConfirmationPage({ params }: { params: { orderId: s
     }, [clearCart]);
 
     return (
-        <div className="bg-[#F5F0EB] min-h-screen pt-20 pb-20">
+        <div className="bg-background min-h-screen pt-20 pb-20">
             <ConfettiAnimation />
 
             <div className="max-w-4xl mx-auto px-6">
@@ -26,20 +26,21 @@ export default function OrderConfirmationPage({ params }: { params: { orderId: s
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', damping: 12, stiffness: 200 }}
-                        className="w-20 h-20 bg-gradient-to-br from-[#4CAF50] to-[#388E3C] rounded-full flex items-center justify-center text-white mx-auto shadow-xl mb-6 relative"
+                        className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-white mx-auto shadow-xl mb-6 relative"
                     >
                         <Check size={40} strokeWidth={3} />
                         <motion.div
                             animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
                             transition={{ repeat: Infinity, duration: 2 }}
-                            className="absolute inset-0 rounded-full border-4 border-[#4CAF50]"
+                            className="absolute inset-0 rounded-full border-4 border-green-500"
                         />
                     </motion.div>
 
                     <motion.h1
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="font-serif text-4xl text-[#1C1C1E]"
+                        className="font-serif text-4xl text-foreground"
+                        style={{ fontFamily: 'var(--font-playfair, serif)' }}
                     >
                         Siparişiniz Alındı! 🎉
                     </motion.h1>
@@ -47,11 +48,11 @@ export default function OrderConfirmationPage({ params }: { params: { orderId: s
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-[15px] text-[#666] mt-4 font-medium"
+                        className="text-[15px] text-muted-foreground mt-4 font-medium"
                     >
-                        Sipariş No: <span className="text-[#C9A96E] font-bold font-mono tracking-wider">{params.orderId}</span>
+                        Sipariş No: <span className="text-selis-gold font-bold font-mono tracking-wider">{params.orderId}</span>
                     </motion.p>
-                    <p className="text-[13px] text-[#999] mt-2">
+                    <p className="text-[13px] text-muted-foreground mt-2">
                         Onay e-postası kayıtlı adresinize gönderildi.
                     </p>
                 </div>
@@ -60,10 +61,10 @@ export default function OrderConfirmationPage({ params }: { params: { orderId: s
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="bg-white p-8 rounded-2xl shadow-sm border border-[#E8E3DC] text-center mb-10"
+                    className="bg-card p-8 rounded-2xl shadow-sm border border-border text-center mb-10"
                 >
-                    <p className="text-[11px] font-bold text-[#999] uppercase tracking-[0.2em] mb-2">Tahmini Teslimat Tarihiniz:</p>
-                    <h2 className="font-serif text-2xl text-[#1C1C1E]">Salı, 04 Mart 2026</h2>
+                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-2">Tahmini Teslimat Tarihiniz:</p>
+                    <h2 className="font-serif text-2xl text-foreground" style={{ fontFamily: 'var(--font-playfair, serif)' }}>Salı, 04 Mart 2026</h2>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-10">

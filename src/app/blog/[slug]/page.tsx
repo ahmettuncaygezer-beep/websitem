@@ -47,10 +47,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const { slug } = await params;
     const post = BLOG_POSTS.find(p => p.slug === slug);
-    if (!post) return { title: 'Yazı Bulunamadı | MAISON' };
+    if (!post) return { title: 'Yazı Bulunamadı | SELIS' };
 
     return {
-        title: `${post.title} | MAISON Blog`,
+        title: `${post.title} | SELIS Blog`,
         description: post.excerpt,
         authors: [{ name: post.author }],
         openGraph: {
@@ -140,7 +140,7 @@ export default async function BlogDetailPage({
         author: { '@type': 'Person', name: post.author },
         publisher: {
             '@type': 'Organization',
-            name: 'MAISON',
+            name: 'SELIS',
             logo: { '@type': 'ImageObject', url: '/logo.png' },
         },
         mainEntityOfPage: { '@type': 'WebPage', '@id': `/blog/${slug}` },

@@ -18,9 +18,9 @@ export default function CartPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-12">
                     <div>
-                        <Link href="/" className="inline-flex items-center gap-2 text-[13px] text-[#999] hover:text-[#1C1C1E] transition-colors mb-4 group">
-                            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                            <span data-lang-key="continue_shopping">Alışverişe Devam Et</span>
+                        <Link href="/urunler" className="inline-flex items-center gap-2 text-[12px] uppercase tracking-widest text-[#666] hover:text-[#C9A96E] font-medium transition-colors mb-6">
+                            <ArrowLeft size={14} />
+                            <span data-lang-key="cart_continue_shopping">Alışverişe Devam Et</span>
                         </Link>
                         <h1 className="text-[32px] font-serif uppercase tracking-wider text-[#1C1C1E]" data-lang-key="cart_title">Alışveriş Sepetim</h1>
                     </div>

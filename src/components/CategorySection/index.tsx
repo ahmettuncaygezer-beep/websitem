@@ -8,8 +8,13 @@ import { MasonryGrid } from './MasonryGrid';
 import { ViewAllButton } from './ViewAllButton';
 import { CATEGORIES } from './category.data';
 import type { FilterTab } from './category.types';
+import { useDarkMode } from '@/hooks/useDarkMode';
+import { useGlobal } from '@/context/GlobalContext';
+import { translations } from '@/lib/i18n';
 
 export function CategorySection() {
+    const { isDark, mounted } = useDarkMode();
+    const { language } = useGlobal();
     const [activeFilter, setActiveFilter] = useState<FilterTab>('Tümü');
 
     // Subtle parallax for watermark text
@@ -61,7 +66,7 @@ export function CategorySection() {
                 </svg>
             </div>
 
-            {/* ── Watermark MAISON text ── */}
+            {/* ── Watermark SELIS text ── */}
             <motion.div
                 className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
                 style={{ y: watermarkY }}
@@ -77,7 +82,7 @@ export function CategorySection() {
                         whiteSpace: 'nowrap',
                     }}
                 >
-                    MAISON
+                    SELIS
                 </span>
             </motion.div>
 

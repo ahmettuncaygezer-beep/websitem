@@ -85,8 +85,8 @@ export function useStyleQuiz() {
             }
             // Save to localStorage
             if (primaryStyle) {
-                localStorage.setItem('maison_style_profile', primaryStyle.id);
-                localStorage.setItem('maison_style_data', JSON.stringify({ primary: primaryStyle.id, secondary: secondaryStyle?.id, scores, date: new Date().toISOString() }));
+                localStorage.setItem('selis_style_profile', primaryStyle.id);
+                localStorage.setItem('selis_style_data', JSON.stringify({ primary: primaryStyle.id, secondary: secondaryStyle?.id, scores, date: new Date().toISOString() }));
             }
         } catch {
             setAiAnalysis('Yapay zeka analiziniz yüklenirken bir sorun oluştu. Lütfen sayfayı yenileyin.');

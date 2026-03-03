@@ -27,23 +27,30 @@ export const ActionButtons = forwardRef<HTMLButtonElement, Props>(
             setTimeout(() => { setCartState('success'); setTimeout(() => setCartState('idle'), 1200); }, 1000);
         }, [cartState, inStock, onAddToCart]);
 
-        const cartBg = cartState === 'success' ? '#2E7D32' : inStock ? '#1C1C1E' : '#E0E0E0';
-        const cartText = cartState === 'loading' ? 'Ekleniyor...' : cartState === 'success' ? 'Sepete Eklendi ✓' : inStock ? 'Sepete Ekle' : 'Stokta Yok';
+        const cartBg = cartState === 'success' ? '#2E7D32' : inStock ? 'var(--foreground)' : 'var(--muted)';
+        const cartTextKey = cartState === 'loading' ? 'prod_add_cart_adding' : cartState === 'success' ? 'prod_add_cart_added' : inStock ? 'prod_add_to_cart' : 'prod_out_of_stock';
+        // const cartText = cartState === 'loading' ? 'Ekleniyor...' : cartState === 'success' ? 'Sepete Eklendi ✓' : inStock ? 'Sepete Ekle' : 'Stokta Yok'; // This line is no longer needed
 
         return (
             <div className="mt-5">
-                {/* Main CTA */}
                 <button
                     ref={ref}
                     onClick={handleCart}
-                    disabled={!inStock || cartState !== 'idle'}
+                    disabled={cartState === 'loading' || !inStock}
                     aria-label={`${productName} sepete ekle`}
-                    className="w-full py-4 flex items-center justify-center gap-3 font-semibold tracking-wider uppercase transition-all duration-250 rounded-sm"
-                    style={{ fontSize: '13px', background: cartBg, color: inStock ? 'white' : '#999', border: 'none', cursor: inStock && cartState === 'idle' ? 'pointer' : 'not-allowed', letterSpacing: '0.15em' }}>
-                    {cartState === 'loading' && <Loader2 size={18} className="animate-spin" />}
+                    className={`flex-1 h-14 flex items-center justify-center gap-3 transition-colors ${!inStock
+                        ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
+                        : cartState === 'success'
+                            ? 'bg-[#30D158] text-white'
+                            : 'bg-[#1C1C1E] text-[#F5F0EB] hover:bg-[#2C2C2E]'
+                        }`}
+                >
+                    {cartState === 'loading' && <span className="w-4 h-4 rounded-full border-2 border-[#F5F0EB]/30 border-t-[#F5F0EB] animate-spin" />}
                     {cartState === 'success' && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 500, damping: 15 }}><Check size={18} /></motion.span>}
                     {cartState === 'idle' && <ShoppingBag size={18} />}
-                    {cartText}
+                    <span data-lang-key={cartTextKey}>
+                        {cartState === 'loading' ? 'Ekleniyor...' : cartState === 'success' ? 'Sepete Eklendi ✓' : inStock ? 'Sepete Ekle' : 'Stokta Yok'}
+                    </span>
                 </button>
 
                 {/* Confetti */}
@@ -54,7 +61,7 @@ export const ActionButtons = forwardRef<HTMLButtonElement, Props>(
                             animate={{ opacity: 0, x: (Math.random() - 0.5) * 200, y: -(Math.random() * 150 + 50), scale: 0, rotate: Math.random() * 360 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.8, ease: 'easeOut' }}>
-                            <span className="block w-2 h-2 rounded-sm" style={{ background: ['#C9A96E', '#4CAF50', '#F5F0EB', '#1C1C1E'][i % 4] }} />
+                            <span className="block w-2 h-2 rounded-sm" style={{ background: ['#C9A96E', '#4CAF50', '#F5F0EB', 'var(--foreground)'][i % 4] }} />
                         </motion.span>
                     ))}
                 </AnimatePresence>
@@ -64,15 +71,15 @@ export const ActionButtons = forwardRef<HTMLButtonElement, Props>(
                     <button onClick={(e) => { e.preventDefault(); onToggleWishlist(); }}
                         aria-label={isWishlisted ? 'Favorilerden çıkar' : 'Favorilere ekle'}
                         className="flex-1 py-3.5 flex items-center justify-center gap-2 font-medium transition-all duration-200 rounded-sm"
-                        style={{ fontSize: '12px', border: `1.5px solid ${isWishlisted ? '#E53935' : '#E0E0E0'}`, background: 'transparent', color: isWishlisted ? '#E53935' : '#1C1C1E', cursor: 'pointer' }}>
+                        style={{ fontSize: '12px', border: `1.5px solid ${isWishlisted ? '#E53935' : 'var(--border)'}`, background: 'transparent', color: isWishlisted ? '#E53935' : 'var(--foreground)', cursor: 'pointer' }}>
                         <Heart size={16} fill={isWishlisted ? '#E53935' : 'transparent'} stroke={isWishlisted ? '#E53935' : 'currentColor'} />
-                        {isWishlisted ? 'Favorilerde' : 'Favorilere Ekle'}
+                        <span data-lang-key={isWishlisted ? 'prod_wishlist_added' : 'prod_wishlist_add'}>{isWishlisted ? 'Favorilerde' : 'Favorilere Ekle'}</span>
                     </button>
                     <button onClick={(e) => { e.preventDefault(); onToggleCompare(); }}
                         className="flex-1 py-3.5 flex items-center justify-center gap-2 font-medium transition-all duration-200 rounded-sm"
-                        style={{ fontSize: '12px', border: `1.5px solid ${isCompared ? '#C9A96E' : '#E0E0E0'}`, background: isCompared ? '#FDF8F0' : 'transparent', color: isCompared ? '#C9A96E' : '#1C1C1E', cursor: 'pointer' }}>
+                        style={{ fontSize: '12px', border: `1.5px solid ${isCompared ? '#C9A96E' : 'var(--border)'}`, background: isCompared ? 'var(--accent)' : 'transparent', color: isCompared ? '#C9A96E' : 'var(--foreground)', cursor: 'pointer' }}>
                         <GitCompareArrows size={16} />
-                        {isCompared ? 'Eklendi ✓' : 'Karşılaştır'}
+                        <span data-lang-key={isCompared ? 'prod_compare_added' : 'prod_compare_add'}>{isCompared ? 'Eklendi ✓' : 'Karşılaştır'}</span>
                     </button>
                 </div>
             </div>

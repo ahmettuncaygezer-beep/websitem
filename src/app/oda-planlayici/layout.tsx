@@ -2,8 +2,8 @@ import React from 'react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Oda Planlayıcı | MAISON',
-    description: 'MAISON lüks mobilyalarını kullanarak kendi odanızı tasarlayın. 2D interaktif oda planlayıcı.',
+    title: 'Oda Planlayıcı | SELIS',
+    description: 'SELIS lüks mobilyalarını kullanarak kendi odanızı tasarlayın. 2D interaktif oda planlayıcı.',
 };
 
 export default function PlannerLayout({ children }: { children: React.ReactNode }) {

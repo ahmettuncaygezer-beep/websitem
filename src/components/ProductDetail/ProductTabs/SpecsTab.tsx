@@ -17,9 +17,9 @@ export function SpecsTab() {
             <table className="w-full text-[13px]" style={{ borderCollapse: 'collapse' }}>
                 <tbody>
                     {SPECS.map(([label, value], i) => (
-                        <tr key={i} style={{ background: i % 2 === 0 ? '#FAFAF8' : 'white' }}>
-                            <td className="py-3 px-4 font-medium" style={{ color: '#999', width: '40%' }}>{label}</td>
-                            <td className="py-3 px-4" style={{ color: '#1C1C1E' }}>{value}</td>
+                        <tr key={i} className={i % 2 === 0 ? 'bg-muted/30' : 'bg-transparent'}>
+                            <td className="py-3 px-4 font-medium text-muted-foreground w-[40%]" style={{ fontSize: '13px' }}>{label}</td>
+                            <td className="py-3 px-4 text-foreground" style={{ fontSize: '13px' }}>{value}</td>
                         </tr>
                     ))}
                 </tbody>

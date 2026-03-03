@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Copy, Check, Mail } from 'lucide-react';
 import { useExitIntent } from './useExitIntent';
 
-const COUPON_CODE = 'MAISON10';
+const COUPON_CODE = 'SELIS10';
 
 export default function ExitIntentPopup() {
     const { shouldShow, dismiss } = useExitIntent();
@@ -84,7 +84,7 @@ export default function ExitIntentPopup() {
                                 </p>
                                 <p className="text-2xl font-bold tracking-wider"
                                     style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}>
-                                    MAISON
+                                    SELIS
                                 </p>
                             </div>
 

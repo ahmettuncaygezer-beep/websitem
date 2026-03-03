@@ -89,7 +89,7 @@ export function BannerEditor({ content, onChange }: BannerEditorProps) {
                                 type="text" value={content.url || ''}
                                 onChange={(e) => handleChange('url', e.target.value)}
                                 style={{ ...inputStyle, paddingLeft: '40px' }}
-                                placeholder="https://maison.com.tr/koleksiyon"
+                                placeholder="https://selis.com.tr/koleksiyon"
                             />
                             <LinkIcon size={16} color="#636366" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
                         </div>

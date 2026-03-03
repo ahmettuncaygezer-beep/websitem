@@ -58,7 +58,7 @@ export function OrderTracking() {
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-4">
                 <div>
                     <span className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-gold mb-2 block">
-                        Sipariş Takibi #ORD-2026-8854
+                        <span data-lang-key="order_tracking_title">Sipariş Takibi</span> #ORD-2026-8854
                     </span>
                     <h2 className="text-3xl font-serif text-charcoal">Zanaat Yolculuğu</h2>
                 </div>
@@ -84,8 +84,8 @@ export function OrderTracking() {
                         >
                             {/* Icon Container */}
                             <div className={`z-10 w-11 h-11 rounded-full flex items-center justify-center shrink-0 shadow-sm border-4 border-white transition-colors duration-500 ${step.status === 'completed' ? 'bg-sage text-white' :
-                                    step.status === 'current' ? 'bg-gold text-white animate-pulse' :
-                                        'bg-sand text-warm-gray-light'
+                                step.status === 'current' ? 'bg-gold text-white animate-pulse' :
+                                    'bg-sand text-warm-gray-light'
                                 }`}>
                                 <step.icon size={18} />
                             </div>

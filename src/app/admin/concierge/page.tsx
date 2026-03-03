@@ -96,7 +96,7 @@ export default function AdminConciergePage() {
                     <div className="flex justify-start items-end gap-3">
                         <div className="w-8 h-8 rounded-full bg-sand flex items-center justify-center text-charcoal"><User size={14} /></div>
                         <div className="max-w-[70%] p-4 bg-white border border-border rounded-2xl rounded-bl-none text-sm font-sans shadow-sm">
-                            Merhaba, aldığım sipariş (MSN-48194) üzerinde bir değişiklik yapmak istiyorum.
+                            Merhaba, aldığım sipariş (SLS-48194) üzerinde bir değişiklik yapmak istiyorum.
                         </div>
                     </div>
 

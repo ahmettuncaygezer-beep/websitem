@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote } from 'lucide-react';
 import { MEDIA_LOGOS } from './socialProof.data';
+import { useGlobal } from '@/context/GlobalContext';
 
 export default function MediaLogos() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
+    const { t } = useGlobal();
 
     return (
         <section className="py-16 bg-[#1C1C1E] overflow-hidden">
@@ -19,10 +21,10 @@ export default function MediaLogos() {
                     className="text-center mb-12"
                 >
                     <p className="text-[11px] text-[#C9A96E] tracking-[0.3em] uppercase font-medium mb-3">
-                        Medyada Biz
+                        {t('media_subtitle') || 'Medyada Biz'}
                     </p>
                     <h2 className="text-xl md:text-2xl font-medium text-white/80">
-                        Türkiye&apos;nin önde gelen yayınlarında yer aldık
+                        {t('media_title') || "Türkiye'nin önde gelen yayınlarında yer aldık"}
                     </h2>
                 </motion.div>
 
@@ -84,10 +86,10 @@ export default function MediaLogos() {
                 >
                     <Quote className="w-8 h-8 text-[#C9A96E]/40 mx-auto mb-4" />
                     <p className="text-white/70 text-[15px] italic leading-relaxed">
-                        &ldquo;MAISON, Türk mobilya sektöründe lüks ve erişilebilirliği bir arada sunan nadir markalardan biri.&rdquo;
+                        &ldquo;{t('media_quote') || 'SELIS, Türk mobilya sektöründe lüks ve erişilebilirliği bir arada sunan nadir markalardan biri.'}&rdquo;
                     </p>
                     <p className="text-[#C9A96E] text-[12px] mt-3 font-medium">
-                        — Hürriyet Ev, Ocak 2026
+                        — {t('media_quote_author') || 'Hürriyet Ev, Ocak 2026'}
                     </p>
                 </motion.div>
 

@@ -21,7 +21,7 @@ export default function HesabimLayout({ children }: { children: React.ReactNode 
     if (!isAuthenticated) return null;
 
     return (
-        <div style={{ background: '#F5F0EB', minHeight: '100vh' }}>
+        <div className="bg-background min-h-screen">
             <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
                 <div className="flex items-start gap-8">
                     <AccountSidebar />

@@ -65,14 +65,14 @@ export const ProductCard = memo(function ProductCard({
                     className="relative flex bg-card overflow-hidden transition-all duration-300"
                     style={{
                         borderRadius: '12px',
-                        boxShadow: 'var(--shadow-maison-card)',
+                        boxShadow: 'var(--shadow-selis-card)',
                         border: '1px solid var(--border)',
                     }}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     whileHover={{
-                        boxShadow: 'var(--shadow-maison-card-hover)',
-                        borderColor: 'var(--maison-gold)',
+                        boxShadow: 'var(--shadow-selis-card-hover)',
+                        borderColor: 'var(--selis-gold)',
                     }}
                 >
                     {/* Left image */}
@@ -95,14 +95,14 @@ export const ProductCard = memo(function ProductCard({
                         <div>
                             <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0">
-                                    <span className="uppercase font-medium block" style={{ fontSize: '10px', letterSpacing: '0.2em', color: 'var(--maison-gold)' }}>
+                                    <span className="uppercase font-medium block" style={{ fontSize: '10px', letterSpacing: '0.2em', color: 'var(--selis-gold)' }}>
                                         {product.brand}
                                     </span>
                                     <Link
                                         href={`/urun/${product.slug}`}
                                         className="block mt-1 text-[15px] font-normal transition-colors duration-300 truncate"
                                         style={{ fontFamily: 'var(--font-playfair, serif)', color: 'var(--foreground)', textDecoration: 'none', lineHeight: 1.3 }}
-                                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--maison-gold)'; }}
+                                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--selis-gold)'; }}
                                         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--foreground)'; }}
                                     >
                                         <span data-lang-key={product.nameKey}>{product.name}</span>
@@ -135,7 +135,7 @@ export const ProductCard = memo(function ProductCard({
                                 className="px-4 py-2 flex items-center gap-2 font-semibold tracking-wider uppercase transition-all duration-300 hover:scale-105 active:scale-95"
                                 style={{ fontSize: '11px', background: 'var(--foreground)', color: 'var(--background)', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                             >
-                                <span data-lang-key="prod_add_to_cart">Sepete Ekle</span>
+                                <span data-lang-key="prod_add_to_cart">Add to Cart</span>
                             </button>
                         </div>
                     </div>
@@ -153,7 +153,7 @@ export const ProductCard = memo(function ProductCard({
                 className="group relative bg-card overflow-hidden"
                 style={{
                     borderRadius: '16px',
-                    boxShadow: 'var(--shadow-maison-card)',
+                    boxShadow: 'var(--shadow-selis-card)',
                     cursor: 'pointer',
                     border: '1px solid var(--border)',
                 }}
@@ -165,7 +165,7 @@ export const ProductCard = memo(function ProductCard({
                     setIsHovered(false);
                     (e.currentTarget as HTMLElement).style.willChange = 'auto';
                 }}
-                whileHover={{ y: -8, boxShadow: 'var(--shadow-maison-card-hover)', borderColor: 'var(--maison-gold)' }}
+                whileHover={{ y: -8, boxShadow: 'var(--shadow-selis-card-hover)', borderColor: 'var(--selis-gold)' }}
                 transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
             >
                 {/* ── IMAGE AREA ── */}
@@ -203,7 +203,7 @@ export const ProductCard = memo(function ProductCard({
                     {/* Brand */}
                     <span
                         className="uppercase font-medium block"
-                        style={{ fontSize: '10px', letterSpacing: '0.2em', color: 'var(--maison-gold)' }}
+                        style={{ fontSize: '10px', letterSpacing: '0.2em', color: 'var(--selis-gold)' }}
                     >
                         {product.brand}
                     </span>
@@ -224,7 +224,7 @@ export const ProductCard = memo(function ProductCard({
                             WebkitBoxOrient: 'vertical',
                             overflow: 'hidden',
                         }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--maison-gold)'; }}
+                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--selis-gold)'; }}
                         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--foreground)'; }}
                     >
                         <span data-lang-key={product.nameKey}>{product.name}</span>
@@ -255,10 +255,14 @@ export const ProductCard = memo(function ProductCard({
                             )}
                         </div>
 
-                        <div className="flex items-center gap-1" style={{ color: product.hasQuickShip ? 'var(--maison-success)' : 'var(--muted-foreground)' }}>
-                            {product.hasQuickShip ? <Zap size={12} fill="var(--maison-success)" /> : <Truck size={12} />}
+                        <div className="flex items-center gap-1" style={{ color: product.hasQuickShip ? 'var(--selis-success)' : 'var(--muted-foreground)' }}>
+                            {product.hasQuickShip ? <Zap size={12} fill="var(--selis-success)" /> : <Truck size={12} />}
                             <span style={{ fontSize: '10px', fontWeight: 500 }}>
-                                {product.hasQuickShip ? '⚡ 2 gün' : `${product.deliveryDays || 7} gün`}
+                                {product.hasQuickShip ? (
+                                    <>⚡ 2 <span data-lang-key="product_delivery">days</span></>
+                                ) : (
+                                    <>{product.deliveryDays || 7} <span data-lang-key="product_delivery">days</span></>
+                                )}
                             </span>
                         </div>
                     </div>

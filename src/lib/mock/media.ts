@@ -74,7 +74,7 @@ export const mockMediaFiles: MediaFile[] = [
     },
     {
         id: 'm_4',
-        name: 'maison-2026-katalog.pdf',
+        name: 'selis-2026-katalog.pdf',
         originalName: 'catalog_final_tr.pdf',
         type: 'pdf',
         mimeType: 'application/pdf',
@@ -82,7 +82,7 @@ export const mockMediaFiles: MediaFile[] = [
         size: 8700000,
         pages: 12,
         folderId: 'f_general',
-        altText: 'MAISON 2026 Ürün Kataloğu',
+        altText: 'SELIS 2026 Ürün Kataloğu',
         tags: ['katalog', 'pdf', 'doküman'],
         uploadedBy: { id: 'u_1', name: 'Ali Yılmaz', avatar: 'https://i.pravatar.cc/150?u=ali' },
         usages: [],

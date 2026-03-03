@@ -4,20 +4,29 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
+import { useGlobal } from '@/context/GlobalContext';
+import { translations } from '@/lib/i18n';
+
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 export function SectionHeader() {
+    const { language } = useGlobal();
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-60px' });
     const reduceMotion = useReducedMotion();
 
-    const baseAnim = reduceMotion
-        ? { initial: { opacity: 0 }, animate: isInView ? { opacity: 1 } : {} }
-        : null;
+    const t = (key: string) => {
+        const keys = key.split('.');
+        let result: any = translations[language as keyof typeof translations];
+        for (const k of keys) {
+            if (result && result[k]) result = result[k];
+            else return null;
+        }
+        return result;
+    };
 
     return (
         <div ref={ref} className="text-center mb-12 md:mb-16">
-            {/* ① Mini label */}
             <motion.div
                 className="flex items-center justify-center gap-3 mb-3"
                 initial={{ opacity: 0, y: reduceMotion ? 0 : 10 }}
@@ -36,9 +45,8 @@ export function SectionHeader() {
                         letterSpacing: '0.35em',
                         color: '#C9A96E',
                     }}
-                    data-lang-key="cat_badge"
                 >
-                    Yaşam Alanlarınız
+                    {t('hero_badge') || 'Kategoriler'}
                 </span>
                 <span
                     className="block h-px"
@@ -47,7 +55,6 @@ export function SectionHeader() {
                 />
             </motion.div>
 
-            {/* ② Ana başlık */}
             <motion.h2
                 id="categories-heading"
                 className="mt-3"
@@ -58,31 +65,27 @@ export function SectionHeader() {
                     fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)',
                     fontWeight: 400,
                     lineHeight: 1.2,
-                    color: '#1C1C1E',
                 }}
             >
-                <span className="text-2xl md:text-3xl lg:text-4xl" data-lang-key="cat_title_1">
-                    Yaşam Alanınızı{' '}
+                <span className="text-2xl md:text-3xl lg:text-4xl text-[#1C1C1E]">
+                    {t('cat_title_1') || 'Yaşam Alanınızı'}
                 </span>
+                <span className="mx-1" />
                 <em
                     className="text-2xl md:text-3xl lg:text-4xl"
                     style={{ fontStyle: 'italic', color: '#C9A96E' }}
-                    data-lang-key="cat_title_2"
                 >
-                    Keşfedin
+                    {t('cat_title_2') || 'Keşfedin'}
                 </em>
             </motion.h2>
 
-            {/* ③ Alt açıklama */}
             <motion.p
-                className="mt-4 text-sm leading-relaxed max-w-sm mx-auto"
-                style={{ color: 'rgba(28,28,30,0.6)' }}
+                className="mt-4 text-sm leading-relaxed max-w-sm mx-auto text-[#1C1C1E]/60"
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                data-lang-key="cat_desc"
             >
-                Her odanız için titizlikle seçilmiş, zamansız parçalar.
+                {t('cat_desc') || 'Her odanız için titizlikle seçilmiş, zamansız parçalar.'}
             </motion.p>
 
             {/* ④ Dekoratif ayraç */}

@@ -3,11 +3,11 @@ import { generateArticleSchema } from '@/lib/structured-data';
 import BlogPageClient from './BlogPageClient';
 
 export const metadata: Metadata = {
-    title: 'İlham & Rehberler | MAISON — Ev Dekorasyonu',
+    title: 'İlham & Rehberler | SELIS — Ev Dekorasyonu',
     description:
-        'Ev dekorasyonu rehberleri, mobilya alım tavsiyeleri, renk trendleri ve yaşam tarzı yazıları. MAISON uzmanlarından ilham alın.',
+        'Ev dekorasyonu rehberleri, mobilya alım tavsiyeleri, renk trendleri ve yaşam tarzı yazıları. SELIS uzmanlarından ilham alın.',
     openGraph: {
-        title: 'İlham & Rehberler — MAISON',
+        title: 'İlham & Rehberler — SELIS',
         description: 'Ev dekorasyonu rehberleri ve mobilya trendleri.',
         type: 'website',
         images: ['/images/gallery-1.jpg'],
@@ -152,9 +152,9 @@ export const CATEGORIES = ['Tümü', 'Dekorasyon', 'Alım Rehberi', 'Trend'];
 const listSchema = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
-    name: 'MAISON İlham & Rehberler',
+    name: 'SELIS İlham & Rehberler',
     description: 'Ev dekorasyonu ve mobilya alım rehberleri',
-    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maisonmobilya.com'}/blog`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://selismobilya.com'}/blog`,
     blogPost: BLOG_POSTS.slice(0, 3).map(post =>
         generateArticleSchema({
             headline: post.title,

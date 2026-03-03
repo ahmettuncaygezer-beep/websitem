@@ -19,7 +19,7 @@ async function fetchProductsPage(page: number, pageSize: number): Promise<Produc
         id: `product-p${page}-${i}`,
         slug: `product-p${page}-${i}`,
         name: `Ürün ${(page - 1) * pageSize + i + 1}`,
-        brand: 'MAISON Atelier',
+        brand: 'SELIS Atelier',
         price: 15000 + Math.floor(Math.random() * 60000),
         currency: 'TRY',
         categoryId: 'oturma-odasi',

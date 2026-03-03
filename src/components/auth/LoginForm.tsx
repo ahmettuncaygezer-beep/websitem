@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 interface Props {
     onForgotPassword: () => void;
@@ -20,6 +21,8 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
     const [error, setError] = useState('');
     const [emailFocused, setEmailFocused] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -43,8 +46,8 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
         <form onSubmit={handleSubmit} className="px-8 pb-6">
             {/* Email */}
             <div className="mb-4">
-                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }} data-lang-key="auth_email_label">
-                    E-posta adresi
+                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>
+                    {t('auth_email_label') || "E-posta adresi"}
                 </label>
                 <div className="relative">
                     <Mail
@@ -59,8 +62,7 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
                         onFocus={() => setEmailFocused(true)}
                         onBlur={() => setEmailFocused(false)}
                         autoComplete="email"
-                        placeholder="ornek@email.com"
-                        data-lang-key="auth_email_placeholder"
+                        placeholder={t('auth_email_placeholder') || "ornek@email.com"}
                         className="w-full pl-10 pr-4 py-3 text-[14px] outline-none transition-colors duration-200"
                         style={{
                             border: error ? '1px solid #E53935' : emailFocused ? '1px solid #C9A96E' : '1px solid #E0E0E0',
@@ -73,8 +75,8 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
 
             {/* Password */}
             <div className="mb-3">
-                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }} data-lang-key="auth_password_label">
-                    Şifre
+                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>
+                    {t('auth_password_label') || "Şifre"}
                 </label>
                 <div className="relative">
                     <Lock
@@ -129,7 +131,7 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
                             </svg>
                         )}
                     </div>
-                    <span className="text-[12px]" style={{ color: '#666' }} data-lang-key="auth_remember_me">Beni Hatırla</span>
+                    <span className="text-[12px]" style={{ color: '#666' }}>{t('auth_remember_me') || "Beni Hatırla"}</span>
                 </label>
                 <button
                     type="button"
@@ -137,7 +139,7 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
                     className="text-[12px] hover:underline"
                     style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
-                    <span data-lang-key="auth_forgot_link">Şifremi Unuttum →</span>
+                    <span>{t('auth_forgot_link') || "Şifremi Unuttum →"}</span>
                 </button>
             </div>
 
@@ -145,27 +147,20 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
             <motion.button
                 type="submit"
                 disabled={loading}
-                whileHover={loading ? {} : { y: -1, backgroundColor: '#2C2C2E' }}
-                whileTap={loading ? {} : { scale: 0.98 }}
-                className="w-full py-3.5 text-[13px] font-semibold tracking-wide flex items-center justify-center gap-2"
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                className="w-full flex justify-center py-3.5 px-4 mb-4 border border-transparent rounded-sm shadow-sm text-sm font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed uppercase tracking-wider mt-6"
                 style={{
                     background: loading ? '#666' : '#1C1C1E',
                     color: 'white',
-                    borderRadius: '6px',
                     border: 'none',
                     cursor: loading ? 'not-allowed' : 'pointer',
                 }}
             >
                 {loading ? (
-                    <>
-                        <div
-                            className="animate-spin"
-                            style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid #C9A96E', borderRadius: '50%' }}
-                        />
-                        <span data-lang-key="auth_logging_in">Giriş yapılıyor...</span>
-                    </>
+                    <span>{t('auth_logging_in') || "Giriş yapılıyor..."}</span>
                 ) : (
-                    <span data-lang-key="auth_login_btn">Giriş Yap</span>
+                    <span>{t('auth_login_btn') || "Giriş Yap"}</span>
                 )}
             </motion.button>
 
@@ -189,14 +184,14 @@ export function LoginForm({ onForgotPassword, onSwitchToRegister }: Props) {
 
             {/* Switch to register */}
             <p className="text-center mt-4 text-[12px]" style={{ color: '#999' }}>
-                <span data-lang-key="auth_no_account">Hesabınız yok mu?</span>{' '}
+                <span>{t('auth_no_account') || "Hesabınız yok mu?"}</span>{' '}
                 <button
                     type="button"
                     onClick={onSwitchToRegister}
                     className="font-medium hover:underline"
                     style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
-                    <span data-lang-key="auth_register_link">Kayıt Olun →</span>
+                    <span>{t('auth_register_link') || "Kayıt Olun →"}</span>
                 </button>
             </p>
         </form>

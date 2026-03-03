@@ -8,7 +8,8 @@ import { X, ShoppingBag, Heart, ArrowRight } from 'lucide-react';
 import { ProductCardColors } from './ProductCardColors';
 import { ProductCardRating } from './ProductCardRating';
 import type { Product } from './product.types';
-import { useCart } from '@/hooks/useCart';
+import { useCart } from '@/context/CartContext';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface QuickViewModalProps {
     product: Product | null;
@@ -17,9 +18,10 @@ interface QuickViewModalProps {
 }
 
 export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps) {
-    const modalRef = useRef<HTMLDivElement>(null);
-    const [selectedColorId, setSelectedColorId] = useState('');
+    const { t, formatPrice } = useGlobal();
     const { addItem } = useCart();
+    const [selectedColorId, setSelectedColorId] = useState<string>('');
+    const modalRef = useRef<HTMLDivElement>(null);
 
     // Reset selected color when product changes
     useEffect(() => {
@@ -100,7 +102,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                         {/* Close */}
                         <button
                             onClick={onClose}
-                            aria-label="Kapat"
+                            aria-label={t('common_close')}
                             className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center bg-white hover:bg-[#F5F0EB] transition-all duration-200"
                             style={{ zIndex: 10, boxShadow: '0 2px 12px rgba(0,0,0,0.1)' }}
                         >
@@ -151,12 +153,12 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                                 {/* Price */}
                                 <div className="flex items-center gap-2 mt-1">
                                     <span className="text-lg font-bold" style={{ color: '#1C1C1E' }}>
-                                        ₺{product.price.toLocaleString('tr-TR')}
+                                        {formatPrice(product.price)}
                                     </span>
                                     {product.originalPrice && (
                                         <>
                                             <span className="text-sm line-through" style={{ color: '#999' }}>
-                                                ₺{product.originalPrice.toLocaleString('tr-TR')}
+                                                {formatPrice(product.originalPrice)}
                                             </span>
                                             <span className="text-xs font-semibold px-1.5 py-0.5 rounded-sm" style={{ background: '#E53935', color: 'white' }}>
                                                 %{discount}
@@ -169,7 +171,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                                 {product.colors.length > 0 && (
                                     <div className="mt-2">
                                         <p className="text-[11px] mb-1.5" style={{ color: '#999' }}>
-                                            Renk: <strong style={{ color: '#1C1C1E' }}>{selectedColor?.name}</strong>
+                                            <span data-lang-key="prod_color_label">Renk</span>: <strong style={{ color: '#1C1C1E' }}>{selectedColor?.name}</strong>
                                         </p>
                                         <ProductCardColors
                                             colors={product.colors}
@@ -205,10 +207,10 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                                                     {
                                                         id: product.id,
                                                         name: product.name,
-                                                        brand: product.brand,
+                                                        brand: product.brand ?? '',
                                                         price: product.price,
                                                         originalPrice: product.originalPrice ?? product.price,
-                                                        image: selectedColor?.image ?? product.colors[0]?.image ?? '',
+                                                        image: selectedColor?.image ?? product.images?.[0] ?? '',
                                                         href: `/urun/${product.slug}`
                                                     },
                                                     { selectedColor: selectedColor?.name }
@@ -218,7 +220,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                                         }}
                                     >
                                         <ShoppingBag size={16} />
-                                        Sepete Ekle
+                                        <span data-lang-key="prod_add_to_cart">Sepete Ekle</span>
                                     </button>
                                     <button
                                         className="w-12 flex items-center justify-center rounded-sm transition-colors duration-200"
@@ -228,7 +230,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                                             cursor: 'pointer',
                                         }}
                                         onClick={(e) => e.stopPropagation()}
-                                        aria-label="Favorilere ekle"
+                                        aria-label={t('common_wishlist_add')}
                                     >
                                         <Heart size={18} stroke="#1C1C1E" fill="transparent" />
                                     </button>
@@ -247,7 +249,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                                         (e.currentTarget as HTMLElement).style.textDecoration = 'none';
                                     }}
                                 >
-                                    Ürün sayfasına git <ArrowRight size={12} />
+                                    <span data-lang-key="common_go_to_product">Ürün sayfasına git</span> <ArrowRight size={12} />
                                 </Link>
                             </div>
                         </div>

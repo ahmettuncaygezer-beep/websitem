@@ -11,20 +11,24 @@ interface ImageSliderProps {
 const images = [
     {
         id: 1,
-        src: '/images/home/hero-1.jpg',
-        alt: 'Dark moody luxury living room',
+        // Yüksek çözünürlüklü lüks salon
+        src: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=2560',
+        alt: 'Lüks ve modern oturma odası',
     },
     {
         id: 2,
-        src: '/images/home/hero-2.jpg',
-        alt: 'Minimalist Scandinavian bedroom',
+        // Modern ve premium yatak odası
+        src: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&q=80&w=2560',
+        alt: 'Minimalist lüks yatak odası',
     },
     {
         id: 3,
-        src: '/images/home/hero-3.jpg',
-        alt: 'Modern dining room',
+        // Zarif yemek odası
+        src: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=2560',
+        alt: 'Zarif ve modern yemek odası',
     },
 ];
+
 
 export function ImageSlider({ parallaxOffset }: ImageSliderProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -46,10 +50,12 @@ export function ImageSlider({ parallaxOffset }: ImageSliderProps) {
             aria-hidden="true"
         >
             <div
-                className="absolute inset-0 w-full h-full"
+                className="absolute w-full"
                 style={{
+                    height: '115%',
+                    top: '-7.5%',
                     transform: `translateY(${parallaxOffset}px)`,
-                    willChange: 'transform', // GPU compositing layer
+                    willChange: 'transform',
                 }}
             >
                 <AnimatePresence initial={false}>
@@ -75,7 +81,7 @@ export function ImageSlider({ parallaxOffset }: ImageSliderProps) {
                                 priority={currentIndex === 0}
                                 className="object-cover"
                                 sizes="100vw"
-                                quality={90}
+                                quality={85}
                             />
                         </motion.div>
                     </motion.div>

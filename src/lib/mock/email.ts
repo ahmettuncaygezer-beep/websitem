@@ -77,7 +77,7 @@ export const mockTemplates: EmailTemplate[] = [
     { id: 'tm_1', name: 'Sipariş Onayı', description: 'Sipariş oluşturulunca tetiklenir.', trigger: 'Order Created', icon: 'ShoppingBag', htmlContent: '<h1>Siparişiniz Onaylandı</h1><p>Sayın {{müşteri_adı}}, {{sipariş_no}} numaralı siparişiniz alınmıştır.</p>' },
     { id: 'tm_2', name: 'Kargo Bildirimi', description: 'Ürün kargoya verilince gönderilir.', trigger: 'Order Shipped', icon: 'Truck', htmlContent: '<h1>Kargonuz Yolda</h1><p>Siparişiniz kargoya verilmiştir. Takip No: {{takip_no}}</p>' },
     { id: 'tm_3', name: 'Şifre Sıfırlama', description: 'Şifre sıfırlama talebinde gönderilir.', trigger: 'Password Reset', icon: 'Key', htmlContent: '<h1>Şifre Sıfırlama</h1><p>Şifrenizi sıfırlamak için {{link}} tıklayın.</p>' },
-    { id: 'tm_4', name: 'Hoş Geldiniz', description: 'Yeni üye kaydında gönderilir.', trigger: 'Registration', icon: 'UserPlus', htmlContent: '<h1>Hoş Geldiniz</h1><p>Maison ailesine hoş geldiniz.</p>' },
+    { id: 'tm_4', name: 'Hoş Geldiniz', description: 'Yeni üye kaydında gönderilir.', trigger: 'Registration', icon: 'UserPlus', htmlContent: '<h1>Hoş Geldiniz</h1><p>Selis ailesine hoş geldiniz.</p>' },
     { id: 'tm_5', name: 'Bülten', description: 'Manuel bülten gönderimleri için.', trigger: 'Manual', icon: 'Mail', htmlContent: '<h1>Haftalık Bülten</h1>{{content}}' },
     { id: 'tm_6', name: 'Teslimat Onayı', description: 'Ürün teslim edilince gönderilir.', trigger: 'Delivered', icon: 'CheckCircle', htmlContent: '<h1>Siparişiniz Teslim Edildi</h1><p>Keyifle kullanmanızı dileriz.</p>' }
 ];

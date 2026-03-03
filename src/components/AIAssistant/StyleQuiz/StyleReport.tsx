@@ -32,7 +32,7 @@ export function StyleReport({ profile, distribution, aiAnalysis }: Props) {
             const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`MAISON-Stil-Raporu-${profile.name}.pdf`);
+            pdf.save(`SELIS-Stil-Raporu-${profile.name}.pdf`);
         } catch (err) {
             console.error('PDF Export Error:', err);
         } finally {
@@ -44,7 +44,7 @@ export function StyleReport({ profile, distribution, aiAnalysis }: Props) {
         <>
             <div id="report-template" style={{ display: 'none', width: '210mm', padding: '20mm', background: 'white', color: '#1C1C1E', fontFamily: 'serif' }}>
                 <div style={{ borderBottom: '2px solid #C9A96E', paddingBottom: '10px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h1 style={{ margin: 0, fontSize: '24pt', fontWeight: 'bold' }}>MAISON</h1>
+                    <h1 style={{ margin: 0, fontSize: '24pt', fontWeight: 'bold' }}>SELIS</h1>
                     <span style={{ fontSize: '10pt', color: '#999' }}>{new Date().toLocaleDateString('tr-TR')}</span>
                 </div>
 
@@ -88,7 +88,7 @@ export function StyleReport({ profile, distribution, aiAnalysis }: Props) {
                 </div>
 
                 <div style={{ background: '#FAFAF8', padding: '20px', borderRadius: '10px', marginBottom: '30px' }}>
-                    <h4 style={{ fontSize: '12pt', marginBottom: '15px', color: '#1C1C1E', fontStyle: 'italic' }}>MAISON AI Yorumu</h4>
+                    <h4 style={{ fontSize: '12pt', marginBottom: '15px', color: '#1C1C1E', fontStyle: 'italic' }}>SELIS AI Yorumu</h4>
                     <p style={{ fontSize: '10pt', lineHeight: '1.8', color: '#666' }}>{aiAnalysis.replace(/(\r\n|\n|\r)/gm, " ")}</p>
                 </div>
 
@@ -106,7 +106,7 @@ export function StyleReport({ profile, distribution, aiAnalysis }: Props) {
                 </div>
 
                 <div style={{ marginTop: '40px', textAlign: 'center', fontSize: '9pt', color: '#999', borderTop: '1px solid #EEE', paddingTop: '10px' }}>
-                    Bu rapor maison.com.tr üzerinden oluşturulmuştur. Tüm hakları saklıdır.
+                    Bu rapor selis.com.tr üzerinden oluşturulmuştur. Tüm hakları saklıdır.
                 </div>
             </div>
         </>

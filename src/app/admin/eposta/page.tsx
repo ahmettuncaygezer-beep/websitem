@@ -41,7 +41,7 @@ export default function EmailCenterPage() {
             <div className="mb-12">
                 <div className="flex justify-between items-center mb-6">
                     <h3 className="text-[16px] font-semibold text-[#F5F0EB]">Son Gönderilenler</h3>
-                    <Link href="#" className="text-[12px] text-[#C9A96E] hover:underline font-semibold uppercase tracking-wider">Tüm Kampanyalar →</Link>
+                    <Link href="/admin/eposta" className="text-[12px] text-[#C9A96E] hover:underline font-semibold uppercase tracking-wider">Tüm Kampanyalar →</Link>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {mockCampaigns.map(camp => (

@@ -11,8 +11,8 @@ export interface MockUser {
 
 export const mockUser: MockUser = {
     id: 'usr_01',
-    name: 'Efe Gezer',
-    email: 'efe@maisonmobilya.com',
-    role: 'Chief Creative',
-    initials: 'EG',
+    name: 'Admin',
+    email: 'admin@selishome.com',
+    role: 'Administrator',
+    initials: 'AD',
 };

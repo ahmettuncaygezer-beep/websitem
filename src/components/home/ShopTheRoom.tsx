@@ -9,6 +9,7 @@ import { useCart } from '@/hooks/useCart';
 import { getProducts, getProductBySlug } from '@/lib/api';
 import { formatPrice } from '@/lib/constants';
 import { Product } from '@/types';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 const ROOMS = [
     {
@@ -29,6 +30,8 @@ export function ShopTheRoom() {
     const [products, setProducts] = useState<Record<string, Product>>({});
     const [loading, setLoading] = useState(true);
     const { addItem } = useCart();
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     const currentRoom = ROOMS[activeRoomIndex];
 
@@ -59,14 +62,14 @@ export function ShopTheRoom() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-14"
                 >
-                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="shoproom_badge">
-                        İlham Verici
+                    <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4">
+                        {t('shoproom_badge') || "İlham Verici"}
                     </p>
-                    <h2 className="text-headline text-charcoal" data-lang-key="shoproom_title">
-                        Kombini Satın Al
+                    <h2 className="text-headline text-foreground">
+                        {t('shoproom_title') || "Kombini Satın Al"}
                     </h2>
-                    <p className="text-body-lg mt-4 max-w-lg mx-auto" data-lang-key="shoproom_desc">
-                        İlham aldığınız görüntüden doğrudan alışveriş yapın.
+                    <p className="text-body-lg mt-4 max-w-lg mx-auto text-muted-foreground">
+                        {t('shoproom_desc') || "İlham aldığınız görüntüden doğrudan alışveriş yapın."}
                     </p>
                 </motion.div>
 
@@ -151,7 +154,7 @@ export function ShopTheRoom() {
                                                                     addItem({
                                                                         id: product.id,
                                                                         name: product.name,
-                                                                        brand: product.brand ?? 'MAISON',
+                                                                        brand: product.brand ?? 'SELIS',
                                                                         price: product.salePrice || product.price,
                                                                         originalPrice: product.price,
                                                                         image: product.images[0],
@@ -161,7 +164,7 @@ export function ShopTheRoom() {
                                                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-gold text-white text-[10px] font-sans font-semibold uppercase tracking-wider rounded-full hover:bg-gold-dark transition-colors"
                                                             >
                                                                 <ShoppingBag size={10} />
-                                                                <span data-lang-key="shoproom_btn_add">Ekle</span>
+                                                                <span>{t('shoproom_btn_add') || "Ekle"}</span>
                                                             </button>
                                                         </div>
                                                     </div>

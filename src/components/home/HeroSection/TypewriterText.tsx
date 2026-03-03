@@ -43,11 +43,17 @@ function useTypewriter(
                     setDisplayText(target.slice(0, displayText.length + 1));
                 }, typingSpeed);
             } else {
-                // Fully typed → pause then delete
-                timeoutRef.current = setTimeout(() => {
+                // Fully typed
+                if (texts.length <= 1) {
                     setIsTyping(false);
-                    setPhase('pause');
-                }, pauseAfterType);
+                    setPhase('idle'); // Just idle permanently if only 1 text
+                } else {
+                    // Pause then delete
+                    timeoutRef.current = setTimeout(() => {
+                        setIsTyping(false);
+                        setPhase('pause');
+                    }, pauseAfterType);
+                }
             }
         }
 
@@ -85,21 +91,24 @@ interface TypewriterTextProps {
     /** Milliseconds to wait before the first character types (orchestration) */
     typeStartDelay?: number;
     className?: string;
+    customTexts?: string[];
 }
 
 export function TypewriterText({
     typeStartDelay = 0,
     className = '',
+    customTexts,
 }: TypewriterTextProps) {
     const prefersReduced = useReducedMotion();
     const { t } = useGlobal();
 
-    const texts = [
-        t('hero.type_1'),
-        t('hero.type_2'),
-        t('hero.type_3'),
-        t('hero.type_4'),
+    const texts = customTexts && customTexts.length > 0 ? customTexts : [
+        t('hero_type_1'),
+        t('hero_type_2'),
+        t('hero_type_3'),
+        t('hero_type_4'),
     ];
+
     const { displayText, isTyping } = useTypewriter(texts, 80, 40, 3000, typeStartDelay);
 
     // Cursor fades out 2 s after typing completes each cycle
@@ -117,9 +126,11 @@ export function TypewriterText({
     if (prefersReduced) {
         return (
             <span className={className}>
-                <span className="block text-white not-italic" data-lang-key="hero_intro">Evinizin</span>
+                {(!customTexts || customTexts.length === 0) && (
+                    <span className="block text-white not-italic" data-lang-key="hero_intro">Evinizin</span>
+                )}
                 <span
-                    className="block italic"
+                    className={(!customTexts || customTexts.length === 0) ? "block italic" : "italic"}
                     style={{
                         fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
                         color: '#C9A96E',
@@ -133,10 +144,12 @@ export function TypewriterText({
 
     return (
         <span className={className}>
-            {/* Line 1 — always static */}
-            <span className="block text-white not-italic" data-lang-key="hero_intro">Evinizin</span>
+            {/* Line 1 — always static, hide if user provides custom texts */}
+            {(!customTexts || customTexts.length === 0) && (
+                <span className="block text-white not-italic" data-lang-key="hero_intro">Evinizin</span>
+            )}
             <span
-                className="block italic"
+                className={(!customTexts || customTexts.length === 0) ? "block italic" : "italic"}
                 style={{
                     fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
                     color: '#C9A96E',

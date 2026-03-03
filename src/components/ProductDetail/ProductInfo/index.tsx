@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useCart } from '@/hooks/useCart';
+import { useGlobal } from '@/context/GlobalContext';
 import { ProductBreadcrumb } from './ProductBreadcrumb';
 import { ProductTitle } from './ProductTitle';
 import { ProductPrice } from './ProductPrice';
@@ -33,10 +34,24 @@ export function ProductInfo({ product, selectedColorId, onColorChange, buttonRef
 
     const stock = 5; // placeholder for actual stock
     const selectedColor = product.colors.find((c) => c.id === selectedColorId);
+    const { t } = useGlobal();
+
+    // Map category slugs to translation keys
+    const categoryKeyMap: Record<string, string> = {
+        'oturma-odasi': 'cat_living_room',
+        'yatak-odasi': 'cat_bedroom',
+        'yemek-odasi': 'cat_dining',
+        'calisma-odasi': 'cat_office',
+        'aydinlatma': 'cat_lighting',
+        'dekorasyon': 'cat_decoration',
+        'genc-cocuk-odasi': 'cat_youth',
+    };
+    const categoryKey = product.categorySlug ? categoryKeyMap[product.categorySlug] : undefined;
+    const categoryLabel = categoryKey ? t(categoryKey) : (product.category || 'Oturma Odası');
 
     const breadcrumbs = [
-        { label: 'Ana Sayfa', href: '/' },
-        { label: product.category || 'Oturma Odası', href: `/kategori/${product.categorySlug || 'oturma-odasi'}` },
+        { label: t('common_home'), href: '/' },
+        { label: categoryLabel, href: `/kategori/${product.categorySlug || 'oturma-odasi'}` },
         { label: product.name },
     ];
 
@@ -61,7 +76,7 @@ export function ProductInfo({ product, selectedColorId, onColorChange, buttonRef
     return (
         <div>
             <ProductBreadcrumb items={breadcrumbs} />
-            <ProductTitle brand={product.brand} name={product.name} sku={`MSN-${product.slug.toUpperCase().slice(0, 8)}`} rating={product.rating} slug={product.slug} />
+            <ProductTitle brand={product.brand} name={product.name} sku={`SLS-${product.slug.toUpperCase().slice(0, 8)}`} rating={product.rating} slug={product.slug} />
             <ProductPrice price={product.price} originalPrice={product.originalPrice} />
 
             {product.colors.length > 0 && (

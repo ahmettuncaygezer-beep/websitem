@@ -62,23 +62,23 @@ export function PersonalizedShowcase() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                     >
-                        <div className="flex items-center gap-2 text-maison-gold mb-3">
+                        <div className="flex items-center gap-2 text-selis-gold mb-3">
                             <Sparkles size={18} />
-                            <span className="text-xs font-sans font-bold uppercase tracking-[0.3em]" data-lang-key="showcase.badge">
+                            <span className="text-xs font-sans font-bold uppercase tracking-[0.3em]" data-lang-key="showcase_badge">
                                 Senin İçin Seçtiklerimiz
                             </span>
                         </div>
                         <h2 className="text-display-sm text-foreground">
-                            <span data-lang-key="showcase.title_1">Hoş Geldin, </span>{userName}. <br />
-                            <span className="text-muted-foreground/60" data-lang-key="showcase.title_2">Sana Özel Seçkimiz</span>
+                            <span data-lang-key="showcase_title_1">Hoş Geldin, </span>{userName}. <br />
+                            <span className="text-muted-foreground/60" data-lang-key="showcase_title_2">Sana Özel Seçkimiz</span>
                         </h2>
                     </motion.div>
 
                     <Link
                         href="/kategori/oturma-odasi"
-                        className="group flex items-center gap-2 text-sm font-sans font-bold tracking-widest uppercase text-foreground hover:text-maison-gold transition-colors"
+                        className="group flex items-center gap-2 text-sm font-sans font-bold tracking-widest uppercase text-foreground hover:text-selis-gold transition-colors"
                     >
-                        <span data-lang-key="showcase.btn_all">Tümünü Gör</span>
+                        <span data-lang-key="showcase_btn_all">Tümünü Gör</span>
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>

@@ -32,7 +32,7 @@ const moduleIcons: Record<string, any> = {
 };
 
 export function UserTable({ users }: UserTableProps) {
-    const currentUserEmail = 'ali.yilmaz@maison.com'; // Mock current user
+    const currentUserEmail = 'ali.yilmaz@selis.com'; // Mock current user
 
     return (
         <div className="w-full overflow-hidden bg-[#1C1C1E] border border-white/[0.06] rounded-sm">

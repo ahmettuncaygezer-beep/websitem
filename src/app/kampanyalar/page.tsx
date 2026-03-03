@@ -2,77 +2,80 @@
 
 import Link from 'next/link';
 import { Tag, Percent, ArrowRight, Clock } from 'lucide-react';
-
-const campaigns = [
-    {
-        id: 1,
-        title: 'Luna Köşe Koltuk\'ta %17 İndirim',
-        description: 'Bu hafta sınırlı stokla premium Luna koleksiyonunda özel indirim fırsatı.',
-        badge: 'Bu Hafta',
-        badgeColor: '#C9A96E',
-        discount: '%17',
-        category: 'Oturma Odası',
-        href: '/urun/luna-kose-koltuk',
-        endsIn: '3 gün',
-    },
-    {
-        id: 2,
-        title: 'Yatak Setlerinde %20 İndirim',
-        description: 'Yatak + baza + başlık kombilerinde büyük tasarruf fırsatı.',
-        badge: 'Popüler',
-        badgeColor: '#C67D5B',
-        discount: '%20',
-        category: 'Yatak Odası',
-        href: '/kategori/yatak-odasi',
-        endsIn: '5 gün',
-    },
-    {
-        id: 3,
-        title: 'Sandalye Setlerinde %15 İndirim',
-        description: 'Yemek odası sandalye setlerinde avantajlı fiyatlar.',
-        badge: 'Yeni',
-        badgeColor: '#8B9E82',
-        discount: '%15',
-        category: 'Yemek Odası',
-        href: '/kategori/sandalyeler',
-        endsIn: '7 gün',
-    },
-    {
-        id: 4,
-        title: 'Ev Ofis Setlerinde Ücretsiz Kargo',
-        description: 'Çalışma masası ve ofis koltuğu birlikte alımlarında ücretsiz kurulum ve kargo.',
-        badge: 'Kargo Bedava',
-        badgeColor: '#1C1C1E',
-        discount: 'ÜCRETSİZ',
-        category: 'Çalışma Odası',
-        href: '/kategori/calisma-odasi',
-        endsIn: '10 gün',
-    },
-    {
-        id: 5,
-        title: 'Aydınlatmada Ücretsiz Montaj',
-        description: 'Seçili avize ve lambader alımlarında evinizde ücretsiz montaj hizmeti.',
-        badge: 'Hizmet',
-        badgeColor: '#C9A96E',
-        discount: 'MONTAJ',
-        category: 'Aydınlatma',
-        href: '/kategori/aydinlatma',
-        endsIn: '14 gün',
-    },
-    {
-        id: 6,
-        title: 'Dekorasyonda 3 Al 2 Öde',
-        description: 'Dekorasyon ürünlerinde 3 ürün al, en ucuzunu ücretsiz kap.',
-        badge: 'Fırsat',
-        badgeColor: '#C67D5B',
-        discount: '3=2',
-        category: 'Dekorasyon',
-        href: '/kategori/dekorasyon',
-        endsIn: '21 gün',
-    },
-];
+import { useGlobal } from '@/context/GlobalContext';
 
 export default function KampanyalarPage() {
+    const { t } = useGlobal();
+
+    const campaigns = [
+        {
+            id: 1,
+            title: t('campaigns_c1_title'),
+            description: t('campaigns_c1_desc'),
+            badge: t('campaigns_c1_badge'),
+            badgeColor: '#C9A96E',
+            discount: '%17',
+            category: t('nav_living_room'),
+            href: '/urun/luna-kose-koltuk',
+            endsIn: '3',
+        },
+        {
+            id: 2,
+            title: t('campaigns_c2_title'),
+            description: t('campaigns_c2_desc'),
+            badge: t('campaigns_c2_badge'),
+            badgeColor: '#C67D5B',
+            discount: '%20',
+            category: t('nav_bedroom'),
+            href: '/kategori/yatak-odasi',
+            endsIn: '5',
+        },
+        {
+            id: 3,
+            title: t('campaigns_c3_title'),
+            description: t('campaigns_c3_desc'),
+            badge: t('campaigns_c3_badge'),
+            badgeColor: '#8B9E82',
+            discount: '%15',
+            category: t('nav_dining'),
+            href: '/kategori/sandalyeler',
+            endsIn: '7',
+        },
+        {
+            id: 4,
+            title: t('campaigns_c4_title'),
+            description: t('campaigns_c4_desc'),
+            badge: t('campaigns_c4_badge'),
+            badgeColor: '#1C1C1E',
+            discount: t('campaigns_free'),
+            category: t('nav_office'),
+            href: '/kategori/calisma-odasi',
+            endsIn: '10',
+        },
+        {
+            id: 5,
+            title: t('campaigns_c5_title'),
+            description: t('campaigns_c5_desc'),
+            badge: t('campaigns_c5_badge'),
+            badgeColor: '#C9A96E',
+            discount: t('campaigns_assembly'),
+            category: t('nav_lighting'),
+            href: '/kategori/aydinlatma',
+            endsIn: '14',
+        },
+        {
+            id: 6,
+            title: t('campaigns_c6_title'),
+            description: t('campaigns_c6_desc'),
+            badge: t('campaigns_c6_badge'),
+            badgeColor: '#C67D5B',
+            discount: '3=2',
+            category: t('nav_decoration'),
+            href: '/kategori/dekorasyon',
+            endsIn: '21',
+        },
+    ];
+
     return (
         <main id="main-content" className="min-h-screen" style={{ background: '#FAF8F5' }}>
             {/* Hero */}
@@ -84,17 +87,17 @@ export default function KampanyalarPage() {
                     <div className="flex items-center justify-center gap-2 mb-4">
                         <Tag size={16} style={{ color: '#C9A96E' }} />
                         <span className="text-[11px] uppercase tracking-[0.2em] font-bold" style={{ color: '#C9A96E' }}>
-                            Fırsatlar & Kampanyalar
+                            {t('campaigns_subtitle')}
                         </span>
                     </div>
                     <h1
                         className="text-4xl md:text-5xl font-bold text-white mb-4"
                         style={{ fontFamily: 'var(--font-playfair, "Playfair Display", Georgia, serif)' }}
                     >
-                        Özel Teklifler
+                        {t('campaigns_title')}
                     </h1>
                     <p className="text-white/60 text-base max-w-md mx-auto">
-                        MAISON&apos;un seçkin kampanyaları ile evinizi premium mobilyalarla donaturken tasarruf edin.
+                        {t('campaigns_description')}
                     </p>
                 </div>
             </section>
@@ -135,7 +138,9 @@ export default function KampanyalarPage() {
                                 {/* Time left */}
                                 <div className="absolute bottom-3 right-3 flex items-center gap-1">
                                     <Clock size={11} style={{ color: '#999' }} />
-                                    <span className="text-[11px]" style={{ color: '#999' }}>{campaign.endsIn} kaldı</span>
+                                    <span className="text-[11px]" style={{ color: '#999' }}>
+                                        {campaign.endsIn} {t('campaigns_left_suffix')}
+                                    </span>
                                 </div>
                             </div>
 
@@ -155,7 +160,7 @@ export default function KampanyalarPage() {
                              group-hover:tracking-widest transition-all duration-200"
                                     style={{ color: '#C9A96E', borderColor: '#C9A96E' }}
                                 >
-                                    Fırsatı İncele <ArrowRight size={11} />
+                                    {t('campaigns_view_deal')} <ArrowRight size={11} />
                                 </span>
                             </div>
                         </Link>
@@ -168,15 +173,17 @@ export default function KampanyalarPage() {
                     style={{ background: '#1C1C1E' }}
                 >
                     <h2 className="text-2xl font-bold text-white mb-3" style={{ fontFamily: 'var(--font-playfair, serif)' }}>
-                        Tüm Koleksiyonumuzu Keşfedin
+                        {t('campaigns_explore_all')}
                     </h2>
-                    <p className="text-white/60 text-sm mb-6">Premium mobilya ve dekorasyon ürünlerinin tamamına göz atın.</p>
+                    <p className="text-white/60 text-sm mb-6">
+                        {t('campaigns_explore_desc')}
+                    </p>
                     <Link
                         href="/kategori/oturma-odasi"
                         className="inline-flex items-center gap-2 px-8 py-3 font-semibold text-sm transition-all duration-200 hover:gap-3"
                         style={{ background: '#C9A96E', color: 'white' }}
                     >
-                        Alışverişe Başla <ArrowRight size={16} />
+                        {t('campaigns_shop_start')} <ArrowRight size={16} />
                     </Link>
                 </div>
             </section>

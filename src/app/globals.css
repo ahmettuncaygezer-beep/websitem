@@ -58,81 +58,81 @@
   --radius-4xl: calc(var(--radius) + 16px);
 
   /* ══════════════════════════════════════════════════
-     MAISON DESIGN SYSTEM — Full Token Integration
-     Tailwind v4: bg-maison-primary-800, text-maison-accent-500, etc.
+     SELIS DESIGN SYSTEM — Full Token Integration
+     Tailwind v4: bg-selis-primary-800, text-selis-accent-500, etc.
   ══════════════════════════════════════════════════ */
 
   /* ── Primary (Anthracite) ── */
-  --color-maison-primary-50: #F7F7F7;
-  --color-maison-primary-100: #E8E8E8;
-  --color-maison-primary-200: #D4D4D4;
-  --color-maison-primary-300: #ABABAB;
-  --color-maison-primary-400: #737373;
-  --color-maison-primary-500: #525252;
-  --color-maison-primary-600: #404040;
-  --color-maison-primary-700: #2C2C2E;
-  --color-maison-primary-800: #1C1C1E;
-  --color-maison-primary-900: #0D0D0F;
-  --color-maison-primary: #1C1C1E;
+  --color-selis-primary-50: #F7F7F7;
+  --color-selis-primary-100: #E8E8E8;
+  --color-selis-primary-200: #D4D4D4;
+  --color-selis-primary-300: #ABABAB;
+  --color-selis-primary-400: #737373;
+  --color-selis-primary-500: #525252;
+  --color-selis-primary-600: #404040;
+  --color-selis-primary-700: #2C2C2E;
+  --color-selis-primary-800: #1C1C1E;
+  --color-selis-primary-900: #0D0D0F;
+  --color-selis-primary: #1C1C1E;
 
   /* ── Accent (Warm Gold) ── */
-  --color-maison-accent-50: #FDF9F0;
-  --color-maison-accent-100: #FAF0D9;
-  --color-maison-accent-200: #F3DFB0;
-  --color-maison-accent-300: #E8C97A;
-  --color-maison-accent-400: #D4AA6E;
-  --color-maison-accent-500: #C9A96E;
-  --color-maison-accent-600: #B8915A;
-  --color-maison-accent-700: #9A7440;
-  --color-maison-accent-800: #7A5A2C;
-  --color-maison-accent-900: #5C4020;
-  --color-maison-accent: #C9A96E;
+  --color-selis-accent-50: #FDF9F0;
+  --color-selis-accent-100: #FAF0D9;
+  --color-selis-accent-200: #F3DFB0;
+  --color-selis-accent-300: #E8C97A;
+  --color-selis-accent-400: #D4AA6E;
+  --color-selis-accent-500: #C9A96E;
+  --color-selis-accent-600: #B8915A;
+  --color-selis-accent-700: #9A7440;
+  --color-selis-accent-800: #7A5A2C;
+  --color-selis-accent-900: #5C4020;
+  --color-selis-accent: #C9A96E;
 
   /* ── Secondary (Cream) ── */
-  --color-maison-secondary-50: #FDFCFA;
-  --color-maison-secondary-100: #FAF8F5;
-  --color-maison-secondary-200: #F5F0EB;
-  --color-maison-secondary-300: #EDE5DC;
-  --color-maison-secondary-400: #E2D5C8;
-  --color-maison-secondary-500: #D4C4B0;
-  --color-maison-secondary-600: #C0AB91;
-  --color-maison-secondary-700: #A08B6E;
-  --color-maison-secondary-800: #7D6A50;
-  --color-maison-secondary-900: #5A4C38;
-  --color-maison-secondary: #F5F0EB;
+  --color-selis-secondary-50: #FDFCFA;
+  --color-selis-secondary-100: #FAF8F5;
+  --color-selis-secondary-200: #F5F0EB;
+  --color-selis-secondary-300: #EDE5DC;
+  --color-selis-secondary-400: #E2D5C8;
+  --color-selis-secondary-500: #D4C4B0;
+  --color-selis-secondary-600: #C0AB91;
+  --color-selis-secondary-700: #A08B6E;
+  --color-selis-secondary-800: #7D6A50;
+  --color-selis-secondary-900: #5A4C38;
+  --color-selis-secondary: #F5F0EB;
 
   /* ── Semantic ── */
-  --color-maison-success: #4CAF50;
-  --color-maison-success-light: #F0FFF4;
-  --color-maison-error: #E53935;
-  --color-maison-error-light: #FFF5F5;
-  --color-maison-warning: #FF9800;
-  --color-maison-warning-light: #FFFBF0;
-  --color-maison-info: #3B82F6;
-  --color-maison-info-light: #EFF6FF;
+  --color-selis-success: #4CAF50;
+  --color-selis-success-light: #F0FFF4;
+  --color-selis-error: #E53935;
+  --color-selis-error-light: #FFF5F5;
+  --color-selis-warning: #FF9800;
+  --color-selis-warning-light: #FFFBF0;
+  --color-selis-info: #3B82F6;
+  --color-selis-info-light: #EFF6FF;
 
   /* ── Brand ── */
-  --color-maison-whatsapp: #25D366;
-  --color-maison-instagram: #E1306C;
+  --color-selis-whatsapp: #25D366;
+  --color-selis-instagram: #E1306C;
 
   /* ── Shadows (box-shadow-*) ── */
-  --shadow-maison-card: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04);
-  --shadow-maison-card-hover: 0 8px 24px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-maison-navbar: 0 1px 20px rgba(0, 0, 0, 0.08);
-  --shadow-maison-drawer: -4px 0 40px rgba(0, 0, 0, 0.12);
-  --shadow-maison-bottom-nav: 0 -4px 20px rgba(0, 0, 0, 0.06);
-  --shadow-maison-sticky-cart: 0 -8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-maison-mega-menu: 0 20px 60px rgba(0, 0, 0, 0.12);
-  --shadow-maison-toast: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --shadow-maison-gold: 0 8px 24px rgba(201, 169, 110, 0.35);
-  --shadow-maison-gold-sm: 0 4px 12px rgba(201, 169, 110, 0.25);
-  --shadow-maison-success: 0 4px 12px rgba(76, 175, 80, 0.30);
-  --shadow-maison-error: 0 4px 12px rgba(229, 57, 53, 0.30);
-  --shadow-maison-whatsapp: 0 4px 20px rgba(37, 211, 102, 0.40);
-  --shadow-maison-glass: 0 8px 32px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+  --shadow-selis-card: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-selis-card-hover: 0 8px 24px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-selis-navbar: 0 1px 20px rgba(0, 0, 0, 0.08);
+  --shadow-selis-drawer: -4px 0 40px rgba(0, 0, 0, 0.12);
+  --shadow-selis-bottom-nav: 0 -4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-selis-sticky-cart: 0 -8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-selis-mega-menu: 0 20px 60px rgba(0, 0, 0, 0.12);
+  --shadow-selis-toast: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-selis-gold: 0 8px 24px rgba(201, 169, 110, 0.35);
+  --shadow-selis-gold-sm: 0 4px 12px rgba(201, 169, 110, 0.25);
+  --shadow-selis-success: 0 4px 12px rgba(76, 175, 80, 0.30);
+  --shadow-selis-error: 0 4px 12px rgba(229, 57, 53, 0.30);
+  --shadow-selis-whatsapp: 0 4px 20px rgba(37, 211, 102, 0.40);
+  --shadow-selis-glass: 0 8px 32px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.20);
 
   /* ── Custom border radius ── */
-  --radius-maison: 2px;
+  --radius-selis: 2px;
 
   /* ── Screens ── */
   --breakpoint-xs: 375px;
@@ -158,11 +158,11 @@
   --color-admin-info: #0A84FF;
 
   /* ── Custom keyframes ── */
-  --animate-maison-fade-in: maison-fade-in 0.3s cubic-bezier(0, 0, 0.2, 1) forwards;
-  --animate-maison-fade-in-up: maison-fade-in-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  --animate-maison-scale-in: maison-scale-in 0.2s cubic-bezier(0, 0, 0.2, 1) forwards;
-  --animate-maison-spin: maison-spin 0.8s linear infinite;
-  --animate-maison-wa-pulse: maison-wa-pulse 2s ease-out infinite;
+  --animate-selis-fade-in: selis-fade-in 0.3s cubic-bezier(0, 0, 0.2, 1) forwards;
+  --animate-selis-fade-in-up: selis-fade-in-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  --animate-selis-scale-in: selis-scale-in 0.2s cubic-bezier(0, 0, 0.2, 1) forwards;
+  --animate-selis-spin: selis-spin 0.8s linear infinite;
+  --animate-selis-wa-pulse: selis-wa-pulse 2s ease-out infinite;
   --animate-shimmer: shimmer 1.5s infinite;
 }
 
@@ -188,11 +188,11 @@
   --input: #E8E2DB;
   --ring: #C4A265;
 
-  /* ── MAISON Hero Design Tokens ── */
-  --maison-primary: #1C1C1E;
-  --maison-gold: #C9A96E;
-  --maison-gold-dark: #B8915A;
-  --maison-cream: #F5F0EB;
+  /* ── SELIS Hero Design Tokens ── */
+  --selis-primary: #1C1C1E;
+  --selis-gold: #C9A96E;
+  --selis-gold-dark: #B8915A;
+  --selis-cream: #F5F0EB;
 
   /* ── Color shortcuts for JS access ── */
   --color-accent: #BD8C40;
@@ -236,32 +236,32 @@
 
 /* ── Dark Mode (Elegant Deep Midnight) ──────────────────────────────── */
 .dark {
-  --background: #050505;
-  --foreground: #FDFBEE;
-  --card: #0D0D0F;
-  --card-foreground: #FDFBEE;
-  --popover: #0D0D0F;
-  --popover-foreground: #FDFBEE;
-  --primary: #D99B4B;
-  --primary-foreground: #050505;
-  --secondary: #0F0F10;
-  --secondary-foreground: #FDFBEE;
-  --muted: #1A1A1C;
-  --muted-foreground: #8E8E93;
-  --accent: #1A1A1C;
-  --accent-foreground: #FDFBEE;
+  --background: #09090B;
+  --foreground: #FCFBF7;
+  --card: #121212;
+  --card-foreground: #FCFBF7;
+  --popover: #121212;
+  --popover-foreground: #FCFBF7;
+  --primary: #C9A96E;
+  --primary-foreground: #09090B;
+  --secondary: #18181B;
+  --secondary-foreground: #FCFBF7;
+  --muted: #27272A;
+  --muted-foreground: #A1A1AA;
+  --accent: #27272A;
+  --accent-foreground: #FCFBF7;
   --destructive: oklch(0.6 0.22 27);
-  --border: rgba(255, 255, 255, 0.04);
-  --input: rgba(255, 255, 255, 0.04);
-  --ring: #D99B4B;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #C9A96E;
 
-  /* MAISON Dark Tokens */
-  --maison-primary: #FDFBEE;
-  --maison-gold: #D99B4B;
-  --maison-gold-dark: #BD8C40;
-  --maison-cream: #0D0D0F;
-  --glass-bg: rgba(5, 5, 5, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.05);
+  /* SELIS Dark Tokens */
+  --selis-primary: #FCFBF7;
+  --selis-gold: #C9A96E;
+  --selis-gold-dark: #B8915A;
+  --selis-cream: #121212;
+  --glass-bg: rgba(9, 9, 11, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
   --glass-blur: blur(30px) saturate(220%);
 }
 

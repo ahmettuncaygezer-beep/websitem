@@ -4,12 +4,12 @@ import {
 } from '@/types/settings';
 
 export const mockGeneralSettings: GeneralSettings = {
-    siteName: 'MAISON',
+    siteName: 'SELIS',
     siteSlogan: 'Lüks mobilyada Türk ustalığı',
-    siteDescription: 'MAISON, premium mobilya ve iç mimarlık çözümleri sunan lüks bir markadır.',
-    contactEmail: 'info@maison.com.tr',
+    siteDescription: 'SELIS HOME CONCEPT, premium mobilya ve iç mimarlık çözümleri sunan lüks bir markadır.',
+    contactEmail: 'info@selis.com.tr',
     contactPhone: '+90 212 555 00 00',
-    supportEmail: 'destek@maison.com.tr',
+    supportEmail: 'destek@selis.com.tr',
     currency: 'TRY',
     currencyFormat: '1.247,50 ₺',
     defaultLanguage: 'tr',
@@ -75,12 +75,12 @@ export const mockShippingSettings: ShippingSettings = {
     carriers: [
         {
             id: 'yex', name: 'YEX Kargo', logo: '🚚', enabled: true,
-            apiConfig: { apiKey: 'yex-123', senderCode: 'MAISON-99' },
+            apiConfig: { apiKey: 'yex-123', senderCode: 'SELIS-99' },
             autoLabel: true, trackingSms: true
         },
         {
             id: 'aras', name: 'Aras Kargo', logo: '📦', enabled: true,
-            apiConfig: { username: 'maison', password: '••••' },
+            apiConfig: { username: 'selis', password: '••••' },
             autoLabel: false, trackingSms: true
         }
     ],
@@ -100,7 +100,7 @@ export const mockShippingSettings: ShippingSettings = {
 };
 
 export const mockNotificationSettings: NotificationSettings = {
-    adminEmails: ['admin@maison.com.tr', 'ali@maison.com.tr'],
+    adminEmails: ['admin@selis.com.tr', 'ali@selis.com.tr'],
     emailNotifications: {
         'new_order': true,
         'order_status': true,
@@ -111,9 +111,9 @@ export const mockNotificationSettings: NotificationSettings = {
     sms: {
         enabled: true,
         provider: 'netgsm',
-        username: 'maisonsms',
+        username: 'selissms',
         password: '••••••••',
-        senderName: 'MAISON',
+        senderName: 'SELIS',
         events: {
             'customer_order_confirm': true,
             'customer_shipping': true,

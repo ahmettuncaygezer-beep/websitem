@@ -5,12 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check } from 'lucide-react';
 
 const FEATURES = [
-    'El yapımı ahşap iskelet',
-    'Yüksek yoğunluklu sünger dolgu',
-    'Çıkarılabilir ve yıkanabilir kılıf',
-    'OEKO-TEX® sertifikalı kumaş',
-    'Solmaya dayanıklı boyama',
-    'Anti-alerjik iç dolgu',
+    { key: 'pdp_feature_1', text: 'El yapımı ahşap iskelet' },
+    { key: 'pdp_feature_2', text: 'Yüksek yoğunluklu sünger dolgu' },
+    { key: 'pdp_feature_3', text: 'Çıkarılabilir ve yıkanabilir kılıf' },
+    { key: 'pdp_feature_4', text: 'OEKO-TEX® sertifikalı kumaş' },
+    { key: 'pdp_feature_5', text: 'Solmaya dayanıklı boyama' },
+    { key: 'pdp_feature_6', text: 'Anti-alerjik iç dolgu' },
 ];
 
 interface Props { description?: string; }
@@ -25,27 +25,27 @@ export function DescriptionTab({ description }: Props) {
             <div className="md:col-span-3">
                 <div className="relative" style={{ maxHeight: expanded ? 'none' : '200px', overflow: 'hidden' }}>
                     {text.split('\n\n').map((p, i) => (
-                        <p key={i} className="text-[14px] leading-relaxed mb-4" style={{ color: '#444' }}>{p}</p>
+                        <p key={i} className="text-[14px] leading-relaxed mb-4 text-muted-foreground">{p}</p>
                     ))}
                     {!expanded && (
-                        <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none" style={{ background: 'linear-gradient(transparent, white)' }} />
+                        <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none bg-gradient-to-t from-background to-transparent" />
                     )}
                 </div>
                 {!expanded && (
                     <button onClick={() => setExpanded(true)} className="mt-2 text-[13px] font-medium" style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer' }}>
-                        Daha Fazla Göster ▾
+                        <span data-lang-key="pdp_show_more">Daha Fazla Göster ▾</span>
                     </button>
                 )}
             </div>
 
             {/* Right — features */}
             <div className="md:col-span-2">
-                <h3 className="text-lg mb-4" style={{ fontFamily: 'var(--font-playfair, serif)', fontWeight: 400, color: '#1C1C1E' }}>Öne Çıkan Özellikler</h3>
+                <h3 data-lang-key="pdp_highlighted_features" className="text-lg mb-4 text-foreground font-normal" style={{ fontFamily: 'var(--font-playfair, serif)' }}>Öne Çıkan Özellikler</h3>
                 <ul className="space-y-3">
                     {FEATURES.map((f, i) => (
                         <li key={i} className="flex items-start gap-3">
-                            <Check size={16} style={{ color: '#C9A96E', marginTop: 2, flexShrink: 0 }} />
-                            <span className="text-[13px]" style={{ color: '#444' }}>{f}</span>
+                            <Check size={16} className="text-selis-gold mt-[2px] shrink-0" />
+                            <span data-lang-key={f.key} className="text-[13px] text-muted-foreground">{f.text}</span>
                         </li>
                     ))}
                 </ul>

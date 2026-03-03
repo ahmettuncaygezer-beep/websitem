@@ -46,7 +46,7 @@ export function ScrollIndicator() {
             <span
                 className="mt-3 uppercase tracking-[0.25em] text-white/50"
                 style={{ fontSize: '10px' }}
-                data-lang-key="common.discover"
+                data-lang-key="common_discover"
             >
                 Keşfet
             </span>

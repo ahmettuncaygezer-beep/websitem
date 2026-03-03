@@ -12,12 +12,12 @@ const STEPS = [
 
 export function OrderTimeline() {
     return (
-        <div className="bg-white p-8 rounded-2xl border border-[#E8E3DC] shadow-sm">
-            <h3 className="text-[14px] font-bold text-[#1C1C1E] uppercase tracking-wider mb-8">Sipariş Süreci</h3>
+        <div className="bg-card p-8 rounded-2xl border border-border shadow-sm">
+            <h3 className="text-[14px] font-bold text-foreground uppercase tracking-wider mb-8">Sipariş Süreci</h3>
 
             <div className="space-y-8 relative">
                 {/* Vertical Line */}
-                <div className="absolute left-[15px] top-2 bottom-2 w-0.5 bg-[#F0EDE8]" />
+                <div className="absolute left-[15px] top-2 bottom-2 w-0.5 bg-border" />
 
                 {STEPS.map((step, index) => {
                     const isCompleted = step.status === 'completed';
@@ -27,23 +27,23 @@ export function OrderTimeline() {
                         <div key={step.id} className="relative flex items-start gap-6 group">
                             <div className={`
                 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500
-                ${isCompleted ? 'bg-[#C9A96E] text-white shadow-lg' : isActive ? 'bg-[#1C1C1E] text-white scale-110 shadow-xl' : 'bg-white border-2 border-[#F0EDE8] text-[#E0E0E0]'}
+                ${isCompleted ? 'bg-selis-gold text-white shadow-lg' : isActive ? 'bg-foreground text-background scale-110 shadow-xl' : 'bg-background border-2 border-border text-muted-foreground/30'}
               `}>
                                 <step.icon size={16} />
                                 {isActive && (
                                     <motion.div
                                         animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0, 0.5] }}
                                         transition={{ repeat: Infinity, duration: 2 }}
-                                        className="absolute inset-0 rounded-full border-2 border-[#1C1C1E]"
+                                        className="absolute inset-0 rounded-full border-2 border-foreground"
                                     />
                                 )}
                             </div>
 
                             <div>
-                                <p className={`text-[14px] font-bold ${isActive ? 'text-[#1C1C1E]' : isCompleted ? 'text-[#1C1C1E]' : 'text-[#999]'}`}>
+                                <p className={`text-[14px] font-bold ${isActive ? 'text-foreground' : isCompleted ? 'text-foreground' : 'text-muted-foreground'}`}>
                                     {step.title}
                                 </p>
-                                <p className="text-[12px] text-[#999] mt-0.5">{step.date}</p>
+                                <p className="text-[12px] text-muted-foreground mt-0.5">{step.date}</p>
                             </div>
                         </div>
                     );

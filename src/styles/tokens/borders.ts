@@ -1,5 +1,5 @@
 /**
- * MAISON Border System
+ * SELIS Border System
  * ─────────────────────────────────────────────
  * Usage: import { borders } from '@/lib/design-system'
  */
@@ -11,14 +11,14 @@ export const borders = {
     // ── BORDER RADIUS ────────────────────────────────────────────────
     radius: {
         none: '0px',
-        xs: '2px',    // Buttons, cards (MAISON minimal language)
+        xs: '2px',    // Buttons, cards (SELIS minimal language)
         sm: '4px',    // Input fields, badges
         md: '8px',    // Dropdowns
         lg: '12px',   // Modals
         xl: '16px',   // Bottom sheet top corners
         '2xl': '24px',   // Pill buttons
         full: '9999px', // Circle buttons, full-pill badges
-        DEFAULT: '2px',    // MAISON default — minimal, luxury
+        DEFAULT: '2px',    // SELIS default — minimal, luxury
     },
 
     // ── BORDER WIDTHS ────────────────────────────────────────────────

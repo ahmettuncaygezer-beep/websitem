@@ -32,7 +32,7 @@ export default function InstagramCard({
         >
             {/* STRETCHED LINK TO INSTAGRAM (covers entire card) */}
             <a
-                href="https://instagram.com/maisonmobilya"
+                href="https://instagram.com/selismobilya"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="absolute inset-0 z-10"

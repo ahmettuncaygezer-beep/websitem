@@ -1,5 +1,5 @@
 /**
- * MAISON Spacing System
+ * SELIS Spacing System
  * ─────────────────────────────────────────────
  * Base unit: 4px
  * All margin, padding, gap in components come from here.

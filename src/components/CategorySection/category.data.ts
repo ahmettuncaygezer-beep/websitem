@@ -68,7 +68,7 @@ export const CATEGORIES: CategoryItem[] = [
         productCount: 56,
         href: '/kategori/dekorasyon',
         image: '/images/categories/decor.jpg',
-        badge: 'Trend',
+        badge: 'TREND',
         badgeKey: 'cat_badge_trend',
         span: 7,
     },

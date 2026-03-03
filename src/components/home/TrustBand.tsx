@@ -29,7 +29,7 @@ const features = [
     {
         icon: Headphones,
         title: 'VIP Destek',
-        description: '7/24 kişisel danışmanlık',
+        description: '7/24 kişiye özel danışmanlık',
         titleKey: 'trust_support_title',
         descKey: 'trust_support_desc'
     },
@@ -59,10 +59,10 @@ export function TrustBand() {
                             className="flex flex-col items-center text-center group"
                         >
                             <div className="w-14 h-14 rounded-full bg-accent/30 flex items-center justify-center mb-5 shadow-sm border border-gold/10 group-hover:border-gold/30 transition-all duration-300">
-                                <feature.icon size={22} className="text-maison-gold" />
+                                <feature.icon size={22} className="text-selis-gold" />
                             </div>
-                            <h4 className="font-serif text-base md:text-lg mb-2 text-foreground" data-lang-key={`trust.${feature.titleKey.replace('trust_', '')}`}>{feature.title}</h4>
-                            <p className="text-xs md:text-sm font-sans text-muted-foreground/80" data-lang-key={`trust.${feature.descKey.replace('trust_', '')}`}>{feature.description}</p>
+                            <h4 className="font-serif text-base md:text-lg mb-2 text-foreground" data-lang-key={feature.titleKey}>{feature.title}</h4>
+                            <p className="text-xs md:text-sm font-sans text-muted-foreground/80" data-lang-key={feature.descKey}>{feature.description}</p>
                         </motion.div>
                     ))}
                 </motion.div>

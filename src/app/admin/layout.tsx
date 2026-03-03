@@ -1,5 +1,11 @@
 import { AdminLayout } from '@/components/Admin/Layout/AdminLayout';
+import { Toaster } from 'react-hot-toast';
 
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
-    return <AdminLayout>{children}</AdminLayout>;
+    return (
+        <AdminLayout>
+            <Toaster position="top-right" />
+            {children}
+        </AdminLayout>
+    );
 }

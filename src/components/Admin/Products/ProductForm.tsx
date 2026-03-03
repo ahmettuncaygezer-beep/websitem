@@ -522,7 +522,7 @@ export function ProductForm({ product, mode = 'create' }: ProductFormProps) {
                             <div style={{ background: '#141416', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '6px', padding: '12px', marginTop: '12px' }}>
                                 <div style={{ fontSize: '11px', color: '#636366', marginBottom: '6px' }}>🌐 google.com</div>
                                 <div style={{ fontSize: '14px', color: '#0A84FF', marginBottom: '2px', overflowWrap: 'break-word' }}>{watchMetaTitle || watchName || 'Ürün Başlığı'}</div>
-                                <div style={{ fontSize: '11px', color: '#30D158', marginBottom: '4px' }}>maison.com.tr/urunler/{watchSlug || 'urun-slug'}</div>
+                                <div style={{ fontSize: '11px', color: '#30D158', marginBottom: '4px' }}>selis.com.tr/urunler/{watchSlug || 'urun-slug'}</div>
                                 <div style={{ fontSize: '12px', color: '#AEAEB2', overflowWrap: 'break-word' }}>{watchMetaDesc || 'Ürün açıklaması burada görüntülenecektir.'}</div>
                             </div>
                         </div>

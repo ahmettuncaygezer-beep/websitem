@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Play } from 'lucide-react';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface VideoModalProps {
     /** YouTube video ID or full URL — falls back to local /videos/hero.mp4 */
@@ -15,6 +16,7 @@ export function VideoModal({
     duration = '2:34',
 }: VideoModalProps) {
     const [isOpen, setIsOpen] = useState(false);
+    const { t } = useGlobal();
 
     /* ── Keyboard / scroll lock ── */
     const close = useCallback(() => setIsOpen(false), []);
@@ -72,7 +74,7 @@ export function VideoModal({
 
                 {/* Text block */}
                 <span className="flex flex-col items-start leading-tight">
-                    <span className="text-xs text-white/80 font-medium">Koleksiyon Filmi</span>
+                    <span className="text-xs text-white/80 font-medium">{t('hero_video_button') || 'Koleksiyon Filmi'}</span>
                     <span className="text-[10px] text-white/50">{duration}</span>
                 </span>
             </motion.button>
@@ -119,10 +121,10 @@ export function VideoModal({
                                     onClick={close}
                                     className="absolute -top-10 right-0 flex items-center gap-1.5
                              text-white/70 hover:text-white transition-colors duration-200"
-                                    aria-label="Kapat"
+                                    aria-label={t('common_close') || 'Kapat'}
                                 >
                                     <X size={20} />
-                                    <span className="text-xs tracking-wider uppercase">Kapat</span>
+                                    <span className="text-xs tracking-wider uppercase">{t('common_close') || 'Kapat'}</span>
                                 </button>
 
                                 {/* Video */}
@@ -130,22 +132,24 @@ export function VideoModal({
                                     className="w-full h-full overflow-hidden"
                                     style={{ borderRadius: '4px' }}
                                 >
-                                    {embedSrc ? (
-                                        <iframe
-                                            src={embedSrc}
-                                            title="Koleksiyon filmi"
-                                            allow="autoplay; fullscreen; picture-in-picture"
-                                            allowFullScreen
-                                            className="w-full h-full border-0"
-                                        />
-                                    ) : (
-                                        <video
-                                            src={videoSrc}
-                                            controls
-                                            autoPlay
-                                            className="w-full h-full object-cover"
-                                            aria-label="Koleksiyon filmi"
-                                        />
+                                    {isOpen && (
+                                        embedSrc ? (
+                                            <iframe
+                                                src={embedSrc}
+                                                title="Koleksiyon filmi"
+                                                allow="autoplay; fullscreen; picture-in-picture"
+                                                allowFullScreen
+                                                className="w-full h-full border-0"
+                                            />
+                                        ) : (
+                                            <video
+                                                src={videoSrc}
+                                                controls
+                                                autoPlay
+                                                className="w-full h-full object-cover"
+                                                aria-label="Koleksiyon filmi"
+                                            />
+                                        )
                                     )}
                                 </div>
                             </div>

@@ -4,12 +4,21 @@ import { useReducedMotion, motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { TypewriterText } from './TypewriterText';
+import { useGlobal } from '@/context/GlobalContext';
 
 // Custom easing matching the spec's cubic bezier
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 export function GlassCard() {
     const prefersReduced = useReducedMotion();
+    const { siteSettings, t } = useGlobal();
+
+    const cmsTitle = siteSettings?.cms_hero?.title;
+    const cmsSubtitle = siteSettings?.cms_hero?.subtitle;
+
+    const parsedTitles = cmsTitle
+        ? cmsTitle.split('\n').map((s: string) => s.trim()).filter(Boolean)
+        : undefined;
 
     // When reduced motion: only opacity, no translate/scale
     const cardVariants = {
@@ -40,7 +49,7 @@ export function GlassCard() {
 
     return (
         /* ── Positioning wrapper ──
-           Desktop ≥1280: centred (or you can swap to left-1/4 for left-third)
+           Desktop ≥1280: centred
            Tablet  768-1279: centred, max-w-lg
            Mobile  <768: 88% width, centred */
         <div
@@ -85,9 +94,8 @@ export function GlassCard() {
                     <span
                         className="font-medium uppercase"
                         style={{ fontSize: '11px', letterSpacing: '0.3em', color: '#C9A96E' }}
-                        data-lang-key="hero_badge"
                     >
-                        2026 Koleksiyonu
+                        {t('hero_badge') || '2026 Koleksiyonu'}
                     </span>
                 </motion.div>
 
@@ -101,9 +109,13 @@ export function GlassCard() {
                      md:text-4xl
                      xl:text-5xl
                      mb-5"
-                    style={{ letterSpacing: '-0.02em' }}
+                    style={{ letterSpacing: '-0.02em', color: '#F5F0EB' }}
                 >
-                    <TypewriterText typeStartDelay={900} />
+                    {parsedTitles && parsedTitles.length > 0 ? (
+                        <TypewriterText typeStartDelay={900} customTexts={parsedTitles} />
+                    ) : (
+                        <TypewriterText typeStartDelay={900} />
+                    )}
                 </motion.h1>
 
                 {/* ③ Description — 1.4 s */}
@@ -111,12 +123,16 @@ export function GlassCard() {
                     variants={fromBottom(1.4)}
                     initial="hidden"
                     animate="show"
-                    className="text-sm leading-relaxed max-w-xs mb-8"
+                    className="text-sm leading-relaxed max-w-xs mb-8 whitespace-pre-line"
                     style={{ color: 'rgba(255,255,255,0.75)' }}
-                    data-lang-key="hero_desc"
                 >
-                    Doğal malzemeler, zamansız tasarımlar ve el işçiliği ile
-                    yaşam alanlarınıza sofistike bir dokunuş.
+                    {cmsSubtitle ? (
+                        <span>{cmsSubtitle}</span>
+                    ) : (
+                        <span>
+                            {t('hero_desc') || 'Doğal malzemeler, zamansız tasarım ve el işçiliğiyle yaşam alanlarınıza sofistike bir dokunuş.'}
+                        </span>
+                    )}
                 </motion.p>
 
                 {/* ④ Buttons — 1.7 s, stagger 150 ms */}
@@ -128,10 +144,10 @@ export function GlassCard() {
                     className="flex flex-col sm:flex-row gap-3"
                 >
                     <PrimaryButton href="/kategori/oturma-odasi" delay={1.7}>
-                        <span data-lang-key="hero_cta_1">Koleksiyonu Keşfet</span>
+                        {t('hero_cta_1') || 'Koleksiyonu Keşfet'}
                     </PrimaryButton>
                     <GhostButton href="/lookbook" delay={1.85}>
-                        <span data-lang-key="hero_cta_2">Lookbook</span>
+                        {t('hero_cta_2') || 'Lookbook'}
                     </GhostButton>
                 </motion.div>
 
@@ -141,10 +157,9 @@ export function GlassCard() {
                     initial="hidden"
                     animate="show"
                     className="mt-6 uppercase tracking-wider font-medium"
-                    style={{ fontSize: '10px', color: 'var(--maison-gold)', opacity: 0.8 }}
-                    data-lang-key="hero_trust"
+                    style={{ fontSize: '10px', color: 'var(--selis-gold)', opacity: 0.8 }}
                 >
-                    ✓ Ücretsiz Kargo&nbsp;&nbsp;·&nbsp;&nbsp;✓ 5 Yıl Garanti&nbsp;&nbsp;·&nbsp;&nbsp;✓ 30 Gün İade
+                    {t('hero_trust') || '✓ Ücretsiz Kargo  ·  ✓ 5 Yıl Garanti  ·  ✓ 30 Gün İade'}
                 </motion.p>
 
                 {/* Inner radial glow highlight */}
@@ -185,7 +200,7 @@ function PrimaryButton({
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2
                    font-semibold text-sm"
                 style={{
-                    background: 'var(--maison-gold)',
+                    background: 'var(--selis-gold)',
                     color: '#000',
                     padding: '13px 28px',
                     letterSpacing: '0.03em',
@@ -196,14 +211,14 @@ function PrimaryButton({
                 }}
                 onMouseEnter={(e) => {
                     Object.assign((e.currentTarget as HTMLElement).style, {
-                        background: 'var(--maison-gold-dark)',
+                        background: 'var(--selis-gold-dark)',
                         transform: 'translateY(-3px)',
-                        boxShadow: 'var(--shadow-maison-gold)',
+                        boxShadow: 'var(--shadow-selis-gold)',
                     });
                 }}
                 onMouseLeave={(e) => {
                     Object.assign((e.currentTarget as HTMLElement).style, {
-                        background: 'var(--maison-gold)',
+                        background: 'var(--selis-gold)',
                         transform: 'translateY(0)',
                         boxShadow: 'none',
                     });

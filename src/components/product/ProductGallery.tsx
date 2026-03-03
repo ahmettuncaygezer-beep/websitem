@@ -75,23 +75,13 @@ export function ProductGallery({ images, name, slug }: ProductGalleryProps) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="aspect-[3/4] rounded-2xl overflow-hidden bg-sand relative group cursor-zoom-in"
-                    onMouseMove={(e) => {
-                        const target = e.currentTarget;
-                        const rect = target.getBoundingClientRect();
-                        const x = ((e.clientX - rect.left) / rect.width) * 100;
-                        const y = ((e.clientY - rect.top) / rect.height) * 100;
-                        const img = target.querySelector('img');
-                        if (img) {
-                            img.style.transformOrigin = `${x}% ${y}%`;
-                        }
-                    }}
+                    className="aspect-[3/4] rounded-2xl overflow-hidden bg-sand relative group"
                 >
                     <Image
                         src={localImages[activeIndex]}
                         alt={name}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-250"
+                        className="object-cover"
                         sizes="(max-width: 1024px) 100vw, 60vw"
                         priority
                     />

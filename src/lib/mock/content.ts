@@ -81,7 +81,9 @@ export interface BlogPost {
 export interface LookbookPhoto {
     id: string;
     title: string;
+    titleKey?: string;
     description: string;
+    descriptionKey?: string;
     category: string;
     url: string;
     order: number;
@@ -119,8 +121,8 @@ export const mockPageSections: PageSection[] = [
         order: 0,
         content: {
             topLabel: "2026 Koleksiyonu",
-            title: "Yaşam Alanlarınıza\nMaison Dokunuşu",
-            subtitle: "Dekorasyonda lüks ve zarafetin buluştuğu nokta Türkiye'nin en prestijli mobilya markası MAISON ile tanışın.",
+            title: "Yaşam Alanlarınıza\nSelis Dokunuşu",
+            subtitle: "Dekorasyonda lüks ve zarafetin buluştuğu nokta Türkiye'nin en prestijli mobilya markası SELIS ile tanışın.",
             ctaButtons: [
                 { text: "Koleksiyonu Keşfet", url: "/koleksiyon", type: 'primary' },
                 { text: "Lookbook", url: "/lookbook", type: 'outline' }
@@ -138,7 +140,7 @@ export const mockPageSections: PageSection[] = [
         order: 1,
         content: [
             { id: 'f1', icon: 'Truck', title: 'Ücretsiz Teslimat', description: '50.000₺ üzeri siparişlerde profesyonel kurulum ve nakliye.' },
-            { id: 'f2', icon: 'ShieldCheck', title: '5 Yıl Garanti', description: 'Tüm mobilyalarımız MAISON işçilik ve kalite garantisi altındadır.' },
+            { id: 'f2', icon: 'ShieldCheck', title: '5 Yıl Garanti', description: 'Tüm mobilyalarımız SELIS işçilik ve kalite garantisi altındadır.' },
             { id: 'f3', icon: 'Award', title: 'Ödüllü Tasarımlar', description: 'Uluslararası tasarım yarışmalarından ödüllü modern çizgiler.' },
             { id: 'f4', icon: 'Gem', title: 'Hakiki Malzeme', description: 'Sadece masif meşe, mermer ve İtalyan deri kullanımı.' }
         ] as FeatureItem[]
@@ -150,8 +152,8 @@ export const mockBlogs: BlogPost[] = [
         id: 'blog_1',
         title: "Yaşam Alanlarınızı Dönüştürün: Minimalizm ve Lüks",
         slug: "yasam-alanlarinizi-donusturun",
-        excerpt: "Modern dekorasyonda sadeliğin zarafeti nasıl yakalanır? İşte Maison tasarımcılarından ipuçları.",
-        content: `<h2>Minimalizmin Yeni Tanımı</h2><p>Maison olarak biz, lüksün sadece gösterişte değil, detaylardaki sadelikte gizli olduğuna inanıyoruz...</p>`,
+        excerpt: "Modern dekorasyonda sadeliğin zarafeti nasıl yakalanır? İşte Selis tasarımcılarından ipuçları.",
+        content: `<h2>Minimalizmin Yeni Tanımı</h2><p>Selis olarak biz, lüksün sadece gösterişte değil, detaylardaki sadelikte gizli olduğuna inanıyoruz...</p>`,
         coverImage: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800",
         author: { id: 'admin1', name: 'Alara Tunç', avatar: 'https://i.pravatar.cc/150?u=alara' },
         category: "Tasarım",
@@ -164,8 +166,8 @@ export const mockBlogs: BlogPost[] = [
         comments: 12,
         readTime: 6,
         seo: {
-            metaTitle: "Yaşam Alanlarınızı Dönüştürün | Maison Blog",
-            metaDescription: "Minimalist dekorasyon ile lüksü birleştirin. Maison'dan profesyonel tasarım tüyoları.",
+            metaTitle: "Yaşam Alanlarınızı Dönüştürün | Selis Blog",
+            metaDescription: "Minimalist dekorasyon ile lüksü birleştirin. Selis'dan profesyonel tasarım tüyoları.",
             focusKeyword: "dekorasyon"
         }
     },
@@ -187,17 +189,17 @@ export const mockBlogs: BlogPost[] = [
         comments: 5,
         readTime: 4,
         seo: {
-            metaTitle: "Luna Koleksiyonu Tasarım Hikayesi | Maison",
+            metaTitle: "Luna Koleksiyonu Tasarım Hikayesi | Selis",
             metaDescription: "Luna mobilya serisinin sanatsal tasarım süreci ve detayları.",
             focusKeyword: "Luna"
         }
     },
     {
         id: 'blog_3',
-        title: "Sürdürülebilir Ormancılık ve Maison",
+        title: "Sürdürülebilir Ormancılık ve Selis",
         slug: "surdurulebilir-ormancilik",
         excerpt: "Kullandığımız her parça ahşabı, doğaya olan borcumuzu unutmadan seçiyoruz.",
-        content: `<p>Maison olarak üretim süreçlerimizde sadece FSC sertifikalı ormanlardan elde edilen ahşapları kullanıyoruz...</p>`,
+        content: `<p>Selis olarak üretim süreçlerimizde sadece FSC sertifikalı ormanlardan elde edilen ahşapları kullanıyoruz...</p>`,
         coverImage: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800",
         author: { id: 'admin1', name: 'Alara Tunç', avatar: 'https://i.pravatar.cc/150?u=alara' },
         category: "Haberler",
@@ -209,8 +211,8 @@ export const mockBlogs: BlogPost[] = [
         comments: 0,
         readTime: 5,
         seo: {
-            metaTitle: "Sürdürülebilirlik Vizyonumuz | Maison",
-            metaDescription: "Maison'un doğa dostu üretim süreçleri ve ağaçlandırma projeleri.",
+            metaTitle: "Sürdürülebilirlik Vizyonumuz | Selis",
+            metaDescription: "Selis'un doğa dostu üretim süreçleri ve ağaçlandırma projeleri.",
             focusKeyword: "sürdürülebilirlik"
         }
     }
@@ -228,7 +230,9 @@ export const mockLookbooks: LookbookCollection[] = [
             {
                 id: '1',
                 title: 'Modern Oturma Odası',
+                titleKey: 'lookbook_room1_title',
                 description: 'Luna ailesinin saf zarafeti ile tanışın. Doğal meşe ve premium kumaşın buluştuğu bu konsept, modernitenin özünü yansıtır.',
+                descriptionKey: 'lookbook_room1_desc',
                 category: 'Oturma Odası',
                 url: '/images/rooms/lookbook-1.jpg',
                 order: 0,
@@ -242,7 +246,9 @@ export const mockLookbooks: LookbookCollection[] = [
             {
                 id: '2',
                 title: 'Minimalist Yemek Odası',
+                titleKey: 'lookbook_room2_title',
                 description: 'Nova\'nın temiz çizgileri ve Aria sandalyelerinin yumuşak düzlüğü — yemek saatlerini bir ritüele dönüştürür.',
+                descriptionKey: 'lookbook_room2_desc',
                 category: 'Yemek Odası',
                 url: '/images/categories/dining.jpg',
                 order: 1,
@@ -255,7 +261,9 @@ export const mockLookbooks: LookbookCollection[] = [
             {
                 id: '3',
                 title: 'Huzurlu Yatak Odası',
+                titleKey: 'lookbook_room3_title',
                 description: 'Gün sona erdiğinde ihtiyacınız olan yer. Serene Platform Yatak ve Mist komodinleri ile mükemmel uyku ortamı.',
+                descriptionKey: 'lookbook_room3_desc',
                 category: 'Yatak Odası',
                 url: '/images/products/aurora-lifestyle.jpg',
                 order: 2,

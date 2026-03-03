@@ -13,7 +13,7 @@ const MOCK_ADMIN_USERS = [
     },
     {
         id: '2',
-        email: 'editor@maison.com.tr',
+        email: 'editor@selis.com.tr',
         password: 'editor123',
         firstName: 'Zeynep',
         lastName: 'Kaya',

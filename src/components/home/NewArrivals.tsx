@@ -5,12 +5,15 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { getFeaturedProducts } from '@/data/mock-products';
 import { ProductCard } from '@/components/product/ProductCard';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 export function NewArrivals() {
     const products = getFeaturedProducts().slice(0, 4);
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     return (
-        <section className="bg-white py-20 md:py-28">
+        <section className="bg-background py-20 md:py-28">
             <div className="container-premium">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -21,15 +24,17 @@ export function NewArrivals() {
                 >
                     <div>
                         <p className="text-xs font-sans uppercase tracking-[0.3em] text-gold mb-4" data-lang-key="new_arr_badge">
-                            Yeni Gelenler
+                            {t('new_arr_badge') || 'Yeni Gelenler'}
                         </p>
-                        <h2 className="text-headline text-charcoal" data-lang-key="new_arr_title">Öne Çıkan Parçalar</h2>
+                        <h2 className="text-headline text-foreground" data-lang-key="new_arr_title">
+                            {t('new_arr_title') || 'Öne Çıkan Parçalar'}
+                        </h2>
                     </div>
                     <Link
                         href="/kategori/oturma-odasi"
                         className="group mt-4 md:mt-0 inline-flex items-center gap-2 text-sm font-sans font-medium text-warm-gray hover:text-gold transition-colors"
                     >
-                        <span data-lang-key="new_arr_link">Tüm Ürünleri Gör</span>
+                        <span data-lang-key="new_arr_link">{t('new_arr_link') || 'Tüm Ürünleri Gör'}</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </motion.div>
@@ -57,6 +62,6 @@ export function NewArrivals() {
                     ))}
                 </motion.div>
             </div>
-        </section>
+        </section >
     );
 }

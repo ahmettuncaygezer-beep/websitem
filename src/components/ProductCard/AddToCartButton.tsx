@@ -24,12 +24,13 @@ export function AddToCartButton({
     };
 
     const bg = state === 'success' ? '#4CAF50' : '#1C1C1E';
-    const label =
-        state === 'loading'
-            ? 'Ekleniyor...'
-            : state === 'success'
-                ? 'Eklendi ✓'
-                : 'Sepete Ekle';
+    const icon = state === 'loading' ? <Loader2 size={16} className="animate-spin" /> : state === 'success' ? <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 500, damping: 15 }}><Check size={16} /></motion.span> : <ShoppingBag size={16} />;
+    const textKey = state === 'loading' ? 'prod_add_cart_adding' : state === 'success' ? 'prod_add_cart_added' : 'prod_add_cart';
+    const text = state === 'loading'
+        ? 'Ekleniyor...'
+        : state === 'success'
+            ? 'Eklendi ✓'
+            : 'Sepete Ekle';
 
     return (
         <motion.div
@@ -53,28 +54,8 @@ export function AddToCartButton({
                     opacity: state === 'loading' ? 0.8 : 1,
                 }}
             >
-                {state === 'loading' && (
-                    <Loader2 size={16} className="animate-spin" />
-                )}
-                {state === 'success' && (
-                    <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 15 }}
-                    >
-                        <Check size={16} />
-                    </motion.span>
-                )}
-                {state === 'idle' && <ShoppingBag size={16} />}
-                <span data-lang-key={
-                    state === 'loading'
-                        ? 'prod_add_cart_adding'
-                        : state === 'success'
-                            ? 'prod_add_cart_added'
-                            : 'prod_add_cart'
-                }>
-                    {label}
-                </span>
+                {icon}
+                <span data-lang-key={textKey}>{text}</span>
             </button>
         </motion.div>
     );

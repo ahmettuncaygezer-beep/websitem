@@ -67,7 +67,7 @@ export function VideoBackground({ parallaxOffset }: VideoBackgroundProps) {
                 <div className="relative w-full h-full">
                     <Image
                         src="/images/hero/main-mobile.webp"
-                        alt="MAISON lüks mobilya"
+                        alt="SELIS lüks mobilya"
                         fill
                         priority
                         className="object-cover"
@@ -111,7 +111,7 @@ export function VideoBackground({ parallaxOffset }: VideoBackgroundProps) {
                     {videoError && (
                         <Image
                             src="/images/hero/main.webp"
-                            alt="MAISON lüks mobilya"
+                            alt="SELIS lüks mobilya"
                             fill
                             className="object-cover"
                             style={{ objectPosition: 'center' }}

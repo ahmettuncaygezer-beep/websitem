@@ -2,7 +2,7 @@ import { useState, memo, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import type { NavCategory } from './navbar.types';
 import { useGlobal } from '@/context/GlobalContext';
 
@@ -11,80 +11,84 @@ interface MegaMenuPanelProps {
     onClose: () => void;
 }
 
-const ColorSwatch = memo(function ColorSwatch({ name, hex }: { name: string; hex: string }) {
-    const [showTip, setShowTip] = useState(false);
-    return (
-        <div className="relative" onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)}>
-            <button
-                className="w-4 h-4 rounded-full border border-black/10 hover:scale-110 transition-transform duration-150"
-                style={{ background: hex }}
-                aria-label={name}
-            />
-            {showTip && (
-                <span className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] text-white bg-black/90 px-1.5 py-0.5 rounded pointer-events-none z-10 backdrop-blur-sm">
-                    {name}
-                </span>
-            )}
-        </div>
-    );
-});
-
 export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: MegaMenuPanelProps) {
-    const { formatPrice } = useGlobal();
+    const { formatPrice, t } = useGlobal();
     const product = category.featuredProduct;
 
     // Memoize variants to avoid recreation on every render
     const itemVariants = useMemo(() => ({
-        hidden: { opacity: 0, x: -5 },
-        show: { opacity: 1, x: 0 }
+        hidden: { opacity: 0, y: 10 },
+        show: { opacity: 1, y: 0 }
     }), []);
 
     return (
-        <div className="max-w-7xl mx-auto px-6 py-5">
-            <div className="flex gap-8">
+        <div className="w-full px-4 py-3 bg-transparent transition-colors duration-300">
+            <div className="grid grid-cols-12 gap-4 mx-auto">
 
-                {/* ── LEFT: Sub-categories (compact) ── */}
-                <div className="w-[36%] shrink-0 space-y-5">
-                    {category.subCategories.map((section) => (
-                        <div key={section.title}>
-                            <p
-                                className="uppercase font-bold mb-2"
-                                style={{ fontSize: '10px', letterSpacing: '0.18em', color: '#C9A96E' }}
+                {/* ── LEFT: Lifestyle Visual (The "Look") ── */}
+                <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+                    className="col-span-2 relative group overflow-hidden aspect-[3/4] shadow-sm border border-[#E5D5BC]/20 dark:border-white/5 rounded-xl"
+                >
+                    <Image
+                        src={`/images/categories/${category.id === 'oturma-odasi' ? 'living-room' :
+                            category.id === 'yatak-odasi' ? 'bedroom' :
+                                category.id === 'yemek-odasi' ? 'dining' :
+                                    category.id === 'aydinlatma' ? 'lighting' :
+                                        category.id === 'dekorasyon' ? 'decor' :
+                                            category.id === 'calisma-odasi' ? 'office' : category.id}.jpg`}
+                        alt={`${category.label} Lookbook`}
+                        fill
+                        className="object-cover transition-transform duration-[3000ms] group-hover:scale-105"
+                        onError={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.src = product.image;
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/40 to-transparent" />
+                    <div className="absolute bottom-2 left-2">
+                        <p className="text-white/80 text-[6px] uppercase font-bold tracking-[0.2em] mb-0.5">Heritage Look</p>
+                        <h4 className="text-white text-[15px] font-serif italic leading-tight" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
+                            {category.label}
+                        </h4>
+                    </div>
+                </motion.div>
+
+                {/* ── MIDDLE: Sub-categories ── */}
+                <div className="col-span-8 grid grid-cols-3 gap-4">
+                    {category.subCategories.map((section, idx) => (
+                        <div key={section.title} className="flex flex-col">
+                            <motion.h5
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 * idx }}
+                                className="font-serif italic text-base mb-2 border-b border-[#E5D5BC]/20 dark:border-white/10 pb-1 text-[#1A1A1A] dark:text-white"
+                                style={{ fontFamily: '"Cormorant Garamond", serif' }}
                                 data-lang-key={section.dataKey}
                             >
                                 {section.title}
-                            </p>
+                            </motion.h5>
                             <motion.ul
                                 initial="hidden"
                                 animate="show"
-                                transition={{ staggerChildren: 0.02 }}
+                                transition={{ staggerChildren: 0.02, delayChildren: 0.1 + (0.1 * idx) }}
+                                className="space-y-1"
                             >
                                 {section.items.map((item) => (
                                     <motion.li
                                         key={item.href}
                                         variants={itemVariants}
-                                        transition={{ duration: 0.2 }}
                                     >
                                         <Link
                                             href={item.href}
                                             onClick={onClose}
-                                            className="group flex items-center gap-1.5 py-1 text-[13px] transition-all duration-300"
-                                            style={{ color: 'var(--foreground)', opacity: 0.7 }}
-                                            onMouseEnter={(e) => {
-                                                (e.currentTarget as HTMLElement).style.color = 'var(--maison-gold)';
-                                                (e.currentTarget as HTMLElement).style.opacity = '1';
-                                                (e.currentTarget as HTMLElement).style.paddingLeft = '8px';
-                                                (e.currentTarget as HTMLElement).style.borderLeft = '2px solid var(--maison-gold)';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                (e.currentTarget as HTMLElement).style.color = 'var(--foreground)';
-                                                (e.currentTarget as HTMLElement).style.opacity = '0.7';
-                                                (e.currentTarget as HTMLElement).style.paddingLeft = '0';
-                                                (e.currentTarget as HTMLElement).style.borderLeft = 'none';
-                                            }}
+                                            className="group flex items-center text-[15px] transition-colors duration-300 text-muted-foreground/80 dark:text-white/80 hover:text-[#C9A96E] dark:hover:text-[#C9A96E]"
                                         >
-                                            <span className="text-[#C9A96E] group-hover:translate-x-1 transition-transform text-xs" aria-hidden="true">→</span>
-                                            <span data-lang-key={item.dataKey}>{item.label}</span>
+                                            <span className="group-hover:translate-x-1 transition-transform duration-300 font-medium" data-lang-key={item.dataKey}>
+                                                {item.label}
+                                            </span>
                                         </Link>
                                     </motion.li>
                                 ))}
@@ -93,91 +97,42 @@ export const MegaMenuPanel = memo(function MegaMenuPanel({ category, onClose }: 
                     ))}
                 </div>
 
-                {/* ── RIGHT: Featured product (compact) ── */}
-                <div className="flex-1 flex flex-col gap-3">
-                    <Link
-                        href={product.href}
-                        onClick={onClose}
-                        className="group flex gap-4 rounded-xl border overflow-hidden p-3 transition-all duration-300 hover:shadow-maison-card-hover bg-background/50"
-                        style={{ borderColor: 'var(--glass-border)' }}
-                    >
-                        {/* Thumbnail — compact 80×80 */}
-                        <div
-                            className="relative shrink-0 rounded-lg overflow-hidden"
-                            style={{ width: 80, height: 80, background: 'linear-gradient(135deg, var(--muted), var(--border))' }}
-                        >
-                            <Image
-                                src={product.image}
-                                alt={product.name}
-                                fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-[400ms]"
-                                sizes="80px"
-                                priority={false}
-                                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                            />
-                            {product.badge && (
-                                <span
-                                    className="absolute top-1 left-1 text-black text-[9px] font-bold px-1.5 py-0.5 leading-none rounded-sm"
-                                    style={{ background: 'var(--maison-gold)' }}
-                                    data-lang-key={product.badgeKey}
-                                >
-                                    {product.badge}
-                                </span>
-                            )}
-                        </div>
-
-                        {/* Text */}
-                        <div className="flex flex-col justify-center gap-1">
-                            <span className="text-[10px] uppercase tracking-wider opacity-60" style={{ color: 'var(--foreground)' }} data-lang-key={product.brandKey}>{product.brand}</span>
-                            <h3 className="text-sm font-medium leading-snug" style={{ color: 'var(--foreground)' }} data-lang-key={product.nameKey}>{product.name}</h3>
-                            <div className="flex items-center gap-2">
-                                <span className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>{formatPrice(product.price)}</span>
-                                {product.originalPrice && (
-                                    <span className="text-xs line-through opacity-50 transition-opacity" style={{ color: 'var(--foreground)' }}>{formatPrice(product.originalPrice)}</span>
-                                )}
-                            </div>
-                            <span className="flex items-center gap-1 text-[11px] font-semibold border-b pb-0.5 w-fit transition-all duration-300 group-hover:tracking-widest"
-                                style={{ color: 'var(--maison-gold)', borderColor: 'var(--maison-gold)' }}>
-                                <span data-lang-key="mega_nav_view_product">Ürünü İncele</span> <ArrowRight size={9} />
-                            </span>
-                        </div>
-                    </Link>
-
-                    {/* Editorial + swatches */}
-                    {(category.editorialText || category.colors) && (
-                        <div className="flex items-center justify-between">
-                            {category.editorialText && (
-                                <p className="text-xs italic" style={{ color: 'var(--muted-foreground)' }} data-lang-key={category.editorialTextKey}>{category.editorialText}</p>
-                            )}
-                            {category.colors && (
-                                <div className="flex items-center gap-1.5">
-                                    {category.colors.map((c) => <ColorSwatch key={c.name} name={c.name} hex={c.hex} />)}
+                {/* ── RIGHT: Featured Piece ── */}
+                <div className="col-span-2 border-l border-[#E5D5BC]/20 dark:border-white/5 pl-4">
+                    <div className="flex flex-col h-full justify-between pb-1">
+                        <div>
+                            <p className="text-[5px] uppercase font-bold tracking-[0.2em] text-[#C9A96E] mb-2">
+                                Signature Piece
+                            </p>
+                            <Link
+                                href={product.href}
+                                onClick={onClose}
+                                className="group block"
+                            >
+                                <div className="relative aspect-[5/6] overflow-hidden mb-2.5 shadow-sm border border-[#E5D5BC]/10 dark:border-white/5 rounded-xl">
+                                    <Image
+                                        src={product.image}
+                                        alt={product.name}
+                                        fill
+                                        className="object-cover group-hover:scale-105 transition-transform duration-[2000ms]"
+                                    />
                                 </div>
-                            )}
+                                <div className="space-y-0">
+                                    <h3 className="text-xs font-serif italic text-[#1A1A1A] dark:text-white group-hover:text-[#C9A96E] transition-colors leading-tight" style={{ fontFamily: '"Cormorant Garamond", serif' }} data-lang-key={product.nameKey}>
+                                        {product.name}
+                                    </h3>
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="text-[11px] font-medium text-[#4A4A4A] dark:text-white/70">{formatPrice(product.price)}</span>
+                                    </div>
+                                    <div className="pt-0.5">
+                                        <span className="text-[7px] uppercase tracking-widest font-bold border-b border-[#C9A96E] pb-0.5 text-[#C9A96E]">Shop Selection</span>
+                                    </div>
+                                </div>
+                            </Link>
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
-
-            {/* ── Bottom promo strip ── */}
-            {category.promotionText && (
-                <div
-                    className="mt-5 -mx-6 -mb-5 px-6 py-2.5 flex items-center justify-between"
-                    style={{ background: 'var(--muted)', borderTop: '1px solid var(--glass-border)' }}
-                >
-                    <p className="text-[11px]" style={{ color: 'var(--foreground)' }} data-lang-key={category.promotionTextKey}>
-                        {category.promotionText}
-                    </p>
-                    <Link
-                        href="/kampanyalar"
-                        onClick={onClose}
-                        className="text-[11px] font-semibold hover:underline whitespace-nowrap ml-4 flex items-center gap-1"
-                        style={{ color: 'var(--maison-gold)' }}
-                    >
-                        <span data-lang-key="mega_nav_view_campaigns">Tüm Kampanyaları Gör →</span>
-                    </Link>
-                </div>
-            )}
         </div>
     );
 });

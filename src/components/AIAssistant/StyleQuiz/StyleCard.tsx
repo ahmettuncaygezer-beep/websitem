@@ -123,7 +123,7 @@ export function StyleCard({ profile, secondaryPct, secondaryName }: Props) {
 
                         <div className="mt-8 p-4 bg-white rounded-xl border border-[#E8E3DC] border-dashed">
                             <p className="text-[11px] text-[#999] italic text-center">
-                                * Bu analiz cevaplarınızdaki desenlere göre MAISON AI tarafından oluşturulmuştur.
+                                * Bu analiz cevaplarınızdaki desenlere göre SELIS AI tarafından oluşturulmuştur.
                             </p>
                         </div>
                     </div>

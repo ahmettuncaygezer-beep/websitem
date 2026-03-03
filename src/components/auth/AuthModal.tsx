@@ -9,10 +9,13 @@ import { AuthDivider } from './AuthDivider';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 export function AuthModal() {
     const { isAuthModalOpen, authModalView, closeAuthModal } = useAuthStore();
     const [view, setView] = useState<'login' | 'register' | 'forgot' | 'success'>(authModalView);
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     useEffect(() => {
         setView(authModalView);
@@ -30,7 +33,7 @@ export function AuthModal() {
 
     const titles: Record<string, { title: string; subtitle: string; titleKey: string; subKey: string }> = {
         login: { title: 'Tekrar Hoş Geldiniz', subtitle: 'Premium mobilya dünyasına girin', titleKey: 'auth_welcome_title', subKey: 'auth_welcome_sub' },
-        register: { title: 'Hesap Oluşturun', subtitle: 'MAISON ailesine katılın', titleKey: 'auth_register_title', subKey: 'auth_register_sub' },
+        register: { title: 'Hesap Oluşturun', subtitle: 'SELIS HOME CONCEPT ailesine katılın', titleKey: 'auth_register_title', subKey: 'auth_register_sub' },
         forgot: { title: 'Şifre Sıfırlama', subtitle: 'E-posta adresinize bağlantı göndereceğiz', titleKey: 'auth_forgot_title', subKey: 'auth_forgot_sub' },
         success: { title: 'Tebrikler! 🎉', subtitle: 'Hesabınız başarıyla oluşturuldu', titleKey: 'auth_success_title', subKey: 'auth_success_sub' },
     };
@@ -80,15 +83,15 @@ export function AuthModal() {
 
                             {/* Logo */}
                             <div className="text-xl text-white font-bold tracking-wider" style={{ fontFamily: 'var(--font-playfair)' }}>
-                                MAISON
+                                SELIS
                             </div>
 
                             {/* Title */}
-                            <h2 className="text-2xl text-white mt-2" style={{ fontFamily: 'var(--font-playfair)' }} data-lang-key={current.titleKey}>
-                                {current.title}
+                            <h2 className="text-2xl text-white mt-2" style={{ fontFamily: 'var(--font-playfair)' }}>
+                                {t(current.titleKey) || current.title}
                             </h2>
-                            <p className="text-[13px] mt-1" style={{ color: 'rgba(255,255,255,0.6)' }} data-lang-key={current.subKey}>
-                                {current.subtitle}
+                            <p className="text-[13px] mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                                {t(current.subKey) || current.subtitle}
                             </p>
 
                             {/* Tabs */}
@@ -96,7 +99,7 @@ export function AuthModal() {
                                 <div className="flex mt-4 -mb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                                     {[
                                         { key: 'login' as const, label: 'Giriş Yap', langKey: 'auth_tab_login' },
-                                        { key: 'register' as const, label: 'Kayıt Ol', langKey: 'auth_tab_register' },
+                                        { key: 'register' as const, label: 'Kayıt Ol', langKey: 'auth_register_btn' }
                                     ].map((tab) => (
                                         <button
                                             key={tab.key}
@@ -112,7 +115,7 @@ export function AuthModal() {
                                                 cursor: 'pointer',
                                             }}
                                         >
-                                            <span data-lang-key={tab.langKey}>{tab.label}</span>
+                                            {t(tab.langKey) || tab.label}
                                         </button>
                                     ))}
                                 </div>

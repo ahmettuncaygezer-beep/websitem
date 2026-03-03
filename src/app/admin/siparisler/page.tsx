@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, Calendar, Clock, AlertCircle } from 'lucide-react';
 import { mockOrders } from '@/lib/mock/orders';
@@ -44,7 +44,74 @@ function KpiCard({ value, label, icon, variant = 'default' }: KpiCardProps) {
     );
 }
 
+// Map DB order to admin Order type
+function mapDbOrder(o: any): Order {
+    return {
+        id: o.id,
+        orderNo: o.order_number || `#${o.id.slice(0, 4)}`,
+        customer: {
+            id: o.user_id || 'anon',
+            name: o.customer_name || o.shipping_name || 'Anonim',
+            email: o.customer_email || o.shipping_email || '',
+            phone: o.customer_phone || o.shipping_phone || '',
+            avatar: (o.customer_name || 'A').slice(0, 2).toUpperCase(),
+            totalOrders: 1,
+            totalSpent: Number(o.total_amount) || 0,
+            isVip: false,
+        },
+        items: (o.items || []).map((item: any, i: number) => ({
+            id: item.id || `item-${i}`,
+            productName: item.product_name || item.name || 'Ürün',
+            variantName: item.variant || '',
+            quantity: item.quantity || 1,
+            unitPrice: Number(item.price) || 0,
+            totalPrice: (Number(item.price) || 0) * (item.quantity || 1),
+            image: item.image || '📦',
+        })),
+        subtotal: Number(o.total_amount) || 0,
+        shippingCost: 0,
+        discount: 0,
+        total: Number(o.total_amount) || 0,
+        status: mapDbStatus(o.status),
+        paymentMethod: {
+            type: o.payment_method || 'Kredi Kartı',
+            last4: null,
+            transactionId: o.payment_id || '',
+        },
+        shippingAddress: {
+            fullName: o.shipping_name || o.customer_name || '',
+            phone: o.shipping_phone || '',
+            address: o.shipping_address || '',
+            district: o.shipping_district || '',
+            city: o.shipping_city || '',
+            postalCode: o.shipping_postal_code || '',
+        },
+        cargoCompany: o.cargo_company || null,
+        trackingNumber: o.tracking_number || null,
+        estimatedDelivery: o.estimated_delivery || null,
+        adminNote: o.notes || '',
+        timeline: [],
+        createdAt: o.created_at || new Date().toISOString(),
+        updatedAt: o.updated_at || new Date().toISOString(),
+    };
+}
+
+function mapDbStatus(s: string): Order['status'] {
+    const map: Record<string, Order['status']> = {
+        pending: 'Ödeme Bekleniyor',
+        paid: 'Ödeme Alındı',
+        processing: 'Hazırlanıyor',
+        shipped: 'Kargoya Verildi',
+        delivered: 'Teslim Edildi',
+        cancelled: 'İptal',
+        refund_requested: 'İade Talebi',
+    };
+    return map[s] || 'Ödeme Bekleniyor';
+}
+
 export default function SiparislerPage() {
+    const [orders, setOrders] = useState<Order[]>(mockOrders);
+    const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<OrderTab>('Tümü');
     const [searchQuery, setSearchQuery] = useState('');
     const [dateRange, setDateRange] = useState<{ start: string | null; end: string | null }>({ start: null, end: null });
@@ -52,11 +119,29 @@ export default function SiparislerPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const perPage = 10;
 
+    // Fetch from DB, fallback to mock
+    useEffect(() => {
+        async function fetchOrders() {
+            try {
+                const res = await fetch('/api/admin/orders?perPage=500');
+                const data = await res.json();
+                if (data.orders && data.orders.length > 0) {
+                    setOrders(data.orders.map(mapDbOrder));
+                }
+                // If DB has no orders, keep mockOrders
+            } catch {
+                // Keep mock data on error
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchOrders();
+    }, []);
+
     // Filter logic
     const filteredOrders = useMemo(() => {
-        let result = [...mockOrders];
+        let result = [...orders];
 
-        // Status Tab filtering
         if (activeTab !== 'Tümü') {
             const tabMappedStatuses: Record<string, string[]> = {
                 'Bekliyor': ['Ödeme Bekleniyor', 'Ödeme Alındı'],
@@ -66,10 +151,9 @@ export default function SiparislerPage() {
                 'İptal': ['İptal'],
                 'İade': ['İade Talebi'],
             };
-            result = result.filter(o => tabMappedStatuses[activeTab].includes(o.status));
+            result = result.filter(o => tabMappedStatuses[activeTab]?.includes(o.status));
         }
 
-        // Search query
         if (searchQuery) {
             const q = searchQuery.toLowerCase();
             result = result.filter(o =>
@@ -79,25 +163,16 @@ export default function SiparislerPage() {
             );
         }
 
-        // Date range
-        if (dateRange.start) {
-            result = result.filter(o => new Date(o.createdAt) >= new Date(dateRange.start!));
-        }
-        if (dateRange.end) {
-            result = result.filter(o => new Date(o.createdAt) <= new Date(dateRange.end + 'T23:59:59'));
-        }
-
-        // Payment method
-        if (paymentFilter !== 'Tümü') {
-            result = result.filter(o => o.paymentMethod.type.includes(paymentFilter));
-        }
+        if (dateRange.start) result = result.filter(o => new Date(o.createdAt) >= new Date(dateRange.start!));
+        if (dateRange.end) result = result.filter(o => new Date(o.createdAt) <= new Date(dateRange.end + 'T23:59:59'));
+        if (paymentFilter !== 'Tümü') result = result.filter(o => o.paymentMethod.type.includes(paymentFilter));
 
         return result;
-    }, [activeTab, searchQuery, dateRange, paymentFilter]);
+    }, [orders, activeTab, searchQuery, dateRange, paymentFilter]);
 
     const tabCounts = useMemo(() => {
-        const counts: Partial<Record<OrderTab, number>> = { Tümü: mockOrders.length };
-        const tabMappedStatuses: Record<string, string[]> = {
+        const counts: Partial<Record<OrderTab, number>> = { Tümü: orders.length };
+        const mapping: Record<string, string[]> = {
             'Bekliyor': ['Ödeme Bekleniyor', 'Ödeme Alındı'],
             'Hazırlanıyor': ['Hazırlanıyor'],
             'Kargoda': ['Kargoya Verildi'],
@@ -105,13 +180,11 @@ export default function SiparislerPage() {
             'İptal': ['İptal'],
             'İade': ['İade Talebi'],
         };
-
-        Object.keys(tabMappedStatuses).forEach(tab => {
-            counts[tab as OrderTab] = mockOrders.filter(o => tabMappedStatuses[tab].includes(o.status)).length;
+        Object.keys(mapping).forEach(tab => {
+            counts[tab as OrderTab] = orders.filter(o => mapping[tab].includes(o.status)).length;
         });
-
         return counts;
-    }, []);
+    }, [orders]);
 
     const paginatedOrders = filteredOrders.slice((currentPage - 1) * perPage, currentPage * perPage);
 
@@ -126,16 +199,15 @@ export default function SiparislerPage() {
                     Siparişler
                 </h1>
                 <p style={{ fontSize: '13px', color: '#AEAEB2', margin: 0 }}>
-                    Sipariş akışını ve teslimat süreçlerini yönetin
+                    {loading ? 'Yükleniyor...' : 'Sipariş akışını ve teslimat süreçlerini yönetin'}
                 </p>
             </div>
 
-            {/* KPI Section */}
             <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
-                <KpiCard value="12" label="BUGÜN" icon={<ShoppingBag size={20} />} />
-                <KpiCard value="84" label="BU HAFTA" icon={<Calendar size={20} />} />
-                <KpiCard value="341" label="BU AY" icon={<Clock size={20} />} />
-                <KpiCard value="23" label="BEKLEYEN" icon={<AlertCircle size={20} />} variant="danger" />
+                <KpiCard value={String(orders.length)} label="TOPLAM" icon={<ShoppingBag size={20} />} />
+                <KpiCard value={String(tabCounts['Kargoda'] || 0)} label="KARGODA" icon={<Calendar size={20} />} />
+                <KpiCard value={String(tabCounts['Tamamlandı'] || 0)} label="TAMAMLANDI" icon={<Clock size={20} />} />
+                <KpiCard value={String((tabCounts['Bekliyor'] || 0) + (tabCounts['Hazırlanıyor'] || 0))} label="BEKLEYEN" icon={<AlertCircle size={20} />} variant="danger" />
             </div>
 
             <OrderFilters

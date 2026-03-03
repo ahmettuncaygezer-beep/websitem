@@ -36,7 +36,7 @@ export function BlogEditor({ title, onTitleChange, content, onContentChange, slu
                 />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
                     <LinkIcon size={14} color="#636366" />
-                    <span style={{ fontSize: '12px', color: '#636366' }}>maison.com.tr/blog/</span>
+                    <span style={{ fontSize: '12px', color: '#636366' }}>selis.com.tr/blog/</span>
                     <input
                         type="text" value={slug} onChange={(e) => onSlugChange(e.target.value)}
                         style={{

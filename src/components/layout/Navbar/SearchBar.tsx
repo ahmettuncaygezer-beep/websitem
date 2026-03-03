@@ -14,6 +14,7 @@ import {
     removeFromHistory,
     clearHistory,
 } from './SearchResults';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 interface SearchBarProps {
     isScrolled: boolean;
@@ -31,10 +32,12 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
     const [history, setHistory] = useState<string[]>([]);
     const [focusedIndex, setFocusedIndex] = useState(-1);
     const debouncedQuery = useSearchDebounce(query, 300);
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     // Global access for Browser Control
     useEffect(() => {
-        (window as any).MaisonSearch = {
+        (window as any).SelisSearch = {
             open: onOpen,
             close: onClose
         };
@@ -98,7 +101,7 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
         }
     };
 
-    const iconColor = isScrolled ? '#1C1C1E' : 'white';
+    const iconColor = 'currentColor'; // Let parent control it via className
 
     return (
         <>
@@ -106,18 +109,10 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
             {!isOpen && (
                 <button
                     onClick={onOpen}
-                    className="flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200"
-                    style={{ color: iconColor }}
-                    onMouseOver={(e) => {
-                        (e.currentTarget as HTMLElement).style.background =
-                            isScrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)';
-                    }}
-                    onMouseOut={(e) => {
-                        (e.currentTarget as HTMLElement).style.background = 'transparent';
-                    }}
+                    className="flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200 text-[#4A4A4A] dark:text-white hover:bg-black/5 dark:hover:bg-white/10"
                     aria-label="Ürün ara"
                 >
-                    <Search size={20} />
+                    <Search size={20} strokeWidth={1.5} />
                 </button>
             )}
 
@@ -134,33 +129,39 @@ export const SearchBar = memo(function SearchBar({ isScrolled, onOpen, onClose, 
                         role="search"
                         aria-label="Ürün ara"
                     >
-                        <Search size={18} style={{ color: '#999', flexShrink: 0 }} />
+                        <Search size={18} strokeWidth={1.5} className="text-[#999] dark:text-white/50" style={{ flexShrink: 0 }} />
                         <input
                             ref={inputRef}
                             type="text"
                             value={query}
                             onChange={(e) => { setQuery(e.target.value); setFocusedIndex(-1); }}
                             onKeyDown={handleKeyDown}
-                            placeholder="Ürün, kategori veya renk ara..."
+                            placeholder={t('search_placeholder') || "Ürün, kategori veya koleksiyon ara..."}
                             aria-label="Ürün ara"
-                            className="flex-1 bg-transparent border-none outline-none"
+                            className="flex-1 bg-transparent border-0 focus:border-0 border-transparent focus:border-transparent focus:ring-0 outline-none text-[#1A1A1A] dark:text-white placeholder:text-[#999] dark:placeholder:text-white/40 placeholder:font-light font-medium tracking-wide"
                             style={{
-                                fontSize: '16px',
-                                color: '#1C1C1E',
+                                fontSize: '15px',
                                 caretColor: '#C9A96E',
+                                boxShadow: 'none' // Ensure no default browser shadow/ring
                             }}
                         />
                         {query && (
-                            <button onClick={() => { setQuery(''); setResults(null); inputRef.current?.focus(); }}>
-                                <X size={16} style={{ color: '#999' }} />
-                            </button>
+                            <motion.button
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                onClick={() => { setQuery(''); setResults(null); inputRef.current?.focus(); }}
+                                className="p-1 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors"
+                            >
+                                <X size={14} strokeWidth={2} className="text-[#999] dark:text-white/50" />
+                            </motion.button>
                         )}
                         <button
                             onClick={handleClose}
-                            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 transition-colors"
+                            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors ml-1"
                             aria-label="Aramayı kapat"
                         >
-                            <X size={20} style={{ color: '#1C1C1E' }} />
+                            <X size={20} strokeWidth={1.5} className="text-[#4A4A4A] dark:text-white" />
                         </button>
 
                         {/* Results dropdown */}

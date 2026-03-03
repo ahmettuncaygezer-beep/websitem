@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-const KEY = 'maison_recently_viewed';
+const KEY = 'selis_recently_viewed';
 const MAX = 8;
 
 interface ViewedItem {

@@ -58,7 +58,7 @@ export default function StyleQuiz() {
                 onShare={() => {
                     if (navigator.share) {
                         navigator.share({
-                            title: 'MAISON Stil Testi Sonucum',
+                            title: 'SELIS Stil Testi Sonucum',
                             text: `Benim stilim: ${primaryStyle.name}! Seninkini keşfetmek için tıkla.`,
                             url: window.location.href,
                         });

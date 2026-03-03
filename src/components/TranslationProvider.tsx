@@ -14,21 +14,56 @@ export default function TranslationProvider({ children }: { children: React.Reac
 
             // Handle nested keys like "hero.badge"
             const keys = key.split('.');
-            let result: any = translations[language as keyof typeof translations];
+            let langDict = translations[language as keyof typeof translations];
 
             // Backwards compatibility for flat keys from old store
-            if (!result[keys[0]] && result[key]) {
-                result = result[key];
-            } else {
-                for (const k of keys) {
-                    if (result && result[k]) {
-                        result = result[k];
-                    } else {
-                        result = null;
-                        break;
+            let translationStr = undefined;
+
+            if (langDict) {
+                if (langDict[key as keyof typeof langDict]) {
+                    translationStr = langDict[key as keyof typeof langDict];
+                } else {
+                    let temp: any = langDict;
+                    for (const k of keys) {
+                        if (temp && temp[k]) {
+                            temp = temp[k];
+                        } else {
+                            temp = undefined;
+                            break;
+                        }
                     }
+                    if (temp) translationStr = temp;
                 }
             }
+
+            // Fallback to English if translation is missing
+            if (!translationStr) {
+                let enDict = translations['en'];
+                if (enDict[key as keyof typeof enDict]) {
+                    translationStr = enDict[key as keyof typeof enDict];
+                } else {
+                    let temp: any = enDict;
+                    for (const k of keys) {
+                        if (temp && temp[k]) {
+                            temp = temp[k];
+                        } else {
+                            temp = undefined;
+                            break;
+                        }
+                    }
+                    if (temp) translationStr = temp;
+                }
+            }
+
+            // Fallback to Turkish if English is missing
+            if (!translationStr) {
+                let trDict = translations['tr'];
+                if (trDict[key as keyof typeof trDict]) {
+                    translationStr = trDict[key as keyof typeof trDict];
+                }
+            }
+
+            let result = translationStr;
 
             if (result && typeof result === 'string') {
                 if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {

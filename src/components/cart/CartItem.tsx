@@ -27,7 +27,7 @@ export default function CartItem({ item }: { item: any }) {
         >
             {/* ÜRÜN GÖRSELİ */}
             <div className="relative w-20 h-20 flex-shrink-0 rounded-sm
-                     overflow-hidden bg-[#F5F0EB]">
+                     overflow-hidden bg-muted">
                 <Image
                     src={image}
                     alt={name}
@@ -41,11 +41,11 @@ export default function CartItem({ item }: { item: any }) {
             <div className="flex-1 min-w-0">
                 <div className="flex justify-between gap-2">
                     <div>
-                        <p className="text-[11px] text-[#999] uppercase tracking-wider
+                        <p className="text-[11px] text-muted-foreground/80 uppercase tracking-wider
                          mb-0.5">
-                            MAISON
+                            SELIS
                         </p>
-                        <p className="text-[13px] font-medium text-[#1C1C1E]
+                        <p className="text-[13px] font-medium text-foreground
                          leading-snug truncate max-w-[160px]">
                             {name}
                         </p>
@@ -56,8 +56,8 @@ export default function CartItem({ item }: { item: any }) {
                         onClick={() => removeItem(id)}
                         className="flex-shrink-0 w-7 h-7 flex items-center
                        justify-center rounded-full
-                       hover:bg-red-50 hover:text-red-500
-                       text-[#999] transition-colors duration-200"
+                        hover:bg-red-500/10 hover:text-red-500
+                        text-muted-foreground/80 transition-colors duration-200"
                         aria-label={`${name} ürününü sepetten kaldır`}
                     >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -67,27 +67,27 @@ export default function CartItem({ item }: { item: any }) {
                 {/* MİKTAR + FİYAT */}
                 <div className="flex items-center justify-between mt-3">
                     {/* MİKTAR KONTROL */}
-                    <div className="flex items-center gap-0 border border-[#E8E3DC]
+                    <div className="flex items-center gap-0 border border-border
                          rounded-sm overflow-hidden">
                         <button
                             onClick={() => updateQuantity(id, quantity - 1)}
                             className="w-7 h-7 flex items-center justify-center
-                        hover:bg-[#F5F0EB] transition-colors
-                        text-[#666] hover:text-[#1C1C1E]"
+                        hover:bg-accent transition-colors
+                        text-muted-foreground hover:text-foreground"
                             aria-label="Miktarı azalt"
                         >
                             <Minus className="w-3 h-3" />
                         </button>
                         <span className="w-8 h-7 flex items-center justify-center
-                           text-[13px] font-medium text-[#1C1C1E]
-                           border-x border-[#E8E3DC]">
+                           text-[13px] font-medium text-foreground
+                           border-x border-border">
                             {quantity}
                         </span>
                         <button
                             onClick={() => updateQuantity(id, quantity + 1)}
                             className="w-7 h-7 flex items-center justify-center
-                        hover:bg-[#F5F0EB] transition-colors
-                        text-[#666] hover:text-[#1C1C1E]"
+                        hover:bg-accent transition-colors
+                        text-muted-foreground hover:text-foreground"
                             aria-label="Miktarı artır"
                         >
                             <Plus className="w-3 h-3" />
@@ -96,11 +96,11 @@ export default function CartItem({ item }: { item: any }) {
 
                     {/* FİYAT */}
                     <div className="text-right">
-                        <p className="text-[14px] font-bold text-[#1C1C1E] dark:text-foreground">
+                        <p className="text-[14px] font-bold text-foreground">
                             {formatPrice((price || 0) * quantity)}
                         </p>
                         {quantity > 1 && (
-                            <p className="text-[11px] text-[#999] dark:text-muted-foreground">
+                            <p className="text-[11px] text-muted-foreground/80">
                                 {formatPrice(price)} / <span data-lang-key="cart_per_item">adet</span>
                             </p>
                         )}

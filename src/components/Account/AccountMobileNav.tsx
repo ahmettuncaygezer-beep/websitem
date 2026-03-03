@@ -17,12 +17,7 @@ export function AccountMobileNav() {
 
     return (
         <nav
-            className="lg:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center"
-            style={{
-                height: '60px',
-                background: 'white',
-                borderTop: '1px solid #F0EDE8',
-            }}
+            className="lg:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center h-[60px] bg-card border-t border-border"
         >
             {TABS.map((tab) => {
                 const isActive = tab.href === '/hesabim'
@@ -37,11 +32,10 @@ export function AccountMobileNav() {
                     >
                         <Icon
                             size={20}
-                            style={{ color: isActive ? '#C9A96E' : '#999' }}
+                            className={isActive ? 'text-selis-gold' : 'text-muted-foreground'}
                         />
                         <span
-                            className="text-[10px] font-medium mt-1"
-                            style={{ color: isActive ? '#C9A96E' : '#999' }}
+                            className={`text-[10px] font-medium mt-1 ${isActive ? 'text-selis-gold' : 'text-muted-foreground'}`}
                         >
                             {tab.label}
                         </span>

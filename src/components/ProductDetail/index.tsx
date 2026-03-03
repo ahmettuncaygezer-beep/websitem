@@ -15,9 +15,12 @@ import { RelatedProducts } from './RelatedProducts';
 import { RecentlyViewed } from './RecentlyViewed';
 import type { Product } from '@/components/ProductCard/product.types';
 
-interface ProductDetailProps { product: Product; }
+interface ProductDetailProps {
+    product: Product;
+    relatedProducts?: Product[];
+}
 
-export function ProductDetail({ product }: ProductDetailProps) {
+export function ProductDetail({ product, relatedProducts = [] }: ProductDetailProps) {
     const [selectedColorId, setSelectedColorId] = useState(product.colors[0]?.id ?? '');
     const selectedColor = product.colors.find((c) => c.id === selectedColorId);
     const { addItem } = useCart();
@@ -30,10 +33,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
     }
 
     const tabs = [
-        { id: 'desc', label: 'Açıklama', content: <DescriptionTab description={product.description} /> },
-        { id: 'specs', label: 'Özellikler', content: <SpecsTab /> },
-        { id: 'delivery', label: 'Teslimat & Montaj', content: <DeliveryTab /> },
-        { id: 'reviews', label: 'Yorumlar', count: product.rating?.count || 0, content: <ReviewsTab /> },
+        { id: 'desc', labelKey: 'pdp_tab_desc', label: 'Açıklama', content: <DescriptionTab description={product.description} /> },
+        { id: 'specs', labelKey: 'pdp_tab_specs', label: 'Özellikler', content: <SpecsTab /> },
+        { id: 'delivery', labelKey: 'pdp_tab_delivery', label: 'Teslimat & Montaj', content: <DeliveryTab /> },
+        { id: 'reviews', labelKey: 'pdp_tab_reviews', label: 'Yorumlar', count: product.rating?.count || 0, content: <ReviewsTab /> },
     ];
 
     const handleAddToCart = () => {
@@ -55,7 +58,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
     return (
         <>
-            <div className="max-w-[1400px] mx-auto px-0 md:px-8 pt-0 md:pt-8 pb-20">
+            <div className="max-w-[1400px] mx-auto px-0 md:px-8 pt-12 md:pt-20 pb-20">
                 {/* Main Hero – image + info side by side */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                     <div className="lg:col-span-7">
@@ -78,8 +81,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
                 {/* Complementary sections */}
                 <div className="px-4 md:px-0">
-                    <CompleteTheLook />
-                    <RelatedProducts />
+                    <CompleteTheLook products={relatedProducts.slice(0, 3)} />
+                    <RelatedProducts products={relatedProducts.slice(0, 4)} />
                     <RecentlyViewed
                         currentProduct={{
                             id: product.id,
@@ -87,7 +90,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                             name: product.name,
                             image: selectedColor?.image ?? product.colors[0]?.image ?? '',
                             price: product.price,
-                            brand: product.brand || 'MAISON',
+                            brand: product.brand || 'SELIS',
                         }}
                     />
                 </div>

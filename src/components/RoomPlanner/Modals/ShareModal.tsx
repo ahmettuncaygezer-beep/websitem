@@ -23,7 +23,7 @@ export function ShareModal({ open, onClose }: Props) {
                 logging: false,
             });
             const link = document.createElement('a');
-            link.download = `MAISON_Plan_${new Date().getTime()}.png`;
+            link.download = `SELIS_Plan_${new Date().getTime()}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         } catch (err) {
@@ -92,12 +92,12 @@ export function ShareModal({ open, onClose }: Props) {
 
                         {/* Social buttons */}
                         <div className="flex gap-3">
-                            <a href={`https://wa.me/?text=${encodeURIComponent(`MAISON Oda Planım: ${url}`)}`} target="_blank" rel="noopener"
+                            <a href={`https://wa.me/?text=${encodeURIComponent(`SELIS Oda Planım: ${url}`)}`} target="_blank" rel="noopener"
                                 className="flex-1 py-2.5 text-center text-[12px] font-medium rounded-sm transition-colors duration-150"
                                 style={{ background: '#25D366', color: 'white', textDecoration: 'none' }}>
                                 WhatsApp
                             </a>
-                            <a href={`mailto:?subject=MAISON Oda Planım&body=${encodeURIComponent(url)}`}
+                            <a href={`mailto:?subject=SELIS Oda Planım&body=${encodeURIComponent(url)}`}
                                 className="flex-1 py-2.5 text-center text-[12px] font-medium rounded-sm transition-colors duration-150"
                                 style={{ background: '#1C1C1E', color: 'white', textDecoration: 'none' }}>
                                 E-posta

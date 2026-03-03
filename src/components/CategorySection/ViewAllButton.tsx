@@ -4,10 +4,13 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 export function ViewAllButton() {
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-40px' });
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     return (
         <motion.div
@@ -19,7 +22,7 @@ export function ViewAllButton() {
         >
             <Link
                 href="/urunler"
-                aria-label="Tüm kategorileri görüntüle"
+                aria-label={t('cat_view_all_aria') || "Tüm kategorileri görüntüle"}
                 className="group relative inline-flex items-center gap-3 px-8 py-3.5 md:px-12 md:py-4 overflow-hidden rounded-sm"
                 style={{
                     border: '1.5px solid #1C1C1E',
@@ -59,9 +62,8 @@ export function ViewAllButton() {
                     id="btn-text"
                     className="relative z-10 transition-colors duration-[350ms]"
                     style={{ color: '#1C1C1E' }}
-                    data-lang-key="cat_view_all"
                 >
-                    Tümünü Gör
+                    {t('cat_view_all') || "Tümünü Gör"}
                 </span>
 
                 {/* Arrow */}
@@ -94,7 +96,7 @@ export function ViewAllButton() {
                     (e.currentTarget as HTMLElement).style.textDecoration = 'none';
                 }}
             >
-                <span data-lang-key="cat_view_all_desc">Tüm kategorilere göz atın</span>
+                <span>{t('cat_view_all_desc') || "Tüm kategorilere göz atın"}</span>
             </Link>
         </motion.div>
     );

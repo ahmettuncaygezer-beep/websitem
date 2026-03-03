@@ -3,7 +3,7 @@
  * Google Rich Results için production-ready şemalar
  */
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maisonmobilya.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://selismobilya.com';
 
 // ── Organization ────────────────────────────────────────────────────
 export function generateOrganizationSchema() {
@@ -11,7 +11,7 @@ export function generateOrganizationSchema() {
         '@context': 'https://schema.org',
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'MAISON',
+        name: 'SELIS',
         url: SITE_URL,
         logo: {
             '@type': 'ImageObject',
@@ -31,7 +31,7 @@ export function generateOrganizationSchema() {
                 '@type': 'ContactPoint',
                 contactType: 'customer service',
                 telephone: '+90-850-000-0000',
-                email: 'destek@maisonmobilya.com',
+                email: 'destek@selismobilya.com',
                 areaServed: 'TR',
                 availableLanguage: 'Turkish',
                 hoursAvailable: {
@@ -43,10 +43,10 @@ export function generateOrganizationSchema() {
             },
         ],
         sameAs: [
-            'https://www.instagram.com/maisonmobilya',
-            'https://www.facebook.com/maisonmobilya',
-            'https://www.youtube.com/@maisonmobilya',
-            'https://www.pinterest.com/maisonmobilya',
+            'https://www.instagram.com/selismobilya',
+            'https://www.facebook.com/selismobilya',
+            'https://www.youtube.com/@selismobilya',
+            'https://www.pinterest.com/selismobilya',
         ],
     };
 }
@@ -57,7 +57,7 @@ export function generateWebsiteSchema() {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
-        name: 'MAISON — Premium Mobilya',
+        name: 'SELIS HOME CONCEPT — Premium Mobilya',
         url: SITE_URL,
         inLanguage: 'tr-TR',
         publisher: { '@id': `${SITE_URL}/#organization` },
@@ -104,7 +104,7 @@ export function generateProductSchema(product: ProductSchemaInput) {
         sku: product.sku,
         brand: {
             '@type': 'Brand',
-            name: product.brand ?? 'MAISON',
+            name: product.brand ?? 'SELIS',
         },
         offers: {
             '@type': 'Offer',

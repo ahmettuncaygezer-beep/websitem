@@ -9,6 +9,7 @@ import { TopProducts } from '@/components/Admin/Dashboard/TopProducts';
 import { RecentOrders } from '@/components/Admin/Dashboard/RecentOrders';
 import { LiveActivity } from '@/components/Admin/Dashboard/LiveActivity';
 import { QuickActions } from '@/components/Admin/Dashboard/QuickActions';
+import { useAuthStore } from '@/store/authStore';
 
 // ── Stagger animation variants ─────────────────────────────────────────────────
 const containerVariants = {
@@ -27,6 +28,14 @@ type Period = (typeof periods)[number];
 
 export default function AdminDashboardPage() {
     const [activePeriod, setActivePeriod] = useState<Period>('Bu Ay');
+    const { user } = useAuthStore();
+
+    const getGreeting = () => {
+        const hour = new Date().getHours();
+        if (hour < 12) return 'Günaydın';
+        if (hour < 18) return 'İyi günler';
+        return 'İyi akşamlar';
+    };
 
     return (
         <motion.div
@@ -59,13 +68,11 @@ export default function AdminDashboardPage() {
                             lineHeight: 1.2,
                         }}
                     >
-                        Günaydın, Ali 👋
+                        {getGreeting()}, {user?.firstName || 'Admin'} 👋
                     </h1>
+                    {/* TODO: Replace with real dynamic stats */}
                     <p style={{ fontSize: '13px', color: '#AEAEB2', marginTop: '6px' }}>
-                        Bugün 12 yeni sipariş geldi,{' '}
-                        <span style={{ color: '#30D158', fontWeight: 600 }}>
-                            dün aynı saate göre %23 artış
-                        </span>
+                        Hoş geldiniz, istatistikler güncelleniyor...
                     </p>
                 </div>
 

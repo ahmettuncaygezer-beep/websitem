@@ -7,15 +7,15 @@ export default function EmptyCart({ onClose }: { onClose: () => void }) {
     return (
         <div className="flex flex-col items-center justify-center
                    h-full px-8 text-center gap-5 py-20">
-            <div className="w-20 h-20 rounded-full bg-[#F5F0EB]
+            <div className="w-20 h-20 rounded-full bg-muted
                      flex items-center justify-center">
                 <ShoppingBag className="w-8 h-8 text-[#C9A96E]" />
             </div>
             <div>
-                <p className="text-[16px] font-semibold text-[#1C1C1E] mb-2" data-lang-key="cart_empty">
+                <p className="text-[16px] font-semibold text-foreground mb-2" data-lang-key="cart_empty">
                     Sepetiniz boş
                 </p>
-                <p className="text-[13px] text-[#666] leading-relaxed" data-lang-key="cart_empty_desc">
+                <p className="text-[13px] text-muted-foreground leading-relaxed" data-lang-key="cart_empty_desc">
                     Beğendiğiniz ürünleri sepetinize ekleyin,
                     burada görüntüleyin.
                 </p>
@@ -23,7 +23,7 @@ export default function EmptyCart({ onClose }: { onClose: () => void }) {
             <Link
                 href="/kategori/oturma-odasi"
                 onClick={onClose}
-                className="mt-2 px-8 py-3 bg-[#1C1C1E] text-white
+                className="mt-2 px-8 py-3 bg-foreground text-background
                   text-[13px] font-semibold tracking-wide
                   hover:bg-[#C9A96E] transition-colors duration-300
                   rounded-sm"

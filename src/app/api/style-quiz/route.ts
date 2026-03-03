@@ -9,7 +9,7 @@ const anthropic = new Anthropic({
 export async function POST(req: Request) {
     const { answers, scores, primaryStyle, secondaryStyle } = await req.json();
 
-    const prompt = `Bir kullanıcı MAISON mobilya mağazasının stil testini tamamladı.
+    const prompt = `Bir kullanıcı SELIS mobilya mağazasının stil testini tamamladı.
 
 Stil puanları: ${JSON.stringify(scores)}
 Ana stil: ${primaryStyle}
@@ -20,7 +20,7 @@ Lütfen bu sonuçlara göre kişisel bir analiz yaz:
 - Türkçe, samimi ve ilham verici ton
 - Kullanıcının tercihlerini anlatan, onlara özel hissettiren bir yorum
 - Ev dekorasyonu için 2-3 pratik ipucu ver
-- MAISON ürünlerinden bahsetme alanı bırak`;
+- SELIS ürünlerinden bahsetme alanı bırak`;
 
     try {
         const stream = anthropic.messages.stream({

@@ -30,8 +30,8 @@ export function CurrencySwitcher({ isScrolled }: CurrencySwitcherProps) {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const textColor = isScrolled ? 'text-[#1C1C1E]/70' : 'text-white/70';
-    const hoverColor = isScrolled ? 'hover:text-[#1C1C1E]' : 'hover:text-white';
+    const textColor = 'text-foreground/70';
+    const hoverColor = 'hover:text-foreground';
 
     const activeCur = CURRENCIES.find((c) => c.code === currency);
 

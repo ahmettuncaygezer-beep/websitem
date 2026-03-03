@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useCountUp } from './useCountUp';
 import { STATS } from './socialProof.data';
+import { useGlobal } from '@/context/GlobalContext';
 
 function StatItem({
     stat,
@@ -16,6 +17,7 @@ function StatItem({
         duration: stat.duration,
         decimals: stat.decimals ?? 0,
     });
+    const { t } = useGlobal();
 
     const formattedCount =
         stat.decimals && stat.decimals > 0
@@ -52,7 +54,7 @@ function StatItem({
             <div className="flex items-end gap-0.5 mb-1">
                 <span
                     ref={ref as React.RefObject<HTMLSpanElement>}
-                    className="text-4xl md:text-5xl font-bold text-[#1C1C1E] leading-none tabular-nums"
+                    className="text-4xl md:text-5xl font-bold text-foreground leading-none tabular-nums"
                     style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}
                 >
                     {formattedCount}
@@ -63,8 +65,8 @@ function StatItem({
             </div>
 
             {/* LABEL */}
-            <p className="text-[13px] text-[#666] font-medium tracking-wide uppercase mt-1" data-lang-key={stat.langKey}>
-                {stat.label}
+            <p className="text-[13px] text-[#666] font-medium tracking-wide uppercase mt-1">
+                {t(stat.langKey) || stat.label}
             </p>
 
             {/* ALTI GOLD ÇİZGİ (hover'da görünür) */}
@@ -79,8 +81,10 @@ function StatItem({
 }
 
 export default function StatsCounter() {
+    const { t } = useGlobal();
+
     return (
-        <section className="py-16 bg-[#F5F0EB]">
+        <section className="py-16 bg-sand dark:bg-background transition-colors duration-500">
             <div className="max-w-5xl mx-auto px-6">
                 {/* BAŞLIK */}
                 <motion.div
@@ -90,20 +94,19 @@ export default function StatsCounter() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12"
                 >
-                    <p className="text-[11px] text-[#C9A96E] tracking-[0.3em] uppercase font-medium mb-3" data-lang-key="stats_subtitle">
-                        Rakamlarla MAISON
+                    <p className="text-[11px] text-[#C9A96E] tracking-[0.3em] uppercase font-medium mb-3">
+                        {t('stats_subtitle') || 'Rakamlarla SELIS'}
                     </p>
                     <h2
-                        className="text-2xl md:text-3xl font-bold text-[#1C1C1E]"
+                        className="text-2xl md:text-3xl font-bold text-foreground"
                         style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}
-                        data-lang-key="stats_title"
                     >
-                        Binlerce Mutlu Müşteri
+                        {t('stats_title') || 'Binlerce Mutlu Müşteri'}
                     </h2>
                 </motion.div>
 
                 {/* SAYAÇLAR GRID */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-0 bg-white rounded-sm border border-[#E8E3DC] shadow-sm overflow-hidden">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-0 bg-white dark:bg-card rounded-sm border border-border/40 shadow-sm overflow-hidden">
                     {STATS.map((stat, index) => (
                         <StatItem key={stat.id} stat={stat} index={index} />
                     ))}
@@ -139,8 +142,8 @@ export default function StatsCounter() {
                             </motion.svg>
                         ))}
                     </div>
-                    <p className="text-[12px] text-[#999]" data-lang-key="stats_based_on">
-                        12.500+ müşteri değerlendirmesi üzerinden
+                    <p className="text-[12px] text-[#999]">
+                        {t('stats_based_on') || '12.500+ müşteri değerlendirmesi üzerinden'}
                     </p>
                 </motion.div>
             </div>

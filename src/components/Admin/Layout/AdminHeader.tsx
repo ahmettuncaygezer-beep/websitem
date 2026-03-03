@@ -6,18 +6,25 @@ import { Search, Bell, Moon, Sun, LogOut, Settings, User as UserIcon } from 'luc
 import { BreadcrumbAdmin } from './BreadcrumbAdmin';
 import { CommandPalette } from '../UI/CommandPalette';
 import { useCommandPalette } from '@/lib/hooks/useCommandPalette';
-import { mockUser } from '@/lib/mock/user';
 import { NotificationBadge } from '../Notifications/NotificationBadge';
 import { NotificationPanel } from '../Notifications/NotificationPanel';
+import { useAuthStore } from '@/store/authStore';
 import { useNotificationStore } from '@/lib/store/useNotificationStore';
-import { mockNotifications } from '@/lib/mock/notifications';
-import { Notification } from '@/types/notifications';
 
 export function AdminHeader() {
     const [profileOpen, setProfileOpen] = useState(false);
     const [isDark, setIsDark] = useState(true);
-    const [notifCount] = useState(5);
     const cmdPalette = useCommandPalette();
+    const { user, logout } = useAuthStore();
+
+    // Get initials safely
+    const getInitials = () => {
+        if (!user || (!user.firstName && !user.lastName && !user.email)) return 'A';
+        const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || '';
+        const parts = name.split(' ');
+        if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+        return name.substring(0, 2).toUpperCase();
+    };
 
     return (
         <>
@@ -77,7 +84,7 @@ export function AdminHeader() {
                             className="w-[34px] h-[34px] rounded-full flex items-center justify-center text-[11px] font-semibold text-[#0F0F10] border border-[rgba(201,169,110,0.3)] hover:border-[#C9A96E] transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A96E]"
                             style={{ background: 'linear-gradient(135deg, #C9A96E 0%, #8B6A3A 100%)' }}
                         >
-                            {mockUser.initials}
+                            {getInitials()}
                         </button>
 
                         <AnimatePresence>
@@ -99,8 +106,10 @@ export function AdminHeader() {
                                     >
                                         {/* User info */}
                                         <div className="px-4 py-3 border-b border-white/[0.06]">
-                                            <div className="text-[12px] font-semibold text-[#F5F0EB]">{mockUser.name}</div>
-                                            <div className="text-[10px] text-[#636366] truncate">{mockUser.email}</div>
+                                            <div className="text-[12px] font-semibold text-[#F5F0EB]">
+                                                {user ? `${user.firstName} ${user.lastName}`.trim() : 'Admin'}
+                                            </div>
+                                            <div className="text-[10px] text-[#636366] truncate">{user?.email || 'admin@selis.com'}</div>
                                         </div>
 
                                         <button
@@ -118,6 +127,7 @@ export function AdminHeader() {
                                         <div className="h-px bg-white/[0.06] mx-2" />
                                         <button
                                             role="menuitem"
+                                            onClick={() => logout()}
                                             className="w-full flex items-center gap-3 px-4 py-2.5 text-[12px] text-[#AEAEB2] hover:text-[#FF453A] hover:bg-[rgba(255,69,58,0.05)] transition-colors cursor-pointer text-left"
                                         >
                                             <LogOut size={14} />Çıkış Yap

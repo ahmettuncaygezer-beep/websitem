@@ -31,9 +31,8 @@ export function StickyBuyBar({ name, image, price, onAddToCart }: Props) {
                         </div>
                     </div>
                     <button onClick={onAddToCart}
-                        className="shrink-0 px-6 py-2.5 flex items-center gap-2 font-semibold tracking-wider uppercase transition-colors duration-200 rounded-sm"
-                        style={{ fontSize: '11px', background: '#1C1C1E', color: 'white', border: 'none', cursor: 'pointer' }}>
-                        <ShoppingBag size={14} /> Sepete Ekle
+                        className="bg-[#1C1C1E] hover:bg-[#000] text-white px-5 sm:px-8 py-3.5 sm:py-4 rounded-none font-medium flex items-center justify-center gap-3 transition-colors text-[13px] uppercase tracking-widest relative overflow-hidden group">
+                        <ShoppingBag size={14} /> <span data-lang-key="prod_add_cart">Sepete Ekle</span>
                     </button>
                 </motion.div>
             )}

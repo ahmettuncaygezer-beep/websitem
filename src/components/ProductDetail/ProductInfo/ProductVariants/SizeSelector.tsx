@@ -7,7 +7,7 @@ export function SizeSelector({ sizes, selectedId, onSelect, onOpenGuide }: Props
     return (
         <div className="mt-5">
             <div className="flex items-center justify-between">
-                <span className="uppercase font-medium" style={{ fontSize: '12px', letterSpacing: '0.15em', color: '#999' }}>Boyut:</span>
+                <span className="uppercase font-medium text-muted-foreground" style={{ fontSize: '12px', letterSpacing: '0.15em' }} data-lang-key="pdp_size">Boyut:</span>
                 {onOpenGuide && (
                     <button onClick={onOpenGuide} className="text-[12px] transition-colors duration-150" style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
                         📏 Boyut Rehberi
@@ -19,13 +19,10 @@ export function SizeSelector({ sizes, selectedId, onSelect, onOpenGuide }: Props
                     const isActive = s.id === selectedId;
                     return (
                         <button key={s.id} disabled={!s.inStock} onClick={() => s.inStock && onSelect(s.id)}
-                            className="px-4 py-2 font-medium transition-all duration-200"
-                            style={{
-                                fontSize: '12px', borderRadius: '2px', cursor: s.inStock ? 'pointer' : 'not-allowed',
-                                background: isActive ? '#1C1C1E' : 'transparent', color: isActive ? 'white' : '#1C1C1E',
-                                border: isActive ? '1px solid #1C1C1E' : '1px solid #DDD',
-                                opacity: s.inStock ? 1 : 0.4, textDecoration: s.inStock ? 'none' : 'line-through',
-                            }}>
+                            className={`px-4 py-2 font-medium transition-all duration-200 border rounded-sm text-[12px] ${isActive
+                                ? 'bg-foreground text-background border-foreground'
+                                : 'bg-transparent text-foreground border-border'
+                                } ${s.inStock ? 'cursor-pointer' : 'cursor-not-allowed opacity-40 line-through'}`}>
                             {s.label}
                         </button>
                     );

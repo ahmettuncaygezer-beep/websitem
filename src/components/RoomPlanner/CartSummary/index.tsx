@@ -17,7 +17,7 @@ export function CartSummary() {
             addItem({
                 id: f.id,
                 name: f.name || 'Mobilya',
-                brand: 'MAISON',
+                brand: 'SELIS',
                 price: f.price,
                 originalPrice: f.price,
                 image: f.thumbnail || '/images/placeholder.jpg',

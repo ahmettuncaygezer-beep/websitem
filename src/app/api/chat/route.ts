@@ -33,8 +33,8 @@ export async function POST(req: Request) {
         return new Response('Rate limit exceeded', { status: 429 });
     }
 
-    const { messages, context } = await req.json();
-    const systemPrompt = buildSystemPrompt(context);
+    const { messages, context, language = 'tr' } = await req.json();
+    const systemPrompt = buildSystemPrompt(context, language);
 
     // Filter and map messages for common format
     const commonMessages = (messages || [])

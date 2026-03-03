@@ -34,7 +34,7 @@ export default function PWAInstallBanner() {
 
         const handleInstalled = () => setInstalled(true);
 
-        window.MaisonPWA = {
+        window.SelisPWA = {
             trigger: () => setShow(true),
             install: handleInstall
         };
@@ -77,27 +77,29 @@ export default function PWAInstallBanner() {
                         <div className="flex items-start gap-3">
                             {/* İkon */}
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/icons/icon-72x72.png" alt="MAISON" width={44} height={44}
+                            <img src="/icons/icon-72x72.png" alt="SELIS" width={44} height={44}
                                 className="rounded-xl flex-shrink-0 bg-[#F5F0EB]"
                                 onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
                             />
                             <div className="flex-1 min-w-0">
-                                <p className="text-[13px] font-bold text-[#1C1C1E] dark:text-[#F5F0EB]">
-                                    MAISON&apos;u Ana Ekrana Ekle
+                                <p className="text-[13px] font-bold text-[#1C1C1E] dark:text-[#F5F0EB]" data-lang-key="pwa_title">
+                                    SELIS&apos;u Ana Ekrana Ekle
                                 </p>
-                                <p className="text-[11px] text-[#666] dark:text-[#AEAEB2] mt-0.5">
+                                <p className="text-[11px] text-[#666] dark:text-[#AEAEB2] mt-0.5" data-lang-key="pwa_desc">
                                     Daha hızlı erişim, offline kullanım
                                 </p>
                                 <div className="flex items-center gap-3 mt-3">
                                     <button
                                         onClick={handleInstall}
                                         className="px-4 py-1.5 bg-[#C9A96E] text-white text-[12px] font-semibold rounded-sm hover:bg-[#B8915A] transition-colors"
+                                        data-lang-key="pwa_add"
                                     >
                                         Ekle
                                     </button>
                                     <button
                                         onClick={handleDismiss}
                                         className="text-[11px] text-[#999] hover:text-[#666] transition-colors"
+                                        data-lang-key="pwa_no"
                                     >
                                         Hayır, teşekkürler
                                     </button>

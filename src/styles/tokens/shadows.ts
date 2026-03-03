@@ -1,5 +1,5 @@
 /**
- * MAISON Shadow System
+ * SELIS Shadow System
  * ─────────────────────────────────────────────
  * All box-shadow values centralized.
  * Usage: import { shadows } from '@/lib/design-system'

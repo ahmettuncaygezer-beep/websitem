@@ -1,7 +1,10 @@
-import { useRef, memo } from 'react';
+import React, { memo, useState, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { NavCategory } from './navbar.types';
+import { MegaMenu } from './MegaMenu';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface NavbarDesktopProps {
     categories: NavCategory[];
@@ -9,6 +12,8 @@ interface NavbarDesktopProps {
     activeCategoryId: string | null;
     onCategoryEnter: (id: string) => void;
     onCategoryLeave: () => void;
+    onMegaMenuEnter?: () => void;
+    onMegaMenuClose?: () => void;
 }
 
 export const NavbarDesktop = memo(function NavbarDesktop({
@@ -17,60 +22,118 @@ export const NavbarDesktop = memo(function NavbarDesktop({
     activeCategoryId,
     onCategoryEnter,
     onCategoryLeave,
+    onMegaMenuEnter,
+    onMegaMenuClose,
 }: NavbarDesktopProps) {
     const pathname = usePathname();
+    const { t } = useGlobal();
+    const goldColor = '#C9A96E';
 
     return (
         <nav
-            className="hidden lg:flex items-center gap-6"
+            className="flex items-center gap-2"
             role="navigation"
-            aria-label="Ana navigasyon"
         >
-            {categories.map((cat) => {
+            {categories.map((cat, index) => {
                 const isActive = activeCategoryId === cat.id || pathname.startsWith(cat.href);
-                const textBase = isScrolled ? 'var(--foreground)' : 'rgba(255,255,255,0.85)';
-                const textHover = isScrolled ? 'var(--foreground)' : '#ffffff';
-                const textActive = 'var(--maison-gold)';
+                const label = cat.dataKey ? t(cat.dataKey) : cat.label;
 
                 return (
-                    <div
+                    <motion.div
                         key={cat.id}
-                        className="relative py-1"
-                        onMouseEnter={() => onCategoryEnter(cat.id)}
-                        onMouseLeave={onCategoryLeave}
+                        initial={{ opacity: 0, x: 20, scale: 0.9 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        transition={{
+                            type: 'spring',
+                            damping: 25,
+                            stiffness: 300,
+                            delay: index * 0.05
+                        }}
                     >
-                        <Link
-                            href={cat.href}
-                            aria-haspopup="true"
-                            aria-expanded={activeCategoryId === cat.id}
-                            className="relative block text-[13px] font-medium tracking-wide group"
-                            style={{
-                                color: isActive ? textActive : textBase,
-                                transition: 'color 300ms ease',
-                            }}
-                            onMouseEnter={(e) => {
-                                if (!isActive) (e.currentTarget as HTMLElement).style.color = textHover;
-                            }}
-                            onMouseLeave={(e) => {
-                                if (!isActive) (e.currentTarget as HTMLElement).style.color = textBase;
-                            }}
-                            data-lang-key={cat.dataKey}
-                        >
-                            {cat.label}
-
-                            {/* Animated underline */}
-                            <span
-                                className="absolute bottom-[-4px] left-0 h-[1.5px] transition-all duration-[300ms] ease-out"
-                                style={{
-                                    background: 'var(--maison-gold)',
-                                    width: isActive ? '100%' : '0%',
-                                    opacity: isActive ? 1 : 0,
-                                }}
-                            />
-                        </Link>
-                    </div>
+                        <CategoryLink
+                            cat={cat}
+                            label={label}
+                            isActive={isActive}
+                            isScrolled={isScrolled}
+                            goldColor={goldColor}
+                            onEnter={() => onCategoryEnter(cat.id)}
+                            onLeave={onCategoryLeave}
+                            activeCategoryId={activeCategoryId}
+                            onMegaMenuEnter={onMegaMenuEnter}
+                            onMegaMenuClose={onMegaMenuClose}
+                        />
+                    </motion.div>
                 );
             })}
         </nav>
     );
 });
+
+interface CategoryLinkProps {
+    cat: NavCategory;
+    label: string;
+    isActive: boolean;
+    isScrolled: boolean;
+    goldColor: string;
+    onEnter: () => void;
+    onLeave: () => void;
+    activeCategoryId: string | null;
+    onMegaMenuEnter?: () => void;
+    onMegaMenuClose?: () => void;
+}
+
+const CategoryLink = ({ cat, label, isActive, isScrolled, goldColor, onEnter, onLeave, activeCategoryId, onMegaMenuEnter, onMegaMenuClose }: CategoryLinkProps) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <div
+            className="relative flex items-center group cursor-pointer px-5 py-2 rounded-full transition-all duration-500 hover:bg-black/5 dark:hover:bg-white/10"
+            onMouseEnter={() => {
+                setIsHovered(true);
+                onEnter();
+            }}
+            onMouseLeave={() => {
+                setIsHovered(false);
+                onLeave();
+            }}
+        >
+            <Link
+                href={cat.href}
+                className="relative block"
+            >
+                <span
+                    className="block text-[17px] tracking-wide transition-all duration-500 dark:text-white"
+                    style={{
+                        fontFamily: '"Cormorant Garamond", serif',
+                        fontWeight: isActive || isHovered ? 600 : 500,
+                        color: isActive ? goldColor : undefined,
+                        fontStyle: 'italic'
+                    }}
+                >
+                    {label}
+                </span>
+
+                {/* Micro Node Indicator */}
+                <AnimatePresence>
+                    {(isActive || isHovered) && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0 }}
+                            className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                            style={{ backgroundColor: goldColor }}
+                        />
+                    )}
+                </AnimatePresence>
+            </Link>
+
+            <MegaMenu
+                activeCategory={activeCategoryId === cat.id ? cat : null}
+                onClose={onMegaMenuClose || (() => { })}
+                onMouseEnter={onMegaMenuEnter || (() => { })}
+                onMouseLeave={onLeave}
+                position="center"
+            />
+        </div>
+    );
+};

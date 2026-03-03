@@ -15,8 +15,8 @@ export function ColorSelector({ colors, selectedId, onSelect }: Props) {
     return (
         <div className="mt-6">
             <div className="flex items-center justify-between">
-                <span className="uppercase font-medium" style={{ fontSize: '12px', letterSpacing: '0.15em', color: '#999' }}>Renk:</span>
-                <span className="text-[12px] font-medium" style={{ color: '#1C1C1E' }}>{selected?.name}</span>
+                <span className="uppercase font-medium text-muted-foreground" style={{ fontSize: '12px', letterSpacing: '0.15em' }}><span data-lang-key="pdp_color">Renk</span>:</span>
+                <span className="text-[12px] font-medium text-foreground">{selected?.name}</span>
             </div>
             <div className="flex flex-wrap gap-2.5 mt-3" role="radiogroup" aria-label="Renk seçin">
                 {colors.map((c) => {

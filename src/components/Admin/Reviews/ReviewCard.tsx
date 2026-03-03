@@ -130,7 +130,7 @@ export function ReviewCard({ review, onStatusChange }: ReviewCardProps) {
                 {review.adminReply && (
                     <div className="bg-[#C9A96E]/05 border-l-2 border-[#C9A96E] p-4 ml-2 mb-6 rounded-r-sm">
                         <div className="flex items-center gap-2 mb-2">
-                            <span className="text-[11px] font-bold text-[#C9A96E] uppercase tracking-wider">MAISON Yanıtı</span>
+                            <span className="text-[11px] font-bold text-[#C9A96E] uppercase tracking-wider">SELIS Yanıtı</span>
                             <span className="text-[10px] text-[#636366]">• {formatDistanceToNow(new Date(review.adminReply.repliedAt), { addSuffix: true, locale: tr })}</span>
                         </div>
                         <p className="text-[13px] text-[#AEAEB2] leading-relaxed">

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, User, Phone } from 'lucide-react';
 import { PasswordStrength } from './PasswordStrength';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslationStore, translations } from '@/store/translationStore';
 
 interface Props {
     onSwitchToLogin: () => void;
@@ -28,6 +29,8 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [focusedField, setFocusedField] = useState('');
+    const { language } = useTranslationStore();
+    const t = (key: string) => translations[language]?.[key];
 
     const update = (field: string, value: string | boolean) =>
         setForm((f) => ({ ...f, [field]: value }));
@@ -83,7 +86,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
             {/* Name row */}
             <div className="grid grid-cols-2 gap-3 mb-3">
                 <div>
-                    <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }} data-lang-key="auth_firstname_label">Ad *</label>
+                    <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>{t('auth_firstname_label') || "Ad"} *</label>
                     <div className="relative">
                         <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors duration-200" style={{ color: iconColor('firstName') }} />
                         <input
@@ -98,7 +101,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
                     </div>
                 </div>
                 <div>
-                    <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }} data-lang-key="auth_lastname_label">Soyad *</label>
+                    <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>{t('auth_lastname_label') || "Soyad"} *</label>
                     <div className="relative">
                         <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors duration-200" style={{ color: iconColor('lastName') }} />
                         <input
@@ -117,7 +120,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
             {/* Email */}
             <div className="mb-3">
                 <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>
-                    <span data-lang-key="auth_email_label">E-posta adresi</span> *
+                    <span>{t('auth_email_label') || "E-posta adresi"}</span> *
                 </label>
                 <div className="relative">
                     <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors duration-200" style={{ color: iconColor('email') }} />
@@ -137,7 +140,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
 
             {/* Phone */}
             <div className="mb-3">
-                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }} data-lang-key="auth_phone_label">Telefon numarası *</label>
+                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>{t('auth_phone_label') || "Telefon numarası"} *</label>
                 <div className="relative">
                     <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors duration-200" style={{ color: iconColor('phone') }} />
                     <input
@@ -156,7 +159,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
             {/* Password */}
             <div className="mb-3">
                 <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>
-                    <span data-lang-key="auth_password_label">Şifre</span> *
+                    <span>{t('auth_password_label') || "Şifre"}</span> *
                 </label>
                 <div className="relative">
                     <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors duration-200" style={{ color: iconColor('password') }} />
@@ -180,7 +183,7 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
 
             {/* Confirm Password */}
             <div className="mb-4">
-                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }} data-lang-key="auth_confirm_password_label">Şifre Tekrar *</label>
+                <label className="block text-[12px] font-medium mb-1.5" style={{ color: '#666' }}>{t('auth_confirm_password_label') || "Şifre Tekrar"} *</label>
                 <div className="relative">
                     <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors duration-200" style={{ color: iconColor('confirmPassword') }} />
                     <input
@@ -214,8 +217,11 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
                         {form.acceptTerms && <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                     </div>
                     <span className="text-[12px]" style={{ color: '#666' }}>
-                        <span data-lang-key="auth_terms_accept">
-                            <span style={{ color: '#C9A96E', cursor: 'pointer' }}>Kullanım Koşulları</span> ve <span style={{ color: '#C9A96E', cursor: 'pointer' }}>Gizlilik Politikası</span>&apos;nı okudum, kabul ediyorum. *
+                        <span>
+                            <span style={{ color: '#C9A96E', cursor: 'pointer' }}>{t('auth_terms_link1') || "Kullanım Koşulları"}</span>
+                            <span> {t('auth_terms_and') || "ve"} </span>
+                            <span style={{ color: '#C9A96E', cursor: 'pointer' }}>{t('auth_terms_link2') || "Gizlilik Politikası"}</span>
+                            <span>{t('auth_terms_read') || "'nı okudum, kabul ediyorum. *"}</span>
                         </span>
                     </span>
                 </label>
@@ -227,8 +233,8 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
                     >
                         {form.acceptMarketing && <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                     </div>
-                    <span className="text-[12px]" style={{ color: '#666' }} data-lang-key="auth_marketing_accept">
-                        MAISON&apos;dan kampanya ve özel teklif e-postaları almak istiyorum.
+                    <span className="text-[12px]" style={{ color: '#666' }}>
+                        {t('auth_marketing_accept') || "SELIS'dan kampanya ve özel teklif e-postaları almak istiyorum."}
                     </span>
                 </label>
             </div>
@@ -249,12 +255,9 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
                 }}
             >
                 {loading ? (
-                    <>
-                        <div className="animate-spin" style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid #C9A96E', borderRadius: '50%' }} />
-                        <span data-lang-key="auth_registering">Hesap oluşturuluyor...</span>
-                    </>
+                    <span>{t('auth_register_loading') || "Hesap oluşturuluyor..."}</span>
                 ) : (
-                    <span data-lang-key="auth_register_btn">Hesap Oluştur →</span>
+                    <span>{t('auth_register_btn') || "Kayıt Ol"}</span>
                 )}
             </motion.button>
 
@@ -272,9 +275,9 @@ export function RegisterForm({ onSwitchToLogin, onSuccess }: Props) {
 
             {/* Switch to login */}
             <p className="text-center mt-4 text-[12px]" style={{ color: '#999' }}>
-                <span data-lang-key="auth_has_account">Zaten hesabınız var mı?</span>{' '}
+                <span>{t('auth_has_account') || "Zaten hesabınız var mı?"}</span>{' '}
                 <button type="button" onClick={onSwitchToLogin} className="font-medium hover:underline" style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer' }}>
-                    <span data-lang-key="auth_login_link">Giriş Yapın →</span>
+                    <span>{t('auth_login_link') || "Giriş Yapın →"}</span>
                 </button>
             </p>
         </form>

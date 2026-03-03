@@ -10,6 +10,7 @@ import ExitIntentPopup from '@/components/Marketing/ExitIntentPopup';
 import ComparisonTray from '@/components/Marketing/ComparisonTray';
 import WebVitalsReporter from '@/components/Performance/WebVitalsReporter';
 import PWAInstallBanner from '@/components/Performance/PWAInstallBanner';
+import CookieConsent from '@/components/ui/CookieConsent';
 import { generateOrganizationSchema, generateWebsiteSchema } from '@/lib/structured-data';
 import { ToastProvider } from '@/components/ui/Toast/ToastProvider';
 import TranslationProvider from '@/components/TranslationProvider';
@@ -18,14 +19,14 @@ const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-serif',
-  display: 'optional',
+  display: 'swap',
 });
 
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
   variable: '--font-sans',
-  display: 'optional',
+  display: 'swap',
 });
 
 const playfair = Playfair_Display({
@@ -33,28 +34,28 @@ const playfair = Playfair_Display({
   weight: ['400', '700'],
   style: ['normal', 'italic'],
   variable: '--font-playfair',
-  display: 'optional',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: {
-    default: 'MAISON — Premium Mobilya & Ev Dekorasyonu',
-    template: '%s | MAISON',
+    default: 'SELIS HOME CONCEPT — Premium Mobilya & Ev Dekorasyonu',
+    template: '%s | SELIS HOME CONCEPT',
   },
   description:
     'Evinizin yeni hikayesi. Lüks mobilya, aydınlatma ve dekorasyon ürünlerinde premium koleksiyonlar. Türk tasarımı, dünya kalitesi.',
-  keywords: ['mobilya', 'lüks mobilya', 'ev dekorasyonu', 'koltuk', 'yatak', 'premium', 'MAISON'],
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maisonmobilya.com'),
+  keywords: ['mobilya', 'lüks mobilya', 'ev dekorasyonu', 'koltuk', 'yatak', 'premium', 'SELIS'],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://selismobilya.com'),
   openGraph: {
-    title: 'MAISON — Premium Mobilya & Ev Dekorasyonu',
+    title: 'SELIS HOME CONCEPT — Premium Mobilya & Ev Dekorasyonu',
     description: 'Evinizin yeni hikayesi. Lüks mobilya ve dekorasyon.',
     type: 'website',
     locale: 'tr_TR',
-    siteName: 'MAISON',
+    siteName: 'SELIS HOME CONCEPT',
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@maisonmobilya',
+    site: '@selismobilya',
   },
   alternates: {
     canonical: '/',
@@ -135,7 +136,10 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: SW_REGISTER_SCRIPT }} />
       </head>
 
-      <body className="min-h-screen flex flex-col bg-white dark:bg-[#1C1C1E] text-[#1C1C1E] dark:text-[#F5F0EB] transition-colors duration-300">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen flex flex-col overflow-x-hidden bg-white dark:bg-[#1C1C1E] text-[#1C1C1E] dark:text-[#F5F0EB] transition-colors duration-300 scroll-smooth [scrollbar-gutter:stable]"
+      >
         <GlobalProvider>
           <CartProvider>
             <ToastProvider>
@@ -146,6 +150,7 @@ export default function RootLayout({
                 <ComparisonTray />
                 <PWAInstallBanner />
                 <WebVitalsReporter />
+                <CookieConsent />
               </TranslationProvider>
             </ToastProvider>
           </CartProvider>
