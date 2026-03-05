@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Truck, ShieldCheck, RotateCcw, Headphones } from 'lucide-react';
+import { useGlobal } from '@/context/GlobalContext';
 
 const features = [
     {
@@ -36,6 +37,8 @@ const features = [
 ];
 
 export function TrustBand() {
+    const { t } = useGlobal();
+
     return (
         <section className="bg-background py-16 md:py-24 border-t border-border/40 transition-colors duration-500">
             <div className="container-premium">
@@ -51,7 +54,7 @@ export function TrustBand() {
                 >
                     {features.map((feature) => (
                         <motion.div
-                            key={feature.title}
+                            key={feature.titleKey}
                             variants={{
                                 hidden: { opacity: 0, y: 20 },
                                 visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -61,8 +64,8 @@ export function TrustBand() {
                             <div className="w-14 h-14 rounded-full bg-accent/30 flex items-center justify-center mb-5 shadow-sm border border-gold/10 group-hover:border-gold/30 transition-all duration-300">
                                 <feature.icon size={22} className="text-selis-gold" />
                             </div>
-                            <h4 className="font-serif text-base md:text-lg mb-2 text-foreground" data-lang-key={feature.titleKey}>{feature.title}</h4>
-                            <p className="text-xs md:text-sm font-sans text-muted-foreground/80" data-lang-key={feature.descKey}>{feature.description}</p>
+                            <h4 className="font-serif text-base md:text-lg mb-2 text-foreground">{t(feature.titleKey) || feature.title}</h4>
+                            <p className="text-xs md:text-sm font-sans text-muted-foreground/80">{t(feature.descKey) || feature.description}</p>
                         </motion.div>
                     ))}
                 </motion.div>
@@ -70,3 +73,4 @@ export function TrustBand() {
         </section>
     );
 }
+

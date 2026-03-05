@@ -1,4 +1,6 @@
-export type AdminRole = 'super-admin' | 'editor' | 'order-manager' | 'analyst';
+import type { AdminRole } from '@/lib/permissions';
+
+export type { AdminRole };
 
 export type AdminStatus = 'active' | 'inactive' | 'invited';
 

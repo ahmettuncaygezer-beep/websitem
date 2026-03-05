@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
     Settings, CreditCard, Truck,
-    Bell, Share2, ShieldCheck, ChevronRight
+    Bell, Share2, ShieldCheck, ChevronRight, Search, Globe
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -16,6 +16,20 @@ const NAV_ITEMS = [
         desc: 'Site bilgileri',
         icon: Settings,
         href: '/admin/ayarlar/genel'
+    },
+    {
+        id: 'seo',
+        label: 'SEO',
+        desc: 'Meta bilgiler',
+        icon: Search,
+        href: '/admin/ayarlar/seo'
+    },
+    {
+        id: 'ceviri',
+        label: 'Çeviri',
+        desc: 'Dil metinleri',
+        icon: Globe,
+        href: '/admin/ayarlar/ceviri'
     },
     {
         id: 'odeme',
@@ -58,63 +72,97 @@ export function SettingsNav() {
     const pathname = usePathname();
 
     return (
-        <aside style={{
-            width: '260px', height: '100%', background: '#0F0F10',
-            borderRight: '1px solid rgba(255,255,255,0.04)', display: 'flex', flexDirection: 'column'
-        }}>
-            <div style={{ padding: '32px 24px 24px' }}>
-                <h2 style={{
-                    fontFamily: "'Playfair Display', serif", fontSize: '20px',
-                    color: '#F5F0EB', margin: 0
-                }}>Ayarlar</h2>
-                <p style={{ fontSize: '12px', color: '#636366', marginTop: '4px' }}>Sistem yapılandırması</p>
-            </div>
+        <>
+            {/* Desktop Sidebar Nav — hidden on mobile */}
+            <aside className="hidden lg:flex" style={{
+                width: '260px', height: '100%', background: '#0F0F10',
+                borderRight: '1px solid rgba(255,255,255,0.04)', flexDirection: 'column'
+            }}>
+                <div style={{ padding: '32px 24px 24px' }}>
+                    <h2 style={{
+                        fontFamily: "'Playfair Display', serif", fontSize: '20px',
+                        color: '#F5F0EB', margin: 0
+                    }}>Ayarlar</h2>
+                    <p style={{ fontSize: '12px', color: '#636366', marginTop: '4px' }}>Sistem yapılandırması</p>
+                </div>
 
-            <nav style={{ flex: 1, padding: '0 12px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <nav style={{ flex: 1, padding: '0 12px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        {NAV_ITEMS.map((item) => {
+                            const isActive = pathname === item.href;
+                            return (
+                                <Link
+                                    key={item.id}
+                                    href={item.href}
+                                    style={{ textDecoration: 'none' }}
+                                >
+                                    <motion.div
+                                        whileHover={{ background: 'rgba(255,255,255,0.03)' }}
+                                        style={{
+                                            padding: '12px 16px', borderRadius: '8px', cursor: 'pointer',
+                                            display: 'flex', alignItems: 'center', gap: '16px',
+                                            background: isActive ? 'rgba(201,169,110,0.1)' : 'transparent',
+                                            borderLeft: `2px solid ${isActive ? '#C9A96E' : 'transparent'}`,
+                                            transition: 'all 200ms'
+                                        }}
+                                    >
+                                        <item.icon
+                                            size={20}
+                                            color={isActive ? '#C9A96E' : 'rgba(255,255,255,0.4)'}
+                                        />
+                                        <div style={{ flex: 1 }}>
+                                            <div style={{
+                                                fontSize: '13px', fontWeight: isActive ? 600 : 400,
+                                                color: isActive ? '#F5F0EB' : 'rgba(255,255,255,0.6)'
+                                            }}>{item.label}</div>
+                                            <div style={{
+                                                fontSize: '11px',
+                                                color: isActive ? 'rgba(201,169,110,0.6)' : 'rgba(255,255,255,0.3)'
+                                            }}>{item.desc}</div>
+                                        </div>
+                                        {isActive && (
+                                            <motion.div layoutId="active-indicator">
+                                                <ChevronRight size={14} color="#C9A96E" />
+                                            </motion.div>
+                                        )}
+                                    </motion.div>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </nav>
+            </aside>
+
+            {/* Mobile/Tablet Horizontal Tab Bar — visible only on < lg */}
+            <div className="lg:hidden overflow-x-auto scrollbar-hide border-b border-white/[0.06] bg-[#0F0F10]" style={{ WebkitOverflowScrolling: 'touch' }}>
+                <nav className="flex gap-1 px-3 py-2 min-w-max">
                     {NAV_ITEMS.map((item) => {
                         const isActive = pathname === item.href;
                         return (
                             <Link
                                 key={item.id}
                                 href={item.href}
-                                style={{ textDecoration: 'none' }}
+                                className="flex items-center gap-2 px-4 py-2.5 rounded-lg whitespace-nowrap transition-all duration-200"
+                                style={{
+                                    textDecoration: 'none',
+                                    background: isActive ? 'rgba(201,169,110,0.1)' : 'transparent',
+                                    borderBottom: isActive ? '2px solid #C9A96E' : '2px solid transparent',
+                                }}
                             >
-                                <motion.div
-                                    whileHover={{ background: 'rgba(255,255,255,0.03)' }}
-                                    style={{
-                                        padding: '12px 16px', borderRadius: '8px', cursor: 'pointer',
-                                        display: 'flex', alignItems: 'center', gap: '16px',
-                                        background: isActive ? 'rgba(201,169,110,0.1)' : 'transparent',
-                                        borderLeft: `2px solid ${isActive ? '#C9A96E' : 'transparent'}`,
-                                        transition: 'all 200ms'
-                                    }}
-                                >
-                                    <item.icon
-                                        size={20}
-                                        color={isActive ? '#C9A96E' : 'rgba(255,255,255,0.4)'}
-                                    />
-                                    <div style={{ flex: 1 }}>
-                                        <div style={{
-                                            fontSize: '13px', fontWeight: isActive ? 600 : 400,
-                                            color: isActive ? '#F5F0EB' : 'rgba(255,255,255,0.6)'
-                                        }}>{item.label}</div>
-                                        <div style={{
-                                            fontSize: '11px',
-                                            color: isActive ? 'rgba(201,169,110,0.6)' : 'rgba(255,255,255,0.3)'
-                                        }}>{item.desc}</div>
-                                    </div>
-                                    {isActive && (
-                                        <motion.div layoutId="active-indicator">
-                                            <ChevronRight size={14} color="#C9A96E" />
-                                        </motion.div>
-                                    )}
-                                </motion.div>
+                                <item.icon
+                                    size={16}
+                                    color={isActive ? '#C9A96E' : 'rgba(255,255,255,0.4)'}
+                                />
+                                <span style={{
+                                    fontSize: '12px',
+                                    fontWeight: isActive ? 600 : 400,
+                                    color: isActive ? '#F5F0EB' : 'rgba(255,255,255,0.5)',
+                                }}>{item.label}</span>
                             </Link>
                         );
                     })}
-                </div>
-            </nav>
-        </aside>
+                </nav>
+            </div>
+        </>
     );
 }

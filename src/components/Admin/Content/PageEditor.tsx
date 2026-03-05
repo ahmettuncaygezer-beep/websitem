@@ -7,7 +7,7 @@ import {
     MousePointer2, HelpCircle, CheckCircle2
 } from 'lucide-react';
 import Link from 'next/link';
-import { PageSection } from '@/lib/mock/content';
+import { PageSection } from '@/lib/default-content';
 import { SectionList } from './SectionList';
 import { HeroEditor } from './HeroEditor';
 import { FeaturesEditor } from './FeaturesEditor';

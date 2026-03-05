@@ -441,11 +441,11 @@ export const mockCustomers: Customer[] = [
     },
 ];
 
-export const SEGMENT_CONFIG: Record<CustomerSegment, { color: string; bg: string; label: string }> = {
-    'VIP': { color: '#C9A96E', bg: 'rgba(201,169,110,0.12)', label: 'VIP Müşteri' },
-    'Sadık': { color: '#30D158', bg: 'rgba(48,209,88,0.1)', label: 'Sadık Müşteri' },
-    'Normal': { color: '#AEAEB2', bg: 'rgba(255,255,255,0.06)', label: 'Standart' },
-    'Risk': { color: '#FF453A', bg: 'rgba(255,69,58,0.1)', label: 'Risk Altında' },
+export const SEGMENT_CONFIG: Record<CustomerSegment, { color: string; bg: string; border: string; label: string }> = {
+    'VIP': { color: '#C9A96E', bg: 'rgba(201,169,110,0.12)', border: 'rgba(201,169,110,0.2)', label: 'VIP Müşteri' },
+    'Sadık': { color: '#30D158', bg: 'rgba(48,209,88,0.1)', border: 'rgba(48,209,88,0.2)', label: 'Sadık Müşteri' },
+    'Normal': { color: '#AEAEB2', bg: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.1)', label: 'Standart' },
+    'Risk': { color: '#FF453A', bg: 'rgba(255,69,58,0.1)', border: 'rgba(255,69,58,0.15)', label: 'Risk Altında' },
 };
 
 export const STATUS_CONFIG: Record<CustomerStatus, { color: string; bg: string }> = {

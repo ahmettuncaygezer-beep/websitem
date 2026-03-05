@@ -5,12 +5,13 @@ import { ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGlobal } from '@/context/GlobalContext';
 
+// Using ISO country codes for flagcdn
 const LANGUAGES: { code: string; display: string; flag: string; label: string }[] = [
-    { code: 'tr', display: 'TR', flag: '🇹🇷', label: 'Türkçe' },
-    { code: 'en', display: 'EN', flag: '🇬🇧', label: 'English' },
-    { code: 'fr', display: 'FR', flag: '🇫🇷', label: 'Français' },
-    { code: 'ar', display: 'AR', flag: '🇦🇪', label: 'العربية' },
-    { code: 'de', display: 'DE', flag: '🇩🇪', label: 'Deutsch' },
+    { code: 'tr', display: 'TR', flag: 'tr', label: 'Türkçe' },
+    { code: 'en', display: 'EN', flag: 'gb', label: 'English' },
+    { code: 'fr', display: 'FR', flag: 'fr', label: 'Français' },
+    { code: 'ar', display: 'AR', flag: 'ae', label: 'العربية' },
+    { code: 'de', display: 'DE', flag: 'de', label: 'Deutsch' },
 ];
 
 interface LanguageSwitcherProps {
@@ -79,7 +80,14 @@ export function LanguageSwitcher({ isScrolled }: LanguageSwitcherProps) {
                                 className="w-full flex items-center gap-3 px-4 py-2.5 text-left
                            hover:bg-[#F5F0EB] dark:hover:bg-muted transition-colors duration-150"
                             >
-                                <span className="text-base">{flag}</span>
+                                <img
+                                    src={`https://flagcdn.com/w20/${flag}.png`}
+                                    srcSet={`https://flagcdn.com/w40/${flag}.png 2x`}
+                                    width="16"
+                                    height="12"
+                                    alt={`${code} flag`}
+                                    className="object-cover rounded-[2px]"
+                                />
                                 <span
                                     className="text-[13px] dark:text-foreground"
                                     style={{ color: language === code ? '#C9A96E' : '' }}

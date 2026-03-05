@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 import { PlacedFurniture } from './planner.types';
 import { usePlannerStore } from './plannerStore';
 import { getFallbackSVG } from './FurnitureSVGs';
@@ -29,6 +29,9 @@ export default function FurnitureItem({
     const [imageFailed, setImageFailed] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const saveToHistory = usePlannerStore(s => s.saveToHistory);
+
+    const dragX = useMotionValue(0);
+    const dragY = useMotionValue(0);
 
     // Resize Logic
     const handleResizeStart = (edge: string, e: React.PointerEvent) => {
@@ -90,6 +93,8 @@ export default function FurnitureItem({
 
         // Reset transform to avoid double displacement when re-render sets new left/top
         // Framer motion does this by default if we don't bind to motion values
+        dragX.set(0);
+        dragY.set(0);
     };
 
     return (
@@ -115,22 +120,24 @@ export default function FurnitureItem({
                 height: item.depth * scale,
                 rotate: item.rotation,
                 zIndex: isSelected ? 50 : item.zIndex,
-                touchAction: 'none'
+                touchAction: 'none',
+                x: dragX,
+                y: dragY
             }}
             className="group"
         >
             {/* The Item Visual */}
-            <div className="w-full h-full relative cursor-grab active:cursor-grabbing">
+            <div className={`w-full h-full relative cursor-grab active:cursor-grabbing transition-all duration-300 ${!isSelected && 'group-hover:scale-[1.03]'}`}>
                 {!imageFailed ? (
                     <img
                         src={item.product?.image}
                         alt=""
-                        className="w-full h-full object-contain drop-shadow-md pointer-events-none"
+                        className={`w-full h-full object-contain pointer-events-none transition-all duration-300 ${isSelected ? 'drop-shadow-[0_10px_25px_rgba(0,0,0,0.3)]' : 'drop-shadow-[0_5px_15px_rgba(0,0,0,0.15)] group-hover:drop-shadow-[0_15px_30px_rgba(0,0,0,0.2)]'}`}
                         onError={() => setImageFailed(true)}
                         draggable={false}
                     />
                 ) : (
-                    <div className="w-full h-full opacity-90 pointer-events-none drop-shadow-sm">
+                    <div className={`w-full h-full pointer-events-none transition-all duration-300 ${isSelected ? 'drop-shadow-[0_10px_25px_rgba(0,0,0,0.3)]' : 'opacity-95 drop-shadow-[0_5px_15px_rgba(0,0,0,0.1)] group-hover:drop-shadow-[0_15px_30px_rgba(0,0,0,0.2)]'}`}>
                         {getFallbackSVG(item.category, { width: '100%', height: '100%', fillColor: item.color, strokeColor: '#1C1C1E' })}
                     </div>
                 )}

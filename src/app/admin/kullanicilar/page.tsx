@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, ShieldCheck, UserCheck, Clock, Plus, Search } from 'lucide-react';
-import { mockUsers } from '@/lib/mock/users';
 import { UserTable } from '@/components/Admin/Users/UserTable';
+import { AdminUser } from '@/types/users';
 import Link from 'next/link';
 
 const kpis = [
@@ -18,8 +18,36 @@ export default function UsersPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [roleFilter, setRoleFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [users, setUsers] = useState<AdminUser[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const filteredUsers = mockUsers.filter(user => {
+    useEffect(() => {
+        async function fetchUsers() {
+            try {
+                const res = await fetch('/api/admin/users');
+                const data = await res.json();
+                if (data.users) {
+                    setUsers(data.users.map((u: any) => ({
+                        id: u.id,
+                        firstName: u.first_name,
+                        lastName: u.last_name,
+                        email: u.email,
+                        role: u.role,
+                        status: u.is_active ? 'active' : 'inactive',
+                        avatar: '',
+                        lastLogin: null
+                    })));
+                }
+            } catch (err) {
+                console.error("Failed to fetch admin users", err);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchUsers();
+    }, []);
+
+    const filteredUsers = users.filter(user => {
         const matchesSearch =
             user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
             user.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -50,27 +78,34 @@ export default function UsersPage() {
 
             {/* KPI Row */}
             <div className="grid grid-cols-4 gap-6 mb-10">
-                {kpis.map((kpi, idx) => (
-                    <motion.div
-                        key={kpi.label}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="bg-[#1C1C1E] border border-white/[0.06] p-5 rounded-sm flex items-center gap-4 group hover:border-[#C9A96E]/30 transition-colors"
-                    >
-                        <div
-                            className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
-                            style={{ backgroundColor: `${kpi.color}15` }}
+                {kpis.map((kpi, idx) => {
+                    let dynamicValue = kpi.value;
+                    if (kpi.label === 'Toplam') dynamicValue = users.length.toString();
+                    if (kpi.label === 'Aktif') dynamicValue = users.filter(u => u.status === 'active').length.toString();
+                    if (kpi.label === 'Süper Admin') dynamicValue = users.filter(u => u.role === 'super_admin').length.toString();
+
+                    return (
+                        <motion.div
+                            key={kpi.label}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="bg-[#1C1C1E] border border-white/[0.06] p-5 rounded-sm flex items-center gap-4 group hover:border-[#C9A96E]/30 transition-colors"
                         >
-                            <kpi.icon size={24} style={{ color: kpi.color }} />
-                        </div>
-                        <div>
-                            <div className="text-[24px] font-bold text-[#F5F0EB] leading-none mb-1">{kpi.value}</div>
-                            <div className="text-[11px] font-medium text-[#636366] uppercase tracking-wider">{kpi.label}</div>
-                            <div className="text-[10px] text-[#C9A96E] opacity-60 mt-0.5">{kpi.sub}</div>
-                        </div>
-                    </motion.div>
-                ))}
+                            <div
+                                className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+                                style={{ backgroundColor: `${kpi.color}15` }}
+                            >
+                                <kpi.icon size={24} style={{ color: kpi.color }} />
+                            </div>
+                            <div>
+                                <div className="text-[24px] font-bold text-[#F5F0EB] leading-none mb-1">{dynamicValue}</div>
+                                <div className="text-[11px] font-medium text-[#636366] uppercase tracking-wider">{kpi.label}</div>
+                                <div className="text-[10px] text-[#C9A96E] opacity-60 mt-0.5">{kpi.sub}</div>
+                            </div>
+                        </motion.div>
+                    )
+                })}
             </div>
 
             {/* Filters */}
@@ -100,8 +135,8 @@ export default function UsersPage() {
                                 key={role.id}
                                 onClick={() => setRoleFilter(role.id)}
                                 className={`px-4 py-1.5 rounded-sm text-[12px] font-medium transition-all ${roleFilter === role.id
-                                        ? 'bg-[#C9A96E]/15 text-[#C9A96E] border border-[#C9A96E]/30'
-                                        : 'text-[#636366] hover:text-[#AEAEB2] border border-transparent'
+                                    ? 'bg-[#C9A96E]/15 text-[#C9A96E] border border-[#C9A96E]/30'
+                                    : 'text-[#636366] hover:text-[#AEAEB2] border border-transparent'
                                     }`}
                             >
                                 {role.label}
@@ -122,8 +157,8 @@ export default function UsersPage() {
                             key={status.id}
                             onClick={() => setStatusFilter(status.id)}
                             className={`px-4 py-1.5 rounded-sm text-[12px] font-medium transition-all ${statusFilter === status.id
-                                    ? 'bg-white/[0.06] text-[#F5F0EB]'
-                                    : 'text-[#636366] hover:text-[#AEAEB2]'
+                                ? 'bg-white/[0.06] text-[#F5F0EB]'
+                                : 'text-[#636366] hover:text-[#AEAEB2]'
                                 }`}
                         >
                             {status.label}
@@ -133,10 +168,17 @@ export default function UsersPage() {
             </div>
 
             {/* Table */}
-            <UserTable users={filteredUsers} />
+            {isLoading ? (
+                <div className="text-center py-20 bg-[#1C1C1E] border border-white/[0.06] rounded-sm">
+                    <div className="w-8 h-8 border-2 border-white/20 border-t-[#C9A96E] rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-[#636366]">Kullanıcılar yükleniyor...</p>
+                </div>
+            ) : (
+                <UserTable users={filteredUsers} />
+            )}
 
             {/* Pagination Placeholder */}
-            {filteredUsers.length > 0 && (
+            {!isLoading && filteredUsers.length > 0 && (
                 <div className="mt-6 flex justify-between items-center text-[13px] text-[#636366]">
                     <div>Toplam {filteredUsers.length} yönetici gösteriliyor</div>
                     <div className="flex gap-2">
@@ -146,7 +188,7 @@ export default function UsersPage() {
                 </div>
             )}
 
-            {filteredUsers.length === 0 && (
+            {!isLoading && filteredUsers.length === 0 && (
                 <div className="text-center py-20 bg-[#1C1C1E] border border-white/[0.06] rounded-sm mt-6">
                     <p className="text-[#636366]">Arama kriterlerine uygun kullanıcı bulunamadı.</p>
                 </div>

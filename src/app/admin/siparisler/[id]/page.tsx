@@ -4,10 +4,75 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, User, Star, CreditCard, Banknote, Building2, Copy, Check, RotateCcw } from 'lucide-react';
-import { mockOrders, type Order, type OrderStatus, type TimelineEvent, formatPrice, getAvatarColor } from '@/lib/mock/orders';
+import { type Order, type OrderStatus, type TimelineEvent, formatPrice, getAvatarColor } from '@/types/admin/orders';
 import { OrderDetail } from '@/components/Admin/Orders/OrderDetail';
 import { OrderActions } from '@/components/Admin/Orders/OrderActions';
 import { OrderTimeline } from '@/components/Admin/Orders/OrderTimeline';
+import { Loader2 } from 'lucide-react';
+
+function mapDbOrder(o: any): Order {
+    return {
+        id: String(o.id),
+        orderNo: String(o.order_number) || `#${String(o.id).slice(0, 4)}`,
+        customer: {
+            id: o.user_id || 'anon',
+            name: o.customer_name || o.shipping_name || 'Anonim',
+            email: o.customer_email || o.shipping_email || '',
+            phone: o.customer_phone || o.shipping_phone || '',
+            avatar: (o.customer_name || 'A').slice(0, 2).toUpperCase(),
+            totalOrders: 1,
+            totalSpent: Number(o.total_amount) || 0,
+            isVip: false,
+        },
+        items: (o.items || []).map((item: any, i: number) => ({
+            id: item.id || `item-${i}`,
+            productName: item.product_name || item.name || 'Ürün',
+            variantName: item.variant || '',
+            quantity: item.quantity || 1,
+            unitPrice: Number(item.price) || 0,
+            totalPrice: (Number(item.price) || 0) * (item.quantity || 1),
+            image: item.image || '📦',
+        })),
+        subtotal: Number(o.total_amount) || 0,
+        shippingCost: 0,
+        discount: 0,
+        total: Number(o.total_amount) || 0,
+        status: mapDbStatus(o.status),
+        paymentMethod: {
+            type: o.payment_method || 'Kredi Kartı',
+            last4: null,
+            transactionId: o.payment_id || '',
+        },
+        shippingAddress: {
+            fullName: o.shipping_name || o.customer_name || '',
+            phone: o.shipping_phone || '',
+            address: o.shipping_address || '',
+            district: o.shipping_district || '',
+            city: o.shipping_city || '',
+            postalCode: o.shipping_postal_code || '',
+        },
+        cargoCompany: o.cargo_company || null,
+        trackingNumber: o.tracking_number || null,
+        estimatedDelivery: o.estimated_delivery || null,
+        adminNote: o.notes || '',
+        timeline: [],
+        createdAt: o.created_at || new Date().toISOString(),
+        updatedAt: o.updated_at || new Date().toISOString(),
+    };
+}
+
+function mapDbStatus(s: string): Order['status'] {
+    const map: Record<string, Order['status']> = {
+        'pending': 'Ödeme Bekleniyor',
+        'processing': 'Hazırlanıyor',
+        'shipped': 'Kargoya Verildi',
+        'delivered': 'Teslim Edildi',
+        'cancelled': 'İptal',
+        'refunded': 'İade Talebi',
+        'paid': 'Ödeme Alındı'
+    };
+    return map[s] || 'Ödeme Bekleniyor';
+}
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
@@ -197,16 +262,38 @@ export default function SiparisDetayPage() {
     const params = useParams();
     const router = useRouter();
     const [order, setOrder] = useState<Order | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isRefundModalOpen, setIsRefundModalOpen] = useState(false);
 
     useEffect(() => {
-        const found = mockOrders.find(o => o.id === params.id);
-        if (found) {
-            setOrder({ ...found });
-        } else {
-            router.push('/admin/siparisler');
-        }
+        if (!params.id) return;
+
+        const fetchOrder = async () => {
+            try {
+                const res = await fetch(`/api/admin/orders/${params.id}`);
+                if (!res.ok) throw new Error('Sipariş bulunamadı');
+                const data = await res.json();
+                setOrder(mapDbOrder(data));
+            } catch (err) {
+                console.error(err);
+                router.push('/admin/siparisler');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchOrder();
     }, [params.id, router]);
+
+    if (isLoading) {
+        return (
+            <div style={{ padding: '80px 0', textAlign: 'center' }}>
+                <Loader2 size={32} color="#C9A96E" style={{ animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
+                <p style={{ color: '#636366', fontSize: '14px' }}>Sipariş detayları yükleniyor...</p>
+                <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+            </div>
+        );
+    }
 
     if (!order) return null;
 
@@ -247,15 +334,15 @@ export default function SiparisDetayPage() {
                 <ArrowLeft size={16} /> Siparişler Listesine Dön
             </button>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 380px', gap: '24px', alignItems: 'flex-start' }}>
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-6 items-start">
 
                 {/* Left Column */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div className="flex flex-col gap-6">
                     <OrderDetail order={order} onUpdateOrder={setOrder} />
                 </div>
 
                 {/* Right Column */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="flex flex-col gap-4">
                     <OrderActions order={order} onStatusUpdate={handleStatusUpdate} />
                     <CustomerCard customer={order.customer} />
                     <OrderTimeline events={order.timeline} />

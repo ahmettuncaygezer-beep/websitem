@@ -12,7 +12,7 @@ import {
     getAvatarColor,
     getAvatarTextColor,
     formatPrice
-} from '@/lib/mock/customers';
+} from '@/types/admin/customers';
 
 interface InfoRowProps {
     icon: React.ReactNode;

@@ -10,20 +10,10 @@ import { translations } from '@/lib/i18n';
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 export function SectionHeader() {
-    const { language } = useGlobal();
+    const { language, t } = useGlobal();
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-60px' });
     const reduceMotion = useReducedMotion();
-
-    const t = (key: string) => {
-        const keys = key.split('.');
-        let result: any = translations[language as keyof typeof translations];
-        for (const k of keys) {
-            if (result && result[k]) result = result[k];
-            else return null;
-        }
-        return result;
-    };
 
     return (
         <div ref={ref} className="text-center mb-12 md:mb-16">

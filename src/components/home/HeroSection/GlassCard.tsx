@@ -108,14 +108,11 @@ export function GlassCard() {
                      text-[1.75rem] leading-[1.15]
                      md:text-4xl
                      xl:text-5xl
-                     mb-5"
+                     mb-5
+                     min-h-[70px] md:min-h-[100px]"
                     style={{ letterSpacing: '-0.02em', color: '#F5F0EB' }}
                 >
-                    {parsedTitles && parsedTitles.length > 0 ? (
-                        <TypewriterText typeStartDelay={900} customTexts={parsedTitles} />
-                    ) : (
-                        <TypewriterText typeStartDelay={900} />
-                    )}
+                    <TypewriterText typeStartDelay={900} className="flex flex-col items-start justify-center gap-1 md:gap-2" />
                 </motion.h1>
 
                 {/* ③ Description — 1.4 s */}
@@ -126,13 +123,9 @@ export function GlassCard() {
                     className="text-sm leading-relaxed max-w-xs mb-8 whitespace-pre-line"
                     style={{ color: 'rgba(255,255,255,0.75)' }}
                 >
-                    {cmsSubtitle ? (
-                        <span>{cmsSubtitle}</span>
-                    ) : (
-                        <span>
-                            {t('hero_desc') || 'Doğal malzemeler, zamansız tasarım ve el işçiliğiyle yaşam alanlarınıza sofistike bir dokunuş.'}
-                        </span>
-                    )}
+                    <span>
+                        {t('hero_desc') || 'Doğal malzemeler, zamansız tasarım ve el işçiliğiyle yaşam alanlarınıza sofistike bir dokunuş.'}
+                    </span>
                 </motion.p>
 
                 {/* ④ Buttons — 1.7 s, stagger 150 ms */}

@@ -1,22 +1,27 @@
 import { create } from 'zustand';
 import { Notification } from '@/types/notifications';
-import { mockNotifications } from '@/lib/mock/notifications';
 
 interface NotificationStore {
     notifications: Notification[];
     unreadCount: number;
     isOpen: boolean;
+    soundEnabled: boolean;
+    latestNotification: Notification | null;
     setOpen: (open: boolean) => void;
     markAsRead: (id: string) => void;
     markAllAsRead: () => void;
     addNotification: (notification: Notification) => void;
     clearAll: () => void;
+    toggleSound: () => void;
+    clearLatest: () => void;
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
-    notifications: mockNotifications,
-    unreadCount: mockNotifications.filter(n => !n.isRead).length,
+    notifications: [],
+    unreadCount: 0,
     isOpen: false,
+    soundEnabled: true,
+    latestNotification: null,
     setOpen: (isOpen) => set({ isOpen }),
     markAsRead: (id) => set((state) => {
         const newNotifications = state.notifications.map(n =>
@@ -38,8 +43,12 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
         const newNotifications = [notification, ...state.notifications];
         return {
             notifications: newNotifications,
-            unreadCount: newNotifications.filter(n => !n.isRead).length
+            unreadCount: newNotifications.filter(n => !n.isRead).length,
+            latestNotification: notification
         };
     }),
-    clearAll: () => set({ notifications: [], unreadCount: 0 })
+    clearAll: () => set({ notifications: [], unreadCount: 0 }),
+    toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
+    clearLatest: () => set({ latestNotification: null })
 }));
+

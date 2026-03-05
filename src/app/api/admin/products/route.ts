@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
+import { requireAdminAuth } from '@/lib/admin-auth';
+import { logAction, getAdminInfo } from '@/lib/audit';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,6 +51,12 @@ export async function POST(req: Request) {
         const body = await req.json();
         const supabase = await createSupabaseServerClient();
 
+        // Auth check + admin info for audit
+        const authResult = await requireAdminAuth(req);
+        const adminInfo = authResult instanceof NextResponse
+            ? { adminId: null, adminEmail: 'unknown' }
+            : getAdminInfo(authResult);
+
         const { data, error } = await supabase
             .from('products')
             .insert({
@@ -75,6 +83,16 @@ export async function POST(req: Request) {
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
+
+        // Audit log (non-blocking)
+        logAction(req, supabase, adminInfo, {
+            action: 'product.create',
+            entityType: 'product',
+            entityId: data?.id || '',
+            entityName: data?.name || body.name,
+            oldValue: null,
+            newValue: data,
+        });
 
         return NextResponse.json({ product: data }, { status: 201 });
     } catch (err: any) {

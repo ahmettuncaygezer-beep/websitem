@@ -21,13 +21,7 @@ interface FilterTabsProps {
 }
 
 export function FilterTabs({ active, onChange }: FilterTabsProps) {
-    const { language } = useGlobal();
-
-    const t = (key: string) => {
-        let result: any = translations[language as keyof typeof translations];
-        if (result && result[key]) return result[key];
-        return null;
-    };
+    const { t } = useGlobal();
 
     return (
         <div

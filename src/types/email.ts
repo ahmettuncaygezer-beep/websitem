@@ -44,3 +44,6 @@ export interface EmailTemplate {
     icon: string;
     htmlContent: string;
 }
+
+// Empty default — templates should be fetched from API
+export const mockTemplates: EmailTemplate[] = [];

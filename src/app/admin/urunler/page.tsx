@@ -3,11 +3,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import type { Product } from '@/lib/mock/products';
+import toast from 'react-hot-toast';
+import type { Product } from '@/types/admin/products';
 import { ProductFilters } from '@/components/Admin/Products/ProductFilters';
 import { BulkActions } from '@/components/Admin/Products/BulkActions';
 import { ProductTable } from '@/components/Admin/Products/ProductTable';
+import ExportButton from '@/components/Admin/ExportButton';
 import type { ViewMode } from '@/components/Admin/Products/ProductFilters';
+import ConfirmModal from '@/components/Admin/ConfirmModal';
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
@@ -74,6 +77,18 @@ export default function UrunlerPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [perPage, setPerPage] = useState(20);
 
+    // ── Handle responsive view mode ──────────────────────────────────────────
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setViewMode('grid');
+            }
+        };
+        handleResize(); // Initial check
+        // We only do it once on load to "default" to grid on mobile
+        // but allow user to toggle it later.
+    }, []);
+
     // ── Fetch products from API ────────────────────────────────────────────────
     useEffect(() => {
         async function fetchProducts() {
@@ -100,16 +115,13 @@ export default function UrunlerPage() {
         fetchProducts();
     }, [searchQuery]);
 
-    // ── Delete handler ─────────────────────────────────────────────────────────
-    const handleDelete = async () => {
-        if (selectedIds.length === 0) return;
-        if (!confirm(`${selectedIds.length} ürün silinecek. Emin misiniz?`)) return;
+    // ── Modal state ──────────────────────────────────────────────────────────
+    const [confirmModal, setConfirmModal] = useState<{
+        open: boolean;
+        type: 'delete' | 'activate' | 'deactivate';
+    }>({ open: false, type: 'delete' });
 
-        for (const id of selectedIds) {
-            await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
-        }
-        setSelectedIds([]);
-        // Refresh
+    const refreshProducts = async () => {
         const res = await fetch('/api/admin/products?perPage=500');
         const data = await res.json();
         if (data.products) {
@@ -117,6 +129,60 @@ export default function UrunlerPage() {
             setTotalCount(data.total || data.products.length);
         }
     };
+
+    // ── Bulk Delete handler ────────────────────────────────────────────────
+    const handleDeleteConfirm = async () => {
+        if (selectedIds.length === 0) return;
+        const count = selectedIds.length;
+        for (const id of selectedIds) {
+            await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
+        }
+        setSelectedIds([]);
+        setConfirmModal({ open: false, type: 'delete' });
+        await refreshProducts();
+        toast.success(`${count} ürün başarıyla silindi`);
+    };
+
+    // ── Bulk Activate handler ──────────────────────────────────────────────
+    const handleActivateConfirm = async () => {
+        if (selectedIds.length === 0) return;
+        const count = selectedIds.length;
+        for (const id of selectedIds) {
+            await fetch(`/api/admin/products/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Aktif' }),
+            });
+        }
+        setSelectedIds([]);
+        setConfirmModal({ open: false, type: 'activate' });
+        await refreshProducts();
+        toast.success(`${count} ürün aktife alındı`);
+    };
+
+    // ── Bulk Deactivate handler ────────────────────────────────────────────
+    const handleDeactivateConfirm = async () => {
+        if (selectedIds.length === 0) return;
+        const count = selectedIds.length;
+        for (const id of selectedIds) {
+            await fetch(`/api/admin/products/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Pasif' }),
+            });
+        }
+        setSelectedIds([]);
+        setConfirmModal({ open: false, type: 'deactivate' });
+        await refreshProducts();
+        toast.success(`${count} ürün pasife alındı`);
+    };
+
+    // Items to pass to the confirm modal
+    const selectedProducts = products.filter(p => selectedIds.includes(p.id));
+    const confirmModalItems = selectedProducts.map(p => ({
+        name: p.name,
+        detail: p.stock > 0 ? `Stok: ${p.stock}` : 'Tükendi',
+    }));
 
     // ── Client-side filtering ──────────────────────────────────────────────────
     const filtered = useMemo<Product[]>(() => {
@@ -156,7 +222,7 @@ export default function UrunlerPage() {
             style={{ padding: '0 4px' }}
         >
             {/* ── Page header ─────────────────────────────────────────────────── */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '24px' }}>
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                 <div>
                     <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '30px', fontWeight: 500, color: '#F5F0EB', margin: '0 0 4px' }}>
                         Ürünler
@@ -165,23 +231,26 @@ export default function UrunlerPage() {
                         {loading ? 'Yükleniyor...' : `${totalCount} ürün · ${activeCount} aktif`}
                     </p>
                 </div>
-                <button
-                    onClick={() => router.push('/admin/urunler/yeni')}
-                    style={{ background: '#C9A96E', border: 'none', borderRadius: '6px', padding: '10px 20px', fontSize: '13px', fontWeight: 600, color: '#0F0F10', cursor: 'pointer', fontFamily: 'Inter, system-ui, sans-serif', transition: 'all 150ms', whiteSpace: 'nowrap' }}
-                    onMouseEnter={(e) => { const b = e.currentTarget as HTMLButtonElement; b.style.background = '#D4B87A'; b.style.transform = 'translateY(-1px)'; }}
-                    onMouseLeave={(e) => { const b = e.currentTarget as HTMLButtonElement; b.style.background = '#C9A96E'; b.style.transform = 'translateY(0)'; }}
-                >
-                    Yeni Ürün Ekle +
-                </button>
+                <div className="flex gap-2.5 items-center flex-shrink-0">
+                    <ExportButton type="products" data={filtered} />
+                    <button
+                        onClick={() => router.push('/admin/urunler/yeni')}
+                        style={{ background: '#C9A96E', border: 'none', borderRadius: '6px', padding: '10px 20px', fontSize: '13px', fontWeight: 600, color: '#0F0F10', cursor: 'pointer', fontFamily: 'Inter, system-ui, sans-serif', transition: 'all 150ms', whiteSpace: 'nowrap' }}
+                        onMouseEnter={(e) => { const b = e.currentTarget as HTMLButtonElement; b.style.background = '#D4B87A'; b.style.transform = 'translateY(-1px)'; }}
+                        onMouseLeave={(e) => { const b = e.currentTarget as HTMLButtonElement; b.style.background = '#C9A96E'; b.style.transform = 'translateY(0)'; }}
+                    >
+                        Yeni Ürün Ekle +
+                    </button>
+                </div>
             </div>
 
             {/* ── Bulk actions toolbar ─────────────────────────────────────────── */}
             <BulkActions
                 selectedCount={selectedIds.length}
                 onClearSelection={() => setSelectedIds([])}
-                onSetActive={() => setSelectedIds([])}
-                onSetPassive={() => setSelectedIds([])}
-                onDelete={handleDelete}
+                onSetActive={() => setConfirmModal({ open: true, type: 'activate' })}
+                onSetPassive={() => setConfirmModal({ open: true, type: 'deactivate' })}
+                onDelete={() => setConfirmModal({ open: true, type: 'delete' })}
             />
 
             {/* ── Filters ─────────────────────────────────────────────────────── */}
@@ -205,6 +274,42 @@ export default function UrunlerPage() {
                 totalCount={filtered.length}
                 onPageChange={setCurrentPage}
                 onPerPageChange={handlePerPageChange}
+            />
+
+            {/* ── Confirm Modals ────────────────────────────────────────────────── */}
+            <ConfirmModal
+                open={confirmModal.open && confirmModal.type === 'delete'}
+                onClose={() => setConfirmModal({ open: false, type: 'delete' })}
+                onConfirm={handleDeleteConfirm}
+                title="Toplu Silme Onayı"
+                message={`${selectedIds.length} ürünü kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`}
+                items={confirmModalItems}
+                variant="danger"
+                confirmText="Evet, Sil"
+                cancelText="Vazgeç"
+                delaySeconds={2}
+            />
+            <ConfirmModal
+                open={confirmModal.open && confirmModal.type === 'activate'}
+                onClose={() => setConfirmModal({ open: false, type: 'activate' })}
+                onConfirm={handleActivateConfirm}
+                title="Aktife Al"
+                message={`${selectedIds.length} ürünü aktife almak istediğinize emin misiniz?`}
+                items={confirmModalItems}
+                variant="warning"
+                confirmText="Evet, Aktife Al"
+                cancelText="Vazgeç"
+            />
+            <ConfirmModal
+                open={confirmModal.open && confirmModal.type === 'deactivate'}
+                onClose={() => setConfirmModal({ open: false, type: 'deactivate' })}
+                onConfirm={handleDeactivateConfirm}
+                title="Pasife Al"
+                message={`${selectedIds.length} ürünü pasife almak istediğinize emin misiniz?`}
+                items={confirmModalItems}
+                variant="warning"
+                confirmText="Evet, Pasife Al"
+                cancelText="Vazgeç"
             />
         </motion.div>
     );

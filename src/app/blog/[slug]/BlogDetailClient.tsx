@@ -17,14 +17,16 @@ export function ShareBar({ title, slug, author, date, readingMinutes }: ShareBar
     const { language, t } = useGlobal();
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(window.location.href);
+        if (typeof window !== 'undefined') {
+            navigator.clipboard.writeText(window.location.href);
+        }
     };
 
     const formatDate = (dateStr: string) => {
-        const locale = language === 'TR' ? 'tr-TR' :
-            language === 'EN' ? 'en-US' :
-                language === 'FR' ? 'fr-FR' :
-                    language === 'DE' ? 'de-DE' : 'ar-SA';
+        const locale = language === 'tr' ? 'tr-TR' :
+            language === 'en' ? 'en-US' :
+                language === 'fr' ? 'fr-FR' :
+                    language === 'de' ? 'de-DE' : 'ar-SA';
         return new Date(dateStr).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
     };
 
@@ -42,10 +44,10 @@ export function ShareBar({ title, slug, author, date, readingMinutes }: ShareBar
                 </span>
             </div>
             <div className="flex items-center gap-2">
-                <span className="text-[11px] text-[#aaa]">{language === 'AR' ? 'مشاركة:' : 'Share:'}</span>
+                <span className="text-[11px] text-[#aaa]">{language === 'ar' ? 'مشاركة:' : 'Share:'}</span>
                 {[
                     { Icon: Twitter, label: 'Twitter', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}` },
-                    { Icon: Facebook, label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + `/blog/${slug}`)}` },
+                    { Icon: Facebook, label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent((typeof window !== 'undefined' ? window.location.origin : 'https://selismobilya.com') + `/blog/${slug}`)}` },
                 ].map(({ Icon, label, href }) => (
                     <a key={label} href={href} target="_blank" rel="noopener noreferrer"
                         className="w-7 h-7 rounded-full border border-[#E8E3DC] flex items-center justify-center text-[#666] hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors"

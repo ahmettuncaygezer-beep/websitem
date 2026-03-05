@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
+import { requireAdminAuth } from '@/lib/admin-auth';
+import { logAction, getAdminInfo } from '@/lib/audit';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,12 +38,35 @@ export async function PUT(req: Request) {
         const { id, status, notes } = await req.json();
         const supabase = await createSupabaseServerClient();
 
+        // Auth check + admin info for audit
+        const authResult = await requireAdminAuth(req);
+        const adminInfo = authResult instanceof NextResponse
+            ? { adminId: null, adminEmail: 'unknown' }
+            : getAdminInfo(authResult);
+
+        // Fetch old value before update
+        const { data: oldOrder } = await supabase
+            .from('orders')
+            .select('*')
+            .eq('id', id)
+            .single();
+
         const updateData: any = {};
         if (status) updateData.status = status;
         if (notes !== undefined) updateData.notes = notes;
 
         const { data, error } = await supabase.from('orders').update(updateData).eq('id', id).select().single();
         if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+        // Audit log (non-blocking)
+        logAction(req, supabase, adminInfo, {
+            action: 'order.status_change',
+            entityType: 'order',
+            entityId: id,
+            entityName: oldOrder?.order_number || id,
+            oldValue: oldOrder,
+            newValue: data,
+        });
 
         return NextResponse.json({ order: data });
     } catch (err: any) {

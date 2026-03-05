@@ -15,7 +15,7 @@ interface ContentBlock {
     content: any;
 }
 
-export function NewsletterEditor() {
+export function NewsletterEditor({ initialData }: { initialData?: any }) {
     const [view, setView] = useState<'desktop' | 'mobile'>('desktop');
     const [blocks, setBlocks] = useState<ContentBlock[]>([
         { id: '1', type: 'text', content: { title: 'Yeni Koleksiyonu Keşfedin', body: 'Lüks ve konforun buluştuğu SELIS ürünleri şimdi özel indirimlerle.' } }

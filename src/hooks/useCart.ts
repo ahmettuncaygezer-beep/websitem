@@ -1,10 +1,12 @@
 import { useCartStore } from '@/store/cartStore';
 import { useToast } from '@/components/ui/Toast/ToastProvider';
 import { useCallback } from 'react';
+import { useGlobal } from '@/context/GlobalContext';
 
 export function useCart() {
     const store = useCartStore();
     const { toast } = useToast();
+    const { t } = useGlobal();
 
     const addItem = useCallback((product: any, options?: any) => {
         store.addItem({
@@ -17,10 +19,10 @@ export function useCart() {
         }, options?.quantity || 1);
 
         toast.success(
-            'Sepete Eklendi',
-            `${product.name} başarıyla sepetinize eklendi.`
+            t('cart_success_added') || 'Sepete Eklendi',
+            `${product.name} ${t('cart_success_desc') || 'başarıyla sepetinize eklendi.'}`
         );
-    }, [store, toast]);
+    }, [store, toast, t]);
 
     return {
         ...store,

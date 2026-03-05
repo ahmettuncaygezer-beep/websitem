@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AdminRole, AdminPermission } from '@/types/users';
-import { ROLE_PERMISSIONS } from '@/lib/mock/users';
+import { ROLE_PERMISSIONS } from '@/types/admin/users';
 import { UserPermissions } from './UserPermissions';
 
 const userSchema = z.object({
@@ -19,7 +19,7 @@ const userSchema = z.object({
     lastName: z.string().min(2, 'Soyad en az 2 karakter olmalıdır'),
     email: z.string().email('Geçerli bir e-posta adresi giriniz'),
     phone: z.string().optional(),
-    role: z.enum(['super-admin', 'editor', 'order-manager', 'analyst']),
+    role: z.enum(['super_admin', 'admin', 'editor', 'support']),
     status: z.enum(['active', 'inactive', 'invited']),
     password: z.string().min(8, 'Şifre en az 8 karakter olmalıdır').optional(),
     sendInvite: z.boolean(),
@@ -37,11 +37,18 @@ interface UserRoleOption {
 
 const roleOptions: UserRoleOption[] = [
     {
-        id: 'super-admin',
+        id: 'super_admin',
         title: 'Süper Admin',
         description: 'Tüm modüllere tam erişim sağlar.',
         icon: ShieldCheck,
         scope: 'Tam Yetki'
+    },
+    {
+        id: 'admin',
+        title: 'Yönetici (Admin)',
+        description: 'Güvenlik ve kullanıcılar hariç geniş yetkiler.',
+        icon: LayoutGrid,
+        scope: 'Genel Yönetim'
     },
     {
         id: 'editor',
@@ -51,18 +58,11 @@ const roleOptions: UserRoleOption[] = [
         scope: 'Ürün & İçerik'
     },
     {
-        id: 'order-manager',
-        title: 'Sipariş Yöneticisi',
-        description: 'Sipariş ve müşteri operasyonları.',
+        id: 'support',
+        title: 'Destek (Support)',
+        description: 'Sipariş ve müşteri takibi.',
         icon: ShoppingCart,
         scope: 'Satış Operasyon'
-    },
-    {
-        id: 'analyst',
-        title: 'Analist',
-        description: 'Sadece görüntüleme ve raporlama.',
-        icon: TrendingUp,
-        scope: 'Okuma Erişimi'
     }
 ];
 

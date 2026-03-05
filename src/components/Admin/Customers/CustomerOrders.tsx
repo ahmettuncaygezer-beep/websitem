@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Package, ChevronRight, Inbox } from 'lucide-react';
-import { type CustomerOrderSummary, formatPrice } from '@/lib/mock/customers';
+import { type CustomerOrderSummary, formatPrice } from '@/types/admin/customers';
 
 interface CustomerOrdersProps {
     orders: CustomerOrderSummary[];

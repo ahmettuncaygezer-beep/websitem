@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { TimelineEvent } from '@/lib/mock/orders';
-import { formatDate } from '@/lib/mock/orders';
+import type { TimelineEvent } from '@/types/admin/orders';
+import { formatDate } from '@/types/admin/orders';
 
 interface OrderTimelineProps {
     events: TimelineEvent[];

@@ -6,7 +6,7 @@ import {
     Type, AlignLeft, AlignCenter, AlignRight,
     Image as ImageIcon, Video, Layers, ExternalLink
 } from 'lucide-react';
-import { HeroContent } from '@/lib/mock/content';
+import { HeroContent } from '@/lib/default-content';
 
 interface HeroEditorProps {
     content: HeroContent;

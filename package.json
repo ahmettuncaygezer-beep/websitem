@@ -39,6 +39,7 @@
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "critters": "^0.0.23",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.34.3",
@@ -63,6 +64,7 @@
     "tailwind-merge": "^3.5.0",
     "three": "^0.183.1",
     "web-vitals": "^5.1.0",
+    "xlsx": "^0.18.5",
     "zod": "^4.3.6",
     "zustand": "^5.0.11"
   },

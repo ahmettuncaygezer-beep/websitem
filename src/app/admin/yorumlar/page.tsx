@@ -3,13 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { ReviewStats } from '@/components/Admin/Reviews/ReviewStats';
 import { ReviewList } from '@/components/Admin/Reviews/ReviewList';
-import { mockReviews, mockReviewStats } from '@/lib/mock/reviews';
 import { RefreshCcw } from 'lucide-react';
 import type { Review } from '@/types/reviews';
 
 export default function ReviewManagementPage() {
-    const [reviews, setReviews] = useState<Review[]>(mockReviews);
-    const [stats, setStats] = useState(mockReviewStats);
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [stats, setStats] = useState({ pending: 0, approved: 0, rejected: 0, averageRating: 0, total: 0 });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

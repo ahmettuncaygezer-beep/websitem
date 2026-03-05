@@ -4,14 +4,17 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
     Tag, Calendar, Percent, Truck, Package, Zap, Copy,
-    Check, Edit3, Pause, Play, ShoppingBag, TrendingUp
+    Check, Edit3, Pause, Play, ShoppingBag, TrendingUp, Trash2
 } from 'lucide-react';
-import { type Campaign, CampaignType, CampaignStatus, formatPrice } from '@/lib/mock/campaigns';
+import { type Campaign, CampaignType, CampaignStatus, formatPrice } from '@/types/admin/campaigns';
 import { FlashSaleTimer } from './FlashSaleTimer';
+import ConfirmModal from '@/components/Admin/ConfirmModal';
+import toast from 'react-hot-toast';
 
 interface CampaignCardProps {
     campaign: Campaign;
     index: number;
+    onDeleted?: () => void;
 }
 
 const TYPE_CONFIG = {
@@ -29,8 +32,9 @@ const STATUS_CONFIG = {
     [CampaignStatus.Durduruldu]: { label: 'Durduruldu', bg: 'rgba(255,69,58,0.12)', color: '#FF453A' },
 };
 
-export function CampaignCard({ campaign, index }: CampaignCardProps) {
+export function CampaignCard({ campaign, index, onDeleted }: CampaignCardProps) {
     const [copied, setCopied] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const config = TYPE_CONFIG[campaign.type];
     const status = STATUS_CONFIG[campaign.status];
 
@@ -206,9 +210,42 @@ export function CampaignCard({ campaign, index }: CampaignCardProps) {
                                 borderRadius: '5px', padding: '5px 10px', fontSize: '11px', color: '#0A84FF', cursor: 'pointer'
                             }}>Tekrarla</button>
                         ) : null}
+
+                        <button
+                            onClick={() => setShowDeleteConfirm(true)}
+                            style={{
+                                background: 'transparent', border: '1px solid rgba(255,69,58,0.2)',
+                                borderRadius: '5px', padding: '5px 10px', fontSize: '11px', color: '#FF453A', cursor: 'pointer',
+                                transition: 'all 150ms',
+                            }}
+                            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,69,58,0.08)'; }}
+                            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
+                        >Sil</button>
                     </div>
                 </div>
             </div>
+
+            <ConfirmModal
+                open={showDeleteConfirm}
+                onClose={() => setShowDeleteConfirm(false)}
+                onConfirm={async () => {
+                    try {
+                        await fetch(`/api/admin/campaigns/${campaign.id}`, { method: 'DELETE' });
+                        setShowDeleteConfirm(false);
+                        toast.success(`"${campaign.name}" kampanyası silindi`);
+                        onDeleted?.();
+                    } catch {
+                        toast.error('Silme işlemi başarısız, tekrar deneyin');
+                    }
+                }}
+                title="Kampanya Silme Onayı"
+                message={`"${campaign.name}" kampanyasını kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`}
+                items={[{ name: campaign.name, detail: status.label }]}
+                variant="danger"
+                confirmText="Evet, Sil"
+                cancelText="Vazgeç"
+                delaySeconds={2}
+            />
         </motion.div>
     );
 }

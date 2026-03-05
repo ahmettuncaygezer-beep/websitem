@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Pencil, Lock, Minus, Plus } from 'lucide-react';
 import { ProductImageUpload } from './ProductImageUpload';
 import { ProductVariants } from './ProductVariants';
-import type { Product, VariantGroup, ProductStatus } from '@/lib/mock/products';
+import type { Product, VariantGroup, ProductStatus } from '@/types/admin/products';
 
 // ── Zod schema ────────────────────────────────────────────────────────────────
 const productSchema = z.object({
@@ -150,7 +150,7 @@ export function ProductForm({ product, mode = 'create' }: ProductFormProps) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div style={{ display: 'grid', gridTemplateColumns: '65% 35%', gap: '24px', alignItems: 'flex-start' }}>
+            <div className="grid grid-cols-1 xl:grid-cols-[1fr_350px] gap-6 items-start">
                 {/* ── LEFT COLUMN ─────────────────────────────────────────────────── */}
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
 
@@ -241,7 +241,7 @@ export function ProductForm({ product, mode = 'create' }: ProductFormProps) {
                     <div style={cardStyle}>
                         <div style={cardHeaderStyle}>Fiyat & Stok</div>
                         <div style={cardBodyStyle}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
                                 {/* Sale price */}
                                 <div>
                                     <label style={labelStyle} htmlFor="price">Satış Fiyatı</label>
@@ -297,7 +297,7 @@ export function ProductForm({ product, mode = 'create' }: ProductFormProps) {
                             )}
 
                             {/* SKU + barcode */}
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label style={labelStyle} htmlFor="sku">SKU</label>
                                     <input id="sku" {...register('sku')} disabled={isSubmitting}
@@ -338,7 +338,7 @@ export function ProductForm({ product, mode = 'create' }: ProductFormProps) {
                                         exit={{ opacity: 0, height: 0 }}
                                         style={{ overflow: 'hidden' }}
                                     >
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
                                                 <label style={labelStyle} htmlFor="stock">Stok Miktarı</label>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

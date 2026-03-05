@@ -6,7 +6,7 @@ import {
     GripVertical, Eye, Settings, Trash2, Copy,
     Plus, LayoutTemplate, Zap, Radio, Check
 } from 'lucide-react';
-import { mockPageSections, PageSection } from '@/lib/mock/content';
+import { mockPageSections, PageSection } from '@/lib/default-content';
 
 interface SectionListProps {
     sections: PageSection[];

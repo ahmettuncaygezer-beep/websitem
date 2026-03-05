@@ -5,7 +5,7 @@ import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
     ResponsiveContainer, ComposedChart, Line
 } from 'recharts';
-import { type DailySales, formatCurrency } from '@/lib/mock/analytics';
+import { type DailySales, formatCurrency } from '@/types/admin/analytics';
 
 interface SalesChartProps {
     data: DailySales[];

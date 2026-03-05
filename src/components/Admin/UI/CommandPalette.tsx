@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, BarChart2, Package, LayoutGrid, ShoppingCart, Users, TrendingUp, Target, Home, FileText, Camera, UserCog, Settings, Image, Zap, FilePlus, Tag } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { mockProducts } from '@/lib/mock/products';
 
 interface CommandItem {
     id: string;
@@ -63,10 +62,28 @@ export function CommandPalette({
         { id: 'p-settings', label: 'Ayarlar', description: '/admin/ayarlar', icon: <Settings size={16} />, action: () => navigate('/admin/ayarlar'), category: 'Sayfalar' },
     ];
 
-    const productItems: CommandItem[] = mockProducts.map((p) => ({
+    const [searchProducts, setSearchProducts] = useState<{ id: string; name: string; sku: string; price: number }[]>([]);
+
+    // Fetch products when query changes and has 2+ chars
+    useEffect(() => {
+        if (!query || query.length < 2) {
+            setSearchProducts([]);
+            return;
+        }
+        const timer = setTimeout(async () => {
+            try {
+                const res = await fetch(`/api/admin/products?search=${encodeURIComponent(query)}&perPage=5`);
+                const data = await res.json();
+                if (data.products) setSearchProducts(data.products);
+            } catch { /* ignore */ }
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [query]);
+
+    const productItems: CommandItem[] = searchProducts.map((p) => ({
         id: `prod-${p.id}`,
         label: p.name,
-        description: `${p.sku} · ₺${p.price.toLocaleString('tr-TR')}`,
+        description: `${p.sku || ''} · ₺${(p.price || 0).toLocaleString('tr-TR')}`,
         icon: <Package size={16} />,
         action: () => navigate(`/admin/urunler/${p.id}`),
         category: 'Ürünler',
@@ -186,14 +203,14 @@ export function CommandPalette({
                                                     onClick={() => item.action()}
                                                     onMouseEnter={() => setSelectedIndex(currentIndex)}
                                                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[6px] cursor-pointer transition-all duration-100 text-left ${isSelected
-                                                            ? 'bg-[rgba(201,169,110,0.1)]'
-                                                            : 'hover:bg-[rgba(201,169,110,0.05)]'
+                                                        ? 'bg-[rgba(201,169,110,0.1)]'
+                                                        : 'hover:bg-[rgba(201,169,110,0.05)]'
                                                         }`}
                                                 >
                                                     <div
                                                         className={`w-8 h-8 rounded-[6px] flex items-center justify-center flex-shrink-0 transition-colors ${isSelected
-                                                                ? 'bg-[rgba(201,169,110,0.15)] text-[#C9A96E]'
-                                                                : 'bg-white/[0.04] text-[#636366]'
+                                                            ? 'bg-[rgba(201,169,110,0.15)] text-[#C9A96E]'
+                                                            : 'bg-white/[0.04] text-[#636366]'
                                                             }`}
                                                     >
                                                         {item.icon}

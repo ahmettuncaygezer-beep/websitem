@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { NAVIGATION } from '@/lib/constants';
 import { useGlobal } from '@/context/GlobalContext';
+import { supabase } from '@/lib/supabase';
 
 export function Footer() {
     const { t, siteSettings } = useGlobal();
@@ -14,6 +15,36 @@ export function Footer() {
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [message, setMessage] = useState('');
+    const [dynamicFooterMenu, setDynamicFooterMenu] = useState<any>(null);
+
+    useEffect(() => {
+        const fetchFooterMenu = async () => {
+            try {
+                const { data: menu } = await supabase
+                    .from('menus')
+                    .select('id, name')
+                    .eq('handle', 'footer')
+                    .single();
+
+                if (menu) {
+                    const { data: items } = await supabase
+                        .from('menu_items')
+                        .select('*')
+                        .eq('menu_id', menu.id)
+                        .eq('is_active', true)
+                        .order('sort_order', { ascending: true });
+
+                    if (items) {
+                        setDynamicFooterMenu({ ...menu, items });
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load dynamic footer menu", error);
+            }
+        };
+
+        fetchFooterMenu();
+    }, []);
 
     const handleSubscribe = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -105,7 +136,7 @@ export function Footer() {
                             {siteName}
                         </Link>
                         <p className="text-muted-foreground font-sans text-sm leading-relaxed" data-lang-key="footer_brand_desc">
-                            {footerDesc || t('footer_brand_desc_default')}
+                            {t('footer_brand_desc_default')}
                         </p>
                     </div>
 
@@ -132,6 +163,28 @@ export function Footer() {
                             </ul>
                         </div>
                     ))}
+
+                    {/* Dynamic Footer Menu (if exists) */}
+                    {dynamicFooterMenu && dynamicFooterMenu.items && dynamicFooterMenu.items.length > 0 && (
+                        <div>
+                            <h4 className="text-xs font-sans font-semibold uppercase tracking-widest text-selis-gold mb-5">
+                                {dynamicFooterMenu.name}
+                            </h4>
+                            <ul className="space-y-2.5">
+                                {dynamicFooterMenu.items.map((item: any) => (
+                                    <li key={item.id}>
+                                        <Link
+                                            href={item.url}
+                                            target={item.is_external ? "_blank" : "_self"}
+                                            className="text-sm font-sans text-muted-foreground hover:text-selis-gold transition-colors"
+                                        >
+                                            {item.title}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
 
                     {/* Support */}
                     <div>

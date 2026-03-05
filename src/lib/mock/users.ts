@@ -1,7 +1,7 @@
 import { AdminUser, AdminRole, AdminPermission, ActivityLog } from '@/types/users';
 
 export const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[]> = {
-    'super-admin': [
+    'super_admin': [
         { module: 'dashboard', view: true, create: true, edit: true, delete: true },
         { module: 'urunler', view: true, create: true, edit: true, delete: true },
         { module: 'kategoriler', view: true, create: true, edit: true, delete: true },
@@ -22,12 +22,12 @@ export const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[]> = {
         { module: 'analytics', view: true, create: false, edit: false, delete: false },
         { module: 'siparisler', view: true, create: false, edit: false, delete: false },
     ],
-    'order-manager': [
+    'support': [
         { module: 'siparisler', view: true, create: false, edit: true, delete: false },
         { module: 'musteriler', view: true, create: false, edit: true, delete: false },
         { module: 'analytics', view: true, create: false, edit: false, delete: false },
     ],
-    'analyst': [
+    'admin': [
         { module: 'analytics', view: true, create: false, edit: false, delete: false },
         { module: 'siparisler', view: true, create: false, edit: false, delete: false },
     ]
@@ -41,7 +41,7 @@ export const mockUsers: AdminUser[] = [
         email: 'ali.yilmaz@selis.com',
         phone: '+90 555 123 45 67',
         avatar: 'https://i.pravatar.cc/150?u=1',
-        role: 'super-admin',
+        role: 'super_admin',
         status: 'active',
         hasCustomPermissions: false,
         lastLogin: new Date(Date.now() - 1000 * 60 * 120).toISOString(), // 2 hours ago
@@ -76,7 +76,7 @@ export const mockUsers: AdminUser[] = [
         firstName: 'Mehmet',
         lastName: 'Demir',
         email: 'mehmet.demir@selis.com',
-        role: 'order-manager',
+        role: 'support',
         status: 'active',
         hasCustomPermissions: false,
         lastLogin: new Date(Date.now() - 1000 * 60 * 180).toISOString(), // 3 hours ago
@@ -92,7 +92,7 @@ export const mockUsers: AdminUser[] = [
         firstName: 'Ayşe',
         lastName: 'Şahin',
         email: 'ayse.sahin@selis.com',
-        role: 'analyst',
+        role: 'admin',
         status: 'active',
         hasCustomPermissions: false,
         lastLogin: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(), // 5 days ago
@@ -124,7 +124,7 @@ export const mockUsers: AdminUser[] = [
         firstName: 'Elif',
         lastName: 'Yıldız',
         email: 'elif.yildiz@selis.com',
-        role: 'super-admin',
+        role: 'super_admin',
         status: 'active',
         hasCustomPermissions: false,
         lastLogin: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 mins ago
@@ -140,7 +140,7 @@ export const mockUsers: AdminUser[] = [
         firstName: 'Burak',
         lastName: 'Çelik',
         email: 'burak.celik@selis.com',
-        role: 'order-manager',
+        role: 'support',
         status: 'invited',
         hasCustomPermissions: false,
         invitedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), // 2 days ago

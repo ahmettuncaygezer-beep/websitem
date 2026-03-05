@@ -3,7 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronDown, Upload, ChevronRight } from 'lucide-react';
-import type { Category, CategoryStatus } from '@/lib/mock/categories';
+import type { Category, CategoryStatus } from '@/types/admin/categories';
+import ConfirmModal from '@/components/Admin/ConfirmModal';
+import { ImageUploader } from '@/components/Admin/ImageUploader';
+import { toast } from 'react-hot-toast';
 
 // ── Slug helper ────────────────────────────────────────────────────────────────
 const trMap: Record<string, string> = { ş: 's', Ş: 's', ğ: 'g', Ğ: 'g', ı: 'i', İ: 'i', ö: 'o', Ö: 'o', ü: 'u', Ü: 'u', ç: 'c', Ç: 'c' };
@@ -24,72 +27,7 @@ const labelStyle: React.CSSProperties = {
     letterSpacing: '0.08em', display: 'block', marginBottom: '6px',
 };
 
-// ── ConfirmDialog ──────────────────────────────────────────────────────────────
-interface ConfirmDialogProps {
-    category: Category;
-    onConfirm: () => void;
-    onCancel: () => void;
-}
 
-function ConfirmDialog({ category, onConfirm, onCancel }: ConfirmDialogProps) {
-    const [input, setInput] = useState('');
-    const canDelete = input === 'SİL';
-
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
-            onClick={onCancel}
-        >
-            <motion.div
-                initial={{ scale: 0.94, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.94, opacity: 0 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 320 }}
-                style={{ background: '#1C1C1E', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '28px', maxWidth: '380px', width: '100%' }}
-                onClick={(e) => e.stopPropagation()}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="confirm-title"
-            >
-                <h3 id="confirm-title" style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '20px', fontWeight: 500, color: '#F5F0EB', margin: '0 0 12px' }}>
-                    Emin misiniz?
-                </h3>
-                <p style={{ fontSize: '13px', color: '#AEAEB2', lineHeight: 1.6, margin: '0 0 20px' }}>
-                    <strong style={{ color: '#F5F0EB' }}>{category.nameTR}</strong> kategorisi silinecek.
-                    Bu kategorideki <strong style={{ color: '#F5F0EB' }}>{category.productCount}</strong> ürünün kategorisi kaldırılacak.{' '}
-                    <span style={{ color: '#FF453A' }}>Bu işlem geri alınamaz.</span>
-                </p>
-                <label style={labelStyle} htmlFor="confirm-input">Onaylamak için SİL yazın</label>
-                <input
-                    id="confirm-input"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="SİL"
-                    autoFocus
-                    style={{ ...inputStyle, marginBottom: '20px', borderColor: input.length > 0 && !canDelete ? '#FF453A' : 'rgba(255,255,255,0.08)' }}
-                    onFocus={(e) => ((e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(201,169,110,0.5)')}
-                    onBlur={(e) => ((e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(255,255,255,0.08)')}
-                />
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <button
-                        onClick={onCancel}
-                        style={{ flex: 1, padding: '9px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '13px', color: '#AEAEB2', cursor: 'pointer', fontFamily: 'Inter, system-ui, sans-serif', transition: 'all 150ms' }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.2)'; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.1)'; }}
-                    >Vazgeç</button>
-                    <button
-                        onClick={canDelete ? onConfirm : undefined}
-                        disabled={!canDelete}
-                        style={{ flex: 1, padding: '9px', background: canDelete ? '#FF453A' : 'rgba(255,69,58,0.3)', border: 'none', borderRadius: '6px', fontSize: '13px', fontWeight: 600, color: 'white', cursor: canDelete ? 'pointer' : 'default', fontFamily: 'Inter, system-ui, sans-serif', transition: 'all 150ms', opacity: canDelete ? 1 : 0.4 }}
-                    >Sil</button>
-                </div>
-            </motion.div>
-        </motion.div>
-    );
-}
 
 // ── CategoryForm ──────────────────────────────────────────────────────────────
 interface CategoryFormProps {
@@ -179,34 +117,66 @@ export function CategoryForm({
     async function handleSave() {
         if (!form.nameTR.trim()) return;
         setIsSubmitting(true);
-        await new Promise((r) => setTimeout(r, 600));
-        const saved: Category = {
-            id: category?.id ?? `new-${Date.now()}`,
-            nameTR: form.nameTR,
-            nameEN: form.nameEN,
-            slug: form.slug,
-            parentId: form.parentId,
-            description: form.description,
-            coverImage: form.coverImage,
-            metaTitle: form.metaTitle,
-            metaDescription: form.metaDescription,
-            status: form.status,
-            order: category?.order ?? 999,
-            productCount: category?.productCount ?? 0,
-            children: category?.children ?? [],
-        };
-        onSave(saved);
-        setIsSubmitting(false);
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 1500);
+
+        try {
+            const isNew = mode === 'create' || !category?.id;
+            const res = await fetch('/api/admin/categories', {
+                method: isNew ? 'POST' : 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: category?.id,
+                    nameTR: form.nameTR,
+                    nameEN: form.nameEN,
+                    slug: form.slug,
+                    parentId: form.parentId,
+                    description: form.description,
+                    coverImage: form.coverImage,
+                    metaTitle: form.metaTitle,
+                    metaDescription: form.metaDescription,
+                    status: form.status,
+                    order: category?.order ?? 999,
+                })
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error || 'Kaydetme başarısız');
+            }
+
+            const data = await res.json();
+            onSave(data.category);
+
+            setSaveSuccess(true);
+            setTimeout(() => setSaveSuccess(false), 1500);
+            if (isNew) {
+                toast.success('Kategori eklendi');
+            }
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
-    function handleImageFile(file: File) {
-        if (!file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = (e) => update('coverImage', e.target?.result as string);
-        reader.readAsDataURL(file);
+    async function handleDeleteConfirmed() {
+        if (!category) return;
+        setShowConfirm(false);
+        setIsSubmitting(true);
+        try {
+            const res = await fetch(`/api/admin/categories?id=${category.id}`, { method: 'DELETE' });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error || 'Silme başarısız');
+            }
+            onDelete(category.id);
+            toast.success('Kategori silindi');
+        } catch (err: any) {
+            toast.error(err.message);
+        } finally {
+            setIsSubmitting(false);
+        }
     }
+
 
     // Build parent options
     const parentOptions: { value: string | null; label: string; depth: number }[] = [
@@ -357,37 +327,13 @@ export function CategoryForm({
 
                     {/* Cover image */}
                     <div>
-                        <label style={labelStyle}>Kapak Görseli</label>
-                        {form.coverImage ? (
-                            <div style={{ position: 'relative', borderRadius: '6px', overflow: 'hidden', height: '120px' }}>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={form.coverImage} alt="Kapak" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                <button
-                                    onClick={() => update('coverImage', null)}
-                                    aria-label="Görseli kaldır"
-                                    style={{ position: 'absolute', top: '8px', right: '8px', width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(0,0,0,0.6)', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                                >
-                                    <X size={12} />
-                                </button>
-                            </div>
-                        ) : (
-                            <div
-                                onClick={() => fileRef.current?.click()}
-                                onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
-                                onDragLeave={() => setIsDragOver(false)}
-                                onDrop={(e) => { e.preventDefault(); setIsDragOver(false); const f = e.dataTransfer.files[0]; if (f) handleImageFile(f); }}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => e.key === 'Enter' && fileRef.current?.click()}
-                                aria-label="Görsel yükle"
-                                style={{ height: '120px', border: `1.5px dashed ${isDragOver ? 'rgba(201,169,110,0.6)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '6px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 200ms', background: isDragOver ? 'rgba(201,169,110,0.04)' : 'transparent', gap: '6px' }}
-                            >
-                                <Upload size={20} style={{ color: isDragOver ? '#C9A96E' : 'rgba(255,255,255,0.3)' }} />
-                                <span style={{ fontSize: '12px', color: '#AEAEB2' }}>Görsel yükle veya sürükle</span>
-                            </div>
-                        )}
-                        <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} aria-hidden="true"
-                            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageFile(f); e.target.value = ''; }} />
+                        <ImageUploader
+                            bucket="categories"
+                            value={form.coverImage || ''}
+                            onChange={(url) => update('coverImage', url || null)}
+                            label="Kapak Görseli"
+                            height="120px"
+                        />
                     </div>
 
                     {/* Status */}
@@ -499,15 +445,20 @@ export function CategoryForm({
             </motion.div>
 
             {/* Confirm delete dialog */}
-            <AnimatePresence>
-                {showConfirm && category && (
-                    <ConfirmDialog
-                        category={category}
-                        onConfirm={() => { setShowConfirm(false); onDelete(category.id); }}
-                        onCancel={() => setShowConfirm(false)}
-                    />
-                )}
-            </AnimatePresence>
+            {category && (
+                <ConfirmModal
+                    open={showConfirm}
+                    onClose={() => setShowConfirm(false)}
+                    onConfirm={handleDeleteConfirmed}
+                    title="Kategori Silme Onayı"
+                    message={`"${category.nameTR}" kategorisini silmek istediğinize emin misiniz? Bu kategorideki ${category.productCount} ürünün kategorisi kaldırılacak. Bu işlem geri alınamaz.`}
+                    items={[{ name: category.nameTR, detail: `${category.productCount} ürün` }]}
+                    variant="danger"
+                    confirmText="Evet, Sil"
+                    cancelText="Vazgeç"
+                    delaySeconds={2}
+                />
+            )}
             <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
         </>
     );

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,8 +9,40 @@ const resend = process.env.RESEND_API_KEY
     : null;
 
 /**
+ * GET /api/email — List send history
+ */
+export async function GET(req: Request) {
+    try {
+        const supabase = await createSupabaseServerClient();
+        const { searchParams } = new URL(req.url);
+        const limit = parseInt(searchParams.get('limit') || '50');
+        const type = searchParams.get('type') || '';
+
+        let query = supabase
+            .from('email_send_history')
+            .select('*', { count: 'exact' })
+            .order('created_at', { ascending: false })
+            .limit(limit);
+
+        if (type) query = query.eq('type', type);
+
+        const { data, error, count } = await query;
+
+        if (error) {
+            // Table might not exist yet — return empty
+            console.warn('[Email] History table error:', error.message);
+            return NextResponse.json({ history: [], total: 0 });
+        }
+
+        return NextResponse.json({ history: data || [], total: count || 0 });
+    } catch (err: any) {
+        return NextResponse.json({ history: [], total: 0 });
+    }
+}
+
+/**
  * POST /api/email
- * Sends transactional emails via Resend.
+ * Sends transactional emails via Resend and logs to history.
  * Body: { type, to, data }
  */
 export async function POST(req: Request) {
@@ -21,6 +54,8 @@ export async function POST(req: Request) {
         }
 
         const emailContent = generateEmailContent(type, data);
+        let status = 'sent';
+        let errorMessage: string | null = null;
 
         if (resend) {
             const { error } = await resend.emails.send({
@@ -32,15 +67,36 @@ export async function POST(req: Request) {
 
             if (error) {
                 console.error('[Email] Resend error:', error);
-                return NextResponse.json({ error: 'E-posta gönderilemedi.' }, { status: 500 });
+                status = 'failed';
+                errorMessage = typeof error === 'string' ? error : (error as any).message || JSON.stringify(error);
+            } else {
+                console.log(`[Email] ✅ Sent ${type} → ${to}`);
             }
-
-            console.log(`[Email] ✅ Sent ${type} → ${to}`);
         } else {
             console.log(`[Email] ⚠️ No RESEND_API_KEY, logging: ${type} → ${to}`);
+            status = 'simulated';
         }
 
-        return NextResponse.json({ success: true, message: 'E-posta gönderildi.' });
+        // Log to history
+        try {
+            const supabase = await createSupabaseServerClient();
+            await supabase.from('email_send_history').insert({
+                type,
+                to_email: to,
+                subject: emailContent.subject,
+                status,
+                error_message: errorMessage,
+                metadata: { data_keys: data ? Object.keys(data) : [] }
+            });
+        } catch (historyErr) {
+            console.warn('[Email] Could not log to history:', historyErr);
+        }
+
+        if (status === 'failed') {
+            return NextResponse.json({ error: 'E-posta gönderilemedi.', details: errorMessage }, { status: 500 });
+        }
+
+        return NextResponse.json({ success: true, message: 'E-posta gönderildi.', status });
     } catch (err: any) {
         console.error('[Email] Error:', err);
         return NextResponse.json({ error: 'E-posta gönderilemedi.' }, { status: 500 });
@@ -63,6 +119,21 @@ function generateEmailContent(type: string, data: any): { subject: string; html:
         </div>`;
 
     switch (type) {
+        case 'test':
+            return {
+                subject: 'SELIS — Test E-postası ✓',
+                html: wrapper(`
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <div style="width: 56px; height: 56px; background: #E8F5E9; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 28px;">✓</div>
+                    </div>
+                    <h2 style="color: #1C1C1E; font-size: 20px; text-align: center; margin: 0 0 8px;">Test E-postası Başarılı!</h2>
+                    <p style="color: #6B6560; font-size: 14px; text-align: center;">Bu bir test e-postasıdır. E-posta sisteminiz düzgün çalışıyor.</p>
+                    <div style="background: #FAF8F5; border-radius: 12px; padding: 20px; margin: 24px 0; text-align: center;">
+                        <p style="color: #6B6560; font-size: 13px; margin: 0;">Gönderim zamanı: <strong>${new Date().toLocaleString('tr-TR')}</strong></p>
+                    </div>
+                `),
+            };
+
         case 'order_confirmation':
             return {
                 subject: `Siparisiniz Alindi — ${data?.orderNumber || ''}`,

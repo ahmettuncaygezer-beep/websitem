@@ -4,12 +4,14 @@ import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
+import { useGlobal } from '@/context/GlobalContext'
 import CartItem from './CartItem'
 import CartSummary from './CartSummary'
 import EmptyCart from './EmptyCart'
 
 export default function CartDrawer() {
     const { isOpen, closeCart, items, totalItems } = useCart()
+    const { t } = useGlobal()
 
     // Açıkken body scroll kilitlenir
     useEffect(() => {
@@ -61,7 +63,7 @@ export default function CartDrawer() {
                        bg-background z-50 flex flex-col shadow-2xl"
                         role="dialog"
                         aria-modal="true"
-                        aria-label="Alışveriş sepeti"
+                        aria-label={t('cart_my_cart') || 'Alışveriş sepeti'}
                     >
                         {/* BAŞLIK */}
                         <div className="flex items-center justify-between
@@ -69,7 +71,7 @@ export default function CartDrawer() {
                             <div className="flex items-center gap-3">
                                 <h2 className="text-[15px] font-semibold text-foreground
                                tracking-wide">
-                                    SEPETİM
+                                    {t('cart_my_cart') || 'SEPETİM'}
                                 </h2>
                                 {totalItems > 0 && (
                                     <motion.span
@@ -115,7 +117,8 @@ export default function CartDrawer() {
                         {items.length > 0 && <CartSummary />}
                     </motion.div>
                 </>
-            )}
-        </AnimatePresence>
+            )
+            }
+        </AnimatePresence >
     )
 }

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lightbulb } from 'lucide-react';
-import { type HeatmapCell, formatCurrency } from '@/lib/mock/analytics';
+import { type HeatmapCell, formatCurrency } from '@/types/admin/analytics';
 
 interface HeatmapCalendarProps {
     data: HeatmapCell[];

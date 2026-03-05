@@ -42,6 +42,10 @@ export interface MediaUsage {
     url: string;
 }
 
+// Empty defaults — media components should fetch from Supabase storage
+export const mockMediaFiles: MediaFile[] = [];
+export const mockMediaFolders: MediaFolder[] = [];
+
 export const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 B';
     const k = 1024;

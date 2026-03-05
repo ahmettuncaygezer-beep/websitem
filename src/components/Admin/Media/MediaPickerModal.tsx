@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     X, Search, Filter, Folder,
-    Image as ImageIcon, Film, FileText, CheckCircle2
+    Image as ImageIcon, Film, FileText, CheckCircle2, Loader2
 } from 'lucide-react';
 import { MediaFile } from '@/types/media';
-import { mockMediaFiles } from '@/lib/mock/media';
 
 interface MediaPickerModalProps {
     isOpen: boolean;
@@ -21,16 +20,48 @@ export function MediaPickerModal({ isOpen, onClose, onSelect, multiple = false, 
     const [search, setSearch] = useState('');
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
     const [activeType, setActiveType] = useState('Tümü');
+    const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
+    const [loadingMedia, setLoadingMedia] = useState(true);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        setLoadingMedia(true);
+        fetch('/api/admin/media/all')
+            .then(r => r.json())
+            .then(data => {
+                if (data.files) {
+                    setMediaFiles(data.files.map((f: any) => ({
+                        id: f.id || f.name,
+                        name: f.name,
+                        originalName: f.name,
+                        type: (f.mimetype || '').startsWith('video') ? 'video' as const : 'image' as const,
+                        mimeType: f.mimetype || 'image/jpeg',
+                        url: f.publicUrl,
+                        thumbnailUrl: f.publicUrl,
+                        size: f.size || 0,
+                        folderId: '',
+                        altText: f.name,
+                        tags: [],
+                        uploadedBy: { id: '', name: 'Admin', avatar: '' },
+                        usages: [],
+                        createdAt: f.created_at || '',
+                        updatedAt: f.updated_at || '',
+                    })));
+                }
+            })
+            .catch(err => console.error('Medya dosyaları yüklenemedi:', err))
+            .finally(() => setLoadingMedia(false));
+    }, [isOpen]);
 
     const filteredFiles = useMemo(() => {
-        return mockMediaFiles.filter(f => {
+        return mediaFiles.filter(f => {
             const matchesSearch = f.name.toLowerCase().includes(search.toLowerCase());
             const matchesType = activeType === 'Tümü' ||
                 (activeType === 'Görsel' && f.type === 'image') ||
                 (activeType === 'Video' && f.type === 'video');
             return matchesSearch && matchesType;
         });
-    }, [search, activeType]);
+    }, [search, activeType, mediaFiles]);
 
     const handleToggle = (id: string) => {
         if (multiple) {
@@ -41,7 +72,7 @@ export function MediaPickerModal({ isOpen, onClose, onSelect, multiple = false, 
     };
 
     const handleConfirm = () => {
-        const selected = mockMediaFiles.filter(f => selectedIds.includes(f.id));
+        const selected = mediaFiles.filter(f => selectedIds.includes(f.id));
         onSelect(selected);
         onClose();
     };

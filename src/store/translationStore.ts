@@ -104,7 +104,6 @@ export const translations: Record<Language, Record<string, string>> = {
         planner_title: "SELIS ODA PLANLAYICI", planner_library: "Kütüphane", planner_search: "Mobilya ara...", planner_tab_all: "Tümü", planner_tab_sofas: "Koltuklar", planner_tab_chairs: "Sandalye", planner_tab_beds: "Yataklar", planner_in_room: "Şu an odada yer alıyor", planner_properties: "Özellikler", planner_prop_room: "Oda", planner_prop_selected: "Seçili Mobilya", planner_dimensions: "ODA BOYUTLARI", planner_width: "Genişlik (En)", planner_length: "Derinlik (Boy)", planner_floor_type: "ZEMİN TÜRÜ", planner_floor_wood: "Parke", planner_floor_marble: "Mermer", planner_floor_carpet: "Halı", planner_floor_concrete: "Beton", planner_floor_ceramic: "Seramik", planner_wall_color: "DUVAR RENGİ", planner_controls: "KONTROLLER", planner_ctrl_pan: "Pan: Orta Tuş / Shift", planner_ctrl_zoom: "Zoom: Mouse Tekerleği", planner_share: "Paylaş", planner_save: "Kaydet", planner_finish: "Planı Bitir",
 
         // Additional generic terms
-        cart_empty: "Sepetiniz Boş",
         continue_shopping: "Alışverişe Devam Et",
         checkout: "Ödemeye Geç",
 
@@ -163,11 +162,10 @@ export const translations: Record<Language, Record<string, string>> = {
         cart_trust_ret_desc: "30 gün iade garantisi",
         cart_free_shipping_won: "Ücretsiz kargo kazandınız! 🎉",
         cart_add_more_for_free: "daha ekleyin, kargo ücretsiz!",
-// DUPLICATE:         cart_subtotal: "Ara Toplam",
+        // DUPLICATE:         cart_subtotal: "Ara Toplam",
         cart_shipping: "Kargo",
         cart_free: "Ücretsiz",
         cart_total: "Toplam",
-        cart_checkout: "ÖDEMEYİ TAMAMLA",
         cart_empty_desc: "Beğendiğiniz ürünleri sepetinize ekleyin, burada görüntüleyin.",
         cart_explore_products: "Ürünleri Keşfet",
         cart_per_item: "adet",
@@ -243,9 +241,7 @@ export const translations: Record<Language, Record<string, string>> = {
         pdp_total: "Toplam",
         pdp_single_payment: "Tek çekim",
         pdp_n_installment: "Taksit",
-// DUPLICATE:         pdp_installment_hint_1: "veya 36 aya kadar taksit —",
-        pdp_monthly_from: "Aylık",
-        pdp_monthly_suffix: "'den",
+        // DUPLICATE:         pdp_installment_hint_1: "veya 36 aya kadar taksit —",
         pdp_vat_included: "KDV dahil fiyattır",
         stock_in_stock: "Stokta var",
         stock_shipped_immediately: "Hemen kargoya verilir",
@@ -319,7 +315,7 @@ export const translations: Record<Language, Record<string, string>> = {
         nav_decoration: "Decoration",
         nav_inspiration: "Inspiration & Guides",
         nav_room_planner: "Room Planner",
-
+        cart_my_cart: "My Cart",
         nav_featured: "Featured", nav_corner_sofas: "Corner Sofas", nav_two_seat_sofas: "Two-Seater Sofas",
         nav_armchairs: "Armchairs", nav_bergere: "Bergeres", nav_coffee_tables: "Coffee Tables",
         nav_side_tables: "Side Tables", nav_nesting_tables: "Nesting Tables", nav_collections: "Collections",
@@ -383,7 +379,6 @@ export const translations: Record<Language, Record<string, string>> = {
 
         planner_title: "SELIS ROOM PLANNER", planner_library: "Library", planner_search: "Search furniture...", planner_tab_all: "All", planner_tab_sofas: "Sofas", planner_tab_chairs: "Chairs", planner_tab_beds: "Beds", planner_in_room: "Currently in room", planner_properties: "Properties", planner_prop_room: "Room", planner_prop_selected: "Selected Item", planner_dimensions: "ROOM DIMENSIONS", planner_width: "Width", planner_length: "Length", planner_floor_type: "FLOOR TYPE", planner_floor_wood: "Wood", planner_floor_marble: "Marble", planner_floor_carpet: "Carpet", planner_floor_concrete: "Concrete", planner_floor_ceramic: "Ceramic", planner_wall_color: "WALL COLOR", planner_controls: "CONTROLS", planner_ctrl_pan: "Pan: Middle Click / Shift", planner_ctrl_zoom: "Zoom: Mouse Wheel", planner_share: "Share", planner_save: "Save", planner_finish: "Finish Plan",
 
-        cart_empty: "Your Cart is Empty",
         continue_shopping: "Continue Shopping",
         checkout: "Proceed to Checkout",
 
@@ -655,7 +650,6 @@ export const translations: Record<Language, Record<string, string>> = {
 
         planner_title: "مخطط الغرفة ميزون", planner_library: "مكتبة", planner_search: "ابحث عن الأثاث...", planner_tab_all: "الكل", planner_tab_sofas: "أرائك", planner_tab_chairs: "كراسي", planner_tab_beds: "أسرة", planner_in_room: "حاليا في الغرفة", planner_properties: "الخصائص", planner_prop_room: "غرفة", planner_prop_selected: "العنصر المحدد", planner_dimensions: "أبعاد الغرفة", planner_width: "العرض", planner_length: "الطول", planner_floor_type: "نوع الأرضية", planner_floor_wood: "خشب", planner_floor_marble: "رخام", planner_floor_carpet: "سجاد", planner_floor_concrete: "خرسانة", planner_floor_ceramic: "سيراميك", planner_wall_color: "لون الجدار", planner_controls: "التحكم", planner_ctrl_pan: "تحريك: الزر الأوسط", planner_ctrl_zoom: "تكبير: عجلة الماوس", planner_share: "مشاركة", planner_save: "حفظ", planner_finish: "إنهاء المخطط",
 
-        cart_empty: "عربة التسوق فارغة",
         continue_shopping: "مواصلة التسوق",
         checkout: "الشروع في الخروج",
 
@@ -895,7 +889,6 @@ export const translations: Record<Language, Record<string, string>> = {
 
         planner_title: "PLANIFICATEUR DE PIÈCE SELIS", planner_library: "Bibliothèque", planner_search: "Rechercher...", planner_tab_all: "Tout", planner_tab_sofas: "Canapés", planner_tab_chairs: "Chaises", planner_tab_beds: "Lits", planner_in_room: "Actuellement dans la pièce", planner_properties: "Propriétés", planner_prop_room: "Pièce", planner_prop_selected: "Article sélectionné", planner_dimensions: "DIMENSIONS", planner_width: "Largeur", planner_length: "Longueur", planner_floor_type: "TYPE DE SOL", planner_floor_wood: "Bois", planner_floor_marble: "Marbre", planner_floor_carpet: "Tapis", planner_floor_concrete: "Béton", planner_floor_ceramic: "Céramique", planner_wall_color: "COULEUR MUR", planner_controls: "CONTRÔLES", planner_ctrl_pan: "Pan : Clic central", planner_ctrl_zoom: "Zoom : Molette", planner_share: "Partager", planner_save: "Enregistrer", planner_finish: "Terminer",
 
-        cart_empty: "Votre panier est vide",
         continue_shopping: "Continuer les achats",
         checkout: "Passer à la caisse",
 
@@ -1135,7 +1128,6 @@ export const translations: Record<Language, Record<string, string>> = {
 
         planner_title: "SELIS RAUMPLANER", planner_library: "Bibliothek", planner_search: "Möbel suchen...", planner_tab_all: "Alle", planner_tab_sofas: "Sofas", planner_tab_chairs: "Stühle", planner_tab_beds: "Betten", planner_in_room: "Aktuell im Raum", planner_properties: "Eigenschaften", planner_prop_room: "Raum", planner_prop_selected: "Ausgewähltes Stück", planner_dimensions: "RAUMMASSE", planner_width: "Breite", planner_length: "Länge", planner_floor_type: "BODENART", planner_floor_wood: "Holz", planner_floor_marble: "Marmor", planner_floor_carpet: "Teppich", planner_floor_concrete: "Beton", planner_floor_ceramic: "Keramik", planner_wall_color: "WANDFARBE", planner_controls: "STEUERUNG", planner_ctrl_pan: "Schwenken: Mittlere Maustaste", planner_ctrl_zoom: "Zoom: Mausrad", planner_share: "Teilen", planner_save: "Speichern", planner_finish: "Plan beenden",
 
-        cart_empty: "Ihr Warenkorb ist leer",
         continue_shopping: "Einkauf fortsetzen",
         checkout: "Zur Kasse",
 

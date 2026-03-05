@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GripVertical, ChevronRight, Pencil, Plus } from 'lucide-react';
-import type { Category } from '@/lib/mock/categories';
+import type { Category } from '@/types/admin/categories';
 
 interface CategoryItemProps {
     category: Category;

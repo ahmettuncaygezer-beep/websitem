@@ -5,10 +5,19 @@ import { useGlobal } from '@/context/GlobalContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function AnnouncementBar() {
-    const { siteSettings } = useGlobal();
-    const config = siteSettings?.cms_announcement;
+    const { siteSettings, language, t } = useGlobal();
 
-    if (!config?.enabled || !config?.text) return null;
+    // Force text from translation store so it works bilingually
+    const defaultText = t('announcement_text') || "🎁 İlk alışverişinize özel %10 indirim! Kod: SELIS10";
+    const defaultConfig = {
+        enabled: true,
+        bg: '#1C1C1E',
+        color: '#F5F0EB'
+    };
+
+    const config = siteSettings?.cms_announcement ? { ...defaultConfig, ...siteSettings.cms_announcement } : defaultConfig;
+
+    if (!config?.enabled) return null;
 
     return (
         <AnimatePresence>
@@ -32,7 +41,7 @@ export function AnnouncementBar() {
                     minHeight: '36px'
                 }}
             >
-                {config.text}
+                {defaultText}
             </motion.div>
         </AnimatePresence>
     );

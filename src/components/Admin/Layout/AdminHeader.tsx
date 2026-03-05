@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Bell, Moon, Sun, LogOut, Settings, User as UserIcon } from 'lucide-react';
+import { Search, Bell, Moon, Sun, LogOut, Settings, User as UserIcon, Menu } from 'lucide-react';
 import { BreadcrumbAdmin } from './BreadcrumbAdmin';
 import { CommandPalette } from '../UI/CommandPalette';
 import { useCommandPalette } from '@/lib/hooks/useCommandPalette';
@@ -11,7 +11,11 @@ import { NotificationPanel } from '../Notifications/NotificationPanel';
 import { useAuthStore } from '@/store/authStore';
 import { useNotificationStore } from '@/lib/store/useNotificationStore';
 
-export function AdminHeader() {
+interface AdminHeaderProps {
+    onMenuClick: () => void;
+}
+
+export function AdminHeader({ onMenuClick }: AdminHeaderProps) {
     const [profileOpen, setProfileOpen] = useState(false);
     const [isDark, setIsDark] = useState(true);
     const cmdPalette = useCommandPalette();
@@ -29,7 +33,7 @@ export function AdminHeader() {
     return (
         <>
             <header
-                className="h-16 flex items-center px-6 gap-4 sticky top-0 z-40 border-b border-white/[0.04]"
+                className="h-16 flex items-center px-4 md:px-6 gap-3 md:gap-4 sticky top-0 z-40 border-b border-white/[0.04]"
                 style={{
                     background: 'rgba(20,20,22,0.95)',
                     backdropFilter: 'blur(12px)',
@@ -37,21 +41,32 @@ export function AdminHeader() {
                 }}
                 role="banner"
             >
-                {/* Breadcrumbs — flex 1 */}
-                <div className="flex-1">
+                {/* Menu Toggle — Mobile/Tablet only */}
+                <button
+                    onClick={onMenuClick}
+                    className="lg:hidden p-2 -ml-2 text-[#AEAEB2] hover:text-[#F5F0EB] transition-colors"
+                    aria-label="Menüyü aç"
+                >
+                    <Menu size={20} />
+                </button>
+
+                {/* Breadcrumbs — hidden on very small screens, flex 1 */}
+                <div className="flex-1 hidden sm:block">
                     <BreadcrumbAdmin />
                 </div>
 
-                {/* Command Palette Trigger */}
+                {/* Command Palette Trigger — responsive width */}
                 <button
                     onClick={cmdPalette.open}
                     aria-label="Komut paleti aç (⌘K)"
-                    className="flex items-center gap-[10px] bg-white/[0.04] border border-white/[0.06] rounded-[6px] px-3.5 py-[7px] cursor-pointer transition-all duration-150 hover:bg-white/[0.07] hover:border-[rgba(201,169,110,0.2)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A96E] min-w-[220px] max-w-[300px]"
+                    className="flex items-center gap-[10px] bg-white/[0.04] border border-white/[0.06] rounded-[6px] px-3.5 py-[7px] cursor-pointer transition-all duration-150 hover:bg-white/[0.07] hover:border-[rgba(201,169,110,0.2)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A96E] flex-1 sm:flex-initial min-w-0 sm:min-w-[220px] max-w-[300px]"
                 >
                     <Search size={14} className="text-[#636366] flex-shrink-0" />
-                    <span className="flex-1 text-[12px] text-[#636366] text-left">Ara veya komut çalıştır...</span>
+                    <span className="flex-1 text-[12px] text-[#636366] text-left truncate">
+                        Ara<span className="hidden sm:inline"> veya komut çalıştır...</span>
+                    </span>
                     <span
-                        className="text-[10px] text-[#636366] bg-white/[0.06] border border-white/[0.08] px-1.5 py-0.5 rounded-[3px] font-medium flex-shrink-0"
+                        className="hidden md:block text-[10px] text-[#636366] bg-white/[0.06] border border-white/[0.08] px-1.5 py-0.5 rounded-[3px] font-medium flex-shrink-0"
                         suppressHydrationWarning
                     >
                         ⌘K
@@ -62,6 +77,7 @@ export function AdminHeader() {
                 <div className="flex items-center gap-1">
                     {/* Notification bell */}
                     <NotificationBadge />
+
 
                     {/* Theme toggle */}
                     <button

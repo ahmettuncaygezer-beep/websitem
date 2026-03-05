@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
-import type { Order, OrderStatus } from '@/lib/mock/orders';
-import { STATUS_CONFIG, STATUS_FLOW, getNextStatuses } from '@/lib/mock/orders';
+import type { Order, OrderStatus } from '@/types/admin/orders';
+import { STATUS_CONFIG, STATUS_FLOW, getNextStatuses } from '@/types/admin/orders';
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 

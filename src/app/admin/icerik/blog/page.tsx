@@ -8,7 +8,8 @@ import {
     Calendar, User, Tag as TagIcon
 } from 'lucide-react';
 import Link from 'next/link';
-import { mockBlogs, BlogPost } from '@/lib/mock/content';
+import { type BlogPost } from '@/types/admin/content';
+import { Loader2 } from 'lucide-react';
 
 const TABS = [
     { id: 'all', label: 'Tümü', count: 47 },
@@ -20,10 +21,29 @@ const TABS = [
 export default function BlogListPage() {
     const [activeTab, setActiveTab] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
+    const [blogs, setBlogs] = useState<BlogPost[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const filteredBlogs = mockBlogs.filter(b => {
+    React.useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                const res = await fetch('/api/admin/blog?limit=100');
+                const data = await res.json();
+                if (data.posts) {
+                    setBlogs(data.posts);
+                }
+            } catch (error) {
+                console.error('Veri çekme hatası:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchBlogs();
+    }, []);
+
+    const filteredBlogs = blogs.filter(b => {
         const matchesTab = activeTab === 'all' || b.status === activeTab;
-        const matchesSearch = b.title.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesSearch = b.title?.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesTab && matchesSearch;
     });
 
@@ -104,62 +124,79 @@ export default function BlogListPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        <AnimatePresence mode="popLayout">
-                            {filteredBlogs.map((blog, idx) => (
-                                <motion.tr
-                                    key={blog.id}
-                                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                    style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 200ms' }}
-                                >
-                                    <td style={tdStyle}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                            <img src={blog.coverImage} style={{ width: '60px', height: '40px', borderRadius: '4px', objectFit: 'cover', background: '#333' }} />
-                                            <div>
-                                                <div style={{ fontSize: '14px', fontWeight: 500, color: '#F5F0EB' }}>{blog.title}</div>
-                                                <div style={{ fontSize: '11px', color: '#636366', fontFamily: "'JetBrains Mono', monospace", marginTop: '2px' }}>{blog.slug}</div>
+                        {isLoading ? (
+                            <tr>
+                                <td colSpan={6} style={{ padding: '40px', textAlign: 'center' }}>
+                                    <Loader2 size={32} color="#C9A96E" style={{ animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
+                                    <p style={{ color: '#636366', fontSize: '13px' }}>Blog yazıları yükleniyor...</p>
+                                </td>
+                            </tr>
+                        ) : filteredBlogs.length === 0 ? (
+                            <tr>
+                                <td colSpan={6} style={{ padding: '60px', textAlign: 'center' }}>
+                                    <div style={{ fontSize: '40px', marginBottom: '16px' }}>📝</div>
+                                    <h3 style={{ fontSize: '16px', color: '#F5F0EB', margin: '0 0 8px' }}>Yazı Bulunamadı</h3>
+                                    <p style={{ color: '#636366', fontSize: '13px', margin: 0 }}>Görüntülenecek blog yazısı yok.</p>
+                                </td>
+                            </tr>
+                        ) : (
+                            <AnimatePresence mode="popLayout">
+                                {filteredBlogs.map((blog, idx) => (
+                                    <motion.tr
+                                        key={blog.id}
+                                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                                        style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 200ms' }}
+                                    >
+                                        <td style={tdStyle}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                <img src={blog.coverImage || 'https://via.placeholder.com/60x40'} style={{ width: '60px', height: '40px', borderRadius: '4px', objectFit: 'cover', background: '#333' }} />
+                                                <div>
+                                                    <div style={{ fontSize: '14px', fontWeight: 500, color: '#F5F0EB' }}>{blog.title}</div>
+                                                    <div style={{ fontSize: '11px', color: '#636366', fontFamily: "'JetBrains Mono', monospace", marginTop: '2px' }}>{blog.slug}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td style={tdStyle}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <img src={blog.author.avatar} style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
-                                            <div>
-                                                <div style={{ fontSize: '13px', color: '#F5F0EB' }}>{blog.author.name}</div>
-                                                <div style={{ fontSize: '11px', color: '#636366' }}>{blog.category}</div>
+                                        </td>
+                                        <td style={tdStyle}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <img src={blog.author?.avatar || 'https://via.placeholder.com/24'} style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+                                                <div>
+                                                    <div style={{ fontSize: '13px', color: '#F5F0EB' }}>{blog.author?.name || 'Anonim'}</div>
+                                                    <div style={{ fontSize: '11px', color: '#636366' }}>{blog.category || 'Kategorisiz'}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td style={tdStyle}>
-                                        <StatusBadge status={blog.status} />
-                                    </td>
-                                    <td style={tdStyle}>
-                                        <div style={{ display: 'flex', gap: '12px' }}>
-                                            <div style={{ textAlign: 'center' }}>
-                                                <div style={{ fontSize: '12px', fontWeight: 600, color: '#F5F0EB' }}>{blog.views.toLocaleString()}</div>
-                                                <div style={{ fontSize: '9px', color: '#636366', textTransform: 'uppercase' }}>İzlenme</div>
+                                        </td>
+                                        <td style={tdStyle}>
+                                            <StatusBadge status={blog.status} />
+                                        </td>
+                                        <td style={tdStyle}>
+                                            <div style={{ display: 'flex', gap: '12px' }}>
+                                                <div style={{ textAlign: 'center' }}>
+                                                    <div style={{ fontSize: '12px', fontWeight: 600, color: '#F5F0EB' }}>{(blog.views || 0).toLocaleString()}</div>
+                                                    <div style={{ fontSize: '9px', color: '#636366', textTransform: 'uppercase' }}>İzlenme</div>
+                                                </div>
+                                                <div style={{ textAlign: 'center' }}>
+                                                    <div style={{ fontSize: '12px', fontWeight: 600, color: '#F5F0EB' }}>{blog.readTime || 0}dk</div>
+                                                    <div style={{ fontSize: '9px', color: '#636366', textTransform: 'uppercase' }}>Okuma</div>
+                                                </div>
                                             </div>
-                                            <div style={{ textAlign: 'center' }}>
-                                                <div style={{ fontSize: '12px', fontWeight: 600, color: '#F5F0EB' }}>{blog.readTime}dk</div>
-                                                <div style={{ fontSize: '9px', color: '#636366', textTransform: 'uppercase' }}>Okuma</div>
+                                        </td>
+                                        <td style={tdStyle}>
+                                            <div style={{ fontSize: '12px', color: '#AEAEB2' }}>{blog.publishedAt || blog.createdAt ? new Date(blog.publishedAt || blog.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}</div>
+                                            <div style={{ fontSize: '10px', color: '#636366' }}>{blog.publishedAt || blog.createdAt ? new Date(blog.publishedAt || blog.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) : '-'}</div>
+                                        </td>
+                                        <td style={{ ...tdStyle, textAlign: 'right' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                                                <Link href={`/admin/icerik/blog/${blog.id}/duzenle`}>
+                                                    <button style={actionBtnStyle}><Edit3 size={14} /></button>
+                                                </Link>
+                                                <button style={actionBtnStyle}><Eye size={14} /></button>
+                                                <button style={{ ...actionBtnStyle, color: '#FF453A' }}><Trash2 size={14} /></button>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td style={tdStyle}>
-                                        <div style={{ fontSize: '12px', color: '#AEAEB2' }}>{new Date(blog.publishedAt || blog.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-                                        <div style={{ fontSize: '10px', color: '#636366' }}>{new Date(blog.publishedAt || blog.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}</div>
-                                    </td>
-                                    <td style={{ ...tdStyle, textAlign: 'right' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-                                            <Link href={`/admin/icerik/blog/${blog.id}/duzenle`}>
-                                                <button style={actionBtnStyle}><Edit3 size={14} /></button>
-                                            </Link>
-                                            <button style={actionBtnStyle}><Eye size={14} /></button>
-                                            <button style={{ ...actionBtnStyle, color: '#FF453A' }}><Trash2 size={14} /></button>
-                                        </div>
-                                    </td>
-                                </motion.tr>
-                            ))}
-                        </AnimatePresence>
+                                        </td>
+                                    </motion.tr>
+                                ))}
+                            </AnimatePresence>
+                        )}
                     </tbody>
                 </table>
             </div>

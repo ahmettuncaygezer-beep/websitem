@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
-import type { VariantGroup } from '@/lib/mock/products';
+import type { VariantGroup } from '@/types/admin/products';
 
 interface ProductVariantsProps {
     variantGroups: VariantGroup[];

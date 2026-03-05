@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Loader2 } from 'lucide-react';
 import { ProductForm } from '@/components/Admin/Products/ProductForm';
-import { mockProducts } from '@/lib/mock/products';
+import type { Product } from '@/types/admin/products';
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
@@ -15,7 +15,36 @@ interface EditProductPageProps {
 
 export default function UrunDuzenlePage({ params }: EditProductPageProps) {
     const router = useRouter();
-    const product = mockProducts.find((p) => p.id === params.id);
+    const [product, setProduct] = useState<Product | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const res = await fetch(`/api/admin/products/${params.id}`);
+                if (!res.ok) throw new Error('Ürün bulunamadı');
+                const data = await res.json();
+                if (data.product) {
+                    setProduct(data.product);
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchProduct();
+    }, [params.id]);
+
+    if (isLoading) {
+        return (
+            <div style={{ textAlign: 'center', padding: '80px 0' }}>
+                <Loader2 size={32} color="#C9A96E" style={{ animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
+                <p style={{ color: '#636366', fontSize: '14px' }}>Ürün detayları yükleniyor...</p>
+                <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+            </div>
+        );
+    }
 
     if (!product) {
         return (

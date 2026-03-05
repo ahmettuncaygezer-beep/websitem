@@ -6,9 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowLeft, ShoppingBag, MessageSquare, StickyNote, Activity,
     Star, Clock, CheckCircle2, XCircle, AlertCircle, LogIn,
-    MapPin, RefreshCcw
+    MapPin, RefreshCcw, Loader2
 } from 'lucide-react';
-import { mockCustomers, type Customer, type CustomerReview, type ActivityLogItem } from '@/lib/mock/customers';
+import { type Customer, type CustomerSegment, type CustomerReview, type ActivityLogItem } from '@/types/admin/customers';
 import { CustomerProfile } from '@/components/Admin/Customers/CustomerProfile';
 import { CustomerOrders } from '@/components/Admin/Customers/CustomerOrders';
 import { CustomerNotes } from '@/components/Admin/Customers/CustomerNotes';
@@ -140,18 +140,70 @@ export default function CustomerDetailPage() {
     const params = useParams();
     const router = useRouter();
     const [customer, setCustomer] = useState<Customer | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('siparisler');
 
     useEffect(() => {
-        const found = mockCustomers.find(c => c.id === params.id);
-        if (found) {
-            setCustomer({ ...found });
-        } else {
-            router.push('/admin/musteriler');
-        }
-    }, [params.id, router]);
+        const fetchCustomer = async () => {
+            try {
+                const res = await fetch(`/api/admin/customers?id=${params.id}`);
+                const data = await res.json();
+                if (data.customers && data.customers.length > 0) {
+                    const c = data.customers[0];
+                    setCustomer({
+                        id: c.id,
+                        firstName: c.first_name || 'Anonim',
+                        lastName: c.last_name || '',
+                        email: c.email || '',
+                        phone: c.phone || '',
+                        avatar: ((c.first_name || 'A')[0] + (c.last_name || '')[0]).toUpperCase(),
+                        segment: 'Normal' as CustomerSegment,
+                        status: 'Aktif',
+                        totalOrders: c.total_orders || 0,
+                        totalSpent: c.total_spent || 0,
+                        averageOrderValue: c.total_orders ? Math.round((c.total_spent || 0) / c.total_orders) : 0,
+                        returnCount: 0,
+                        selisPoints: 0,
+                        registeredAt: c.created_at || new Date().toISOString(),
+                        lastLoginAt: c.updated_at || new Date().toISOString(),
+                        lastOrderAt: null,
+                        addresses: [],
+                        notes: [],
+                        orders: [],
+                        reviews: [],
+                        activityLog: [],
+                    });
+                }
+            } catch (err) {
+                console.error('Müşteri verisi alınamadı:', err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchCustomer();
+    }, [params.id]);
 
-    if (!customer) return null;
+    if (isLoading) {
+        return (
+            <div style={{ textAlign: 'center', padding: '80px 0' }}>
+                <Loader2 size={32} color="#C9A96E" style={{ animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
+                <p style={{ color: '#636366', fontSize: '14px' }}>Müşteri detayları yükleniyor...</p>
+                <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+            </div>
+        );
+    }
+
+    if (!customer) {
+        return (
+            <div style={{ textAlign: 'center', padding: '80px 0', color: '#636366' }}>
+                <div style={{ fontSize: '40px', marginBottom: '16px' }}>👤</div>
+                <div style={{ fontSize: '18px', color: '#AEAEB2', marginBottom: '8px' }}>Müşteri bulunamadı</div>
+                <button onClick={() => router.push('/admin/musteriler')} style={{ fontSize: '13px', color: '#C9A96E', background: 'transparent', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+                    Müşteri listesine dön
+                </button>
+            </div>
+        );
+    }
 
     return (
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: easeOut }}>

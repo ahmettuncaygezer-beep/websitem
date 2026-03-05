@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { useGlobal } from '@/context/GlobalContext';
 
 const FEATURES = [
     { key: 'pdp_feature_1', text: 'El yapımı ahşap iskelet' },
@@ -16,6 +17,7 @@ const FEATURES = [
 interface Props { description?: string; }
 
 export function DescriptionTab({ description }: Props) {
+    const { t } = useGlobal();
     const [expanded, setExpanded] = useState(false);
     const text = description || 'Luna Köşe Koltuk, yaşam alanınıza premium bir dokunuş katmak için el yapımı masif meşe iskelet üzerine inşa edilmiştir. Yüksek yoğunluklu sünger dolgusu, uzun yıllar boyunca konforunu korurken, OEKO-TEX® sertifikalı kadife kumaşı zarif ve güvenli bir kullanım sunar. Modüler tasarımı sayesinde odanızın boyutuna göre özelleştirilebilir.\n\nKoltuğun çıkarılabilir ve yıkanabilir kılıfları, bakımı son derece pratik hale getirir. Türkiye\'de yerel ustalar tarafından el işçiliğiyle üretilen bu parça, zamansız estetiği ve dayanıklılığıyla dikkat çeker.';
 
@@ -33,19 +35,19 @@ export function DescriptionTab({ description }: Props) {
                 </div>
                 {!expanded && (
                     <button onClick={() => setExpanded(true)} className="mt-2 text-[13px] font-medium" style={{ color: '#C9A96E', background: 'none', border: 'none', cursor: 'pointer' }}>
-                        <span data-lang-key="pdp_show_more">Daha Fazla Göster ▾</span>
+                        <span>{t('pdp_show_more') || 'Daha Fazla Göster ▾'}</span>
                     </button>
                 )}
             </div>
 
             {/* Right — features */}
             <div className="md:col-span-2">
-                <h3 data-lang-key="pdp_highlighted_features" className="text-lg mb-4 text-foreground font-normal" style={{ fontFamily: 'var(--font-playfair, serif)' }}>Öne Çıkan Özellikler</h3>
+                <h3 className="text-lg mb-4 text-foreground font-normal" style={{ fontFamily: 'var(--font-playfair, serif)' }}>{t('pdp_highlighted_features') || 'Öne Çıkan Özellikler'}</h3>
                 <ul className="space-y-3">
                     {FEATURES.map((f, i) => (
                         <li key={i} className="flex items-start gap-3">
                             <Check size={16} className="text-selis-gold mt-[2px] shrink-0" />
-                            <span data-lang-key={f.key} className="text-[13px] text-muted-foreground">{f.text}</span>
+                            <span className="text-[13px] text-muted-foreground">{t(f.key) || f.text}</span>
                         </li>
                     ))}
                 </ul>

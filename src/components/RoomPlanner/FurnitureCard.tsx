@@ -57,10 +57,10 @@ export default function FurnitureCard({ product }: { product: PlannerProduct }) 
             draggable
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
-            className="group relative bg-white border border-[#E8E3DC] rounded-sm overflow-hidden flex flex-col cursor-grab active:cursor-grabbing hover:border-[#C9A96E] hover:shadow-sm hover:-translate-y-[1px] transition-all duration-200"
+            className="group relative bg-white border border-[#E8E3DC]/60 rounded-xl overflow-hidden flex flex-col cursor-grab active:cursor-grabbing hover:border-[#C9A96E]/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
         >
             {/* Image Area */}
-            <div className="relative w-full aspect-square bg-[#F5F0EB] flex items-center justify-center p-4">
+            <div className="relative w-full aspect-[4/3] bg-gradient-to-b from-[#FAFAF9] to-white flex items-center justify-center p-4">
 
                 {/* Fallback rendering logic inside JSX */}
                 {!imageFailed ? (
@@ -79,21 +79,21 @@ export default function FurnitureCard({ product }: { product: PlannerProduct }) 
                 )}
 
                 {/* Dimension Badge */}
-                <span className="absolute top-2 right-2 bg-white/70 backdrop-blur-sm border border-white/40 text-[#1C1C1E] text-[10px] font-medium px-2 py-0.5 rounded-full z-10">
+                <span className="absolute top-3 right-3 bg-white/80 backdrop-blur-md border border-white/50 text-[#1C1C1E] text-[9px] font-bold px-2 py-1 rounded-full z-10 shadow-sm tracking-wide">
                     {dimText}
                 </span>
 
                 {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 z-20">
+                <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3 z-20">
                     <button
                         onClick={handleAddClick}
-                        className="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-[#1C1C1E] hover:bg-[#1C1C1E] hover:text-white transition-colors"
+                        className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-[#1C1C1E] hover:bg-[#C9A96E] hover:text-white hover:scale-110 transition-all duration-300"
                         title="Odaya Ekle"
                     >
                         <Plus size={18} />
                     </button>
                     <button
-                        className="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-[#1C1C1E] hover:bg-[#1C1C1E] hover:text-white transition-colors"
+                        className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-[#1C1C1E] hover:bg-[#1C1C1E] hover:text-white hover:scale-110 transition-all duration-300"
                         title="Önizle"
                     >
                         <Eye size={18} />
@@ -102,10 +102,10 @@ export default function FurnitureCard({ product }: { product: PlannerProduct }) 
             </div>
 
             {/* Info Area */}
-            <div className="p-3 bg-white flex flex-col">
-                <span className="text-[12px] font-medium text-[#1C1C1E] truncate">{product.name}</span>
-                <span className="text-[10px] text-[#999] mt-0.5">{dimText}</span>
-                <span className="text-[12px] font-bold text-[#C9A96E] mt-1.5">
+            <div className="p-4 bg-white flex flex-col border-t border-[#E8E3DC]/30">
+                <span className="text-[13px] font-bold text-[#1C1C1E] truncate mb-0.5">{product.name}</span>
+                <span className="text-[11px] text-[#999] font-medium mb-2">{product.category}</span>
+                <span className="text-[13px] font-black text-[#C9A96E]">
                     {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', minimumFractionDigits: 0 }).format(product.price)}
                 </span>
             </div>

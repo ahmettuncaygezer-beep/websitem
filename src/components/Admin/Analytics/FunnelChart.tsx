@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { AlertCircle } from 'lucide-react';
-import { type FunnelStep } from '@/lib/mock/analytics';
+import { type FunnelStep } from '@/types/admin/analytics';
 
 interface FunnelChartProps {
     data: FunnelStep[];

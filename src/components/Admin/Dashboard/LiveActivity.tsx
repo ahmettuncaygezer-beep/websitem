@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { initialLiveEvents, liveEventPool } from '@/lib/mock/analytics';
-import type { LiveEvent } from '@/lib/mock/analytics';
+import { initialLiveEvents, liveEventPool } from '@/types/admin/analytics';
+import type { LiveEvent } from '@/types/admin/analytics';
 
 let eventIdCounter = 100;
 

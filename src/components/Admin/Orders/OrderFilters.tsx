@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Search } from 'lucide-react';
-import type { OrderStatus } from '@/lib/mock/orders';
+import type { OrderStatus } from '@/types/admin/orders';
 
 export type OrderTab = 'Tümü' | 'Bekliyor' | 'Hazırlanıyor' | 'Kargoda' | 'Tamamlandı' | 'İptal' | 'İade';
 

@@ -6,7 +6,7 @@ import {
     Type, Link as LinkIcon, Palette, Clock,
     ExternalLink, Zap, MousePointer2
 } from 'lucide-react';
-import { BannerContent } from '@/lib/mock/content';
+import { BannerContent } from '@/lib/default-content';
 
 interface BannerEditorProps {
     content: BannerContent;

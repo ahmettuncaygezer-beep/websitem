@@ -133,12 +133,7 @@ export default function AdminDashboardPage() {
             {/* ── Two-column: TopProducts + OrdersChart ───────────────────────── */}
             <motion.div
                 variants={itemVariants}
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: '60% 40%',
-                    gap: '20px',
-                    marginBottom: '20px',
-                }}
+                className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-5 mb-5"
             >
                 <TopProducts />
                 <OrdersChart />

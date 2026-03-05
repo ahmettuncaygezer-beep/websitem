@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Camera, Edit3 } from 'lucide-react';
+import React from 'react';
 import { SettingsCard } from '../SettingsCard';
 import { GeneralSettings } from '@/types/settings';
+import { ImageUploader } from '@/components/Admin/ImageUploader';
 
 interface SiteInfoFormProps {
     settings: GeneralSettings;
@@ -16,29 +16,29 @@ export function SiteInfoForm({ settings, onChange }: SiteInfoFormProps) {
             title="Site Bilgileri"
             description="Mağazanızın temel kimliği ve iletişim bilgileri."
         >
-            <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-                <div style={{ position: 'relative' }}>
-                    <div style={{
-                        width: '128px', height: '64px', background: '#0F0F10', borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.06)', display: 'flex',
-                        alignItems: 'center', justifyContent: 'center', overflow: 'hidden'
-                    }}>
-                        <img src={settings.logo} alt="Logo" style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain' }} />
-                    </div>
-                    <button style={uploadIconBtnStyle}><Camera size={14} /></button>
-                    <div style={{ fontSize: '11px', color: '#636366', marginTop: '8px', textAlign: 'center' }}>Site Logosu</div>
+            <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+                <div style={{ flex: '0 0 200px' }}>
+                    <ImageUploader
+                        bucket="media"
+                        folder="logos"
+                        value={settings.logo || ''}
+                        onChange={(url) => onChange({ logo: url })}
+                        label="Site Logosu"
+                        height="64px"
+                        aspectRatio="auto"
+                    />
                 </div>
 
-                <div style={{ position: 'relative' }}>
-                    <div style={{
-                        width: '48px', height: '48px', background: '#0F0F10', borderRadius: '8px',
-                        border: '1px solid rgba(255,255,255,0.06)', display: 'flex',
-                        alignItems: 'center', justifyContent: 'center', overflow: 'hidden'
-                    }}>
-                        <img src={settings.favicon} alt="Favicon" style={{ width: '24px', height: '24px' }} />
-                    </div>
-                    <button style={{ ...uploadIconBtnStyle, top: '-4px', right: '-4px' }}><Camera size={12} /></button>
-                    <div style={{ fontSize: '11px', color: '#636366', marginTop: '8px', textAlign: 'center' }}>Favicon</div>
+                <div style={{ flex: '0 0 80px' }}>
+                    <ImageUploader
+                        bucket="media"
+                        folder="logos"
+                        value={settings.favicon || ''}
+                        onChange={(url) => onChange({ favicon: url })}
+                        label="Favicon"
+                        height="48px"
+                        aspectRatio="1/1"
+                    />
                 </div>
             </div>
 
@@ -153,8 +153,4 @@ const dividerStyle = {
     margin: '8px 0'
 };
 const hintStyle = { fontSize: '11px', color: '#636366' };
-const uploadIconBtnStyle = {
-    position: 'absolute' as const, top: '-8px', right: '-8px', width: '28px', height: '28px',
-    borderRadius: '50%', background: '#242426', border: '1px solid rgba(255,255,255,0.1)',
-    color: '#C9A96E', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
-};
+

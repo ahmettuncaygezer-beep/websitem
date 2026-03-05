@@ -7,13 +7,10 @@ export default function SettingsLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div style={{ display: 'flex', height: '100%', background: '#141416' }}>
+        <div className="flex flex-col lg:flex-row h-full bg-[#141416]">
             <SettingsNav />
-            <main style={{
-                flex: 1, height: '100%', overflowY: 'auto',
-                padding: '40px', position: 'relative'
-            }}>
-                <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <main className="flex-1 h-full overflow-y-auto p-4 md:p-6 lg:p-10 relative">
+                <div className="max-w-[800px] mx-auto">
                     {children}
                 </div>
             </main>

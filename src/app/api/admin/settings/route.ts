@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { requireAdminAuth } from '@/lib/admin-auth';
+import { logAction, getAdminInfo } from '@/lib/audit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -155,10 +157,26 @@ export async function GET() {
 // POST: Site ayarlarını güncelle (Admin/Authenticated)
 export async function POST(req: Request) {
     try {
+        // Auth check for audit
+        const authResult = await requireAdminAuth(req);
+        const adminInfo = authResult instanceof NextResponse
+            ? { adminId: null, adminEmail: 'unknown' }
+            : getAdminInfo(authResult);
+
         const body = await req.json();
 
         // Handle batch updates (array of {key, value})
         if (Array.isArray(body)) {
+            // Fetch old values for all keys
+            const keys = body.filter(i => i.key).map(i => i.key);
+            const { data: oldSettings } = await supabase
+                .from('site_settings')
+                .select('*')
+                .in('key', keys);
+
+            const oldMap: Record<string, any> = {};
+            (oldSettings || []).forEach((s: any) => { oldMap[s.key] = s.value; });
+
             const promises = body.map(item => {
                 if (!item.key || item.value === undefined) return Promise.resolve();
                 return supabase
@@ -167,6 +185,20 @@ export async function POST(req: Request) {
             });
 
             await Promise.all(promises);
+
+            // Audit log for each changed setting (non-blocking)
+            for (const item of body) {
+                if (!item.key || item.value === undefined) continue;
+                logAction(req, supabase, adminInfo, {
+                    action: 'settings.update',
+                    entityType: 'settings',
+                    entityId: item.key,
+                    entityName: item.key,
+                    oldValue: oldMap[item.key] ?? null,
+                    newValue: item.value,
+                });
+            }
+
             return NextResponse.json({ success: true });
         }
 
@@ -176,6 +208,13 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Gerekli alanlar eksik' }, { status: 400 });
         }
 
+        // Fetch old value
+        const { data: oldSetting } = await supabase
+            .from('site_settings')
+            .select('*')
+            .eq('key', key)
+            .single();
+
         const { data, error } = await supabase
             .from('site_settings')
             .upsert({ key, value, updated_at: new Date().toISOString() })
@@ -183,6 +222,16 @@ export async function POST(req: Request) {
             .single();
 
         if (error) throw error;
+
+        // Audit log (non-blocking)
+        logAction(req, supabase, adminInfo, {
+            action: 'settings.update',
+            entityType: 'settings',
+            entityId: key,
+            entityName: key,
+            oldValue: oldSetting?.value ?? null,
+            newValue: value,
+        });
 
         return NextResponse.json({ success: true, setting: data });
     } catch (err) {

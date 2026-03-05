@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Trash2, Minus, Plus } from 'lucide-react'
-import { useCart } from '@/context/CartContext'
+import { useCart } from '@/hooks/useCart'
 
 import { useGlobal } from '@/context/GlobalContext'
 

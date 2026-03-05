@@ -58,34 +58,34 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
     };
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full bg-[#FAFAF9] relative">
             {/* Header + Tabs */}
-            <div className="flex flex-col border-b border-[#E8E3DC] flex-shrink-0">
-                <div className="flex items-center justify-between p-4 pb-2">
-                    <h2 className="text-[14px] font-bold text-[#1C1C1E]" data-lang-key="planner_properties">{t('planner_properties')}</h2>
-                    <button onClick={onClose} className="text-[#999] hover:text-[#1C1C1E] transition-colors">
+            <div className="flex flex-col border-b border-[#E8E3DC]/60 bg-white/95 backdrop-blur-md sticky top-0 z-20 flex-shrink-0 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                <div className="flex items-center justify-between p-5 pb-3">
+                    <h2 className="text-[15px] font-semibold text-[#1C1C1E] tracking-wide" data-lang-key="planner_properties">{t('planner_properties')}</h2>
+                    <button onClick={onClose} className="text-[#999] hover:bg-[#F5F0EB] p-1.5 rounded-full hover:text-[#1C1C1E] transition-colors">
                         <X size={18} />
                     </button>
                 </div>
-                <div className="flex px-4 gap-4 mt-2">
+                <div className="flex px-5 gap-6">
                     <button
                         onClick={() => setActiveTab('room')}
-                        className={`pb-2 text-[13px] font-medium transition-colors border-b-2 ${activeTab === 'room' ? 'border-[#C9A96E] text-[#1C1C1E]' : 'border-transparent text-[#999] hover:text-[#1C1C1E]'}`}
+                        className={`pb-3 text-[13px] font-medium transition-colors border-b-[2px] ${activeTab === 'room' ? 'border-[#C9A96E] text-[#1C1C1E]' : 'border-transparent text-[#999] hover:text-[#1C1C1E]'}`}
                     >
                         <span data-lang-key="planner_prop_room">{t('planner_prop_room')}</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('item')}
-                        className={`pb-2 text-[13px] font-medium transition-colors border-b-2 flex items-center gap-1.5 ${activeTab === 'item' ? 'border-[#C9A96E] text-[#1C1C1E]' : 'border-transparent text-[#999] hover:text-[#1C1C1E]'}`}
+                        className={`pb-3 text-[13px] font-medium transition-colors border-b-[2px] flex items-center gap-1.5 relative ${activeTab === 'item' ? 'border-[#C9A96E] text-[#1C1C1E]' : 'border-transparent text-[#999] hover:text-[#1C1C1E]'}`}
                     >
                         <span data-lang-key="planner_prop_selected">{t('planner_prop_selected')}</span>
-                        {selectedItem && <div className="w-1.5 h-1.5 rounded-full bg-[#C9A96E]" />}
+                        {selectedItem && <div className="w-1.5 h-1.5 rounded-full bg-[#C9A96E] absolute -right-3 top-1" />}
                     </button>
                 </div>
             </div>
 
             {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-5 custom-scrollbar bg-[#FAFAF9]">
+            <div className="flex-1 overflow-y-auto p-5 custom-scrollbar relative">
 
                 {activeTab === 'room' && (
                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -122,18 +122,18 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
                         </div>
 
                         {/* Floor */}
-                        <div>
-                            <h3 className="text-[12px] font-bold tracking-wider text-[#999] uppercase mb-4" data-lang-key="planner_floor_type">{t('planner_floor_type')}</h3>
-                            <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-white p-5 rounded-xl border border-[#E8E3DC] shadow-sm">
+                            <h3 className="text-[11px] font-bold tracking-widest text-[#999] uppercase mb-4" data-lang-key="planner_floor_type">{t('planner_floor_type')}</h3>
+                            <div className="grid grid-cols-2 gap-3">
                                 {FLOOR_TYPES.map(floor => (
                                     <button
                                         key={floor.id}
                                         onClick={() => updateRoom({ floorType: floor.id })}
-                                        className={`flex flex-col items-center justify-center py-3 border rounded-sm transition-all duration-200
-                                            ${room.floorType === floor.id ? 'border-[#C9A96E] bg-[#F5F0EB]' : 'border-[#E8E3DC] bg-white hover:border-[#C9A96E] hover:bg-[#F9F9f9]'}
+                                        className={`flex flex-col items-center justify-center py-4 border rounded-lg transition-all duration-300
+                                            ${room.floorType === floor.id ? 'border-[#C9A96E] bg-[#C9A96E]/5 ring-1 ring-[#C9A96E]' : 'border-[#E8E3DC] bg-white hover:border-[#C9A96E]/50 hover:shadow-md'}
                                         `}
                                     >
-                                        <span className="text-xl mb-1">{floor.icon}</span>
+                                        <span className={`text-2xl mb-2 transition-transform duration-300 ${room.floorType === floor.id && 'scale-110'}`}>{floor.icon}</span>
                                         <span className={`text-[12px] ${room.floorType === floor.id ? 'font-semibold text-[#1C1C1E]' : 'font-medium text-[#666]'}`} data-lang-key={floor.nameKey}>{t(floor.nameKey) || floor.name}</span>
                                     </button>
                                 ))}
@@ -170,23 +170,23 @@ export default function RoomSettings({ onClose }: { onClose: () => void }) {
                         ) : (
                             <div className="space-y-6">
                                 {/* Item Header */}
-                                <div className="flex items-center gap-3">
-                                    <div className="w-16 h-16 bg-white border border-[#E8E3DC] rounded-sm flex items-center justify-center p-1">
-                                        <img src={selectedItem.product.image} alt="" className="object-contain w-full h-full" />
+                                <div className="flex items-center gap-4 bg-white p-4 rounded-xl border border-[#E8E3DC] shadow-sm">
+                                    <div className="w-16 h-16 bg-[#FAFAF9] rounded-lg flex items-center justify-center p-2">
+                                        <img src={selectedItem.product.image} alt="" className="object-contain w-full h-full drop-shadow-sm" />
                                     </div>
-                                    <div>
-                                        <h3 className="text-[14px] font-bold text-[#1C1C1E]">{selectedItem.name}</h3>
-                                        <p className="text-[12px] text-[#666]">{selectedItem.width}×{selectedItem.depth} cm</p>
+                                    <div className="flex-1">
+                                        <h3 className="text-[14px] font-bold text-[#1C1C1E] leading-tight mb-1">{selectedItem.name}</h3>
+                                        <p className="text-[12px] text-[#999] font-medium">{selectedItem.width}×{selectedItem.depth} cm</p>
                                     </div>
                                 </div>
 
                                 {/* Actions */}
-                                <div className="flex gap-2">
-                                    <button onClick={() => duplicateItem(selectedItem.id)} className="flex-1 flex items-center justify-center gap-2 py-2 border border-[#E8E3DC] rounded-sm text-[12px] font-medium hover:bg-white transition-colors">
-                                        <Copy size={14} /> <span data-lang-key="planner_duplicate">{t('planner_duplicate')}</span>
+                                <div className="flex gap-3">
+                                    <button onClick={() => duplicateItem(selectedItem.id)} className="flex-1 flex items-center justify-center gap-2 py-2.5 border border-[#E8E3DC] bg-white rounded-lg text-[13px] font-medium text-[#1C1C1E] hover:border-[#C9A96E] hover:text-[#C9A96E] transition-all shadow-sm">
+                                        <Copy size={16} /> <span data-lang-key="planner_duplicate">{t('planner_duplicate')}</span>
                                     </button>
-                                    <button onClick={() => removeItem(selectedItem.id)} className="flex-1 flex items-center justify-center gap-2 py-2 border border-red-100 text-red-600 bg-red-50 rounded-sm text-[12px] font-medium hover:bg-red-100 transition-colors">
-                                        <Trash2 size={14} /> <span data-lang-key="planner_delete">{t('planner_delete')}</span>
+                                    <button onClick={() => removeItem(selectedItem.id)} className="flex-1 flex items-center justify-center gap-2 py-2.5 border border-red-100 text-red-600 bg-red-50/50 rounded-lg text-[13px] font-medium hover:bg-red-50 hover:border-red-200 transition-all shadow-sm">
+                                        <Trash2 size={16} /> <span data-lang-key="planner_delete">{t('planner_delete')}</span>
                                     </button>
                                 </div>
 

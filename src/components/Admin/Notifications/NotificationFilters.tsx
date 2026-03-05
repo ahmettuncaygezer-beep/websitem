@@ -42,6 +42,7 @@ export function NotificationFilters({
                         <option value="all">Tüm Kategoriler</option>
                         <option value="order">Siparişler</option>
                         <option value="stock">Stok</option>
+                        <option value="order-cancel">İade Talepleri</option>
                         <option value="customer">Müşteriler</option>
                         <option value="system">Sistem</option>
                         <option value="security">Güvenlik</option>

@@ -8,7 +8,7 @@ const MOCK_ADMIN_USERS = [
         password: '123456',
         firstName: 'Ali',
         lastName: 'Yılmaz',
-        role: 'super-admin' as AdminRole,
+        role: 'super_admin' as AdminRole,
         hasTwoFactor: false,
     },
     {

@@ -3,11 +3,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
-    Users, UserPlus, Zap, Crown, Search, Download,
-    ChevronDown, Filter, SlidersHorizontal
+    Users, UserPlus, Zap, Crown, Search,
+    ChevronDown, SlidersHorizontal
 } from 'lucide-react';
-import { mockCustomers, type Customer, type CustomerSegment, type CustomerStatus } from '@/lib/mock/customers';
+import { type Customer, type CustomerSegment, type CustomerStatus } from '@/types/admin/customers';
 import { CustomerTable } from '@/components/Admin/Customers/CustomerTable';
+import ExportButton from '@/components/Admin/ExportButton';
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
@@ -60,7 +61,7 @@ function KpiCard({ value, label, icon, trend, variant = 'default' }: KpiCardProp
 }
 
 export default function CustomersPage() {
-    const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
+    const [customers, setCustomers] = useState<Customer[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [segmentFilter, setSegmentFilter] = useState('Tümü');
@@ -78,7 +79,6 @@ export default function CustomersPage() {
                 const data = await res.json();
                 if (data.customers && data.customers.length > 0) {
                     setCustomers(data.customers.map((c: any) => ({
-                        ...mockCustomers[0], // Use as template for missing fields
                         id: c.id,
                         firstName: c.first_name || 'Anonim',
                         lastName: c.last_name || '',
@@ -90,8 +90,16 @@ export default function CustomersPage() {
                         totalOrders: c.total_orders || 0,
                         totalSpent: c.total_spent || 0,
                         averageOrderValue: c.total_orders ? Math.round((c.total_spent || 0) / c.total_orders) : 0,
+                        returnCount: 0,
+                        selisPoints: 0,
                         registeredAt: c.created_at || new Date().toISOString(),
                         lastLoginAt: c.updated_at || new Date().toISOString(),
+                        lastOrderAt: null,
+                        addresses: [],
+                        notes: [],
+                        orders: [],
+                        reviews: [],
+                        activityLog: [],
                     })));
                 }
             } catch { /* keep mock */ }
@@ -148,9 +156,7 @@ export default function CustomersPage() {
         }
     };
 
-    const handleExportCSV = () => {
-        alert('Filtrelenmiş ' + filteredCustomers.length + ' müşteri CSV olarak dışa aktarılıyor...');
-    };
+
 
     return (
         <motion.div
@@ -169,7 +175,7 @@ export default function CustomersPage() {
             </div>
 
             {/* KPI Section */}
-            <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
                 <KpiCard value="1.247" label="Toplam Müşteri" icon={<Users size={20} />} />
                 <KpiCard
                     value="89" label="Bu Ay Yeni" icon={<UserPlus size={20} />}
@@ -262,18 +268,7 @@ export default function CustomersPage() {
                 </div>
 
                 {/* Export Button */}
-                <button
-                    onClick={handleExportCSV}
-                    style={{
-                        background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px',
-                        padding: '10px 16px', fontSize: '12px', color: '#AEAEB2', cursor: 'pointer', transition: 'all 200ms',
-                        display: 'flex', alignItems: 'center', gap: '8px'
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                >
-                    <Download size={14} /> CSV Dışa Aktar
-                </button>
+                <ExportButton type="customers" data={filteredCustomers} />
             </div>
 
             <CustomerTable

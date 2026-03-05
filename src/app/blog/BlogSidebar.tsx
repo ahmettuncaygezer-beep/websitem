@@ -5,34 +5,39 @@ import Link from 'next/link';
 import { Clock, Tag } from 'lucide-react';
 import type { BlogPost } from './page';
 
+import { useGlobal } from '@/context/GlobalContext';
+
 interface BlogSidebarProps {
     posts: BlogPost[];
     categories: string[];
 }
 
 export default function BlogSidebar({ posts, categories }: BlogSidebarProps) {
+    const { language, t } = useGlobal();
+    const langKey = (language?.toLowerCase() || 'tr') as 'tr' | 'en' | 'fr' | 'ar' | 'de';
+
     return (
         <aside className="lg:w-72 lg:flex-shrink-0">
             <div className="sticky top-24 flex flex-col gap-6">
                 {/* Arama */}
                 <div>
-                    <h4 className="text-[12px] font-bold text-[#1C1C1E] uppercase tracking-wider mb-2">Ara</h4>
+                    <h4 className="text-[12px] font-bold text-[#1C1C1E] uppercase tracking-wider mb-2">{t('common_search') || (langKey === 'tr' ? 'Ara' : 'Search')}</h4>
                     <input
                         type="search"
-                        placeholder="Yazı ara..."
+                        placeholder={t('blog_search_placeholder') || (langKey === 'tr' ? 'Yazı ara...' : 'Search articles...')}
                         className="w-full border border-[#E8E3DC] rounded-sm px-3 py-2 text-[13px] focus:outline-none focus:border-[#C9A96E] transition-colors"
                     />
                 </div>
 
                 {/* Kategoriler */}
                 <div>
-                    <h4 className="text-[12px] font-bold text-[#1C1C1E] uppercase tracking-wider mb-3">Kategoriler</h4>
+                    <h4 className="text-[12px] font-bold text-[#1C1C1E] uppercase tracking-wider mb-3">{t('cat_cat') || (langKey === 'tr' ? 'Kategoriler' : 'Categories')}</h4>
                     <ul className="flex flex-col gap-1.5">
-                        {categories.filter(c => c !== 'Tümü').map(cat => (
+                        {categories.filter(c => c !== 'blog_all').map(cat => (
                             <li key={cat}>
                                 <button className="flex items-center gap-2 text-[13px] text-[#666] hover:text-[#C9A96E] transition-colors">
                                     <Tag className="w-3 h-3 text-[#C9A96E]" />
-                                    {cat}
+                                    {t(cat) || cat}
                                 </button>
                             </li>
                         ))}
@@ -41,7 +46,7 @@ export default function BlogSidebar({ posts, categories }: BlogSidebarProps) {
 
                 {/* Popüler */}
                 <div>
-                    <h4 className="text-[12px] font-bold text-[#1C1C1E] uppercase tracking-wider mb-3">Popüler Yazılar</h4>
+                    <h4 className="text-[12px] font-bold text-[#1C1C1E] uppercase tracking-wider mb-3">{t('blog_popular_topics') || (langKey === 'tr' ? 'Popüler Yazılar' : 'Popular Posts')}</h4>
                     <ul className="flex flex-col gap-3">
                         {posts.slice(0, 3).map(post => (
                             <li key={post.slug}>
@@ -49,7 +54,7 @@ export default function BlogSidebar({ posts, categories }: BlogSidebarProps) {
                                     <div className="relative w-12 h-12 flex-shrink-0 rounded-sm overflow-hidden bg-[#E8E3DC]">
                                         <Image
                                             src={post.coverImage}
-                                            alt={post.title}
+                                            alt={post.title[langKey] || post.title.tr}
                                             fill
                                             sizes="48px"
                                             className="object-cover group-hover:scale-105 transition-transform"
@@ -58,10 +63,10 @@ export default function BlogSidebar({ posts, categories }: BlogSidebarProps) {
                                     </div>
                                     <div>
                                         <p className="text-[11px] font-semibold text-[#1C1C1E] leading-tight line-clamp-2 group-hover:text-[#C9A96E] transition-colors">
-                                            {post.title}
+                                            {post.title[langKey] || post.title.tr}
                                         </p>
                                         <div className="flex items-center gap-1 mt-0.5 text-[10px] text-[#aaa]">
-                                            <Clock className="w-2.5 h-2.5" />{post.readingMinutes} dk
+                                            <Clock className="w-2.5 h-2.5" />{post.readingMinutes} {t('blog_min_read') || (langKey === 'tr' ? 'dk okuma' : 'min read')}
                                         </div>
                                     </div>
                                 </Link>

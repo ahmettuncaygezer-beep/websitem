@@ -9,6 +9,8 @@ import { Notification } from '@/types/notifications';
 import { useNotificationStore } from '@/lib/store/useNotificationStore';
 import { formatDistanceToNow } from 'date-fns';
 import { tr } from 'date-fns/locale';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface NotificationItemProps {
     notification: Notification;
@@ -29,13 +31,22 @@ const typeConfig = {
 };
 
 export function NotificationItem({ notification }: NotificationItemProps) {
-    const { markAsRead } = useNotificationStore();
+    const { markAsRead, setOpen } = useNotificationStore();
+    const router = useRouter();
     const config = typeConfig[notification.type] || typeConfig['system-backup'];
     const Icon = config.icon;
 
+    const handleClick = () => {
+        markAsRead(notification.id);
+        if (notification.actionUrl) {
+            setOpen(false);
+            router.push(notification.actionUrl);
+        }
+    };
+
     return (
         <div
-            onClick={() => markAsRead(notification.id)}
+            onClick={handleClick}
             className={`group relative flex gap-4 p-4 transition-all duration-200 cursor-pointer border-b border-white/[0.03] ${notification.isRead ? 'opacity-60 grayscale-[0.3]' : 'bg-[#C9A96E]/[0.03]'
                 } hover:bg-white/[0.04]`}
         >
@@ -70,9 +81,9 @@ export function NotificationItem({ notification }: NotificationItemProps) {
                     <span className="text-[10px] text-[#636366]">
                         {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true, locale: tr })}
                     </span>
-                    {notification.actionLabel && (
+                    {notification.actionUrl && (
                         <span className="text-[11px] font-semibold text-[#C9A96E] flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                            {notification.actionLabel} <ChevronRight size={12} />
+                            Git → <ChevronRight size={12} />
                         </span>
                     )}
                 </div>
@@ -80,3 +91,4 @@ export function NotificationItem({ notification }: NotificationItemProps) {
         </div>
     );
 }
+

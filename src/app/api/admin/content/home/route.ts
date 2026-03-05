@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { mockPageSections } from '@/lib/mock/content';
+import { mockPageSections } from '@/lib/default-content';
 
 const SETTING_KEY = 'home_page_sections';
 

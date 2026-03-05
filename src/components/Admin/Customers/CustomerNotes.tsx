@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, User, Send } from 'lucide-react';
-import { type CustomerNote } from '@/lib/mock/customers';
+import { type CustomerNote } from '@/types/admin/customers';
 
 interface CustomerNotesProps {
     notes: CustomerNote[];

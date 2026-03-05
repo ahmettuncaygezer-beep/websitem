@@ -3,8 +3,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, Calendar, Clock, AlertCircle } from 'lucide-react';
-import { mockOrders } from '@/lib/mock/orders';
-import type { Order } from '@/lib/mock/orders';
+import ExportButton from '@/components/Admin/ExportButton';
+import type { Order } from '@/types/admin/orders';
 import { OrderFilters } from '@/components/Admin/Orders/OrderFilters';
 import { OrderTable } from '@/components/Admin/Orders/OrderTable';
 import type { OrderTab } from '@/components/Admin/Orders/OrderFilters';
@@ -110,7 +110,7 @@ function mapDbStatus(s: string): Order['status'] {
 }
 
 export default function SiparislerPage() {
-    const [orders, setOrders] = useState<Order[]>(mockOrders);
+    const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<OrderTab>('Tümü');
     const [searchQuery, setSearchQuery] = useState('');
@@ -128,9 +128,8 @@ export default function SiparislerPage() {
                 if (data.orders && data.orders.length > 0) {
                     setOrders(data.orders.map(mapDbOrder));
                 }
-                // If DB has no orders, keep mockOrders
-            } catch {
-                // Keep mock data on error
+            } catch (error) {
+                console.error('Failed to fetch orders:', error);
             } finally {
                 setLoading(false);
             }
@@ -194,16 +193,19 @@ export default function SiparislerPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: easeOut }}
         >
-            <div style={{ marginBottom: '24px' }}>
-                <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '30px', fontWeight: 500, color: '#F5F0EB', margin: '0 0 4px' }}>
-                    Siparişler
-                </h1>
-                <p style={{ fontSize: '13px', color: '#AEAEB2', margin: 0 }}>
-                    {loading ? 'Yükleniyor...' : 'Sipariş akışını ve teslimat süreçlerini yönetin'}
-                </p>
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+                <div>
+                    <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '30px', fontWeight: 500, color: '#F5F0EB', margin: '0 0 4px' }}>
+                        Siparişler
+                    </h1>
+                    <p style={{ fontSize: '13px', color: '#AEAEB2', margin: 0 }}>
+                        {loading ? 'Yükleniyor...' : 'Sipariş akışını ve teslimat süreçlerini yönetin'}
+                    </p>
+                </div>
+                <ExportButton type="orders" data={filteredOrders} />
             </div>
 
-            <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
                 <KpiCard value={String(orders.length)} label="TOPLAM" icon={<ShoppingBag size={20} />} />
                 <KpiCard value={String(tabCounts['Kargoda'] || 0)} label="KARGODA" icon={<Calendar size={20} />} />
                 <KpiCard value={String(tabCounts['Tamamlandı'] || 0)} label="TAMAMLANDI" icon={<Clock size={20} />} />

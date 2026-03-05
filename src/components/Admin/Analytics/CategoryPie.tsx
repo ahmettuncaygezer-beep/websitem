@@ -4,7 +4,7 @@ import React from 'react';
 import {
     PieChart, Pie, Cell, ResponsiveContainer, Tooltip
 } from 'recharts';
-import { type CategorySales, formatCurrency } from '@/lib/mock/analytics';
+import { type CategorySales, formatCurrency } from '@/types/admin/analytics';
 
 interface CategoryPieProps {
     data: CategorySales[];

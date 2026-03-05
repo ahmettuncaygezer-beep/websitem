@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Folder, FolderPlus, ChevronRight,
@@ -8,7 +8,6 @@ import {
     Clock, Trash2, Pin, HardDrive
 } from 'lucide-react';
 import { MediaFolder } from '@/types/media';
-import { mockMediaFolders } from '@/lib/mock/media';
 
 interface MediaFolderTreeProps {
     activeFolderId: string;
@@ -26,6 +25,31 @@ const SMART_FOLDERS = [
 
 export function MediaFolderTree({ activeFolderId, onSelect }: MediaFolderTreeProps) {
     const [expanded, setExpanded] = useState<string[]>(['f_root', 'f_products']);
+    const [folders, setFolders] = useState<MediaFolder[]>([]);
+
+    useEffect(() => {
+        // Fetch folders from storage — smart folders are built-in, user folders come from API
+        fetch('/api/admin/media/all?folder=')
+            .then(r => r.json())
+            .then(data => {
+                // Build folder structure from file paths
+                if (data.files) {
+                    const folderSet = new Set<string>();
+                    data.files.forEach((f: any) => {
+                        const parts = (f.path || f.name || '').split('/');
+                        if (parts.length > 1) folderSet.add(parts[0]);
+                    });
+                    setFolders(Array.from(folderSet).map(name => ({
+                        id: `f_${name}`,
+                        name,
+                        parentId: null,
+                        fileCount: data.files.filter((f: any) => (f.path || '').startsWith(name + '/')).length,
+                        createdAt: new Date().toISOString(),
+                    })));
+                }
+            })
+            .catch(() => { /* keep empty */ });
+    }, []);
 
     const toggleExpand = (id: string) => {
         setExpanded(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
@@ -34,7 +58,7 @@ export function MediaFolderTree({ activeFolderId, onSelect }: MediaFolderTreePro
     const renderFolder = (folder: MediaFolder, depth = 0) => {
         const isExpanded = expanded.includes(folder.id);
         const isActive = activeFolderId === folder.id;
-        const hasChildren = mockMediaFolders.some(f => f.parentId === folder.id);
+        const hasChildren = folders.some(f => f.parentId === folder.id);
 
         return (
             <div key={folder.id}>
@@ -81,7 +105,7 @@ export function MediaFolderTree({ activeFolderId, onSelect }: MediaFolderTreePro
                             exit={{ height: 0, opacity: 0 }}
                             style={{ overflow: 'hidden' }}
                         >
-                            {mockMediaFolders
+                            {folders
                                 .filter(f => f.parentId === folder.id)
                                 .map(f => renderFolder(f, depth + 1))}
                         </motion.div>
@@ -139,7 +163,7 @@ export function MediaFolderTree({ activeFolderId, onSelect }: MediaFolderTreePro
                     </button>
                 </div>
 
-                {mockMediaFolders.filter(f => !f.parentId || f.parentId === 'f_root').map(f => renderFolder(f))}
+                {folders.filter(f => !f.parentId || f.parentId === 'f_root').map(f => renderFolder(f))}
             </div>
         </aside>
     );

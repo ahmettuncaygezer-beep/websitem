@@ -1,18 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { canAccess } from '@/lib/permissions';
 
 const PUBLIC_PATHS = ['/admin/login'];
-
-const ROLE_PERMISSIONS: Record<string, string[]> = {
-    'super-admin': ['*'],
-    'editor': [
-        'urunler', 'kategoriler', 'medya',
-        'icerik', 'analytics', 'dashboard',
-        'yorumlar'
-    ],
-    'order-manager': ['siparisler', 'musteriler', 'dashboard'],
-    'analyst': ['analytics', 'dashboard']
-};
 
 // ── Session token signing (HMAC-SHA256) ─────────────────────────────
 const SECRET = process.env.ADMIN_SESSION_SECRET || 'selis-admin-default-secret-change-me';
@@ -104,15 +94,13 @@ export async function middleware(request: NextRequest) {
         }
 
         // Role-based access control
-        const role = sessionData.role;
-        const segments = pathname.split('/');
-        const module = segments[2]; // /admin/[module]
+        const role = sessionData.role || 'editor'; // fallback
 
-        if (module && role !== 'super-admin') {
-            const allowedModules = ROLE_PERMISSIONS[role] || [];
-            if (!allowedModules.includes(module)) {
-                return NextResponse.redirect(new URL('/admin/403', request.url));
-            }
+        // Exception for yetkisiz page
+        if (pathname === '/admin/yetkisiz') {
+            // allow
+        } else if (!canAccess(role, pathname)) {
+            return NextResponse.redirect(new URL('/admin/yetkisiz', request.url));
         }
 
         // Add user info to headers for downstream use

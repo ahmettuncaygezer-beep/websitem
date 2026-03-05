@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,19 +9,21 @@ import {
     Percent, Tag, Truck, Package, Zap, ChevronDown,
     Search, X, Info, CheckCircle2, Save, Send, RefreshCcw
 } from 'lucide-react';
-import { CampaignType, CampaignStatus, TargetSegment } from '@/lib/mock/campaigns';
+import { useRouter } from 'next/navigation';
+import { CampaignType, CampaignStatus, TargetSegment } from '@/types/admin/campaigns';
 import { CouponGenerator } from './CouponGenerator';
 import { CampaignCard } from './CampaignCard';
 
 const campaignSchema = z.object({
     name: z.string().min(3, "Kampanya adı en az 3 karakter olmalıdır"),
     type: z.nativeEnum(CampaignType),
-    discountValue: z.number().min(0.01, "İndirim değeri girmelisiniz"),
+    discountValue: z.number().min(0, "İndirim değeri girmelisiniz"),
     couponCode: z.string().min(3, "Kupon kodu en az 3 karakter olmalıdır").optional().nullable(),
     usageLimit: z.number().int().positive().optional().nullable(),
     minOrderAmount: z.number().positive().optional().nullable(),
     startDate: z.string().min(1, "Başlangıç tarihi zorunludur"),
     endDate: z.string().min(1, "Bitiş tarihi zorunludur"),
+    description: z.string().optional().nullable(),
 }).refine((data) => new Date(data.endDate) > new Date(data.startDate), {
     message: "Bitiş tarihi başlangıç tarihinden sonra olmalı",
     path: ["endDate"]
@@ -29,11 +31,25 @@ const campaignSchema = z.object({
 
 type CampaignFormValues = z.infer<typeof campaignSchema>;
 
+interface CategoryOption { slug: string; name: string; }
+interface ProductOption { id: string; name: string; category_name: string; }
+
 export function CampaignForm() {
+    const router = useRouter();
     const [selectedType, setSelectedType] = useState<CampaignType>(CampaignType.PercentDiscount);
     const [couponType, setCouponType] = useState<'single' | 'unique' | 'none'>('single');
     const [conditionsExpanded, setConditionsExpanded] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const [targetSegment, setTargetSegment] = useState<TargetSegment>(TargetSegment.Tümü);
+    const [perUserLimit, setPerUserLimit] = useState<number>(1);
+    const [saveResult, setSaveResult] = useState<{ ok: boolean; msg: string } | null>(null);
+
+    // Product/Category selectors
+    const [categories, setCategories] = useState<CategoryOption[]>([]);
+    const [products, setProducts] = useState<ProductOption[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+    const [productSearch, setProductSearch] = useState('');
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<CampaignFormValues>({
         resolver: zodResolver(campaignSchema),
@@ -47,12 +63,65 @@ export function CampaignForm() {
 
     const formValues = watch();
 
-    const onSubmit = async (data: CampaignFormValues) => {
+    // Fetch categories and products
+    useEffect(() => {
+        (async () => {
+            try {
+                const catRes = await fetch('/api/admin/categories');
+                const catData = await catRes.json();
+                setCategories(catData.categories || []);
+            } catch { }
+
+            try {
+                const prodRes = await fetch('/api/products?limit=100');
+                const prodData = await prodRes.json();
+                setProducts((prodData.products || prodData || []).map((p: any) => ({
+                    id: p.id, name: p.name || p.title, category_name: p.category_name || ''
+                })));
+            } catch { }
+        })();
+    }, []);
+
+    const filteredProducts = products.filter(p =>
+        p.name?.toLowerCase().includes(productSearch.toLowerCase())
+    );
+
+    const onSubmit = async (data: CampaignFormValues, isDraft = false) => {
         setSubmitting(true);
-        console.log("Submit:", data);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setSubmitting(false);
-        alert("Kampanya başarıyla oluşturuldu!");
+        setSaveResult(null);
+        try {
+            const payload = {
+                ...data,
+                type: selectedType,
+                status: isDraft ? 'draft' : 'Aktif',
+                discountUnit: selectedType === CampaignType.FixedDiscount ? 'TL' : 'yüzde',
+                validCategories: selectedCategories,
+                validProducts: selectedProducts,
+                targetSegment,
+                perUserLimit,
+                isSingleUse: couponType === 'unique',
+                couponCode: couponType === 'none' ? null : (data.couponCode?.toUpperCase() || null),
+            };
+
+            const res = await fetch('/api/admin/campaigns', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                throw new Error(result.error || 'Kampanya oluşturulamadı');
+            }
+
+            setSaveResult({ ok: true, msg: isDraft ? 'Taslak kaydedildi!' : 'Kampanya başarıyla oluşturuldu!' });
+            setTimeout(() => router.push('/admin/kampanyalar'), 1500);
+        } catch (err: any) {
+            setSaveResult({ ok: false, msg: err.message || 'Bir hata oluştu' });
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     const TYPE_CARDS = [
@@ -64,7 +133,7 @@ export function CampaignForm() {
     ];
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px', alignItems: 'flex-start' }} className="campaign-form-grid">
+        <form onSubmit={handleSubmit((d) => onSubmit(d, false))} style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px', alignItems: 'flex-start' }} className="campaign-form-grid">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
                 {/* Temel Bilgiler Kartı */}
@@ -84,6 +153,20 @@ export function CampaignForm() {
                                 }}
                             />
                             {errors.name && <span style={{ fontSize: '11px', color: '#FF453A', marginTop: '4px', display: 'block' }}>{errors.name.message}</span>}
+                        </div>
+
+                        {/* Açıklama */}
+                        <div>
+                            <label style={{ fontSize: '12px', color: '#AEAEB2', display: 'block', marginBottom: '6px' }}>Açıklama</label>
+                            <textarea
+                                {...register('description')}
+                                placeholder="Kampanya açıklaması (opsiyonel)"
+                                rows={2}
+                                style={{
+                                    width: '100%', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.08)',
+                                    borderRadius: '4px', padding: '10px', fontSize: '13px', color: '#F5F0EB', outline: 'none', resize: 'vertical'
+                                }}
+                            />
                         </div>
 
                         {/* Tip Seçiciler Grid */}
@@ -174,19 +257,111 @@ export function CampaignForm() {
                                                 <input type="datetime-local" style={{ width: '100%', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px', padding: '10px', color: '#F5F0EB', colorScheme: 'dark' }} />
                                             </div>
                                         </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <input type="checkbox" defaultChecked style={{ width: '14px', height: '14px' }} />
-                                            <label style={{ fontSize: '12px', color: '#AEAEB2' }}>Sitede canlı geri sayım sayacı göster</label>
-                                        </div>
                                     </div>
                                 )}
                                 {(selectedType === CampaignType.FreeShipping || selectedType === CampaignType.Bundle) && (
                                     <div style={{ fontSize: '12px', color: '#AEAEB2', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Info size={16} /> Tip detayları "Koşullar" sekmesi altında özelleştirilecektir.
+                                        <Info size={16} /> Tip detayları &quot;Koşullar&quot; sekmesi altında özelleştirilecektir.
                                     </div>
                                 )}
                             </motion.div>
                         </AnimatePresence>
+                    </div>
+                </section>
+
+                {/* Ürün / Kategori Seçici */}
+                <section style={{ background: '#1C1C1E', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
+                    <div style={{ padding: '18px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                        <h3 style={{ fontSize: '14px', fontWeight: 600, color: '#F5F0EB', margin: 0 }}>Geçerli Ürünler & Kategoriler</h3>
+                        <p style={{ fontSize: '11px', color: '#636366', marginTop: '4px' }}>Boş bırakırsanız tüm ürünlere uygulanır.</p>
+                    </div>
+                    <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                        {/* Kategori Seçimi */}
+                        <div>
+                            <label style={{ fontSize: '12px', color: '#AEAEB2', display: 'block', marginBottom: '8px' }}>Kategori Kısıtlaması</label>
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                {categories.length > 0 ? categories.map(cat => (
+                                    <button
+                                        key={cat.slug}
+                                        type="button"
+                                        onClick={() => setSelectedCategories(prev =>
+                                            prev.includes(cat.slug) ? prev.filter(c => c !== cat.slug) : [...prev, cat.slug]
+                                        )}
+                                        style={{
+                                            padding: '6px 14px', fontSize: '12px', borderRadius: '20px', cursor: 'pointer',
+                                            border: `1px solid ${selectedCategories.includes(cat.slug) ? '#C9A96E' : 'rgba(255,255,255,0.08)'}`,
+                                            background: selectedCategories.includes(cat.slug) ? 'rgba(201,169,110,0.1)' : 'transparent',
+                                            color: selectedCategories.includes(cat.slug) ? '#C9A96E' : '#636366',
+                                            transition: 'all 150ms'
+                                        }}
+                                    >
+                                        {cat.name}
+                                    </button>
+                                )) : (
+                                    <span style={{ fontSize: '12px', color: '#636366' }}>Kategori yükleniyor...</span>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Ürün Seçimi */}
+                        <div>
+                            <label style={{ fontSize: '12px', color: '#AEAEB2', display: 'block', marginBottom: '8px' }}>Ürün Kısıtlaması</label>
+                            <div style={{ position: 'relative', marginBottom: '8px' }}>
+                                <Search size={14} color="#636366" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
+                                <input
+                                    type="text"
+                                    placeholder="Ürün ara..."
+                                    value={productSearch}
+                                    onChange={e => setProductSearch(e.target.value)}
+                                    style={{
+                                        width: '100%', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.08)',
+                                        borderRadius: '6px', padding: '8px 12px 8px 32px', fontSize: '12px', color: '#F5F0EB', outline: 'none', boxSizing: 'border-box'
+                                    }}
+                                />
+                            </div>
+                            {selectedProducts.length > 0 && (
+                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+                                    {selectedProducts.map(p => (
+                                        <span key={p} style={{
+                                            fontSize: '11px', background: 'rgba(201,169,110,0.1)', color: '#C9A96E',
+                                            padding: '3px 10px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '4px'
+                                        }}>
+                                            {p}
+                                            <X size={12} style={{ cursor: 'pointer' }} onClick={() => setSelectedProducts(prev => prev.filter(x => x !== p))} />
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                            {productSearch && (
+                                <div style={{
+                                    maxHeight: '160px', overflowY: 'auto', background: 'rgba(0,0,0,0.3)',
+                                    border: '1px solid rgba(255,255,255,0.06)', borderRadius: '6px'
+                                }}>
+                                    {filteredProducts.slice(0, 10).map(p => (
+                                        <div
+                                            key={p.id}
+                                            onClick={() => {
+                                                if (!selectedProducts.includes(p.name)) {
+                                                    setSelectedProducts(prev => [...prev, p.name]);
+                                                }
+                                                setProductSearch('');
+                                            }}
+                                            style={{
+                                                padding: '8px 14px', fontSize: '12px', color: '#F5F0EB', cursor: 'pointer',
+                                                borderBottom: '1px solid rgba(255,255,255,0.03)',
+                                                display: 'flex', justifyContent: 'space-between'
+                                            }}
+                                        >
+                                            <span>{p.name}</span>
+                                            <span style={{ fontSize: '10px', color: '#636366' }}>{p.category_name}</span>
+                                        </div>
+                                    ))}
+                                    {filteredProducts.length === 0 && (
+                                        <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: '#636366' }}>Ürün bulunamadı</div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </section>
 
@@ -198,7 +373,6 @@ export function CampaignForm() {
                     >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <h3 style={{ fontSize: '14px', fontWeight: 600, color: '#F5F0EB', margin: 0 }}>Koşullar ve Hedefleme</h3>
-                            <span style={{ fontSize: '10px', background: 'rgba(201,169,110,0.1)', color: '#C9A96E', padding: '1px 8px', borderRadius: '10px' }}>4 Aktif</span>
                         </div>
                         <motion.div animate={{ rotate: conditionsExpanded ? 180 : 0 }}>
                             <ChevronDown size={18} color="#636366" />
@@ -212,22 +386,27 @@ export function CampaignForm() {
                                 style={{ overflow: 'hidden' }}
                             >
                                 <div style={{ padding: '0 24px 24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
-                                    <ConditionRow label="Min. Sipariş Tutarı" info="₺5000 ve üzeri">
-                                        <input type="number" placeholder="5000" style={innerInputStyle} />
+                                    <ConditionRow label="Min. Sipariş Tutarı" info="Minimum sepet değeri">
+                                        <input type="number" {...register('minOrderAmount', { valueAsNumber: true })} placeholder="5000" style={innerInputStyle} />
                                     </ConditionRow>
                                     <ConditionRow label="Hedef Müşteri Segmenti" info="Kimin göreceğini seçin">
                                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                             {[TargetSegment.Tümü, TargetSegment.YeniUyeler, TargetSegment.VIP, TargetSegment.Pasif].map(s => (
-                                                <button key={s} type="button" style={{
-                                                    padding: '6px 12px', fontSize: '11px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.06)',
-                                                    background: formValues.name?.includes(s) ? 'rgba(201,169,110,0.1)' : 'transparent',
-                                                    color: formValues.name?.includes(s) ? '#C9A96E' : '#636366'
-                                                }}>{s}</button>
+                                                <button key={s} type="button"
+                                                    onClick={() => setTargetSegment(s)}
+                                                    style={{
+                                                        padding: '6px 12px', fontSize: '11px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.06)',
+                                                        background: targetSegment === s ? 'rgba(201,169,110,0.1)' : 'transparent',
+                                                        color: targetSegment === s ? '#C9A96E' : '#636366', cursor: 'pointer'
+                                                    }}>{s}</button>
                                             ))}
                                         </div>
                                     </ConditionRow>
                                     <ConditionRow label="Kişi Başı Kullanım Limiti" info="Aynı müşteri X kez kullanabilir">
-                                        <input type="number" placeholder="1" style={innerInputStyle} />
+                                        <input type="number" value={perUserLimit} onChange={e => setPerUserLimit(Number(e.target.value))} placeholder="1" style={innerInputStyle} />
+                                    </ConditionRow>
+                                    <ConditionRow label="Toplam Kullanım Limiti" info="Toplam kaç kez kullanılabilir">
+                                        <input type="number" {...register('usageLimit', { valueAsNumber: true })} placeholder="100" style={innerInputStyle} />
                                     </ConditionRow>
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                         <ConditionRow label="Başlangıç Tarihi" info="Otomatik aktifleşme">
@@ -273,27 +452,32 @@ export function CampaignForm() {
                                 endDate: formValues.endDate || '',
                                 revenue: 0,
                                 orders: 0,
-                                description: '',
+                                description: formValues.description || '',
                                 createdAt: '',
-                                targetSegment: TargetSegment.Tümü,
-                                validCategories: [],
-                                validProducts: [],
-                                isSingleUse: true,
+                                targetSegment,
+                                validCategories: selectedCategories,
+                                validProducts: selectedProducts,
+                                isSingleUse: couponType === 'unique',
                                 minOrderAmount: null,
                                 minProductCount: null,
-                                perUserLimit: 1
+                                perUserLimit
                             }}
                         />
                     </div>
-                    <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(48,209,88,0.05)', border: '1px solid rgba(48,209,88,0.1)', borderRadius: '6px' }}>
-                        <div style={{ fontSize: '12px', color: '#30D158', fontWeight: 600 }}>Tasarruf Hesabı</div>
-                        <p style={{ fontSize: '11px', color: '#AEAEB2', margin: '4px 0 0' }}>
-                            ₺50.000 sipariş için müşteri
-                            <b style={{ color: '#F5F0EB' }}> ₺{selectedType === CampaignType.FixedDiscount ? (formValues.discountValue || 0).toLocaleString() : (formValues.discountValue * 500).toLocaleString()} </b>
-                            tasarruf eder.
-                        </p>
-                    </div>
                 </div>
+
+                {/* Sonuç Mesajı */}
+                {saveResult && (
+                    <div style={{
+                        padding: '12px 16px', borderRadius: '6px',
+                        background: saveResult.ok ? 'rgba(48,209,88,0.08)' : 'rgba(255,69,58,0.08)',
+                        border: `1px solid ${saveResult.ok ? 'rgba(48,209,88,0.2)' : 'rgba(255,69,58,0.2)'}`,
+                        display: 'flex', alignItems: 'center', gap: '8px'
+                    }}>
+                        {saveResult.ok ? <CheckCircle2 size={16} color="#30D158" /> : <X size={16} color="#FF453A" />}
+                        <span style={{ fontSize: '13px', color: saveResult.ok ? '#30D158' : '#FF453A' }}>{saveResult.msg}</span>
+                    </div>
+                )}
 
                 <div style={{ background: '#1C1C1E', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', padding: '20px' }}>
                     <h4 style={{ fontSize: '11px', fontWeight: 600, color: '#636366', textTransform: 'uppercase', marginBottom: '16px' }}>Yayınlama Seçenekleri</h4>
@@ -304,7 +488,8 @@ export function CampaignForm() {
                             style={{
                                 width: '100%', background: '#C9A96E', color: '#0F0F10', border: 'none',
                                 padding: '12px', borderRadius: '6px', fontSize: '14px', fontWeight: 600,
-                                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+                                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                                opacity: submitting ? 0.7 : 1
                             }}
                         >
                             {submitting ? <RefreshCcw size={18} className="animate-spin" /> : <Send size={18} />}
@@ -312,12 +497,15 @@ export function CampaignForm() {
                         </button>
                         <button
                             type="button"
+                            disabled={submitting}
+                            onClick={() => handleSubmit((d) => onSubmit(d, true))()}
                             style={{
                                 width: '100%', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)',
-                                padding: '12px', borderRadius: '6px', fontSize: '14px', color: '#AEAEB2', cursor: 'pointer'
+                                padding: '12px', borderRadius: '6px', fontSize: '14px', color: '#AEAEB2', cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
                             }}
                         >
-                            Taslağı Kaydet
+                            <Save size={18} /> Taslağı Kaydet
                         </button>
                     </div>
                 </div>

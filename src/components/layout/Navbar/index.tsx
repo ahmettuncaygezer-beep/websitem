@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, Search, X, Heart, User, ShoppingBag, MapPin, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
@@ -17,6 +17,8 @@ import { usePathname } from 'next/navigation';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { useCart } from '@/hooks/useCart';
 import { Moon, Sun } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import type { NavCategory } from './navbar.types';
 
 export function Navbar() {
     const pathname = usePathname();
@@ -25,8 +27,57 @@ export function Navbar() {
     const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [dynamicCategories, setDynamicCategories] = useState<NavCategory[]>(NAV_CATEGORIES);
     const { openCart } = useCart();
     const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Fetch dynamic menu items
+    useEffect(() => {
+        const fetchHeaderMenu = async () => {
+            try {
+                // Find 'header' menu
+                const { data: menu } = await supabase
+                    .from('menus')
+                    .select('id')
+                    .eq('handle', 'header')
+                    .single();
+
+                if (menu) {
+                    const { data: items } = await supabase
+                        .from('menu_items')
+                        .select('*')
+                        .eq('menu_id', menu.id)
+                        .eq('is_active', true)
+                        .order('sort_order', { ascending: true });
+
+                    if (items && items.length > 0) {
+                        // Map database items to NavCategory structure.
+                        // We attempt to preserve existing MegaMenu structures by looking up in NAV_CATEGORIES.
+                        const newCategories = items.map((item: any) => {
+                            const existing = NAV_CATEGORIES.find(c => c.href === item.url || c.label.toLowerCase() === item.title.toLowerCase());
+                            return {
+                                id: item.id,
+                                label: item.title,
+                                href: item.url,
+                                dataKey: existing?.dataKey || '', // Fallback or empty
+                                subCategories: existing?.subCategories,
+                                featuredProduct: existing?.featuredProduct,
+                                editorialText: existing?.editorialText,
+                                editorialTextKey: existing?.editorialTextKey,
+                                promotionText: existing?.promotionText,
+                                promotionTextKey: existing?.promotionTextKey,
+                            };
+                        });
+                        setDynamicCategories(newCategories as NavCategory[]);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load dynamic header menu:", error);
+            }
+        };
+
+        fetchHeaderMenu();
+    }, []);
 
     const { isScrolled: _isScrolled } = useNavbarScroll(activeCategoryId !== null);
 
@@ -116,7 +167,7 @@ export function Navbar() {
                 {/* Center: Desktop Navigation */}
                 <div className="mx-8">
                     <NavbarDesktop
-                        categories={NAV_CATEGORIES}
+                        categories={dynamicCategories}
                         isScrolled={isScrolled}
                         activeCategoryId={activeCategoryId}
                         onCategoryEnter={handleCategoryEnter}
@@ -164,7 +215,7 @@ export function Navbar() {
             <MobileMenu
                 isOpen={isMobileOpen}
                 onClose={handleMobileClose}
-                categories={NAV_CATEGORIES}
+                categories={dynamicCategories}
             />
 
             {/* Accessibility Link - Absolute relative to header */}

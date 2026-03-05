@@ -6,7 +6,7 @@ import {
     Truck, ShieldCheck, Award, Gem, Star,
     Phone, Globe, Clock, Trash2, Plus, Info
 } from 'lucide-react';
-import { FeatureItem } from '@/lib/mock/content';
+import { FeatureItem } from '@/lib/default-content';
 
 interface FeaturesEditorProps {
     content: FeatureItem[];

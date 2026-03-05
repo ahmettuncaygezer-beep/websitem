@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { MoreVertical, Pencil, Eye, Copy, ToggleLeft, Trash2 } from 'lucide-react';
-import type { Product, ProductStatus } from '@/lib/mock/products';
+import type { Product, ProductStatus } from '@/types/admin/products';
 import { useToast } from '@/components/ui/Toast/ToastProvider';
+import { usePermissions } from '@/hooks/usePermissions';
 
 // ── Status badge styles ──────────────────────────────────────────────────────
 const statusStyle: Record<ProductStatus, { bg: string; color: string }> = {
@@ -57,6 +58,9 @@ interface ActionMenuProps {
 function ActionMenu({ product, onClose }: ActionMenuProps) {
     const router = useRouter();
     const { toast } = useToast();
+    const { can } = usePermissions();
+    const canDelete = can('products.delete');
+
     const items = [
         { icon: Pencil, label: 'Düzenle', action: () => { router.push(`/admin/urunler/${product.id}/duzenle`); onClose(); } },
         { icon: Eye, label: 'Önizle', action: () => { window.open(`/urun/${product.slug}`, '_blank'); onClose(); } },
@@ -110,13 +114,15 @@ function ActionMenu({ product, onClose }: ActionMenuProps) {
                 <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '3px 0' }} />
                 <button
                     role="menuitem"
+                    disabled={!canDelete}
+                    title={!canDelete ? "Bu işlem için yetkiniz yok" : "Sil"}
                     onClick={() => {
                         toast.warning('Ürün Silindi', `${product.name} başarıyla silindi.`);
                         onClose();
                     }}
-                    style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', textAlign: 'left', padding: '9px 16px', fontSize: '13px', color: '#FF453A', background: 'transparent', border: 'none', cursor: 'pointer', transition: 'background 100ms', fontFamily: 'Inter, system-ui, sans-serif' }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,69,58,0.06)'; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', textAlign: 'left', padding: '9px 16px', fontSize: '13px', color: !canDelete ? '#636366' : '#FF453A', background: 'transparent', border: 'none', cursor: !canDelete ? 'not-allowed' : 'pointer', transition: 'background 100ms', fontFamily: 'Inter, system-ui, sans-serif' }}
+                    onMouseEnter={(e) => { if (canDelete) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,69,58,0.06)'; }}
+                    onMouseLeave={(e) => { if (canDelete) (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
                 >
                     <Trash2 size={14} /> Sil
                 </button>
@@ -251,6 +257,55 @@ function GridCard({ product, selected, onSelect }: GridCardProps) {
     );
 }
 
+// ── Mobile Card View ──────────────────────────────────────────────────────────
+function ProductCard({ product, selected, onSelect, onMenuToggle, isMenuOpen }: { product: Product; selected: boolean; onSelect: () => void; onMenuToggle: () => void; isMenuOpen: boolean }) {
+    const router = useRouter();
+    const sb = stockBadge(product.stock);
+    const ss = statusStyle[product.status];
+
+    return (
+        <div
+            onClick={() => router.push(`/admin/urunler/${product.id}/duzenle`)}
+            className="p-4 border-b border-white/[0.04] bg-[#1C1C1E] active:bg-white/[0.02] transition-colors relative"
+        >
+            <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3">
+                    <div onClick={(e) => { e.stopPropagation(); onSelect(); }} className="flex-shrink-0">
+                        <Checkbox checked={selected} onChange={onSelect} />
+                    </div>
+                    <div className="w-12 h-12 rounded bg-[#C9A96E]/10 border border-white/[0.04] flex items-center justify-center text-xl flex-shrink-0">🛋️</div>
+                    <div className="flex flex-col overflow-hidden">
+                        <span className="text-[14px] font-medium text-[#F5F0EB] truncate pr-4">{product.name}</span>
+                        <span className="text-[11px] text-[#636366] mt-0.5 font-mono">{product.sku}</span>
+                    </div>
+                </div>
+                <div onClick={(e) => e.stopPropagation()} className="relative">
+                    <button
+                        onClick={onMenuToggle}
+                        className="p-1 -mr-1 text-[#636366] hover:text-[#AEAEB2] transition-colors rounded"
+                    >
+                        <MoreVertical size={18} />
+                    </button>
+                    <AnimatePresence>
+                        {isMenuOpen && <ActionMenu product={product} onClose={onMenuToggle} />}
+                    </AnimatePresence>
+                </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-auto">
+                <div className="flex items-center gap-2">
+                    <span style={{ background: ss.bg, color: ss.color }} className="text-[11px] font-medium px-2.5 py-1 rounded-full">{product.status}</span>
+                    <span style={{ background: sb.bg, color: sb.color }} className="text-[11px] font-medium px-2.5 py-1 rounded-full">{sb.label}</span>
+                </div>
+                <div className="flex flex-col items-end">
+                    <span className="text-[14px] font-semibold text-[#F5F0EB]">₺{product.price.toLocaleString('tr-TR')}</span>
+                    {product.comparePrice > 0 && <span className="text-[11px] text-[#636366] line-through">₺{product.comparePrice.toLocaleString('tr-TR')}</span>}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 // ── Main ProductTable ─────────────────────────────────────────────────────────
 interface ProductTableProps {
     products: Product[];
@@ -316,9 +371,11 @@ export function ProductTable({
     };
 
     return (
-        <div style={{ background: '#1C1C1E', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', overflow: 'hidden' }}>
+        <div className="bg-[#1C1C1E] border border-white/[0.05] rounded-xl overflow-hidden shadow-2xl">
             <style>{`@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }`}</style>
-            <div style={{ overflowX: 'auto' }}>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead style={{ background: 'rgba(255,255,255,0.02)' }}>
                         <tr>
@@ -403,6 +460,35 @@ export function ProductTable({
                     </tbody>
                 </table>
             </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden divide-y divide-white/[0.04]">
+                {loading
+                    ? Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="p-4 border-b border-white/[0.04]">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div style={{ ...shimmerStyle, width: '16px', height: '16px' }} />
+                                <div style={{ ...shimmerStyle, width: '48px', height: '48px', borderRadius: '4px' }} />
+                                <div className="flex-1 space-y-2">
+                                    <div style={{ ...shimmerStyle, width: '40%', height: '14px' }} />
+                                    <div style={{ ...shimmerStyle, width: '20%', height: '10px' }} />
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                    : products.map((product) => (
+                        <ProductCard
+                            key={product.id}
+                            product={product}
+                            selected={selectedIds.includes(product.id)}
+                            onSelect={() => toggleOne(product.id)}
+                            isMenuOpen={openMenuId === product.id}
+                            onMenuToggle={() => setOpenMenuId(openMenuId === product.id ? null : product.id)}
+                        />
+                    ))
+                }
+            </div>
+
             <Pagination currentPage={currentPage} total={totalCount} perPage={perPage} onPageChange={onPageChange} onPerPageChange={onPerPageChange} />
         </div>
     );

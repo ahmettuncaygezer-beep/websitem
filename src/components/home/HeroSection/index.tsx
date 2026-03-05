@@ -6,7 +6,7 @@ import { ScrollIndicator } from './ScrollIndicator';
 import { VideoModal } from './VideoModal';
 import { useParallax } from './useParallax';
 
-export function HeroSection() {
+export function HeroSection({ content }: { content?: any }) {
     const parallaxOffset = useParallax(0.15);
 
     return (

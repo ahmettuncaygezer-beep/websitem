@@ -10,11 +10,11 @@ import { translations as i18nTranslations } from '../lib/i18n';
 import { translations as storeTranslations } from '../store/translationStore';
 
 const merged = {
-    tr: { ...i18nTranslations.tr, ...storeTranslations.TR },
-    en: { ...i18nTranslations.en, ...storeTranslations.EN },
-    de: { ...i18nTranslations.de, ...storeTranslations.DE },
-    fr: { ...i18nTranslations.fr, ...storeTranslations.FR },
-    ar: { ...i18nTranslations.ar, ...storeTranslations.AR },
+    TR: { ...i18nTranslations.TR, ...storeTranslations.TR },
+    EN: { ...i18nTranslations.EN, ...storeTranslations.EN },
+    DE: { ...i18nTranslations.DE, ...storeTranslations.DE },
+    FR: { ...i18nTranslations.FR, ...storeTranslations.FR },
+    AR: { ...i18nTranslations.AR, ...storeTranslations.AR },
 };
 
 const output = `export const translations = ${JSON.stringify(merged, null, 4)};\n\n` +

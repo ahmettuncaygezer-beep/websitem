@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useGlobal } from '@/context/GlobalContext';
 import { translations } from '@/lib/i18n';
+import { translations as storeTranslations } from '@/store/translationStore';
 
 export default function TranslationProvider({ children }: { children: React.ReactNode }) {
     const { language } = useGlobal();
@@ -37,6 +38,14 @@ export default function TranslationProvider({ children }: { children: React.Reac
                 }
             }
 
+            // Also check storeTranslations (translationStore.ts has cart, product, etc. keys)
+            if (!translationStr) {
+                const storeDict = storeTranslations[langUpper as keyof typeof storeTranslations];
+                if (storeDict && storeDict[key as keyof typeof storeDict]) {
+                    translationStr = storeDict[key as keyof typeof storeDict];
+                }
+            }
+
             // Fallback to English if translation is missing
             if (!translationStr) {
                 let enDict = translations['EN' as keyof typeof translations];
@@ -54,6 +63,13 @@ export default function TranslationProvider({ children }: { children: React.Reac
                     }
                     if (temp) translationStr = temp;
                 }
+                // Also check EN in storeTranslations
+                if (!translationStr) {
+                    const enStoreDict = storeTranslations['EN' as keyof typeof storeTranslations];
+                    if (enStoreDict && enStoreDict[key as keyof typeof enStoreDict]) {
+                        translationStr = enStoreDict[key as keyof typeof enStoreDict];
+                    }
+                }
             }
 
             // Fallback to Turkish if English is missing
@@ -67,7 +83,10 @@ export default function TranslationProvider({ children }: { children: React.Reac
             let result = translationStr;
 
             if (result && typeof result === 'string') {
-                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                const targetAttr = el.getAttribute('data-lang-target');
+                if (targetAttr) {
+                    el.setAttribute(targetAttr, result);
+                } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                     (el as HTMLInputElement).placeholder = result;
                 } else {
                     el.textContent = result;

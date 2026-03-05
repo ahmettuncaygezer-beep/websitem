@@ -102,12 +102,20 @@ export function TypewriterText({
     const prefersReduced = useReducedMotion();
     const { t } = useGlobal();
 
-    const texts = customTexts && customTexts.length > 0 ? customTexts : [
-        t('hero_type_1'),
-        t('hero_type_2'),
-        t('hero_type_3'),
-        t('hero_type_4'),
+    // Ensure we always have an array of texts to type.
+    // If CMS only provides 1 text, we add our default meaningful texts so the typing effect continues.
+    const defaultTexts = [
+        t('hero_type_1') === 'Yeni Hikayesi' ? 'Yeni Hikayesi' : t('hero_type_1') || 'Yeni Hikayesi',
+        t('hero_type_2') === 'Hayalinizdeki Salon' ? 'Hayalinizdeki Salonu' : t('hero_type_2') || 'Hayalinizdeki Salonu',
+        t('hero_type_3') === 'Mükemmel Uyku Deneyimi' ? 'Huzuru' : t('hero_type_3') || 'Huzuru',
+        t('hero_type_4') === 'Sofistike Yemek Odaları' ? 'Zarafeti' : t('hero_type_4') || 'Zarafeti',
     ];
+
+    let texts = customTexts && customTexts.length > 0 ? customTexts : defaultTexts;
+    // If only 1 custom text is provided, add defaults so the loop works
+    if (texts.length === 1) {
+        texts = [texts[0], ...defaultTexts.slice(1)];
+    }
 
     const { displayText, isTyping } = useTypewriter(texts, 80, 40, 3000, typeStartDelay);
 
@@ -126,17 +134,19 @@ export function TypewriterText({
     if (prefersReduced) {
         return (
             <span className={className}>
-                {(!customTexts || customTexts.length === 0) && (
-                    <span className="block text-white not-italic" data-lang-key="hero_intro">Evinizin</span>
-                )}
-                <span
-                    className={(!customTexts || customTexts.length === 0) ? "block italic" : "italic"}
-                    style={{
-                        fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
-                        color: '#C9A96E',
-                    }}
-                >
-                    {texts[0]}
+                <span className="block text-white not-italic mb-1 md:mb-2" data-lang-key="hero_intro">
+                    {t('hero_intro') || 'Evinizin'}
+                </span>
+                <span className="block min-h-[1.2em]">
+                    <span
+                        className="inline-block italic whitespace-nowrap"
+                        style={{
+                            fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
+                            color: '#C9A96E',
+                        }}
+                    >
+                        {texts[0]}
+                    </span>
                 </span>
             </span>
         );
@@ -144,30 +154,32 @@ export function TypewriterText({
 
     return (
         <span className={className}>
-            {/* Line 1 — always static, hide if user provides custom texts */}
-            {(!customTexts || customTexts.length === 0) && (
-                <span className="block text-white not-italic" data-lang-key="hero_intro">Evinizin</span>
-            )}
-            <span
-                className={(!customTexts || customTexts.length === 0) ? "block italic" : "italic"}
-                style={{
-                    fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
-                    color: '#C9A96E',
-                }}
-            >
-                {displayText}
-
-                {/* Blinking cursor — blinks while typing, fades 2s after done */}
+            {/* Line 1 — always static */}
+            <span className="block text-white not-italic mb-1 md:mb-2" data-lang-key="hero_intro">
+                {t('hero_intro') || 'Evinizin'}
+            </span>
+            <span className="block min-h-[1.2em]">
                 <span
-                    aria-hidden="true"
-                    className="inline-block w-[2px] ml-[2px] align-baseline bg-[#C9A96E]"
+                    className="inline-block italic whitespace-nowrap"
                     style={{
-                        height: '0.85em',
-                        opacity: cursorVisible ? 1 : 0,
-                        transition: 'opacity 500ms ease',
-                        animation: isTyping ? 'twBlink 1s step-end infinite' : 'none',
+                        fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
+                        color: '#C9A96E',
                     }}
-                />
+                >
+                    {displayText}
+
+                    {/* Blinking cursor — blinks while typing, fades 2s after done */}
+                    <span
+                        aria-hidden="true"
+                        className="inline-block w-[2px] ml-[2px] align-baseline bg-[#C9A96E]"
+                        style={{
+                            height: '0.85em',
+                            opacity: cursorVisible ? 1 : 0,
+                            transition: 'opacity 500ms ease',
+                            animation: isTyping ? 'twBlink 1s step-end infinite' : 'none',
+                        }}
+                    />
+                </span>
             </span>
         </span>
     );

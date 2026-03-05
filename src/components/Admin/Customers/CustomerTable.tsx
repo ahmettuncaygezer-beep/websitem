@@ -11,7 +11,7 @@ import {
     getAvatarColor,
     getAvatarTextColor,
     formatPrice
-} from '@/lib/mock/customers';
+} from '@/types/admin/customers';
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
@@ -91,6 +91,63 @@ interface CustomerTableProps {
     onPageChange: (p: number) => void;
 }
 
+function CustomerCard({ customer, router }: { customer: Customer; router: any }) {
+    const isVip = customer.segment === 'VIP';
+    return (
+        <div
+            onClick={() => router.push(`/admin/musteriler/${customer.id}`)}
+            className="p-4 border-b border-white/[0.04] bg-[#1C1C1E] active:bg-white/[0.02] transition-colors relative"
+        >
+            {isVip && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#C9A96E]" />}
+            <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                    <div style={{ position: 'relative', width: '40px', height: '40px' }}>
+                        <div style={{
+                            width: '100%', height: '100%', borderRadius: '50%', background: getAvatarColor(customer.segment),
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: 600,
+                            color: getAvatarTextColor(customer.segment)
+                        }}>
+                            {customer.avatar}
+                        </div>
+                    </div>
+                    <div>
+                        <div className="text-[14px] font-medium text-[#F5F0EB]">
+                            {customer.firstName} {customer.lastName}
+                        </div>
+                        <div className="text-[12px] text-[#636366] mt-0.5">{customer.email}</div>
+                    </div>
+                </div>
+                <div style={{
+                    fontSize: '10px', fontWeight: 600, padding: '2px 8px', borderRadius: '12px',
+                    background: SEGMENT_CONFIG[customer.segment].bg, color: SEGMENT_CONFIG[customer.segment].color,
+                    border: `1px solid ${SEGMENT_CONFIG[customer.segment].border}`
+                }}>
+                    {SEGMENT_CONFIG[customer.segment].label}
+                </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div>
+                        <div className="text-[10px] text-[#636366] uppercase mb-0.5">Sipariş</div>
+                        <div className="text-[13px] font-bold text-[#F5F0EB]">{customer.totalOrders}</div>
+                    </div>
+                    <div>
+                        <div className="text-[10px] text-[#636366] uppercase mb-0.5">Harcama</div>
+                        <div className="text-[13px] font-bold text-[#C9A96E]">{formatPrice(customer.totalSpent)}</div>
+                    </div>
+                </div>
+                <div className="flex items-center gap-1">
+                    <button className="p-2 text-[#AEAEB2] hover:text-[#C9A96E] transition-colors">
+                        <Mail size={16} />
+                    </button>
+                    <ActionDropdown customerId={customer.id} />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export function CustomerTable({
     customers, sortBy, sortOrder, onSort,
     currentPage, perPage, totalCount, onPageChange
@@ -110,22 +167,23 @@ export function CustomerTable({
     };
 
     return (
-        <div style={{ background: '#1C1C1E', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', overflow: 'hidden' }}>
-            <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <div className="bg-[#1C1C1E] border border-white/[0.05] rounded-[8px] overflow-hidden">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+                <table className="w-full border-collapse">
                     <thead>
                         <tr>
                             <th style={thStyle}>Müşteri</th>
-                            <th style={thStyle}>E-posta</th>
-                            <th style={thStyle}>Telefon</th>
+                            <th style={thStyle} className="hidden lg:table-cell">E-posta</th>
+                            <th style={thStyle} className="hidden xl:table-cell">Telefon</th>
                             <th style={{ ...thStyle, cursor: 'pointer' }} onClick={() => onSort('totalOrders')}>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>Sipariş <SortIcon col="totalOrders" /></div>
+                                <div className="flex items-center">Sipariş <SortIcon col="totalOrders" /></div>
                             </th>
                             <th style={{ ...thStyle, cursor: 'pointer' }} onClick={() => onSort('totalSpent')}>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>Harcama <SortIcon col="totalSpent" /></div>
+                                <div className="flex items-center">Harcama <SortIcon col="totalSpent" /></div>
                             </th>
-                            <th style={thStyle}>Son Sipariş</th>
-                            <th style={thStyle}>Kayıt</th>
+                            <th style={thStyle} className="hidden lg:table-cell">Son Sipariş</th>
+                            <th style={thStyle} className="hidden xl:table-cell">Kayıt</th>
                             <th style={{ ...thStyle, textAlign: 'right' }}>İşlemler</th>
                         </tr>
                     </thead>
@@ -142,17 +200,12 @@ export function CustomerTable({
                                 <tr
                                     key={customer.id}
                                     onClick={() => router.push(`/admin/musteriler/${customer.id}`)}
-                                    style={{
-                                        cursor: 'pointer', transition: 'all 150ms', position: 'relative',
-                                        background: isVip ? 'rgba(201,169,110,0.02)' : 'transparent'
-                                    }}
-                                    onMouseEnter={e => e.currentTarget.style.background = isVip ? 'rgba(201,169,110,0.04)' : 'rgba(255,255,255,0.02)'}
-                                    onMouseLeave={e => e.currentTarget.style.background = isVip ? 'rgba(201,169,110,0.02)' : 'transparent'}
+                                    className={`cursor-pointer transition-all duration-150 relative hover:bg-white/[0.02] ${isVip ? 'bg-[#C9A96E]/[0.02]' : ''}`}
                                 >
                                     {/* VIP indicator */}
                                     {isVip && (
-                                        <td style={{ padding: 0, width: 0 }}>
-                                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '2px', background: '#C9A96E' }} />
+                                        <td className="p-0 w-0">
+                                            <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#C9A96E]" />
                                         </td>
                                     )}
 
@@ -184,12 +237,12 @@ export function CustomerTable({
                                     </td>
 
                                     {/* Email */}
-                                    <td style={{ padding: '13px 16px', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.03)', fontSize: '12px', color: '#AEAEB2', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    <td className="px-4 py-3 border-b border-white/[0.03] text-[12px] text-[#AEAEB2] max-w-[180px] truncate hidden lg:table-cell">
                                         {customer.email}
                                     </td>
 
                                     {/* Phone */}
-                                    <td style={{ padding: '13px 16px', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.03)', fontSize: '12px', color: '#636366', fontFamily: "'JetBrains Mono', monospace" }}>
+                                    <td className="px-4 py-3 border-b border-white/[0.03] text-[12px] text-[#636366] font-mono hidden xl:table-cell">
                                         {customer.phone}
                                     </td>
 
@@ -199,12 +252,12 @@ export function CustomerTable({
                                     </td>
 
                                     {/* Spent */}
-                                    <td style={{ padding: '13px 16px', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.03)', fontSize: '13px', fontWeight: 600, color: isWhale ? '#D4B87A' : (isHigh ? '#C9A96E' : '#F5F0EB'), fontVariantNumeric: 'tabular-nums', textShadow: isWhale ? '0 0 12px rgba(201,169,110,0.4)' : 'none' }}>
+                                    <td style={{ padding: '13px 16px', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.03)', fontSize: '13px', fontWeight: 600, color: isWhale ? '#D4B87A' : (isHigh ? '#C9A96E' : '#F5F0EB'), fontVariantNumeric: 'tabular-nums' }}>
                                         {formatPrice(customer.totalSpent)}
                                     </td>
 
                                     {/* Last Order */}
-                                    <td style={{ padding: '13px 16px', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.03)', fontSize: '11px', color: isStale ? '#FF453A' : '#636366' }}>
+                                    <td className="px-4 py-3 border-b border-white/[0.03] text-[11px] hidden lg:table-cell" style={{ color: isStale ? '#FF453A' : '#636366' }}>
                                         {customer.lastOrderAt ? (
                                             <>
                                                 {isStale && '⚠ '}
@@ -214,18 +267,16 @@ export function CustomerTable({
                                     </td>
 
                                     {/* Registered */}
-                                    <td style={{ padding: '13px 16px', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.03)', fontSize: '11px', color: '#636366' }}>
+                                    <td className="px-4 py-3 border-b border-white/[0.03] text-[11px] text-[#636366] hidden xl:table-cell">
                                         {new Date(customer.registeredAt).toLocaleDateString('tr-TR')}
                                     </td>
 
                                     {/* Actions */}
                                     <td style={{ padding: '13px 16px', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.03)', textAlign: 'right' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }} onClick={e => e.stopPropagation()}>
+                                        <div className="flex items-center gap-2 justify-end" onClick={e => e.stopPropagation()}>
                                             <button
                                                 onClick={() => router.push(`/admin/musteriler/${customer.id}`)}
-                                                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '5px', padding: '5px 12px', fontSize: '11px', color: '#AEAEB2', cursor: 'pointer', transition: 'all 150ms' }}
-                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
-                                                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                                                className="bg-transparent border border-white/[0.1] rounded-[5px] px-3 py-1 text-[11px] text-[#AEAEB2] hover:bg-white/[0.06] transition-all"
                                             >
                                                 Profil
                                             </button>
@@ -239,21 +290,25 @@ export function CustomerTable({
                 </table>
             </div>
 
+            {/* Mobile View */}
+            <div className="md:hidden divide-y divide-white/[0.04]">
+                {customers.map((customer) => (
+                    <CustomerCard key={customer.id} customer={customer} router={router} />
+                ))}
+            </div>
+
             {/* Pagination */}
-            <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '12px', color: '#636366' }}>
+            <div className="p-4 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span className="text-[12px] text-[#636366]">
                     {perPage * (currentPage - 1) + 1}-{Math.min(perPage * currentPage, totalCount)} / {totalCount} müşteri
                 </span>
-                <div style={{ display: 'flex', gap: '6px' }}>
+                <div className="flex gap-1.5 overflow-x-auto pb-2 sm:pb-0 max-w-full">
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
                         <button
                             key={p}
                             onClick={() => onPageChange(p)}
-                            style={{
-                                width: '30px', height: '30px', borderRadius: '4px', background: p === currentPage ? '#C9A96E' : 'rgba(255,255,255,0.04)',
-                                border: '1px solid rgba(255,255,255,0.08)', fontSize: '12px', color: p === currentPage ? '#0F0F10' : '#AEAEB2',
-                                cursor: 'pointer', fontWeight: p === currentPage ? 600 : 400
-                            }}
+                            className={`min-w-[32px] h-8 rounded-[4px] border border-white/[0.08] text-[12px] font-medium transition-all ${p === currentPage ? 'bg-[#C9A96E] text-[#0F0F10] border-[#C9A96E]' : 'bg-white/[0.04] text-[#AEAEB2] hover:bg-white/[0.08]'
+                                }`}
                         >
                             {p}
                         </button>

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import LookbookPageClient from './LookbookPageClient';
 import type { LookbookCardData } from '@/components/Marketing/LookbookCard';
-
-import { mockLookbooks } from '@/lib/mock/content';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
+import { mockLookbooks } from '@/lib/default-content';
 
 export const metadata: Metadata = {
     title: 'Lookbook 2026 | SELIS Premium Mobilya',
@@ -14,52 +14,76 @@ export const metadata: Metadata = {
     },
 };
 
-// Derive lookbook cards from mock data
-const LOOKBOOK_DATA: LookbookCardData[] = mockLookbooks[0].photos.map(photo => ({
-    id: photo.id,
-    title: photo.title,
-    description: photo.description,
-    imageUrl: photo.url,
-    category: photo.category,
-    hotspots: photo.productTags.map(tag => ({
-        id: tag.id,
-        x: tag.x,
-        y: tag.y,
-        productName: tag.productName,
-        productPrice: tag.productPrice,
-        productImage: tag.productImage,
-        productHref: tag.productHref
-    }))
-}));
+async function getLookbookData(): Promise<{ lookbooks: LookbookCardData[], filters: string[] }> {
+    try {
+        const supabase = await createSupabaseServerClient();
+        const { data, error } = await supabase
+            .from('lookbook_items')
+            .select('*')
+            .order('sort_order', { ascending: true });
 
-const FILTER_TABS = ['Tümü', ...new Set(LOOKBOOK_DATA.map(item => item.category))];
+        if (!error && data && data.length > 0) {
+            // Map lookbook_items from DB to LookbookCardData format
+            const lookbooks: LookbookCardData[] = data.map((item: any) => ({
+                id: item.id,
+                title: item.title || '',
+                titleKey: item.title_key || '',
+                description: item.description || '',
+                descriptionKey: item.description_key || '',
+                imageUrl: item.cover_image || item.image_url || '',
+                category: item.category || 'Koleksiyon',
+                hotspots: (item.hotspots || item.product_tags || []).map((tag: any) => ({
+                    id: tag.id || Math.random().toString(36).slice(2),
+                    x: tag.x || 0,
+                    y: tag.y || 0,
+                    productName: tag.productName || tag.product_name || '',
+                    productPrice: tag.productPrice || tag.product_price || '',
+                    productImage: tag.productImage || tag.product_image || '',
+                    productHref: tag.productHref || tag.product_href || '',
+                })),
+            }));
 
-export default function LookbookPage() {
+            const categories = ['Tümü', ...new Set(lookbooks.map(item => item.category))];
+            return { lookbooks, filters: categories };
+        }
+    } catch (err) {
+        console.error('Lookbook verisi alınamadı:', err);
+    }
+
+    // Fallback to default-content data
+    if (mockLookbooks.length > 0 && mockLookbooks[0].photos?.length > 0) {
+        const lookbooks: LookbookCardData[] = mockLookbooks[0].photos.map(photo => ({
+            id: photo.id,
+            title: photo.title,
+            titleKey: photo.titleKey,
+            description: photo.description,
+            descriptionKey: photo.descriptionKey,
+            imageUrl: photo.url,
+            category: photo.category,
+            hotspots: photo.productTags.map(tag => ({
+                id: tag.id,
+                x: tag.x,
+                y: tag.y,
+                productName: tag.productName,
+                productPrice: tag.productPrice,
+                productImage: tag.productImage,
+                productHref: tag.productHref,
+            })),
+        }));
+
+        const categories = ['Tümü', ...new Set(lookbooks.map(item => item.category))];
+        return { lookbooks, filters: categories };
+    }
+
+    return { lookbooks: [], filters: ['Tümü'] };
+}
+
+export default async function LookbookPage() {
+    const { lookbooks, filters } = await getLookbookData();
+
     return (
         <main className="min-h-screen bg-white">
-            {/* Hero */}
-            <div
-                className="relative py-24 px-6 text-center bg-[#1C1C1E] overflow-hidden"
-            >
-                <div className="absolute inset-0 opacity-20 bg-gradient-to-b from-[#C9A96E]/20 to-transparent" />
-                <div className="relative z-10 max-w-2xl mx-auto">
-                    <p className="text-[11px] text-[#C9A96E] tracking-[0.35em] uppercase font-medium mb-4" data-lang-key="lookbook_col_subtitle">
-                        2026 Koleksiyonu
-                    </p>
-                    <h1
-                        className="text-4xl md:text-5xl font-bold text-white mb-3"
-                        style={{ fontFamily: 'var(--font-playfair), Playfair Display, serif' }}
-                        data-lang-key="nav_lookbook"
-                    >
-                        Lookbook
-                    </h1>
-                    <p className="text-white/60 text-base" data-lang-key="lookbook_hero_desc">
-                        Hayalinizdeki evin ilhamı burada
-                    </p>
-                </div>
-            </div>
-
-            <LookbookPageClient lookbooks={LOOKBOOK_DATA} filterTabs={FILTER_TABS} />
+            <LookbookPageClient lookbooks={lookbooks} filterTabs={filters} />
         </main>
     );
 }

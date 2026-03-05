@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ChevronUp, ChevronDown, ChevronsUpDown, Star, TrendingUp, TrendingDown, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { type ProductPerformanceItem, formatCurrency } from '@/lib/mock/analytics';
+import { type ProductPerformanceItem, formatCurrency } from '@/types/admin/analytics';
 
 interface ProductPerformanceProps {
     data: ProductPerformanceItem[];

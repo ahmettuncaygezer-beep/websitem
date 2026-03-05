@@ -8,12 +8,18 @@ interface UserRoleBadgeProps {
     className?: string;
 }
 
-const roleConfig = {
-    'super-admin': {
+const roleConfig: Record<AdminRole, any> = {
+    'super_admin': {
         label: '👑 Süper Admin',
         bg: 'rgba(201,169,110,0.15)',
         border: 'rgba(201,169,110,0.3)',
         text: '#C9A96E'
+    },
+    'admin': {
+        label: '🛡️ Yönetici',
+        bg: 'rgba(191,90,242,0.15)',
+        border: 'rgba(191,90,242,0.3)',
+        text: '#BF5AF2'
     },
     'editor': {
         label: '✏️ Editör',
@@ -21,22 +27,21 @@ const roleConfig = {
         border: 'rgba(10,132,255,0.3)',
         text: '#0A84FF'
     },
-    'order-manager': {
-        label: '🛒 Sipariş Yön.',
+    'support': {
+        label: '🛍️ Destek',
         bg: 'rgba(48,209,88,0.15)',
         border: 'rgba(48,209,88,0.3)',
         text: '#30D158'
-    },
-    'analyst': {
-        label: '📊 Analist',
-        bg: 'rgba(191,90,242,0.15)',
-        border: 'rgba(191,90,242,0.3)',
-        text: '#BF5AF2'
     }
 };
 
 export function UserRoleBadge({ role, className = '' }: UserRoleBadgeProps) {
-    const config = roleConfig[role];
+    const config = roleConfig[role] || {
+        label: role,
+        bg: 'rgba(255,255,255,0.1)',
+        border: 'rgba(255,255,255,0.2)',
+        text: '#AEAEB2'
+    };
 
     return (
         <span

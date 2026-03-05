@@ -15,6 +15,7 @@ interface PlannerState {
     is2DMode: boolean; // default true
     showGrid: boolean; // default true
     planName: string;
+    activeTool: 'select' | 'pan' | 'measure';
 
     // Actions - Items
     addItem: (item: PlacedFurniture) => void;
@@ -24,6 +25,7 @@ interface PlannerState {
     clearItems: () => void;
     setSelectedItem: (id: string | null) => void;
     setPlanName: (name: string) => void;
+    setActiveTool: (tool: 'select' | 'pan' | 'measure') => void;
 
     // Actions - Room
     updateRoom: (updates: Partial<RoomSettings>) => void;
@@ -62,6 +64,7 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
     is2DMode: true,
     showGrid: true,
     planName: 'İsimsiz Plan',
+    activeTool: 'select',
 
     saveToHistory: () => {
         const { items, room, past } = get();
@@ -163,6 +166,7 @@ export const usePlannerStore = create<PlannerState>((set, get) => ({
 
     setSelectedItem: (id) => set({ selectedItemId: id }),
     setPlanName: (name) => set({ planName: name }),
+    setActiveTool: (tool) => set({ activeTool: tool }),
 
     updateRoom: (updates) => {
         // Usually, we want to save history for room changes too, especially dimensions

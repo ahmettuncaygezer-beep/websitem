@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, Area, AreaChart, ResponsiveContainer, YAxis } from 'recharts';
-import type { KpiData } from '@/lib/mock/analytics';
+import type { KpiData } from '@/types/admin/analytics';
 
 // Icons mapping by KPI id
 const iconMap: Record<string, string> = {

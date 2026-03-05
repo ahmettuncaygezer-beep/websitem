@@ -17,11 +17,7 @@ export function QuickActions() {
 
     return (
         <div
-            style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '12px',
-            }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-3"
             role="group"
             aria-label="Hızlı işlemler"
         >

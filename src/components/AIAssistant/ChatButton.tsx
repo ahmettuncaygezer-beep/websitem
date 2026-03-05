@@ -61,7 +61,7 @@ export function ChatButton() {
                         className="absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap"
                         style={{ background: '#1C1C1E', color: 'white', padding: '6px 12px', borderRadius: 6, fontSize: 12 }}
                     >
-                        {t('chat.welcome_desc') || 'How can I help you?'}
+                        Selis AI
                     </motion.div>
                 )}
             </AnimatePresence>

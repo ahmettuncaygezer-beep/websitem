@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { type CityData, formatCurrency } from '@/lib/mock/analytics';
+import { type CityData, formatCurrency } from '@/types/admin/analytics';
 
 interface TopCitiesProps {
     data: CityData[];

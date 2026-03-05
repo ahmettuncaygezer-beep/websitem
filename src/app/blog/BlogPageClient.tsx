@@ -62,9 +62,9 @@ function HeroCard({ post }: { post: BlogPost }) {
                         <div className="flex items-center gap-4 text-white/60 text-[12px]">
                             <span className="font-medium text-white/80">{post.author}</span>
                             <span>·</span>
-                            <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readingMinutes} {t('blog_min_read') || (language === 'TR' ? 'dk okuma' : 'min read')}</span>
+                            <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readingMinutes} {t('blog_min_read') || (language === 'tr' ? 'dk okuma' : 'min read')}</span>
                             <span>·</span>
-                            <span>{new Date(post.date).toLocaleDateString(language === 'TR' ? 'tr-TR' : language === 'EN' ? 'en-US' : language === 'AR' ? 'ar-EG' : language === 'FR' ? 'fr-FR' : 'de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            <span>{new Date(post.date).toLocaleDateString(language === 'tr' ? 'tr-TR' : language === 'en' ? 'en-US' : language === 'ar' ? 'ar-EG' : language === 'fr' ? 'fr-FR' : 'de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                         </div>
                         <div className="flex items-center gap-2 mt-4 text-[#C9A96E] text-[13px] font-semibold group-hover:gap-3 transition-all">
                             {t('blog_read_more') || (language === 'tr' ? 'Devamını Oku' : 'Read More')} <ArrowRight className="w-4 h-4" />

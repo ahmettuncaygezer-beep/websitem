@@ -2,21 +2,22 @@
 
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, Settings2 } from 'lucide-react';
+import { X, CheckCircle2, Settings2, Volume2, VolumeX } from 'lucide-react';
 import { useNotificationStore } from '@/lib/store/useNotificationStore';
 import { NotificationItem } from './NotificationItem';
-import { groupByDate } from '@/lib/mock/notifications';
+import { groupByDate } from '@/types/notifications';
 import { Notification } from '@/types/notifications';
 import Link from 'next/link';
 
 export function NotificationPanel() {
-    const { isOpen, setOpen, notifications, markAllAsRead } = useNotificationStore();
-    const [activeTab, setActiveTab] = useState<'all' | 'orders' | 'stock' | 'system'>('all');
+    const { isOpen, setOpen, notifications, markAllAsRead, soundEnabled, toggleSound } = useNotificationStore();
+    const [activeTab, setActiveTab] = useState<'all' | 'orders' | 'stock' | 'iade' | 'system'>('all');
 
     const filteredNotifications = useMemo(() => {
         if (activeTab === 'all') return notifications;
-        if (activeTab === 'orders') return notifications.filter(n => n.type.startsWith('order'));
+        if (activeTab === 'orders') return notifications.filter(n => n.type === 'order-new');
         if (activeTab === 'stock') return notifications.filter(n => n.type.startsWith('stock'));
+        if (activeTab === 'iade') return notifications.filter(n => n.type === 'order-cancel');
         if (activeTab === 'system') return notifications.filter(n => n.type.startsWith('system') || n.type === 'security-login');
         return notifications;
     }, [notifications, activeTab]);
@@ -54,6 +55,13 @@ export function NotificationPanel() {
                             </div>
                             <div className="flex items-center gap-2">
                                 <button
+                                    onClick={toggleSound}
+                                    title={soundEnabled ? 'Sesi kapat' : 'Sesi aç'}
+                                    className={`p-2 transition-colors ${soundEnabled ? 'text-[#30D158] hover:text-[#30D158]/70' : 'text-[#636366] hover:text-[#F5F0EB]'}`}
+                                >
+                                    {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+                                </button>
+                                <button
                                     onClick={markAllAsRead}
                                     title="Tümünü okundu işaretle"
                                     className="p-2 text-[#636366] hover:text-[#C9A96E] transition-colors"
@@ -75,6 +83,7 @@ export function NotificationPanel() {
                                 { id: 'all', label: 'Tümü' },
                                 { id: 'orders', label: 'Siparişler' },
                                 { id: 'stock', label: 'Stok' },
+                                { id: 'iade', label: 'İade' },
                                 { id: 'system', label: 'Sistem' }
                             ].map(tab => (
                                 <button

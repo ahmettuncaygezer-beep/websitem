@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Plus } from 'lucide-react';
-import type { Category } from '@/lib/mock/categories';
+import type { Category } from '@/types/admin/categories';
 import { CategoryItem } from './CategoryItem';
 
 interface CategoryTreeProps {

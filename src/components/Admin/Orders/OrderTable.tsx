@@ -11,7 +11,8 @@ import {
     getAvatarColor,
     formatPrice,
     formatDate,
-} from '@/lib/mock/orders';
+} from '@/types/admin/orders';
+import { usePermissions } from '@/hooks/usePermissions';
 
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
@@ -52,6 +53,9 @@ interface ActionDropdownProps {
 }
 function ActionDropdown({ orderId }: ActionDropdownProps) {
     const [open, setOpen] = useState(false);
+    const { can } = usePermissions();
+    const canUpdate = can('orders.update');
+
     const actions = ['Fatura İndir', 'Kargo Güncelle', 'İptal Et', 'İade İşle'];
     return (
         <div style={{ position: 'relative' }}>
@@ -78,17 +82,22 @@ function ActionDropdown({ orderId }: ActionDropdownProps) {
                             style={{ position: 'absolute', right: 0, top: 'calc(100% + 4px)', background: '#242426', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', minWidth: '140px', zIndex: 20, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}
                             role="menu"
                         >
-                            {actions.map((action) => (
-                                <button key={action}
-                                    onClick={(e) => { e.stopPropagation(); console.log(action, orderId); setOpen(false); }}
-                                    style={{ width: '100%', padding: '9px 14px', background: 'transparent', border: 'none', fontSize: '12px', color: action === 'İptal Et' || action === 'İade İşle' ? '#FF453A' : '#AEAEB2', cursor: 'pointer', textAlign: 'left', fontFamily: 'Inter, system-ui, sans-serif', transition: 'background 100ms' }}
-                                    onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)')}
-                                    onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.background = 'transparent')}
-                                    role="menuitem"
-                                >
-                                    {action}
-                                </button>
-                            ))}
+                            {actions.map((action) => {
+                                const isDisabled = !canUpdate && action !== 'Fatura İndir';
+                                return (
+                                    <button key={action}
+                                        disabled={isDisabled}
+                                        title={isDisabled ? "Bu işlem için yetkiniz yok" : action}
+                                        onClick={(e) => { e.stopPropagation(); console.log(action, orderId); setOpen(false); }}
+                                        style={{ width: '100%', padding: '9px 14px', background: 'transparent', border: 'none', fontSize: '12px', color: isDisabled ? '#636366' : (action === 'İptal Et' || action === 'İade İşle' ? '#FF453A' : '#AEAEB2'), cursor: isDisabled ? 'not-allowed' : 'pointer', textAlign: 'left', fontFamily: 'Inter, system-ui, sans-serif', transition: 'background 100ms' }}
+                                        onMouseEnter={(e) => { if (!isDisabled) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)' }}
+                                        onMouseLeave={(e) => { if (!isDisabled) (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
+                                        role="menuitem"
+                                    >
+                                        {action}
+                                    </button>
+                                )
+                            })}
                         </motion.div>
                     </>
                 )}
@@ -105,6 +114,42 @@ interface OrderTableProps {
     onPageChange: (p: number) => void;
 }
 
+function OrderCard({ order, onClick }: { order: Order; onClick: () => void }) {
+    const { date } = formatDate(order.createdAt);
+    return (
+        <div
+            onClick={onClick}
+            className="p-4 border-b border-white/[0.04] active:bg-white/[0.02] transition-colors"
+        >
+            <div className="flex items-start justify-between mb-3">
+                <div className="flex flex-col">
+                    <span className="text-[#C9A96E] text-[13px] font-semibold font-mono">{order.orderNo}</span>
+                    <span className="text-[11px] text-[#636366] mt-0.5">{date}</span>
+                </div>
+                <StatusBadge status={order.status} />
+            </div>
+
+            <div className="flex items-center gap-3 mb-4">
+                <Avatar name={order.customer.name} isVip={order.customer.isVip} size={40} />
+                <div className="flex flex-col overflow-hidden">
+                    <span className="text-[14px] font-medium text-[#F5F0EB] truncate">{order.customer.name}</span>
+                    <span className="text-[12px] text-[#636366] truncate">{order.customer.email}</span>
+                </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-auto">
+                <div className="flex items-center gap-2">
+                    <PaymentIcon type={order.paymentMethod.type} />
+                    <span className="text-[12px] text-[#AEAEB2]">{order.paymentMethod.type}</span>
+                </div>
+                <div className="text-[15px] font-semibold text-[#F5F0EB]">
+                    {formatPrice(order.total)}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export function OrderTable({ orders, currentPage, perPage, totalCount, onPageChange }: OrderTableProps) {
     const router = useRouter();
     const totalPages = Math.ceil(totalCount / perPage);
@@ -116,14 +161,21 @@ export function OrderTable({ orders, currentPage, perPage, totalCount, onPageCha
     };
 
     return (
-        <div style={{ background: '#1C1C1E', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', overflow: 'hidden' }}>
-            <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <div className="bg-[#1C1C1E] border border-white/[0.05] rounded-xl overflow-hidden shadow-2xl">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+                <table className="w-full border-collapse">
                     <thead>
                         <tr>
-                            {['Sipariş No', 'Müşteri', 'Ürünler', 'Tutar', 'Ödeme', 'Durum', 'Kargo', 'Tarih', 'İşlemler'].map((h) => (
-                                <th key={h} style={thStyle}>{h}</th>
-                            ))}
+                            <th style={thStyle}>No</th>
+                            <th style={thStyle}>Müşteri</th>
+                            <th style={{ ...thStyle }} className="hidden lg:table-cell">Ürünler</th>
+                            <th style={thStyle}>Tutar</th>
+                            <th style={thStyle} className="hidden xl:table-cell">Ödeme</th>
+                            <th style={thStyle}>Durum</th>
+                            <th style={thStyle} className="hidden lg:table-cell">Kargo</th>
+                            <th style={thStyle} className="hidden sm:table-cell">Tarih</th>
+                            <th style={thStyle}>İşlemler</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -238,17 +290,35 @@ export function OrderTable({ orders, currentPage, perPage, totalCount, onPageCha
                 </table>
             </div>
 
+            {/* Mobile Card View */}
+            <div className="md:hidden divide-y divide-white/[0.03]">
+                {orders.map((order) => (
+                    <OrderCard
+                        key={order.id}
+                        order={order}
+                        onClick={() => router.push(`/admin/siparisler/${order.id}`)}
+                    />
+                ))}
+            </div>
+
             {/* Pagination */}
             {totalPages > 1 && (
-                <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '12px', color: '#636366', fontVariantNumeric: 'tabular-nums' }}>
+                <div className="px-4 md:px-6 py-4 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span className="text-[12px] text-[#636366] tabular-nums">
                         {totalCount} sipariş, {currentPage}/{totalPages} sayfa
                     </span>
-                    <div style={{ display: 'flex', gap: '4px' }}>
+                    <div className="flex gap-1">
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                            <button key={p} onClick={() => onPageChange(p)}
-                                style={{ width: '28px', height: '28px', borderRadius: '4px', background: p === currentPage ? '#C9A96E' : 'rgba(255,255,255,0.04)', border: `1px solid ${p === currentPage ? '#C9A96E' : 'rgba(255,255,255,0.08)'}`, fontSize: '12px', color: p === currentPage ? '#0F0F10' : '#AEAEB2', cursor: 'pointer', fontFamily: 'Inter, system-ui, sans-serif', fontWeight: p === currentPage ? 600 : 400, transition: 'all 150ms' }}
-                            >{p}</button>
+                            <button
+                                key={p}
+                                onClick={() => onPageChange(p)}
+                                className={`w-8 h-8 rounded-md text-[12px] font-medium transition-all ${p === currentPage
+                                        ? 'bg-[#C9A96E] text-[#0F0F10]'
+                                        : 'bg-white/[0.04] text-[#AEAEB2] hover:bg-white/[0.08]'
+                                    }`}
+                            >
+                                {p}
+                            </button>
                         ))}
                     </div>
                 </div>

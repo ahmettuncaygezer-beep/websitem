@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, MapPin, Truck, Calendar, Lock, Save, Download, Send, Check } from 'lucide-react';
-import type { Order, OrderStatus } from '@/lib/mock/orders';
-import { formatPrice, STATUS_CONFIG } from '@/lib/mock/orders';
+import type { Order, OrderStatus } from '@/types/admin/orders';
+import { formatPrice, STATUS_CONFIG } from '@/types/admin/orders';
 
 interface OrderDetailProps {
     order: Order;

@@ -1,14 +1,20 @@
 'use client';
 
 import { Truck, Calendar, Zap, Wrench } from 'lucide-react';
+import { useGlobal } from '@/context/GlobalContext';
 
 interface Props { deliveryDays?: number; hasQuickShip?: boolean; price: number; }
 
 export function DeliveryInfo({ deliveryDays = 14, hasQuickShip = false, price }: Props) {
+    const { t, language } = useGlobal();
     const now = new Date();
     const start = new Date(now); start.setDate(start.getDate() + deliveryDays);
     const end = new Date(now); end.setDate(end.getDate() + deliveryDays + 2);
-    const fmt = (d: Date) => d.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+    // Map SELIS languages to actual BCP 47 locales
+    const locales: Record<string, string> = { tr: 'tr-TR', en: 'en-US', fr: 'fr-FR', ar: 'ar-SA', de: 'de-DE' };
+    const locale = locales[language] || 'tr-TR';
+    const fmt = (d: Date) => d.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     const rows = [
         { icon: <Truck size={16} />, titleKey: price >= 5000 ? 'pdp_free_shipping' : 'pdp_shipping', title: price >= 5000 ? 'Ücretsiz Kargo' : 'Kargo', subKey: price >= 5000 ? 'pdp_free_shipping_sub' : 'pdp_shipping_sub', sub: price >= 5000 ? '₺5.000 ve üzeri siparişlerde' : 'Kargo ücreti ödeme adımında hesaplanır', color: 'var(--selis-primary)' },
@@ -23,8 +29,8 @@ export function DeliveryInfo({ deliveryDays = 14, hasQuickShip = false, price }:
                 <div key={i} className="flex items-start gap-3 py-3" style={{ borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none' }}>
                     <span style={{ color: r.color, marginTop: 2 }}>{r.icon}</span>
                     <div>
-                        <p className="text-[13px] font-medium" style={{ color: r.color }} data-lang-key={r.titleKey as string}>{r.title}</p>
-                        <p className="text-[11px] text-muted-foreground" data-lang-key={r.subKey as string | undefined}>{r.sub}</p>
+                        <p className="text-[13px] font-medium" style={{ color: r.color }}>{t(r.titleKey) || r.title}</p>
+                        <p className="text-[11px] text-muted-foreground">{r.subKey ? (t(r.subKey) || r.sub) : r.sub}</p>
                     </div>
                 </div>
             ))}

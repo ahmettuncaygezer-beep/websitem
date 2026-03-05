@@ -4,13 +4,12 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
-import { useTranslationStore, translations } from '@/store/translationStore';
+import { useGlobal } from '@/context/GlobalContext';
 
 export function ViewAllButton() {
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-40px' });
-    const { language } = useTranslationStore();
-    const t = (key: string) => translations[language]?.[key];
+    const { t } = useGlobal();
 
     return (
         <motion.div
