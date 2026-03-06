@@ -1,14 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote } from 'lucide-react';
-import { MEDIA_LOGOS } from './socialProof.data';
 import { useGlobal } from '@/context/GlobalContext';
 
 export default function MediaLogos() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
+    const [mediaLogos, setMediaLogos] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const { t } = useGlobal();
+
+    useEffect(() => {
+        const fetchPress = async () => {
+            try {
+                const res = await fetch('/api/press');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setMediaLogos(data);
+                }
+            } catch (error) {
+                console.error('Error fetching press:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchPress();
+    }, []);
+
+    if (isLoading) return null;
+    if (mediaLogos.length === 0) return null;
 
     return (
         <section className="py-16 bg-[#1C1C1E] overflow-hidden">
@@ -30,10 +51,10 @@ export default function MediaLogos() {
 
                 {/* LOGO SATIRI */}
                 <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-                    {MEDIA_LOGOS.map((media, index) => (
+                    {mediaLogos.map((media, index) => (
                         <motion.a
                             key={media.id}
-                            href={media.articleUrl}
+                            href={media.article_url}
                             target="_blank"
                             rel="noopener noreferrer"
                             initial={{ opacity: 0, y: 10 }}
@@ -52,9 +73,13 @@ export default function MediaLogos() {
                 ${hoveredId === media.id ? 'opacity-100 bg-white/10' : 'opacity-40 hover:opacity-70'}
               `}
                             >
-                                <span className="text-white font-bold text-lg tracking-tight">
-                                    {media.name}
-                                </span>
+                                {media.logo_url ? (
+                                    <img src={media.logo_url} alt={media.name} className="h-6 object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity" />
+                                ) : (
+                                    <span className="text-white font-bold text-lg tracking-tight">
+                                        {media.name}
+                                    </span>
+                                )}
                             </div>
 
                             {/* HOVER TOOLTIP: Makale başlığı */}
@@ -67,7 +92,7 @@ export default function MediaLogos() {
                                         transition={{ duration: 0.15 }}
                                         className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-[#C9A96E] text-white text-[11px] px-3 py-1.5 rounded-sm whitespace-nowrap z-10 font-medium"
                                     >
-                                        {media.articleTitle}
+                                        {media.article_title}
                                         <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#C9A96E] rotate-45" />
                                     </motion.div>
                                 )}
@@ -104,11 +129,11 @@ export default function MediaLogos() {
                         }}
                         className="flex gap-10 whitespace-nowrap px-6"
                     >
-                        {[...MEDIA_LOGOS, ...MEDIA_LOGOS].map((media, i) => (
+                        {[...mediaLogos, ...mediaLogos].map((media, i) => (
                             <span
                                 key={i}
-                                aria-hidden={i >= MEDIA_LOGOS.length}
-                                tabIndex={i >= MEDIA_LOGOS.length ? -1 : undefined}
+                                aria-hidden={i >= mediaLogos.length}
+                                tabIndex={i >= mediaLogos.length ? -1 : undefined}
                                 className="text-white/30 font-bold text-base tracking-tight flex-shrink-0"
                             >
                                 {media.name}

@@ -94,14 +94,14 @@ export default function SayfalarPage() {
 
             {/* Delete Confirmation */}
             <ConfirmModal
-                isOpen={!!deleteId}
+                open={!!deleteId}
                 onClose={() => setDeleteId(null)}
                 onConfirm={handleDeleteConfirm}
                 title="Sayfayı Sil"
-                description="Bu sayfayı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+                message="Bu sayfayı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
                 confirmText="Sil"
                 cancelText="İptal"
-                isDestructive={true}
+                variant="danger"
             />
         </div>
     );

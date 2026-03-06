@@ -51,6 +51,10 @@ export interface Product {
     tags: string[];
     metaTitle: string;
     metaDescription: string;
+    description?: string;
+    description_full?: string;
+    features?: string;
+    delivery_info?: string;
     relatedProducts: string[];
     complementaryProducts: string[];
     createdAt: string;

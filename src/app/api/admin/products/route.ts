@@ -17,6 +17,7 @@ export async function GET(req: Request) {
         const perPage = parseInt(searchParams.get('perPage') || '50');
         const search = searchParams.get('search') || '';
         const category = searchParams.get('category') || '';
+        const format = searchParams.get('format') || 'json';
 
         let query = supabase.from('products').select('*', { count: 'exact' });
 
@@ -25,6 +26,24 @@ export async function GET(req: Request) {
         }
         if (category) {
             query = query.eq('category_slug', category);
+        }
+
+        if (format === 'csv') {
+            const { data, error } = await query.order('created_at', { ascending: false });
+            if (error) throw error;
+
+            const csvHeader = 'Ürün Adı,Kategori,Marka,Fiyat,İndirimli Fiyat,Stok,Durum\n';
+            const csvBody = (data || []).map((p: any) => {
+                const status = (p.stock || 0) > 0 ? 'Stokta' : 'Tükendi';
+                return `"${p.name}","${p.category_slug || ''}","${p.brand || 'SelisHome'}","${p.price}","${p.sale_price || ''}","${p.stock || 0}","${status}"`;
+            }).join('\n');
+
+            return new NextResponse(csvHeader + csvBody, {
+                headers: {
+                    'Content-Type': 'text/csv; charset=utf-8',
+                    'Content-Disposition': `attachment; filename="products_${new Date().toISOString().slice(0, 10)}.csv"`,
+                },
+            });
         }
 
         query = query.order('created_at', { ascending: false })
@@ -63,6 +82,9 @@ export async function POST(req: Request) {
                 name: body.name,
                 slug: body.slug,
                 description: body.description || null,
+                description_full: body.description_full || null,
+                features: body.features || null,
+                delivery_info: body.delivery_info || null,
                 price: body.price || 0,
                 sale_price: body.salePrice || null,
                 category_id: body.categoryId || null,

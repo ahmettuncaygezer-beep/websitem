@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     BarChart2, Package, LayoutGrid, Image, ShoppingCart, Users,
     TrendingUp, Target, Home, FileText, Camera, UserCog, Settings, MoreHorizontal,
-    LogOut, User as UserIcon, MessageSquare, Mail, X
+    LogOut, User as UserIcon, MessageSquare, Mail, X, Globe
 } from 'lucide-react';
 import { SidebarGroup } from './SidebarGroup';
 import { useAuthStore } from '@/store/authStore';
@@ -50,12 +50,14 @@ const navGroups = [
             { icon: FileText, label: 'Sayfalar', href: '/admin/icerik/sayfalar' },
             { icon: LayoutGrid, label: 'Navigasyon', href: '/admin/icerik/navigasyon' },
             { icon: Camera, label: 'Lookbook', href: '/admin/icerik/lookbook' },
+            { icon: Globe, label: 'Basında Biz', href: '/admin/icerik/basinda-biz' },
         ],
     },
     {
         title: 'SİSTEM',
         items: [
             { icon: UserCog, label: 'Kullanıcılar', href: '/admin/kullanicilar' },
+            { icon: FileText, label: 'Aktivite Günlüğü', href: '/admin/ayarlar/audit-logs' },
             { icon: Settings, label: 'Ayarlar', href: '/admin/ayarlar' },
         ],
     },
@@ -130,9 +132,20 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
 
                 {/* Navigation */}
                 <nav className="flex-1 px-3 py-2 overflow-y-auto scrollbar-hide">
-                    {visibleGroups.map((group) => (
-                        <SidebarGroup key={group.title} title={group.title} items={group.items} />
-                    ))}
+                    {!isMounted ? (
+                        <div className="space-y-4 animate-pulse pt-4">
+                            <div className="h-4 bg-white/5 rounded w-1/3 mx-2 mb-6" />
+                            <div className="space-y-2">
+                                {[1, 2, 3, 4, 5].map(i => (
+                                    <div key={i} className="h-9 bg-white/5 rounded mx-2" />
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        visibleGroups.map((group) => (
+                            <SidebarGroup key={group.title} title={group.title} items={group.items} />
+                        ))
+                    )}
                 </nav>
 
                 {/* User Area */}

@@ -57,6 +57,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         if (body.name !== undefined) updateData.name = body.name;
         if (body.slug !== undefined) updateData.slug = body.slug;
         if (body.description !== undefined) updateData.description = body.description;
+        if (body.description_full !== undefined) updateData.description_full = body.description_full;
+        if (body.features !== undefined) updateData.features = body.features;
+        if (body.delivery_info !== undefined) updateData.delivery_info = body.delivery_info;
         if (body.price !== undefined) updateData.price = body.price;
         if (body.salePrice !== undefined) updateData.sale_price = body.salePrice;
         if (body.categoryId !== undefined) updateData.category_id = body.categoryId;

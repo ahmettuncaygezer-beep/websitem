@@ -44,13 +44,44 @@ const mapProduct = (p: any): Product => ({
     hasQuickShip: !!p.has_quick_ship
 });
 
-export const getProducts = async (filters?: { categorySlug?: string; featured?: boolean; isNew?: boolean }): Promise<Product[]> => {
+export const getProducts = async (filters?: {
+    categorySlug?: string;
+    categories?: string[];
+    brands?: string[];
+    inStock?: boolean;
+    featured?: boolean;
+    isNew?: boolean;
+    minPrice?: number;
+    maxPrice?: number;
+    colors?: string[];
+    materials?: string[];
+}): Promise<Product[]> => {
     try {
         let query = supabase.from('products').select('*');
 
-        if (filters?.categorySlug) query = query.eq('category_slug', filters.categorySlug);
+        if (filters?.categories && filters.categories.length > 0) {
+            query = query.in('category_slug', filters.categories);
+        } else if (filters?.categorySlug) {
+            query = query.eq('category_slug', filters.categorySlug);
+        }
+
+        if (filters?.brands && filters.brands.length > 0) {
+            query = query.in('brand', filters.brands);
+        }
+
+        if (filters?.inStock) {
+            query = query.gte('stock', 1);
+        }
+
         if (filters?.featured) query = query.eq('featured', true);
         if (filters?.isNew) query = query.eq('is_new', true);
+        if (filters?.minPrice !== undefined) query = query.gte('price', filters.minPrice);
+        if (filters?.maxPrice !== undefined) query = query.lte('price', filters.maxPrice);
+
+        // For materials (text array)
+        if (filters?.materials && filters.materials.length > 0) {
+            query = query.contains('materials', filters.materials);
+        }
 
         const { data, error } = await query;
 
@@ -58,13 +89,33 @@ export const getProducts = async (filters?: { categorySlug?: string; featured?: 
             // DB fallback: use mock only if no DB results for this specific filter
             console.warn(`[API] DB returned no results for: ${JSON.stringify(filters)}, using mock fallback`);
             let products = mockProducts;
-            if (filters?.categorySlug) products = products.filter(p => p.categorySlug === filters.categorySlug);
+            if (filters?.categories && filters.categories.length > 0) {
+                products = products.filter(p => filters.categories!.includes(p.categorySlug));
+            } else if (filters?.categorySlug) {
+                products = products.filter(p => p.categorySlug === filters.categorySlug);
+            }
+            if (filters?.brands && filters.brands.length > 0) {
+                products = products.filter(p => p.brand && filters.brands!.includes(p.brand));
+            }
+            if (filters?.inStock) products = products.filter(p => p.stock > 0);
             if (filters?.featured) products = products.filter(p => p.featured);
             if (filters?.isNew) products = products.filter(p => p.isNew);
+            if (filters?.minPrice !== undefined) products = products.filter(p => p.price >= filters.minPrice!);
+            if (filters?.maxPrice !== undefined) products = products.filter(p => p.price <= filters.maxPrice!);
+            if (filters?.materials && filters.materials.length > 0) {
+                products = products.filter(p => p.materials?.some(m => filters.materials!.includes(m)));
+            }
+            if (filters?.colors && filters.colors.length > 0) {
+                products = products.filter(p => p.colors?.some(c => filters.colors!.includes(c.name)));
+            }
             return products;
         }
 
-        return data.map(mapProduct);
+        let mapped = data.map(mapProduct);
+
+
+
+        return mapped;
     } catch (err) {
         console.error('API Error:', err);
         return mockProducts;

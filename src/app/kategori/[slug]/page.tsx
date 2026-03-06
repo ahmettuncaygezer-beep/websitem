@@ -9,13 +9,14 @@ import { Loader2 } from 'lucide-react';
 import { CATEGORIES } from '@/lib/constants';
 import { useGlobal } from '@/context/GlobalContext';
 
-interface CategoryPageProps {
+interface PageProps {
     params: Promise<{ slug: string }>;
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
+export default function CategoryPage({ params }: PageProps) {
     const { formatPrice } = useGlobal();
-    const { slug } = use(params);
+    const resolvedParams = use(params);
+    const slug = resolvedParams.slug;
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 

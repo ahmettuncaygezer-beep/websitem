@@ -1,15 +1,48 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { FILTER_COLORS, FILTER_MATERIALS } from '@/lib/constants';
+import { FILTER_COLORS, FILTER_MATERIALS, CATEGORIES } from '@/lib/constants';
 import { useFilters } from '@/hooks/useFilters';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { formatPrice } from '@/lib/constants';
+import { useState, useEffect } from 'react';
 
 export function FilterSidebar() {
-    const { filters, toggleColor, toggleMaterial, setPriceRange, clearFilters, hasActiveFilters } =
-        useFilters();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const {
+        filters,
+        toggleColor,
+        toggleMaterial,
+        toggleCategory,
+        toggleInStock,
+        toggleIsNew,
+        setPriceRange,
+        clearFilters,
+        hasActiveFilters
+    } = useFilters();
+
+    if (!mounted) {
+        return (
+            <aside className="w-full lg:w-64 xl:w-72 flex-shrink-0">
+                <div className="sticky top-28 space-y-8 animate-pulse">
+                    <div className="h-8 w-32 bg-sand/20 rounded" />
+                    <div className="space-y-4">
+                        <div className="h-4 w-24 bg-sand/20 rounded" />
+                        <div className="space-y-2">
+                            {[1, 2, 3, 4, 5].map(i => (
+                                <div key={i} className="h-4 w-full bg-sand/20 rounded" />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        );
+    }
 
     return (
         <aside className="w-full lg:w-64 xl:w-72 flex-shrink-0">
@@ -17,6 +50,7 @@ export function FilterSidebar() {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <h3 className="font-serif text-lg">Filtreler</h3>
+                    <h1 className="text-red-500 font-bold text-3xl">VERSION 2.0 DEBUG</h1>
                     {hasActiveFilters() && (
                         <button
                             onClick={clearFilters}
@@ -25,6 +59,59 @@ export function FilterSidebar() {
                             Temizle
                         </button>
                     )}
+                </div>
+
+                {/* Categories filter */}
+                <div>
+                    <h4 className="text-xs font-sans font-semibold uppercase tracking-widest text-warm-gray mb-4">
+                        Kategori
+                    </h4>
+                    <div className="space-y-2.5">
+                        {CATEGORIES.map((cat) => (
+                            <label
+                                key={cat.id}
+                                className="flex items-center gap-3 cursor-pointer group"
+                            >
+                                <Checkbox
+                                    checked={(filters.categories || []).includes(cat.slug)}
+                                    onCheckedChange={() => toggleCategory(cat.slug)}
+                                    className="border-border data-[state=checked]:bg-gold data-[state=checked]:border-gold"
+                                />
+                                <span className="text-sm font-sans text-warm-gray group-hover:text-charcoal transition-colors">
+                                    {cat.name}
+                                </span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Stock & Status filter */}
+                <div>
+                    <h4 className="text-xs font-sans font-semibold uppercase tracking-widest text-warm-gray mb-4">
+                        Durum
+                    </h4>
+                    <div className="space-y-2.5">
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                            <Checkbox
+                                checked={filters.inStock}
+                                onCheckedChange={toggleInStock}
+                                className="border-border data-[state=checked]:bg-gold data-[state=checked]:border-gold"
+                            />
+                            <span className="text-sm font-sans text-warm-gray group-hover:text-charcoal transition-colors">
+                                Stoktakiler
+                            </span>
+                        </label>
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                            <Checkbox
+                                checked={filters.isNew}
+                                onCheckedChange={toggleIsNew}
+                                className="border-border data-[state=checked]:bg-gold data-[state=checked]:border-gold"
+                            />
+                            <span className="text-sm font-sans text-warm-gray group-hover:text-charcoal transition-colors">
+                                Sadece Yeni Ürünler
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
                 {/* Color filter */}
@@ -38,8 +125,8 @@ export function FilterSidebar() {
                                 key={color.name}
                                 onClick={() => toggleColor(color.name)}
                                 className={`group relative w-8 h-8 rounded-full transition-transform duration-300 hover:scale-110 ${filters.colors.includes(color.name)
-                                        ? 'ring-2 ring-gold ring-offset-2 scale-110'
-                                        : ''
+                                    ? 'ring-2 ring-gold ring-offset-2 scale-110'
+                                    : ''
                                     }`}
                                 style={{ backgroundColor: color.hex }}
                                 title={color.name}

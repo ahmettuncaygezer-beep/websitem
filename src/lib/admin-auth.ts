@@ -17,7 +17,7 @@ function validateMockSession(cookieStore: Awaited<ReturnType<typeof cookies>>): 
     try {
         const data = JSON.parse(atob(raw));
         if (data.expiresAt > Date.now()) {
-            return { valid: true, role: data.role || 'super-admin' };
+            return { valid: true, role: data.role || 'super_admin' };
         }
     } catch {
         // invalid cookie

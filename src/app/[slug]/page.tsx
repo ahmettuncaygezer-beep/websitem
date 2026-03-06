@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { Navbar } from '@/components/Layout/Navbar';
-import { Footer } from '@/components/Layout/Footer';
+import { Navbar } from '@/components/layout/Navbar';
+import { Footer } from '@/components/layout/Footer';
 
 // Define the ISR revalidation time (e.g., revalidate every 60 seconds)
 export const revalidate = 60;

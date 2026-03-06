@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     X, ChevronDown, ChevronUp, SlidersHorizontal, Loader2, Check,
@@ -222,10 +222,17 @@ export default function MobileFilterSheet({
     onSortChange,
     onClearAll,
 }: MobileFilterSheetProps) {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const [activeTab, setActiveTab] = useState<'filter' | 'sort'>('filter');
     const dragStartY = useRef(0);
     const sheetRef = useRef<HTMLDivElement>(null);
     const isDragging = useRef(false);
+
+    if (!mounted) return null;
 
     const onDragStart = useCallback((e: React.TouchEvent) => {
         dragStartY.current = e.touches[0].clientY;

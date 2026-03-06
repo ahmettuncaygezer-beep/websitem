@@ -16,7 +16,7 @@ const contactInfo = [
     {
         icon: Phone,
         title: 'Telefon',
-        lines: ['0212 555 00 00', '0530 555 00 00 (WhatsApp)'],
+        lines: ['+90 552 994 17 17', '+90 552 994 17 17 (WhatsApp)'],
     },
     {
         icon: Mail,
@@ -137,7 +137,7 @@ export default function ContactPage() {
 
                         {/* WhatsApp CTA */}
                         <motion.a
-                            href="https://wa.me/905305550000"
+                            href="https://wa.me/905529941717"
                             target="_blank"
                             rel="noopener noreferrer"
                             initial={{ opacity: 0, y: 20 }}

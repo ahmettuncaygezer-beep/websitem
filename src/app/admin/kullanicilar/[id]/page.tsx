@@ -15,16 +15,17 @@ import { UserForm } from '@/components/Admin/Users/UserForm';
 import { UserPermissions } from '@/components/Admin/Users/UserPermissions';
 import { UserActivityLog } from '@/components/Admin/Users/UserActivityLog';
 
-export default function UserProfilePage({ params }: { params: { id: string } }) {
+export default function UserProfilePage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = React.use(params);
     const [user, setUser] = useState<AdminUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'general' | 'permissions' | 'activity' | 'sessions'>('general');
 
     React.useEffect(() => {
-        if (!params.id) return;
+        if (!id) return;
         const fetchUser = async () => {
             try {
-                const res = await fetch(`/api/admin/users/${params.id}`);
+                const res = await fetch(`/api/admin/users/${id}`);
                 const data = await res.json();
                 if (data.user) {
                     setUser({
@@ -52,7 +53,7 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
             }
         };
         fetchUser();
-    }, [params.id]);
+    }, [id]);
 
     const tabs = [
         { id: 'general', label: 'Genel', icon: UserIcon },

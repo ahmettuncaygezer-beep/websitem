@@ -27,6 +27,9 @@ const productSchema = z.object({
     status: z.enum(['Aktif', 'Pasif', 'Taslak', 'Zamanlanmış']),
     tags: z.array(z.string()),
     description: z.string().optional(),
+    description_full: z.string().optional(),
+    features: z.string().optional(),
+    delivery_info: z.string().optional(),
     metaTitle: z.string().max(60).optional(),
     metaDescription: z.string().max(160).optional(),
 });
@@ -84,7 +87,10 @@ export function ProductForm({ product, mode = 'create' }: ProductFormProps) {
             category: product?.category ?? '',
             status: (product?.status ?? 'Taslak') as ProductStatus,
             tags: product?.tags ?? [],
-            description: '',
+            description: product?.description ?? '',
+            description_full: product?.description_full ?? '',
+            features: product?.features ?? '',
+            delivery_info: product?.delivery_info ?? '',
             metaTitle: product?.metaTitle ?? '',
             metaDescription: product?.metaDescription ?? '',
         },
@@ -197,10 +203,19 @@ export function ProductForm({ product, mode = 'create' }: ProductFormProps) {
 
                     {/* Description card */}
                     <div style={cardStyle}>
-                        <div style={cardHeaderStyle}>Açıklama</div>
-                        <div style={{ padding: '0' }}>
+                        <div style={cardHeaderStyle}>Ürün Bilgileri</div>
+                        <div style={cardBodyStyle}>
+                            <label style={labelStyle}>Kısa Açıklama</label>
+                            <textarea
+                                {...register('description')}
+                                placeholder="Ürünün listeleme sayfalarında görünecek kısa özeti..."
+                                disabled={isSubmitting}
+                                style={{ ...inputStyle, minHeight: '80px', marginBottom: '20px', resize: 'vertical' }}
+                            />
+
+                            <label style={labelStyle}>Detaylı Açıklama</label>
                             {/* Toolbar */}
-                            <div style={{ padding: '8px 12px', borderBottom: '1px solid rgba(255,255,255,0.04)', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                            <div style={{ padding: '8px 12px', border: '1px solid rgba(255,255,255,0.08)', borderBottom: 'none', borderTopLeftRadius: '6px', borderTopRightRadius: '6px', background: 'rgba(255,255,255,0.02)', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                                 {['B', 'I', 'U', '—', 'H2', 'H3', '—', '•', '1.', '—', '"', '🔗'].map((btn, i) => (
                                     btn === '—' ? (
                                         <div key={i} style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.08)', margin: '4px 2px', alignSelf: 'center' }} />
@@ -215,17 +230,28 @@ export function ProductForm({ product, mode = 'create' }: ProductFormProps) {
                                     )
                                 ))}
                             </div>
-                            <div style={{ position: 'relative' }}>
-                                <textarea
-                                    {...register('description')}
-                                    placeholder="Ürün açıklamasını girin..."
-                                    disabled={isSubmitting}
-                                    style={{ minHeight: '180px', background: 'transparent', border: 'none', outline: 'none', padding: '14px 16px', fontSize: '13px', color: '#F5F0EB', fontFamily: 'Inter, system-ui, sans-serif', resize: 'vertical', lineHeight: 1.7, width: '100%', boxSizing: 'border-box' }}
-                                />
-                                <div style={{ position: 'absolute', bottom: '8px', right: '12px', fontSize: '11px', color: '#636366' }}>
-                                    {watch('description')?.length ?? 0} karakter
-                                </div>
-                            </div>
+                            <textarea
+                                {...register('description_full')}
+                                placeholder="Ürünün tüm detaylarını, tasarım hikayesini ve kullanılan materyalleri anlatın..."
+                                disabled={isSubmitting}
+                                style={{ ...inputStyle, minHeight: '180px', marginBottom: '20px', borderTopLeftRadius: 0, borderTopRightRadius: 0, resize: 'vertical' }}
+                            />
+
+                            <label style={labelStyle}>Özellikler & Malzemeler</label>
+                            <textarea
+                                {...register('features')}
+                                placeholder="Örn:&#10;- Masif ceviz ahşap iskelet&#10;- Leke tutmaz nubuk kumaş&#10;- Sünger yoğunluğu: 35 HR..."
+                                disabled={isSubmitting}
+                                style={{ ...inputStyle, minHeight: '120px', marginBottom: '20px', resize: 'vertical' }}
+                            />
+
+                            <label style={labelStyle}>Teslimat Bilgisi</label>
+                            <textarea
+                                {...register('delivery_info')}
+                                placeholder="Örn: Siparişiniz 15-20 iş günü içerisinde özenle üretilip adresinize teslim edilir..."
+                                disabled={isSubmitting}
+                                style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
+                            />
                         </div>
                     </div>
 

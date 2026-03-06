@@ -4,6 +4,8 @@ import type { LookbookCardData } from '@/components/Marketing/LookbookCard';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { mockLookbooks } from '@/lib/default-content';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
     title: 'Lookbook 2026 | SELIS Premium Mobilya',
     description: 'SELIS 2026 Koleksiyon Lookbook\'u — Hayalinizdeki evin ilhamı burada.',

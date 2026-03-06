@@ -89,6 +89,10 @@ export interface NavCategory {
 }
 
 export interface FilterState {
+  categories: string[];
+  brands: string[];
+  inStock: boolean;
+  isNew: boolean;
   colors: string[];
   materials: string[];
   priceRange: [number, number];

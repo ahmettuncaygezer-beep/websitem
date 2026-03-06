@@ -140,6 +140,19 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-screen flex flex-col overflow-x-hidden bg-white dark:bg-[#1C1C1E] text-[#1C1C1E] dark:text-[#F5F0EB] transition-colors duration-300 scroll-smooth [scrollbar-gutter:stable]"
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                  for(let registration of registrations) {
+                    registration.unregister();
+                  }
+                });
+              }
+            `,
+          }}
+        />
         <GlobalProvider>
           <CartProvider>
             <ToastProvider>

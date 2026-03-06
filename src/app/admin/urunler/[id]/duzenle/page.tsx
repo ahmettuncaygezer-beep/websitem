@@ -10,18 +10,19 @@ import type { Product } from '@/types/admin/products';
 const easeOut: [number, number, number, number] = [0, 0, 0.2, 1];
 
 interface EditProductPageProps {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }
 
 export default function UrunDuzenlePage({ params }: EditProductPageProps) {
     const router = useRouter();
+    const { id } = React.use(params);
     const [product, setProduct] = useState<Product | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await fetch(`/api/admin/products/${params.id}`);
+                const res = await fetch(`/api/admin/products/${id}`);
                 if (!res.ok) throw new Error('Ürün bulunamadı');
                 const data = await res.json();
                 if (data.product) {
@@ -34,7 +35,7 @@ export default function UrunDuzenlePage({ params }: EditProductPageProps) {
             }
         };
         fetchProduct();
-    }, [params.id]);
+    }, [id]);
 
     if (isLoading) {
         return (

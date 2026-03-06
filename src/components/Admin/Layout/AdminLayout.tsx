@@ -17,6 +17,12 @@ const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 min
 export function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
+
+    // Skip Admin Layout for login page
+    if (pathname === '/admin/login' || pathname === '/admin/login/') {
+        return <>{children}</>;
+    }
+
     const { toasts, addToast, removeToast } = useToast();
     const [showSessionModal, setShowSessionModal] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);

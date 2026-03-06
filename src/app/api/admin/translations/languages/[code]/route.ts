@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabase';
 import { getAdminServerSession } from '@/lib/admin-auth';
 
 // ── GET: Belirli Bir Dili Getir ─────────────────────────────────────────────
-export async function GET(req: Request, { params }: { params: { code: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ code: string }> }) {
     try {
         const session = await getAdminServerSession();
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -28,7 +28,7 @@ export async function GET(req: Request, { params }: { params: { code: string } }
 }
 
 // ── PUT: Dili Güncelle ──────────────────────────────────────────────────────
-export async function PUT(req: Request, { params }: { params: { code: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ code: string }> }) {
     try {
         const session = await getAdminServerSession();
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -53,7 +53,7 @@ export async function PUT(req: Request, { params }: { params: { code: string } }
 }
 
 // ── DELETE: Dili Sil ────────────────────────────────────────────────────────
-export async function DELETE(req: Request, { params }: { params: { code: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ code: string }> }) {
     try {
         const session = await getAdminServerSession();
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

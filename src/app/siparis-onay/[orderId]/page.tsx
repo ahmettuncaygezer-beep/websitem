@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, use } from 'react';
 import { useCart } from '@/hooks/useCart';
 import { ConfettiAnimation } from '@/components/cart/OrderConfirmation/ConfettiAnimation';
 import { OrderTimeline } from '@/components/cart/OrderConfirmation/OrderTimeline';
@@ -9,7 +9,8 @@ import { NextSteps } from '@/components/cart/OrderConfirmation/NextSteps';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
-export default function OrderConfirmationPage({ params }: { params: { orderId: string } }) {
+export default function OrderConfirmationPage({ params }: { params: Promise<{ orderId: string }> }) {
+    const { orderId } = use(params);
     const { clearCart } = useCart();
 
     useEffect(() => {
@@ -50,7 +51,7 @@ export default function OrderConfirmationPage({ params }: { params: { orderId: s
                         transition={{ delay: 0.3 }}
                         className="text-[15px] text-muted-foreground mt-4 font-medium"
                     >
-                        Sipariş No: <span className="text-selis-gold font-bold font-mono tracking-wider">{params.orderId}</span>
+                        Sipariş No: <span className="text-selis-gold font-bold font-mono tracking-wider">{orderId}</span>
                     </motion.p>
                     <p className="text-[13px] text-muted-foreground mt-2">
                         Onay e-postası kayıtlı adresinize gönderildi.
@@ -72,7 +73,7 @@ export default function OrderConfirmationPage({ params }: { params: { orderId: s
                         <OrderTimeline />
                     </div>
                     <div className="md:col-span-12">
-                        <OrderDetails orderId={params.orderId} />
+                        <OrderDetails orderId={orderId} />
                     </div>
                     <div className="md:col-span-12">
                         <NextSteps />

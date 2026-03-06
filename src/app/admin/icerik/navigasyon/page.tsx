@@ -295,10 +295,10 @@ export default function NavigasyonPage() {
                 onClose={() => setDeleteItemId(null)}
                 onConfirm={handleDeleteConfirm}
                 title="Öğeyi Sil"
-                description="Bu bağlantıyı menüden kaldırmak istediğinize emin misiniz?"
+                message="Bu bağlantıyı menüden kaldırmak istediğinize emin misiniz?"
                 confirmText="Sil"
                 cancelText="İptal"
-                isDestructive={true}
+                variant="danger"
             />
         </div>
     );

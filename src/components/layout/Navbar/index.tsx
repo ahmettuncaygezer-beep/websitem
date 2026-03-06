@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import * as React from 'react';
 import Link from 'next/link';
 import { Menu, Search, X, Heart, User, ShoppingBag, MapPin, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
@@ -19,65 +19,18 @@ import { useCart } from '@/hooks/useCart';
 import { Moon, Sun } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import type { NavCategory } from './navbar.types';
+import { useHeaderMenu } from './useHeaderMenu';
 
 export function Navbar() {
     const pathname = usePathname();
     const isProductPage = pathname?.startsWith('/urun/');
 
-    const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isMobileOpen, setIsMobileOpen] = useState(false);
-    const [dynamicCategories, setDynamicCategories] = useState<NavCategory[]>(NAV_CATEGORIES);
+    const [activeCategoryId, setActiveCategoryId] = React.useState<string | null>(null);
+    const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+    const [isMobileOpen, setIsMobileOpen] = React.useState(false);
+    const { dynamicCategories } = useHeaderMenu(NAV_CATEGORIES);
     const { openCart } = useCart();
-    const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-    // Fetch dynamic menu items
-    useEffect(() => {
-        const fetchHeaderMenu = async () => {
-            try {
-                // Find 'header' menu
-                const { data: menu } = await supabase
-                    .from('menus')
-                    .select('id')
-                    .eq('handle', 'header')
-                    .single();
-
-                if (menu) {
-                    const { data: items } = await supabase
-                        .from('menu_items')
-                        .select('*')
-                        .eq('menu_id', menu.id)
-                        .eq('is_active', true)
-                        .order('sort_order', { ascending: true });
-
-                    if (items && items.length > 0) {
-                        // Map database items to NavCategory structure.
-                        // We attempt to preserve existing MegaMenu structures by looking up in NAV_CATEGORIES.
-                        const newCategories = items.map((item: any) => {
-                            const existing = NAV_CATEGORIES.find(c => c.href === item.url || c.label.toLowerCase() === item.title.toLowerCase());
-                            return {
-                                id: item.id,
-                                label: item.title,
-                                href: item.url,
-                                dataKey: existing?.dataKey || '', // Fallback or empty
-                                subCategories: existing?.subCategories,
-                                featuredProduct: existing?.featuredProduct,
-                                editorialText: existing?.editorialText,
-                                editorialTextKey: existing?.editorialTextKey,
-                                promotionText: existing?.promotionText,
-                                promotionTextKey: existing?.promotionTextKey,
-                            };
-                        });
-                        setDynamicCategories(newCategories as NavCategory[]);
-                    }
-                }
-            } catch (error) {
-                console.error("Failed to load dynamic header menu:", error);
-            }
-        };
-
-        fetchHeaderMenu();
-    }, []);
+    const hoverTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { isScrolled: _isScrolled } = useNavbarScroll(activeCategoryId !== null);
 
@@ -86,32 +39,32 @@ export function Navbar() {
 
     const { t, currency } = useGlobal();
 
-    const handleCategoryEnter = useCallback((id: string) => {
+    const handleCategoryEnter = React.useCallback((id: string) => {
         if (isSearchOpen) return;
         if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
         hoverTimerRef.current = setTimeout(() => setActiveCategoryId(id), 150);
     }, [isSearchOpen]);
 
-    const handleCategoryLeave = useCallback(() => {
+    const handleCategoryLeave = React.useCallback(() => {
         if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
         hoverTimerRef.current = setTimeout(() => setActiveCategoryId(null), 150);
     }, []);
 
-    const handleMegaMenuEnter = useCallback(() => {
+    const handleMegaMenuEnter = React.useCallback(() => {
         if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
     }, []);
 
-    const handleMegaMenuClose = useCallback(() => setActiveCategoryId(null), []);
-    const handleMobileOpen = useCallback(() => setIsMobileOpen(true), []);
-    const handleMobileClose = useCallback(() => setIsMobileOpen(false), []);
-    const handleSearchOpen = useCallback(() => { setActiveCategoryId(null); setIsSearchOpen(true); }, []);
-    const handleSearchClose = useCallback(() => setIsSearchOpen(false), []);
+    const handleMegaMenuClose = React.useCallback(() => setActiveCategoryId(null), []);
+    const handleMobileOpen = React.useCallback(() => setIsMobileOpen(true), []);
+    const handleMobileClose = React.useCallback(() => setIsMobileOpen(false), []);
+    const handleSearchOpen = React.useCallback(() => { setActiveCategoryId(null); setIsSearchOpen(true); }, []);
+    const handleSearchClose = React.useCallback(() => setIsSearchOpen(false), []);
 
     const { isDark, toggle: toggleDarkMode, mounted: darkModeMounted } = useDarkMode();
 
     const goldColor = '#C9A96E';
 
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = React.useState(false);
 
     // 3D Tilt Physics
     const mouseX = useMotionValue(0);

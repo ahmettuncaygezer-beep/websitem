@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabase';
 import { getAdminServerSession } from '@/lib/admin-auth';
 
 // ── PUT: Menü Öğesi Düzenle ──────────────────────────────────────────────────
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const session = await getAdminServerSession();
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -28,7 +28,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // ── DELETE: Menü Öğesi Sil ───────────────────────────────────────────────────
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const session = await getAdminServerSession();
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

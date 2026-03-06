@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabase';
 import { getAdminServerSession } from '@/lib/admin-auth';
 
 // ── DELETE: Tüm Dillerdeki Bir Key'i Sil ──────────────────────────────────────
-export async function DELETE(req: Request, { params }: { params: { key: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ key: string }> }) {
     try {
         const session = await getAdminServerSession();
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

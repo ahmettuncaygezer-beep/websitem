@@ -4,12 +4,13 @@ import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-export default async function EditNewsletterPage({ params }: { params: { id: string } }) {
+export default async function EditNewsletterPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const supabase = await createSupabaseServerClient();
     const { data: campaign } = await supabase
         .from('newsletter_campaigns')
         .select('*')
-        .eq('id', params.id)
+        .eq('id', id)
         .single();
 
     if (!campaign) notFound();

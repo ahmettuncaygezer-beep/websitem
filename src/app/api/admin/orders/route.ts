@@ -14,11 +14,29 @@ export async function GET(req: Request) {
         const search = searchParams.get('search') || '';
         const page = parseInt(searchParams.get('page') || '1');
         const perPage = parseInt(searchParams.get('perPage') || '50');
+        const format = searchParams.get('format') || 'json';
 
         let query = supabase.from('orders').select('*', { count: 'exact' });
 
         if (status) query = query.eq('status', status);
         if (search) query = query.or(`order_number.ilike.%${search}%`);
+
+        if (format === 'csv') {
+            const { data, error } = await query.order('created_at', { ascending: false });
+            if (error) throw error;
+
+            const csvHeader = 'Sipariş No,Tarih,Müşteri ID,Durum,Tutar,Ödeme,IP\n';
+            const csvBody = (data || []).map((o: any) => {
+                return `"${o.order_number}","${new Date(o.created_at).toLocaleString('tr-TR')}","${o.user_id || ''}","${o.status}","${o.total_amount}","${o.payment_method}",""`;
+            }).join('\n');
+
+            return new NextResponse(csvHeader + csvBody, {
+                headers: {
+                    'Content-Type': 'text/csv; charset=utf-8',
+                    'Content-Disposition': `attachment; filename="orders_${new Date().toISOString().slice(0, 10)}.csv"`,
+                },
+            });
+        }
 
         query = query.order('created_at', { ascending: false })
             .range((page - 1) * perPage, page * perPage - 1);
