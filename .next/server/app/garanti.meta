@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/garanti/layout,_N_T_/garanti/page,_N_T_/garanti"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/garanti/__PAGE__",
+    "/garanti",
+    "/_index",
+    "/_head"
+  ]
+}

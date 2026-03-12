@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/hesabim/layout,_N_T_/hesabim/puan-odullerim/layout,_N_T_/hesabim/puan-odullerim/page,_N_T_/hesabim/puan-odullerim"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/hesabim/puan-odullerim/__PAGE__",
+    "/hesabim/puan-odullerim",
+    "/hesabim",
+    "/_index",
+    "/_head"
+  ]
+}

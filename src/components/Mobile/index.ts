@@ -3,7 +3,7 @@ export { default as BottomNav } from './BottomNav';
 export { BottomNavItem } from './BottomNavItem';
 export { default as ProductImageGallery } from './ProductImageGallery';
 export { default as FilterChips } from './FilterChips';
-export { default as MobileFilterSheet } from './MobileFilterSheet';
+export { default as MobileFilterSheet } from './MobileFilterSheetV2';
 export { default as StickyAddToCart } from './StickyAddToCart';
 export { default as WhatsAppButton } from './WhatsAppButton';
 

@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[897367,["/_next/static/chunks/d96012bcfc98706a.js","/_next/static/chunks/73e3194f06db260e.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"zZmIwIdmRwH8NWGgmlhDC","rsc":["$","$1","c",{"children":[["$","main",null,{"className":"py-20 bg-white","children":["$","div",null,{"className":"container-premium max-w-4xl","children":[["$","h1",null,{"className":"font-serif text-4xl mb-8","children":"Çerez Politikası"}],["$","div",null,{"className":"prose prose-stone max-w-none space-y-6 text-charcoal/80 text-sm leading-relaxed","children":[["$","p",null,{"children":"Deneyiminizi geliştirmek için çerezleri kullanıyoruz. Sitemizi kullanarak çerez kullanımını kabul etmiş sayılırsınız."}],["$","section",null,{"children":[["$","h2",null,{"className":"text-xl font-bold text-charcoal mb-3","children":"Çerez Nedir?"}],["$","p",null,{"children":"Çerezler, bir web sitesini ziyaret ettiğinizde bilgisayarınıza veya mobil cihazınıza kaydedilen küçük metin dosyalarıdır."}]]}]]}]]}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

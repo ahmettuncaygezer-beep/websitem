@@ -1,0 +1,3 @@
+module.exports=[985289,a=>{"use strict";var b=a.i(907997);function c({children:a}){return(0,b.jsx)("div",{className:"planner-layout-wrapper w-full h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] overflow-hidden bg-[#FAFAF9]",children:a})}a.s(["default",()=>c,"metadata",0,{title:"Oda Planlayıcı | SELIS",description:"SELIS lüks mobilyalarını kullanarak kendi odanızı tasarlayın. 2D interaktif oda planlayıcı."}])}];
+
+//# sourceMappingURL=src_app_oda-planlayici_layout_tsx_d3d0700e._.js.map

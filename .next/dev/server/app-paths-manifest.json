@@ -1,0 +1,5 @@
+{
+  "/api/admin/settings/route": "app/api/admin/settings/route.js",
+  "/api/press/route": "app/api/press/route.js",
+  "/manifest.webmanifest/route": "app/manifest.webmanifest/route.js"
+}

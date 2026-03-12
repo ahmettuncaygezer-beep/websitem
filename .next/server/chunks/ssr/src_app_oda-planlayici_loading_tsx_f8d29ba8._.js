@@ -1,0 +1,3 @@
+module.exports=[305587,a=>{"use strict";var b=a.i(907997);function c(){return(0,b.jsx)("div",{className:"fixed inset-0 flex items-center justify-center",style:{background:"#F8F6F3"},children:(0,b.jsxs)("div",{className:"text-center",children:[(0,b.jsx)("div",{className:"w-12 h-12 mx-auto mb-4 rounded-full border-2 border-t-transparent animate-spin",style:{borderColor:"#C9A96E",borderTopColor:"transparent"}}),(0,b.jsx)("p",{className:"text-[14px] font-medium",style:{color:"#1C1C1E"},children:"Oda Planlayıcı yükleniyor…"})]})})}a.s(["default",()=>c])}];
+
+//# sourceMappingURL=src_app_oda-planlayici_loading_tsx_f8d29ba8._.js.map

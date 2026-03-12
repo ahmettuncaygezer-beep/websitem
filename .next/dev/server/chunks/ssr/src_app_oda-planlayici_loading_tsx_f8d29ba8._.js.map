@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/xampp/htdocs/2mobilya/src/app/oda-planlayici/loading.tsx"],"sourcesContent":["export default function OdaPlanlayiciLoading() {\r\n    return (\r\n        <div className=\"fixed inset-0 flex items-center justify-center\" style={{ background: '#F8F6F3' }}>\r\n            <div className=\"text-center\">\r\n                <div className=\"w-12 h-12 mx-auto mb-4 rounded-full border-2 border-t-transparent animate-spin\" style={{ borderColor: '#C9A96E', borderTopColor: 'transparent' }} />\r\n                <p className=\"text-[14px] font-medium\" style={{ color: '#1C1C1E' }}>Oda Planlayıcı yükleniyor…</p>\r\n            </div>\r\n        </div>\r\n    );\r\n}\r\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACpB,qBACI,8OAAC;QAAI,WAAU;QAAiD,OAAO;YAAE,YAAY;QAAU;kBAC3F,cAAA,8OAAC;YAAI,WAAU;;8BACX,8OAAC;oBAAI,WAAU;oBAAiF,OAAO;wBAAE,aAAa;wBAAW,gBAAgB;oBAAc;;;;;;8BAC/J,8OAAC;oBAAE,WAAU;oBAA0B,OAAO;wBAAE,OAAO;oBAAU;8BAAG;;;;;;;;;;;;;;;;;AAIpF"}}]
+}

@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/stil-testi/layout,_N_T_/stil-testi/page,_N_T_/stil-testi"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/stil-testi/__PAGE__",
+    "/stil-testi",
+    "/_index",
+    "/_head"
+  ]
+}

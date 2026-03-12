@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[897367,["/_next/static/chunks/d96012bcfc98706a.js","/_next/static/chunks/73e3194f06db260e.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"zZmIwIdmRwH8NWGgmlhDC","rsc":["$","$1","c",{"children":[["$","main",null,{"className":"py-20 bg-white","children":["$","div",null,{"className":"container-premium max-w-4xl","children":[["$","h1",null,{"className":"font-serif text-4xl mb-8","children":"Kullanım Koşulları"}],["$","div",null,{"className":"prose prose-stone max-w-none space-y-6 text-charcoal/80 text-sm leading-relaxed","children":[["$","p",null,{"children":"Selis.com.tr web sitesine hoş geldiniz. Bu web sitesini kullanarak aşağıdaki koşulları kabul etmiş sayılırsınız."}],["$","section",null,{"children":[["$","h2",null,{"className":"text-xl font-bold text-charcoal mb-3","children":"1. Fikri Mülkiyet"}],["$","p",null,{"children":"Bu sitede yer alan tüm tasarımlar, metinler ve görseller Selis markasına aittir ve izinsiz kopyalanamaz."}]]}]]}]]}]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

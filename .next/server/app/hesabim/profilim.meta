@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/hesabim/layout,_N_T_/hesabim/profilim/layout,_N_T_/hesabim/profilim/page,_N_T_/hesabim/profilim"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/hesabim/profilim/__PAGE__",
+    "/hesabim/profilim",
+    "/hesabim",
+    "/_index",
+    "/_head"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "[project]/src/components/layout/NewsletterForm.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/layout/NewsletterForm.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/src_components_layout_NewsletterForm_tsx_744b8358._.js",
+      "static/chunks/src_components_layout_NewsletterForm_tsx_02ef0c6a._.js"
+    ]
+  },
+  "[project]/src/components/AIAssistant/index.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/AIAssistant/index.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/src_components_AIAssistant_ChatButton_tsx_31c5562d._.js",
+      "static/chunks/src_components_AIAssistant_c5242efe._.js",
+      "static/chunks/node_modules_4e0297dc._.js",
+      "static/chunks/src_components_AIAssistant_index_tsx_02ef0c6a._.js"
+    ]
+  },
+  "[project]/src/components/Mobile/BottomNav.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/Mobile/BottomNav.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/_32a13ea1._.js",
+      "static/chunks/src_components_Mobile_BottomNav_tsx_02ef0c6a._.js"
+    ]
+  },
+  "[project]/src/components/Mobile/WhatsAppButton.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/Mobile/WhatsAppButton.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/src_components_Mobile_WhatsAppButton_tsx_d0369161._.js",
+      "static/chunks/src_components_Mobile_WhatsAppButton_tsx_02ef0c6a._.js"
+    ]
+  },
+  "[project]/src/components/ui/AntigravityBrowserControl.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/ui/AntigravityBrowserControl.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/_e6facb6c._.js",
+      "static/chunks/src_components_ui_AntigravityBrowserControl_tsx_02ef0c6a._.js"
+    ]
+  },
+  "[project]/src/components/home/HeroSection/ImageSlider.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/home/HeroSection/ImageSlider.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/src_components_home_HeroSection_ImageSlider_tsx_aba9d7be._.js",
+      "static/chunks/src_components_home_HeroSection_ImageSlider_tsx_3be829df._.js"
+    ]
+  },
+  "[project]/src/components/home/HeroSection/VideoModal.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/home/HeroSection/VideoModal.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/_786344b4._.js",
+      "static/chunks/src_components_home_HeroSection_VideoModal_tsx_3be829df._.js"
+    ]
+  }
+}

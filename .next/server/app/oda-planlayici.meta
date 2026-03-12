@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/oda-planlayici/layout,_N_T_/oda-planlayici/page,_N_T_/oda-planlayici"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/oda-planlayici/__PAGE__",
+    "/oda-planlayici",
+    "/_index",
+    "/_head"
+  ]
+}

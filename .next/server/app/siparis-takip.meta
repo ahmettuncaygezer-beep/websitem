@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/siparis-takip/layout,_N_T_/siparis-takip/page,_N_T_/siparis-takip"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/siparis-takip/__PAGE__",
+    "/siparis-takip",
+    "/_index",
+    "/_head"
+  ]
+}

@@ -1,0 +1,4 @@
+1:"$Sreact.fragment"
+2:I[339756,["/_next/static/chunks/d96012bcfc98706a.js","/_next/static/chunks/73e3194f06db260e.js"],"default"]
+3:I[837457,["/_next/static/chunks/d96012bcfc98706a.js","/_next/static/chunks/73e3194f06db260e.js"],"default"]
+0:{"buildId":"zZmIwIdmRwH8NWGgmlhDC","rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"loading":[["$","div","l",{"className":"min-h-screen bg-[#F5F0EB] flex flex-col items-center justify-center p-6 text-center","children":[["$","div",null,{"className":"w-16 h-16 border-4 border-[#C9A96E] border-t-transparent rounded-full animate-spin mb-6"}],["$","h2",null,{"className":"text-2xl font-serif text-[#1C1C1E] mb-2 italic","children":"Yükleniyor..."}],["$","p",null,{"className":"text-[#666] font-light italic","children":"SELIS Stil Dünyasına Hoş Geldiniz."}]]}],[],[]],"isPartial":false}

@@ -1,0 +1,3 @@
+{
+  "/api/admin/lookbook/[id]/route": "app/api/admin/lookbook/[id]/route.js"
+}

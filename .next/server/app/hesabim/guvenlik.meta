@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/hesabim/layout,_N_T_/hesabim/guvenlik/layout,_N_T_/hesabim/guvenlik/page,_N_T_/hesabim/guvenlik"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/hesabim/guvenlik/__PAGE__",
+    "/hesabim/guvenlik",
+    "/hesabim",
+    "/_index",
+    "/_head"
+  ]
+}

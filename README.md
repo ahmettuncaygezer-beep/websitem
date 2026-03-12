@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 2Mobilya - Premium Mobilya E-Ticaret Platformu
 
-## Getting Started
+Tam özellikli, modern ve production-ready mobilya e-ticaret web sitesi. Next.js 16, React 19, Supabase ve Tailwind CSS ile geliştirilmiştir.
 
-First, run the development server:
+## 🌟 Özellikler
 
+### Müşteri Özellikleri
+- ✅ Modern ve responsive tasarım
+- ✅ Ürün listeleme ve filtreleme
+- ✅ Gelişmiş ürün arama
+- ✅ Sepet yönetimi
+- ✅ Kullanıcı kayıt/giriş sistemi
+- ✅ Sipariş takibi
+- ✅ Favori ürünler
+- ✅ Ürün karşılaştırma
+- ✅ Blog sistemi
+- ✅ AI destekli ürün önerileri
+- ✅ 3D ürün görüntüleme
+- ✅ Oda planlayıcı
+- ✅ Dark mode desteği
+- ✅ PWA desteği
+
+### Admin Panel Özellikleri
+- ✅ Kapsamlı yönetim paneli
+- ✅ Ürün yönetimi (CRUD)
+- ✅ Kategori yönetimi
+- ✅ Sipariş yönetimi
+- ✅ Müşteri yönetimi (CRM)
+- ✅ Blog yönetimi
+- ✅ Kampanya yönetimi
+- ✅ SEO ayarları
+- ✅ Analitik ve raporlama
+
+## 🚀 Kurulum
+
+1. Bağımlılıkları yükleyin:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install --legacy-peer-deps
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Environment variables düzenleyin (.env):
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Supabase migrations'ı çalıştırın
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Development server:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Production build:
+```bash
+npm run build
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 📊 Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Supabase SQL Editor'den migrations dosyalarını sırasıyla çalıştırın:
+1. `supabase/migrations/20260221024335_schema.sql`
+2. `supabase/migrations/20260312220806_fix_blog_rls_and_missing_tables.sql`
+3. `supabase/migrations/20260312220837_create_storage_buckets.sql`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔐 Admin Erişimi
 
-## Deploy on Vercel
+1. Supabase Dashboard > Authentication > Users > Add User
+2. SQL Editor'den admin yetkisi verin:
+```sql
+INSERT INTO public.admin_users (id, role)
+VALUES ('user_id', 'admin');
+```
+3. `/admin/login` sayfasından giriş yapın
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Proje Yapısı
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/          # Next.js pages
+├── components/   # React components
+├── lib/          # Utilities
+├── hooks/        # Custom hooks
+└── types/        # TypeScript types
+```
+
+## 🎨 Teknolojiler
+
+- Next.js 16
+- React 19
+- Tailwind CSS
+- Supabase
+- TypeScript
+- Framer Motion
+- Three.js
+
+## 📝 Notlar
+
+- Production build başarıyla tamamlandı
+- Tüm veritabanı tabloları ve RLS policies hazır
+- Sample data yüklü
+- Admin panel tam fonksiyonel
+

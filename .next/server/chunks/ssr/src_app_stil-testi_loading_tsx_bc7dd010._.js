@@ -1,0 +1,3 @@
+module.exports=[612939,a=>{"use strict";var b=a.i(907997);function c(){return(0,b.jsxs)("div",{className:"min-h-screen bg-[#F5F0EB] flex flex-col items-center justify-center p-6 text-center",children:[(0,b.jsx)("div",{className:"w-16 h-16 border-4 border-[#C9A96E] border-t-transparent rounded-full animate-spin mb-6"}),(0,b.jsx)("h2",{className:"text-2xl font-serif text-[#1C1C1E] mb-2 italic",children:"Yükleniyor..."}),(0,b.jsx)("p",{className:"text-[#666] font-light italic",children:"SELIS Stil Dünyasına Hoş Geldiniz."})]})}a.s(["default",()=>c])}];
+
+//# sourceMappingURL=src_app_stil-testi_loading_tsx_bc7dd010._.js.map

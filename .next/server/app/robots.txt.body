@@ -1,0 +1,21 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /odeme/
+Disallow: /hesabim/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /siparis-onay/
+
+User-Agent: GPTBot
+Disallow: /
+
+User-Agent: bingbot
+Allow: /
+Disallow: /api/
+Disallow: /odeme/
+Disallow: /hesabim/
+Disallow: /admin/
+
+Host: https://selishome.com
+Sitemap: https://selishome.com/sitemap.xml

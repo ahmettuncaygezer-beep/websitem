@@ -1,0 +1,42 @@
+{
+  "839432": {
+    "id": 839432,
+    "files": [
+      "static/chunks/4d0422fafef59e43.js"
+    ]
+  },
+  "793147": {
+    "id": 793147,
+    "files": [
+      "static/chunks/c69918e365433b0c.js",
+      "static/chunks/a7c01371262507bf.js"
+    ]
+  },
+  "680698": {
+    "id": 680698,
+    "files": [
+      "static/chunks/569066dbd3e1d6ad.js"
+    ]
+  },
+  "299160": {
+    "id": 299160,
+    "files": [
+      "static/chunks/29f6f8b91a57c242.js"
+    ]
+  },
+  "259289": {
+    "id": 259289,
+    "files": [
+      "static/chunks/1f834e64485c94f7.js"
+    ]
+  },
+  "513143": {
+    "id": 513143,
+    "files": [
+      "static/chunks/2773c5d8dd408f89.js",
+      "static/chunks/158a8af771271732.js",
+      "static/chunks/30a483a34b4976bc.js",
+      "static/chunks/a8f2036c08d21db7.js"
+    ]
+  }
+}
